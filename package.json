@@ -13,7 +13,7 @@
     "bootstrap-vue": "^2.19.0",
     "core-js": "^3.7.0",
     "vee-validate": "^3.4.5",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-blob-json-csv": "^0.1.7",
     "vue-bootstrap-typeahead": "^0.2.6",
     "vue-carousel-3d": "^1.0.1",
