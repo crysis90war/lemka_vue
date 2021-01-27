@@ -1,4 +1,4 @@
-# frontend
+# lemka_vue
 
 ## Project setup
 ```
