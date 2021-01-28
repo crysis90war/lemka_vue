@@ -127,6 +127,12 @@
           </div>
         </template>
 
+        <template #empty>
+          <div class="text-center my-2">
+            <p>Il n'y a aucun enregistrement à afficher</p>
+          </div>
+        </template>
+
         <template #emptyfiltered>
           <div class="text-center my-2">
             <p>Il n'y a aucun enregistrement correspondant à votre demande</p>

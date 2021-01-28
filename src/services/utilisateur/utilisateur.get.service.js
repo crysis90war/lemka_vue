@@ -9,19 +9,19 @@ class UtilisateurGetService {
     }
 
     getUserGenres() {
-        return axios.get(Endpoints.GENRES_ENDPOINT, { headers: authHeader() })
+        return axios.get(Endpoints.PROFIL_GENRE_ENDPOINT, { headers: authHeader() })
     }
 
     getUserListMensurations() {
-        return axios.get(Endpoints.MENSURATION_ENDPOINT, { headers: authHeader() })
+        return axios.get(Endpoints.USER_MENSURATION_ENDPOINT, { headers: authHeader() })
     }
 
     getUserMensuration(id) {
-        return axios.get(Endpoints.MENSURATION_ENDPOINT + id, { headers: authHeader()})
+        return axios.get(Endpoints.USER_MENSURATION_ENDPOINT + id, { headers: authHeader()})
     }
 
     getMensurationUserMensuration(id) {
-        return axios.get(Endpoints.MENSURATION_ENDPOINT + id + '/mensurations/', { headers: authHeader() })
+        return axios.get(Endpoints.USER_MENSURATION_ENDPOINT + id + '/mensurations/', { headers: authHeader() })
     }
 
     getUserVilles() {

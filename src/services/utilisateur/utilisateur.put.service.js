@@ -9,12 +9,12 @@ class UtilisateurPutService {
     }
 
     updateMensuration(data, user_mensuration_id) {
-        let endpoint = `${Endpoints.MENSURATION_ENDPOINT}${user_mensuration_id}/`;
+        let endpoint = `${Endpoints.USER_MENSURATION_ENDPOINT}${user_mensuration_id}/`;
         return axios.put(endpoint, data, {headers: authHeader()})
     }
 
     updateMensurationUserMensuration(data, user_mensuration_id, mensuration_user_mensuration_id) {
-        let endpoint = `${Endpoints.MENSURATION_ENDPOINT}${user_mensuration_id}/mensurations/${mensuration_user_mensuration_id}/`
+        let endpoint = `${Endpoints.USER_MENSURATION_ENDPOINT}${user_mensuration_id}/mensurations/${mensuration_user_mensuration_id}/`
         return axios.put(endpoint, data, {headers: authHeader()})
     }
 

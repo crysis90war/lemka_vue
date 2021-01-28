@@ -1,18 +1,18 @@
 <template>
-  <b-card>
-    <template>
-      <div class="d-flex justify-start">
-        <b-button variant="light" class="mr-2" :to="{name: AdminRouteName.PARAMETRES.name}">
-          <i class="fas fa-arrow-left"></i>
-        </b-button>
-        <h4>Ajouter entreprise</h4>
-      </div>
+  <div>
+    <div class="d-flex justify-start">
+      <b-button variant="light" class="mr-2" :to="{name: AdminRouteName.ENTREPRISE.name}">
+        <i class="fas fa-arrow-left"></i>
+      </b-button>
+      <h4>Ajouter entreprise</h4>
       <hr>
-    </template>
-    <b-card-body>
-      {{ entreprise.length }}
-    </b-card-body>
-  </b-card>
+    </div>
+    <b-card>
+      <b-card-body>
+        <pre>{{entreprise}}</pre>
+      </b-card-body>
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -47,9 +47,10 @@ export default {
       })
     }
     if (!await isValid()) {
-      next({name: AdminRouteName.PARAMETRES.name})
-    } else {
+
       next();
+    } else {
+      next({name: AdminRouteName.PARAMETRES.name})
     }
   },
 }

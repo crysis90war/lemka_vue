@@ -6,7 +6,7 @@ import {Endpoints} from "@/helpers/enums.helper";
 class UtilisateurDeleteService {
 
     deleteUserMensuration(item_id) {
-        let endpoint = `${Endpoints.MENSURATION_ENDPOINT}${item_id}/` ;
+        let endpoint = `${Endpoints.USER_MENSURATION_ENDPOINT}${item_id}/` ;
         return axios
             .delete(endpoint, { headers: authHeader() })
             .then((response) => { Outils.handleResponse(response)})

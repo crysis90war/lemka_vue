@@ -7,7 +7,7 @@ class UtilisateurPostService {
 
     postUserMensuration(data) {
         return axios
-            .post(Endpoints.MENSURATION_ENDPOINT, data, { headers: authHeader() })
+            .post(Endpoints.USER_MENSURATION_ENDPOINT, data, { headers: authHeader() })
             .then((response) => { Outils.handleResponse(response) })
             .catch(error => console.log(error));
     }

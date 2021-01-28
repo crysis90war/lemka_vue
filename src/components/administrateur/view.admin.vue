@@ -63,7 +63,7 @@
             {{ AdminRouteName.RENDEZ_VOUS.value }}
           </b-nav-item>
 
-          <b-nav-item :to="{name: AdminRouteName.PARAMETRES.name}" :active="$route.name === AdminRouteName.PARAMETRES.name">
+          <b-nav-item :to="{name: AdminRouteName.ENTREPRISE.name}" :active="$route.name === AdminRouteName.PARAMETRES.name">
             <i class="fas fa-sliders-h"></i>
             {{ AdminRouteName.PARAMETRES.value }}
           </b-nav-item>
@@ -93,9 +93,6 @@
         <b-card-body>
           <h4>Bienvenue sur la page d'administration de Lemka - Atelier de couture</h4>
           <p>Si c'est le premier lancement, veuillez d'abord configurer votre boutique avant d'aller plus loin</p>
-          <b-list-group>
-            <b-list-group-item>Configuration de <b-link :to="{name: AdminRouteName.PARAMETRES.name}">catalogue</b-link></b-list-group-item>
-          </b-list-group>
         </b-card-body>
       </b-card>
     </div>

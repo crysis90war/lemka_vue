@@ -71,12 +71,32 @@ export const AdminRouteName = {
         value: 'Ajouter un articles',
         icon: ''
     },
+    ENTREPRISE: {
+      name: 'ViewEntreprise',
+      value: 'Entreprise',
+      icon: ''
+    },
     ADD_ENTREPRISE: {
         name: 'ViewAddEntreprise',
         value: 'Ajout des informations de l\'entreprise',
         icon: ''
+    },
+    GENRE: {
+        name: 'ViewGenre',
+        value: 'Genres',
+        icon: ''
+    },
+    GENRE_ADD: {
+        name: 'ViewGenreAdd',
+        value: 'Ajouter un genre',
+        icon: ''
+    },
+    MENSURATION: {
+        name: 'ViewMensuration',
+        value: 'Mensurations'
     }
 }
+
 
 export const RouteNames = {
     HOME_ROUTE: {
@@ -119,8 +139,10 @@ export const RouteNames = {
 
 export const Endpoints = {
     PROFILE_ENDPOINT: DOMAIN + '/profil/',
-    GENRES_ENDPOINT: DOMAIN + '/profil/genres/',
-    MENSURATION_ENDPOINT: DOMAIN + /user_mensurations/,
+    PROFIL_GENRE_ENDPOINT: DOMAIN + '/profil/genres/',
+    GENRES_ENDPOINT: DOMAIN + '/genres/',
+    MENSURATION_ENDPOINT: DOMAIN + /mensurations/,
+    USER_MENSURATION_ENDPOINT: DOMAIN + /user_mensurations/,
     VILLES_ENDPOINT: DOMAIN + '/user_adresses/villes/',
     ADRESSE_ENDPOINT: DOMAIN + '/user_adresses/',
     USERS_ENDPOINT: DOMAIN + '/utilisateurs/',

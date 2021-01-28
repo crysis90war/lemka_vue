@@ -154,11 +154,40 @@ const router = new VueRouter({
           component: () => import('../components/administrateur/parametres/view.parametres'),
           children: [
             {
-              path: '/admin/parametres/ajouter',
-              name: AdminRouteName.ADD_ENTREPRISE.name,
-              meta: {value: AdminRouteName.ADD_ENTREPRISE.value},
-              component: () => import('../components/administrateur/parametres/view.admin.entreprise.add')
+              path: '/admin/parametres/entreprise',
+              name: AdminRouteName.ENTREPRISE.name,
+              meta: {value: AdminRouteName.ENTREPRISE.value},
+              component: () => import('../components/administrateur/parametres/entreprise/view.entreprise'),
+              children: [
+                {
+                  path: '/admin/parametres/entreprise/ajouter',
+                  name: AdminRouteName.ADD_ENTREPRISE.name,
+                  meta: {value: AdminRouteName.ADD_ENTREPRISE.value},
+                  component: () => import('../components/administrateur/parametres/entreprise/view.admin.entreprise.add')
+                }
+              ]
             },
+            {
+              path: '/admin/parametres/genres',
+              name: AdminRouteName.GENRE.name,
+              meta: {value: AdminRouteName.GENRE.value},
+              component: () => import('../components/administrateur/parametres/genre/view.genre'),
+              children: [
+                {
+                  path: '/admin/parametres/genres/ajouter',
+                  name: AdminRouteName.GENRE_ADD.name,
+                  meta: {value: AdminRouteName.GENRE_ADD.value},
+                  component: () => import('../components/administrateur/parametres/genre/view.genre.add')
+                }
+              ]
+            },
+            {
+              path: '/admin/parametres/mensurations',
+              name: AdminRouteName.MENSURATION.name,
+              meta: {value: AdminRouteName.MENSURATION.value},
+              component: () => import('../components/administrateur/parametres/mensuration/view.mensurations'),
+              children: []
+            }
           ]
         }
       ],
