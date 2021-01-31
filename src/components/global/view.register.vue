@@ -1,58 +1,92 @@
 <template>
   <b-container>
     <div class="form-container sign-up-container">
-      <b-form action="#">
-        <img src="../../assets/logo.png" class="mt-4 mb-2" alt="" :style="`max-width: ${this.logo_size};`"/>
-        <div class="social-container">
-          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-        </div>
-        <span>ou utilisez votre email pour vous inscrire</span>
-        <b-input type="email" placeholder="Email" />
-        <b-input type="text" placeholder="Nom public" />
-        <b-input type="password" placeholder="Mot de passe" />
-        <b-input type="password" placeholder="Confirmer mot de passe" />
-        <b-button class="btn-grad">s'inscrire</b-button>
-      </b-form>
+      <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
+        <b-form @submit.prevent="handleSubmit(handleRegister)">
+          <img src="../../assets/logo.png" alt="" style="max-width: 250px;"/>
+
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+          </div>
+
+          <span>ou utilisez votre email pour vous inscrire</span>
+
+          <ValidationProvider name="Email" ref="email" rules="required|email" v-slot="{ errors }">
+            <b-input v-model="user.email" type="email" placeholder="Email"></b-input>
+            <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
+          </ValidationProvider>
+
+          <ValidationProvider name="Username" ref="username" rules="required|alpha_num|min:3" v-slot="{ errors }">
+            <b-input v-model="user.username" type="text" placeholder="Username"></b-input>
+            <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
+          </ValidationProvider>
+
+          <ValidationProvider name="Password" ref="password" rules="required" v-slot="{ errors }">
+            <b-input v-model="user.password" type="password" placeholder="Mot de passe"/>
+            <b-badge pill variant="danger" v-for="(error) in errors" :key="error">{{ error }}</b-badge>
+          </ValidationProvider>
+
+          <ValidationProvider name="Password2" ref="password2" rules="required" v-slot="{ errors }">
+            <b-input v-model="user.password2" type="password" placeholder="Confirmer mot de passe"/>
+            <b-badge pill variant="danger" v-for="(error) in errors" :key="error">{{ error }}</b-badge>
+          </ValidationProvider>
+
+          <button type="submit" class="btn btn-outline-success my-2" :disabled="loading">
+            <b-spinner variant="success" type="grow" small v-show="loading"></b-spinner>
+            S'inscrire
+          </button>
+        </b-form>
+      </ValidationObserver>
+      <b-badge pill variant="danger">{{ message }}</b-badge>
+      <pre>{{message}}</pre>
+      <pre class="bg-warning">{{response}}</pre>
     </div>
   </b-container>
 </template>
 
 <script>
-import User from "@/models/user.model";
 
 export default {
   name: "ViewRegister",
-  props: {
-    logo_size: {
-      type: String,
-      default: '250px'
+  data() {
+    return {
+      user: {
+        email: null,
+        username: null,
+        password: null,
+        password2: null
+      },
+      loading: false,
+      message: null,
+      response: {}
     }
   },
-
   computed: {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     }
   },
-
+  methods: {
+    handleRegister() {
+      this.$store.dispatch('auth/register', this.user).then(response => {
+        this.message = response
+      }, error => {
+        this.message = error
+      })
+      console.log('hello')
+    }
+  },
   created() {
     if (this.loggedIn) {
       this.$router.push('/profil');
-    }
-  },
-
-  data() {
-    return {
-      user: new User('', '', '', ''),
-      loading: false,
-      message: ''
     }
   }
 }
 </script>
 
 <style scoped>
+
 h1 {
   font-weight: bold;
   margin: 0;
@@ -78,7 +112,7 @@ a {
 }
 
 .btn-grad {
-  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6  51%, #834d9b  100%)
+  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%)
 }
 
 .btn-grad {
@@ -113,11 +147,11 @@ a {
 }
 
 .ghost {
-  background-image: none!important;
+  background-image: none !important;
 }
 
 .btn-grad.ghost {
-  background-color: transparent!important;
+  background-color: transparent !important;
   /*border-color: #ffffff;*/
   border: 1px solid #ffffff;
 }

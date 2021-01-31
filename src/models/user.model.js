@@ -10,7 +10,7 @@ export default class User {
      * @param {Boolean} is_staff Le boolean pour identifier si l'utilisateur est un admin ou pas.
      * @param {Object} tokens Les tokens refresh et access.
      */
-    constructor(email = '', password = '', username = '', password2 = '', is_staff = false, tokens = {}) {
+    constructor(email, password, username, password2, is_staff, tokens = {}) {
         this.email = email;
         this.password = password;
         this.username = username;

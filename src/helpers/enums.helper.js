@@ -94,6 +94,18 @@ export const AdminRouteName = {
     MENSURATION: {
         name: 'ViewMensuration',
         value: 'Mensurations'
+    },
+    MENSURATION_ADD: {
+      name: 'ViewMensurationAdd',
+      value: 'Ajouter mensuration'
+    },
+    SERVICE: {
+        name: 'ViewService',
+        value: 'Services'
+    },
+    SERVICE_ADD: {
+        name: 'ViewServiceAdd',
+        value: 'Ajouter un service'
     }
 }
 

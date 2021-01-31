@@ -3,11 +3,14 @@
     <div class="form-container sign-in-container">
       <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
         <b-form @submit.prevent="handleSubmit(handleLogin)">
-          <img src="../../assets/logo.png" class="mt-4 mb-2" alt="" :style="`max-width: ${ logo_size };`"/>
+
+          <img src="../../assets/logo.png" alt="" :style="`max-width: ${ logo_size };`"/>
+
           <div class="social-container">
             <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
             <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
           </div>
+
           <span>ou utilisez votre compte</span>
 
           <ValidationProvider name="Email" ref="email" rules="required|email" v-slot="{ errors }">
@@ -26,16 +29,14 @@
             <b-spinner variant="success" type="grow" small v-show="loading"></b-spinner>
             Se connecter
           </button>
-
-          <b-badge pill variant="danger">{{ message }}</b-badge>
         </b-form>
       </ValidationObserver>
+      <b-badge pill variant="danger">{{ message }}</b-badge>
     </div>
   </b-container>
 </template>
 
 <script>
-import User from "@/models/user.model";
 import {RouteNames} from "@/helpers/enums.helper";
 
 export default {
@@ -49,7 +50,10 @@ export default {
 
   data() {
     return {
-      user: new User('', ''),
+      user: {
+        email: null,
+        password: null
+      },
       loading: false,
       message: ''
     }
@@ -58,12 +62,6 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
-    }
-  },
-
-  created() {
-    if (this.loggedIn) {
-      this.$router.push('/profil');
     }
   },
 
@@ -83,7 +81,13 @@ export default {
         )
       }
     }
-  }
+  },
+
+  created() {
+    if (this.loggedIn) {
+      this.$router.push('/profil');
+    }
+  },
 }
 </script>
 

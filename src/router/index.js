@@ -151,13 +151,13 @@ const router = new VueRouter({
           path: '/admin/parametres',
           name: AdminRouteName.PARAMETRES.name,
           meta: {value: AdminRouteName.PARAMETRES.value},
-          component: () => import('../components/administrateur/parametres/view.parametres'),
+          component: () => import('../components/administrateur/parametres/view.admin.parametres'),
           children: [
             {
               path: '/admin/parametres/entreprise',
               name: AdminRouteName.ENTREPRISE.name,
               meta: {value: AdminRouteName.ENTREPRISE.value},
-              component: () => import('../components/administrateur/parametres/entreprise/view.entreprise'),
+              component: () => import('../components/administrateur/parametres/entreprise/view.admin.entreprise'),
               children: [
                 {
                   path: '/admin/parametres/entreprise/ajouter',
@@ -171,13 +171,13 @@ const router = new VueRouter({
               path: '/admin/parametres/genres',
               name: AdminRouteName.GENRE.name,
               meta: {value: AdminRouteName.GENRE.value},
-              component: () => import('../components/administrateur/parametres/genre/view.genre'),
+              component: () => import('../components/administrateur/parametres/genre/view.admin.genre'),
               children: [
                 {
                   path: '/admin/parametres/genres/ajouter',
                   name: AdminRouteName.GENRE_ADD.name,
                   meta: {value: AdminRouteName.GENRE_ADD.value},
-                  component: () => import('../components/administrateur/parametres/genre/view.genre.add')
+                  component: () => import('../components/administrateur/parametres/genre/view.admin.genre.add')
                 }
               ]
             },
@@ -185,8 +185,29 @@ const router = new VueRouter({
               path: '/admin/parametres/mensurations',
               name: AdminRouteName.MENSURATION.name,
               meta: {value: AdminRouteName.MENSURATION.value},
-              component: () => import('../components/administrateur/parametres/mensuration/view.mensurations'),
-              children: []
+              component: () => import('../components/administrateur/parametres/mensuration/view.admin.mensurations'),
+              children: [
+                {
+                  path: '/admin/parametres/mensurations/ajouter',
+                  name: AdminRouteName.MENSURATION_ADD.name,
+                  meta: {value: AdminRouteName.MENSURATION_ADD.value},
+                  component: () => import('../components/administrateur/parametres/mensuration/view.admin.mensurations.add')
+                }
+              ]
+            },
+            {
+              path: '/admin/parametres/services',
+              name: AdminRouteName.SERVICE.name,
+              meta: {value: AdminRouteName.SERVICE.value},
+              component: ()=>import('../components/administrateur/parametres/service/view.admin.service'),
+              children: [
+                {
+                  path: '/admin/parametres/services/ajouter',
+                  name: AdminRouteName.SERVICE_ADD.name,
+                  meta: {value: AdminRouteName.SERVICE_ADD.value},
+                  component: () => import('../components/administrateur/parametres/service/view.admin.service.add')
+                }
+              ]
             }
           ]
         }

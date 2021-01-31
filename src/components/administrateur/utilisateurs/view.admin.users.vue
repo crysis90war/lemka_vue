@@ -1,9 +1,30 @@
 <template>
   <b-card v-if="$route.name === AdminRouteName.UTILISATEURS.name">
     <b-card-body>
-      <div v-if="users">
+      <div v-if="items">
         <!-- User Interface controls -->
         <b-row>
+          <b-col lg="6" class="my-1">
+            <b-form-group label="Filtrer"
+                          label-for="filter-input"
+                          label-cols-sm="3"
+                          label-align-sm="right"
+                          label-size="sm"
+                          class="mb-0">
+              <b-input-group size="sm">
+                <b-form-input id="filter-input"
+                              v-model="filter"
+                              type="search"
+                              placeholder="Écrire pour chercher">
+                </b-form-input>
+
+                <b-input-group-append>
+                  <b-button :disabled="!filter" @click="filter = ''">Supprimer</b-button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-form-group>
+          </b-col>
+
           <b-col lg="6" class="my-1">
             <b-form-group label="Trier"
                           label-for="sort-by-select"
@@ -33,47 +54,12 @@
                 </b-form-select>
               </b-input-group>
             </b-form-group>
-          </b-col>
 
-          <b-col lg="6" class="my-1">
-            <b-form-group label="Tri initial"
-                          label-for="initial-sort-select"
-                          label-cols-sm="3"
-                          label-align-sm="right"
-                          label-size="sm"
-                          class="mb-0">
-              <b-form-select id="initial-sort-select"
-                             v-model="sortDirection"
-                             :options="['asc', 'desc', 'last']"
-                             size="sm">
-              </b-form-select>
-            </b-form-group>
-          </b-col>
-
-          <b-col lg="6" class="my-1">
-            <b-form-group label="Filtrer"
-                          label-for="filter-input"
-                          label-cols-sm="3"
-                          label-align-sm="right"
-                          label-size="sm"
-                          class="mb-0">
-              <b-input-group size="sm">
-                <b-form-input id="filter-input"
-                              v-model="filter"
-                              type="search"
-                              placeholder="Écrire pour chercher">
-                </b-form-input>
-
-                <b-input-group-append>
-                  <b-button :disabled="!filter" @click="filter = ''">Supprimer</b-button>
-                </b-input-group-append>
-              </b-input-group>
-            </b-form-group>
           </b-col>
 
           <b-col lg="6" class="my-1">
             <b-form-group v-model="sortDirection"
-                          label="Filter On"
+                          label="Filtrer sur"
                           description="Laissez tout décoché pour filtrer sur toutes les données"
                           label-cols-sm="3"
                           label-align-sm="right"
@@ -90,7 +76,7 @@
             </b-form-group>
           </b-col>
 
-          <b-col sm="5" md="6" class="my-1">
+          <b-col lg="6" class="my-1">
             <b-form-group label="Par page"
                           label-for="per-page-select"
                           label-cols-sm="6"
@@ -108,6 +94,10 @@
             </b-form-group>
           </b-col>
 
+          <b-col sm="5" md="6" class="my-1">
+
+          </b-col>
+
           <b-col sm="7" md="6" class="my-1">
             <b-pagination v-model="currentPage"
                           :total-rows="totalRows"
@@ -119,7 +109,7 @@
           </b-col>
         </b-row>
 
-        <b-table :items="users"
+        <b-table :items="items"
                  :fields="fields"
                  :current-page="currentPage"
                  :per-page="perPage"
@@ -172,9 +162,7 @@ export default {
   data() {
     return {
       AdminRouteName,
-      users: [
-        {image: '', username: '', email: '', is_active: false}
-      ],
+      items: [],
       fields: [
         {key: 'image', label: 'Image', sortable: false},
         {key: 'username', label: 'Username', sortable: true, sortDirection: 'desc'},
@@ -200,8 +188,8 @@ export default {
       ],
       totalRows: 1,
       currentPage: 1,
-      perPage: 5,
-      pageOptions: [5, 10, 15, {value: 100, text: "Show a lot"}],
+      perPage: 10,
+      pageOptions: [10, 15, 20, {value: 100, text: "Show a lot"}],
       sortBy: '',
       sortDesc: false,
       sortDirection: 'asc',
@@ -219,14 +207,14 @@ export default {
           })
     }
   },
-  mounted() {
+  created() {
     this.chargerUtilisateurs();
   },
   methods: {
     chargerUtilisateurs() {
       AdminApiService.UserService.getUserList().then(response => {
-        this.users = response.data
-        this.totalRows = this.users.length
+        this.items = response.data
+        this.totalRows = this.items.length
       })
     },
 

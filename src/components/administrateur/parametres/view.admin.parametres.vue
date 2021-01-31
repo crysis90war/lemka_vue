@@ -1,15 +1,14 @@
 <template>
   <div>
-    <b-navbar id="navbar" toggleable="lg" type="dark" variant="dark" class="nav-shadow colored m-0">
+    <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="nav-shadow border-top colored m-0">
       <b-navbar-nav>
-        <b-nav-item :to="{name: AdminRouteName.ENTREPRISE.name}">Entreprise</b-nav-item>
-        <b-nav-item :to="{name: AdminRouteName.GENRE.name}">Genres</b-nav-item>
-        <b-nav-item :to="{name: AdminRouteName.MENSURATION.name}">Mensurations</b-nav-item>
+        <b-nav-item :to="{name: AdminRouteName.ENTREPRISE.name}" :active="$route.name === AdminRouteName.ENTREPRISE.name">Entreprise</b-nav-item>
+        <b-nav-item :to="{name: AdminRouteName.GENRE.name}" :active="$route.name === AdminRouteName.GENRE.name">Genres</b-nav-item>
+        <b-nav-item :to="{name: AdminRouteName.MENSURATION.name}" :active="$route.name === AdminRouteName.MENSURATION.name">Mensurations</b-nav-item>
+        <b-nav-item :to="{name: AdminRouteName.SERVICE.name}" :active="$route.name === AdminRouteName.SERVICE.name">Service</b-nav-item>
       </b-navbar-nav>
     </b-navbar>
-    <b-jumbotron class="pt-4">
       <router-view :key="$route.fullPath"></router-view>
-    </b-jumbotron>
   </div>
 
 <!--  <b-card  v-if="$route.name === AdminRouteName.PARAMETRES.name" class="bg-danger">-->

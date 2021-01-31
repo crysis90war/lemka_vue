@@ -3,6 +3,7 @@ import CatalogueService from '@/services/administrateur/catalogue.service'
 import CategorieService from '@/services/administrateur/categorie.service'
 import EntrepriseService from '@/services/administrateur/entreprise.service'
 import GenreService from '@/services/administrateur/genre.service'
+import MensurationService from '@/services/administrateur/mensuration.service';
 import MercerieService from '@/services/administrateur/mercerie.service'
 import RayonService from '@/services/administrateur/rayon.service'
 import SectionService from '@/services/administrateur/section.service'
@@ -17,6 +18,7 @@ const AdminApiService = {
     CategorieService,
     EntrepriseService,
     GenreService,
+    MensurationService,
     MercerieService,
     RayonService,
     SectionService,

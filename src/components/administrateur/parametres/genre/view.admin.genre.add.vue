@@ -1,14 +1,16 @@
 <template>
-  <div>
-    <h3>Ajouter un genre</h3>
-    <b-form>
-      <b-form-group label="Genre" description="Veuillez encoder le genre">
-        <b-form-input v-model="genre.genre" placeholder="exemple: Femme"></b-form-input>
-      </b-form-group>
-      <p>{{genre}}</p>
-      <b-button variant="outline-success" @click="ajouterGenre">Ajouter</b-button>
-    </b-form>
-  </div>
+  <b-card title="Ajouter un genre">
+    <b-card-body>
+      <b-form>
+        <b-form-group label="Genre" description="Veuillez encoder le genre">
+          <b-form-input v-model="genre.genre" placeholder="exemple: Femme"></b-form-input>
+        </b-form-group>
+        <pre>{{genre}}</pre>
+        <pre class="bg-warning">{{response}}</pre>
+        <b-button variant="outline-success" @click="ajouterGenre">Ajouter</b-button>
+      </b-form>
+    </b-card-body>
+  </b-card>
 </template>
 
 <script>
@@ -21,7 +23,8 @@ export default {
     return {
       genre: {
         genre: null
-      }
+      },
+      response: {}
     }
   },
   methods: {
