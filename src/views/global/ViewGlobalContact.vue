@@ -6,7 +6,7 @@
 <script>
 
 export default {
-  name: "Contact",
+  name: "ViewGlobalContact",
   data() {
     return {
       file: null,

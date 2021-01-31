@@ -171,6 +171,8 @@
       </table>
       <!-- endregion -->
 
+
+
       <!-- region Message données vide -->
       <div class="text-center" v-else>
         <p>Aucune mensuration enregistrée</p>
@@ -186,6 +188,7 @@
 <script>
 import Outils from "@/mixins/outils.mixin";
 import METHODS from "@/mixins/methods.mixin";
+import UserApiService from "@/services/utilisateur";
 import UtilisateurGetService from "@/services/utilisateur/utilisateur.get.service";
 import UtilisateurPostService from "@/services/utilisateur/utilisateur.post.service";
 import UtilisateurPutService from "@/services/utilisateur/utilisateur.put.service";
@@ -212,13 +215,8 @@ export default {
       createUserMensuration: new UserMensuration(),
       updateUserMensuration: new UserMensuration(),
 
-      updating: false
-    }
-  },
-
-  created() {
-    if (this.currentUser) {
-      this.chargerMensurations()
+      updating: false,
+      userMensurations: null
     }
   },
 
@@ -227,6 +225,9 @@ export default {
     /* region Fonctions liées a mensurations*/
 
     chargerMensurations() {
+      UserApiService.UserMensurationsService.getUserMensurationsList().then(response => {
+        this.userMensurations = response.data
+      })
       UtilisateurGetService.getUserListMensurations().then(response => {
         let mensurations = []
         for (let i = 0; i < response.data.length; i++) {
@@ -337,6 +338,12 @@ export default {
   },
 
   mixins: [METHODS],
+
+  created() {
+    if (this.currentUser) {
+      this.chargerMensurations()
+    }
+  },
 }
 </script>
 

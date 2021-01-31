@@ -29,7 +29,7 @@ import VisiteurGetService from "@/services/visiteur.get.service"
 import Outils from "@/mixins/outils.mixin";
 
 export default {
-  name: "Horaire",
+  name: "ViewGlobalHoraire",
 
   data() {
     return {

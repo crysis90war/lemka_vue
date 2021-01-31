@@ -48,7 +48,7 @@
 import Outils from "@/mixins/outils.mixin";
 
 export default {
-  name: 'ViewAbout',
+  name: 'ViewGlobalAbout',
   components: {
 
   },

@@ -76,7 +76,7 @@ export default {
       if (!this.currentUser) {
         this.$router.push('/');
       }
-    },
+    }
   }
 }
 </script>

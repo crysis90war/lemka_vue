@@ -21,7 +21,7 @@ import Outils from "@/mixins/outils.mixin";
 import Social from "@/components/Social";
 
 export default {
-  name: "NotFound",
+  name: "ViewGlobalNotFound",
   components: {
     'lemka-social': Social
   },

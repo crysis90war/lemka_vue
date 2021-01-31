@@ -14,7 +14,7 @@ import Outils from '@/mixins/outils.mixin'
 import LemkaSeparateur from "@/components/LemkaSeparateur";
 
 export default {
-  name: 'Home',
+  name: 'ViewGlobalHome',
   data() {
     return {
       separateurs: [

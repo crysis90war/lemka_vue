@@ -11,9 +11,12 @@ import titleMixin from "@/mixins/title.mixin";
 import store from './store'
 import "./vee-validate";
 import vSelect from 'vue-select'
-import Lightbox from '@morioh/v-lightbox'
+import Lightbox from '@morioh/v-lightbox';
+import VueSidebarMenu from "vue-sidebar-menu";
+import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 
 Vue.use(Lightbox)
+Vue.use(VueSidebarMenu)
 Vue.config.productionTip = false
 Vue.component('v-pack-select', vSelect)
 Vue.mixin(titleMixin)

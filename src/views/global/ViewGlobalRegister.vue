@@ -48,7 +48,7 @@
 <script>
 
 export default {
-  name: "ViewRegister",
+  name: "ViewGlobalRegister",
   data() {
     return {
       user: {

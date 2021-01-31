@@ -37,10 +37,10 @@
 </template>
 
 <script>
-import {RouteNames} from "@/helpers/enums.helper";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
-  name: "ViewLogin.vue",
+  name: "ViewGlobalLogin",
   props: {
     logo_size: {
       type: String,
@@ -70,7 +70,7 @@ export default {
       if (this.user.email && this.user.password) {
         this.loading = true;
         this.$store.dispatch('auth/login', this.user).then(() => {
-              this.$router.push({name: RouteNames.HOME_ROUTE.name});
+              this.$router.push({name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name});
             }, error => {
               this.loading = false;
               this.message =

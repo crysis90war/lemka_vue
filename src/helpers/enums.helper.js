@@ -1,166 +1,65 @@
 const DOMAIN = 'https://lemka-api.herokuapp.com/api';
+const AdminView = 'ViewAdmin';
+const UserView = 'ViewUser';
+const GlobalView = 'ViewGlobal';
 
-export const AdminRouteName = {
-    DASHBOARD:  {
-        name: 'AdminDashboard',
-        value: 'Dashboard',
-        icon: 'fas fa-tachometer-alt'
-    } ,
-    UTILISATEURS: {
-        name: 'AdminUtilisateurs',
-        value: 'Utilisateurs',
-        icon: 'fas fa-users'
-    },
-    UTILISATEURS_DETAIL: {
-        name: 'AdminUtilisateursDetail',
-        value: 'Detail',
-        icon: ''
-    },
-    ARTICLES: {
-        name: 'AdminArticles',
-        value: 'Articles',
-        icon: 'fas fa-store-alt'
-    },
-    ARTICLES_DETAIL: {
-      name: 'AdminArticleDetail',
-      value: 'Detail',
-      icon: ''
-    },
-    ARTICLES_UPDATE: {
-      name: 'AdminArticleUpdate',
-      value: 'Update',
-      icon: ''
-    },
-    DEMANDE_DE_DEVIS: {
-        name: 'AdminDemandeDeDevis',
-        value: 'Demande de devis',
-        icon: 'far fa-folder-open'
-    },
-    DEVIS: {
-        name: 'AdminDevis',
-        value: 'Devis',
-        icon: 'far fa-folder'
-    },
-    MERCERIES: {
-        name: 'AdminMercerie',
-        value: 'Merceries',
-        icon: 'fas fa-dolly-flatbed'
-    },
-    BONS_DE_COMMANDE: {
-        name: 'AdminBonDeCommande',
-        value: 'Bons de commande',
-        icon: 'fas fa-shopping-cart'
-    },
-    FACTURE: {
-        name: 'AdminFacture',
-        value: 'Facture',
-        icon: 'fas fa-money-bill'
-    },
-    RENDEZ_VOUS: {
-        name: 'AdminRendezVous',
-        value: 'Rendez-vous',
-        icon: 'fas fa-calendar-check'
-    },
-    PARAMETRES: {
-        name: 'AdminParametres',
-        value: 'Parametres',
-        icon: 'fas fa-sliders-h'
-    },
-    ARTICLE_ADD: {
-        name: 'ViewAddArticle',
-        value: 'Ajouter un articles',
-        icon: ''
-    },
-    ENTREPRISE: {
-      name: 'ViewEntreprise',
-      value: 'Entreprise',
-      icon: ''
-    },
-    ADD_ENTREPRISE: {
-        name: 'ViewAddEntreprise',
-        value: 'Ajout des informations de l\'entreprise',
-        icon: ''
-    },
-    GENRE: {
-        name: 'ViewGenre',
-        value: 'Genres',
-        icon: ''
-    },
-    GENRE_ADD: {
-        name: 'ViewGenreAdd',
-        value: 'Ajouter un genre',
-        icon: ''
-    },
-    MENSURATION: {
-        name: 'ViewMensuration',
-        value: 'Mensurations'
-    },
-    MENSURATION_ADD: {
-      name: 'ViewMensurationAdd',
-      value: 'Ajouter mensuration'
-    },
-    SERVICE: {
-        name: 'ViewService',
-        value: 'Services'
-    },
-    SERVICE_ADD: {
-        name: 'ViewServiceAdd',
-        value: 'Ajouter un service'
-    }
+const GlobalRoutes = {
+    HOME_ROUTE: {name: GlobalView + 'Home', value: 'Accueil'},
+    LOGIN_ROUTE: {name: GlobalView + 'Login', value: 'Login'},
+    REGISTER_ROUTE: {name: GlobalView + 'Register', value: 'Register'},
+    HORAIRE_ROUTE: {name: GlobalView + 'Horaire', value: 'Horaire'},
+    CONTACT_ROUTE: {name: GlobalView + 'Contact', value: 'Contact'},
+    ABOUT_ROUTE: {name: GlobalView + 'About', value: 'À propos'},
+    PAGE_NOT_FOUND_ROUTE: {name: GlobalView + 'PageNotFound', value: 'PageNotFound'}
 }
 
+const UserRoutes = {
+    PROFIL_ROUTE: {name: UserView + 'Profil', value: 'Profil'},
+    INFORMATIONS: {name: UserView + 'Informations', value: 'Informations'},
+    MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'}
+}
 
-export const RouteNames = {
-    HOME_ROUTE: {
-        name: 'Home',
-        value: 'Accueil'
-    },
-    ADMIN_ROUTE: {
-        name: 'Admin',
-        value: 'Admin'
-    },
-    LOGIN_ROUTE: {
-        name: 'Login',
-        value: 'Login'
-    },
-    REGISTER_ROUTE: {
-        name: 'Register',
-        value: 'Register'
-    },
-    PROFIL_ROUTE: {
-        name: 'Profil',
-        value: 'Profil'
-    },
-    HORAIRE_ROUTE: {
-        name: 'Horaire',
-        value: 'Horaire'
-    },
-    CONTACT_ROUTE: {
-        name: 'Contact',
-        value: 'Contact'
-    },
-    ABOUT_ROUTE: {
-        name: 'About',
-        value: 'À propos'
-    },
-    PAGE_NOT_FOUND_ROUTE: {
-        name: 'PageNotFound',
-        value: 'PageNotFound'
-    }
+const AdminRoutes = {
+    ADMIN_ROUTE: {name: AdminView, value: 'Administration'},
+
+    DASHBOARD: {name: AdminView + 'Dashboard', value: 'Dashboard'},
+
+    UTILISATEURS: {name: AdminView + 'Utilisateurs', value: 'Utilisateurs'},
+    UTILISATEURS_DETAIL: {name: AdminView + 'UtilisateursDetail', value: 'Detail',},
+
+    ARTICLES: {name: AdminView + 'Articles', value: 'Articles',},
+    ARTICLE_ADD: {name: AdminView + 'AddArticle', value: 'Ajouter un articles',},
+    ARTICLES_UPDATE: {name: AdminView + 'ArticleUpdate', value: 'Update',},
+    ARTICLES_DETAIL: {name: AdminView + 'ArticleDetail', value: 'Detail de l\'article',},
+
+    DEMANDE_DE_DEVIS: {name: AdminView + 'DemandeDeDevis', value: 'Demande de devis'},
+
+    DEVIS: {name: AdminView + 'Devis', value: 'Devis', icon: 'far fa-folder'},
+
+    MERCERIES: {name: AdminView + 'Mercerie', value: 'Merceries', icon: 'fas fa-dolly-flatbed'},
+
+    BONS_DE_COMMANDE: {name: AdminView + 'BonDeCommande', value: 'Bons de commande'},
+
+    FACTURE: {name: AdminView + 'Facture', value: 'Facture'},
+
+    RENDEZ_VOUS: {name: AdminView + 'RendezVous', value: 'Rendez-vous'},
+
+    PARAMETRES: {name: AdminView + 'Parametres', value: 'Parametres'},
+    PARAMETRES_ENTREPRISE: {name: AdminView + 'Entreprise', value: 'Entreprise'},
+    PARAMETRES_ENTREPRISE_ADD: {name: AdminView + 'AddEntreprise', value: 'Ajout des informations de l\'entreprise'},
+    PARAMETRES_GENRE: {name: AdminView + 'Genre', value: 'Genres'},
+    PARAMETRES_GENRE_ADD: {name: AdminView + 'GenreAdd', value: 'Ajouter un genre'},
+    PARAMETRES_MENSURATION: {name: AdminView + 'Mensuration', value: 'Mensurations'},
+    PARAMETRES_MENSURATION_ADD: {name: AdminView + 'MensurationAdd', value: 'Ajouter mensuration'},
+    PARAMETRES_SERVICE: {name: AdminView + 'Service', value: 'Services'},
+    PARAMETRES_SERVICE_ADD: {name: AdminView + 'ServiceAdd', value: 'Ajouter un service'}
 }
 
 export const Endpoints = {
-    PROFILE_ENDPOINT: DOMAIN + '/profil/',
-    PROFIL_GENRE_ENDPOINT: DOMAIN + '/profil/genres/',
     GENRES_ENDPOINT: DOMAIN + '/genres/',
     MENSURATION_ENDPOINT: DOMAIN + /mensurations/,
-    USER_MENSURATION_ENDPOINT: DOMAIN + /user_mensurations/,
-    VILLES_ENDPOINT: DOMAIN + '/user_adresses/villes/',
-    ADRESSE_ENDPOINT: DOMAIN + '/user_adresses/',
     USERS_ENDPOINT: DOMAIN + '/utilisateurs/',
-    LOGIN_ENDPOINT: DOMAIN + '/login/',
-    REGISTER_ENDPOINT: DOMAIN + '/register/',
-    REFRESH_ENDPOINT: DOMAIN + '/token/refresh/',
+
     TYPES_SERVICES_ENDPOINT: DOMAIN + '/types_services/',
     CATALOGUES_ENDPOINT: DOMAIN + '/catalogues/',
     RAYON_ENDPOINT: DOMAIN + '/rayons/',
@@ -175,16 +74,50 @@ export const Endpoints = {
     TAGS_ENDPOINT: DOMAIN + '/tags/',
 }
 
-export const AdminEndpoints = {
+const GlobalEndpoints = {
+    LOGIN_ENDPOINT: DOMAIN + '/login/',
+    REGISTER_ENDPOINT: DOMAIN + '/register/',
+    REFRESH_ENDPOINT: DOMAIN + '/token/refresh/',
+}
+
+const UserEndpoints = {
+    PROFILE_ENDPOINT: DOMAIN + '/profil/',
+    PROFIL_GENRE_ENDPOINT: DOMAIN + '/profil/genres/',
+    USER_MENSURATION_ENDPOINT: DOMAIN + /user_mensurations/,
+    ADRESSE_ENDPOINT: DOMAIN + '/user_adresses/',
+    VILLES_ENDPOINT: DOMAIN + '/user_adresses/villes/',
+}
+
+const AdminEndpoints = {
 
 }
 
-export const GlobalEndpoints = {
-
-}
-
-export const FontAwesomeIcons = {
+const FontAwesomeIcons = {
+    HOME: 'fas fa-home',
+    PROFILE: 'fas fa-user-circle',
+    MESURE: 'fas fa-ruler-horizontal',
     INFO: 'fas fa-eye',
     MODIFIER: 'fas fa-edit',
-    SUPPRIMER: 'fas fa-trash-alt'
+    SUPPRIMER: 'fas fa-trash-alt',
+    TACHOMETRE: 'fas fa-tachometer-alt',
+    USERS: 'fas fa-users',
+    STORE: 'fas fa-store-alt',
+    FOLDEROPEN: 'far fa-folder-open',
+    FOLDER: 'far fa-folder',
+    PLATEAU: 'fas fa-dolly-flatbed',
+    SHOPPINTCART: 'fas fa-shopping-cart',
+    MONEY: 'fas fa-money-bill',
+    CALENDAR: 'fas fa-calendar-check',
+    PARAMETRES: 'fas fa-sliders-h'
+}
+
+export const LemkaEnums = {
+    GlobalEndpoints,
+    UserEndpoints,
+    AdminEndpoints,
+    GlobalRoutes,
+    UserRoutes,
+    AdminRoutes,
+    FontAwesomeIcons,
+    Endpoints,
 }

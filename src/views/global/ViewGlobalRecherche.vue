@@ -1,10 +1,10 @@
 <template>
-
+  <div>RECHERCHE</div>
 </template>
 
 <script>
 export default {
-name: "ViewRecherche"
+  name: "ViewGlobalRecherche"
 }
 </script>
 

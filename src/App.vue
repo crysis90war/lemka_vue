@@ -3,12 +3,12 @@
 <!--    <lemka-header></lemka-header>-->
     <lemka-navbar></lemka-navbar>
     <b-breadcrumb v-if="checkRoute() === true">
-      <b-breadcrumb-item :to="{name: RouteNames.HOME_ROUTE.name}"><i class="fas fa-home"></i></b-breadcrumb-item>
+      <b-breadcrumb-item :to="{name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name}"><i class="fas fa-home"></i></b-breadcrumb-item>
       <b-breadcrumb-item v-for="item in items" :key="item.path" :to="item.path" :active="$route.name === item.name">
         {{ item.meta.value }}
       </b-breadcrumb-item>
     </b-breadcrumb>
-    <router-view class="my-5"></router-view>
+    <router-view class="my-4"></router-view>
     <lemka-footer></lemka-footer>
   </div>
 </template>
@@ -17,7 +17,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 // import Header from "@/components/Header";
-import {RouteNames} from "@/helpers/enums.helper";
+import {LemkaEnums} from "@/helpers/enums.helper";
 import axios from "axios";
 
 export default {
@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      RouteNames,
+      LemkaEnums,
       items: [],
     }
   },
@@ -69,9 +69,9 @@ export default {
       let route = this.$route.name;
 
       return (
-          (route !== RouteNames.HOME_ROUTE.name) &&
-          (route !== RouteNames.LOGIN_ROUTE.name) &&
-          (route !== RouteNames.REGISTER_ROUTE.name)
+          (route !== LemkaEnums.GlobalRoutes.HOME_ROUTE.name) &&
+          (route !== LemkaEnums.GlobalRoutes.LOGIN_ROUTE.name) &&
+          (route !== LemkaEnums.GlobalRoutes.REGISTER_ROUTE.name)
       );
     }
   },

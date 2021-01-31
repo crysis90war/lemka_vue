@@ -1,19 +1,19 @@
 <template>
   <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="bg-white border-0 nav-shadow colored">
     <b-container>
-      <b-navbar-brand :to="{name: RouteNames.HOME_ROUTE.name}" v-if="brandVisible"><img src="../assets/logo.png" alt="" style="max-width: 100px;"></b-navbar-brand>
-      <b-navbar-brand :to="{name: RouteNames.HOME_ROUTE.name}" v-else><img src="../assets/logo.png" alt="" style="max-width: 150px;"></b-navbar-brand>
+      <b-navbar-brand :to="{name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name}" v-if="brandVisible"><img src="../assets/logo.png" alt="" style="max-width: 100px;"></b-navbar-brand>
+      <b-navbar-brand :to="{name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name}" v-else><img src="../assets/logo.png" alt="" style="max-width: 150px;"></b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
 
-          <b-nav-item :to="{ name: RouteNames.HOME_ROUTE.name }" :active="$route.name === RouteNames.HOME_ROUTE.name">
-            {{ RouteNames.HOME_ROUTE.value }}
+          <b-nav-item :to="{ name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name }" :active="$route.name === LemkaEnums.GlobalRoutes.HOME_ROUTE.name">
+            {{ LemkaEnums.GlobalRoutes.HOME_ROUTE.value }}
           </b-nav-item>
 
-          <b-nav-item :to="{ name: RouteNames.HORAIRE_ROUTE.name }" :active="$route.name === RouteNames.HORAIRE_ROUTE.name">
-            {{ RouteNames.HORAIRE_ROUTE.value}}
+          <b-nav-item :to="{ name: LemkaEnums.GlobalRoutes.HORAIRE_ROUTE.name }" :active="$route.name === LemkaEnums.GlobalRoutes.HORAIRE_ROUTE.name">
+            {{ LemkaEnums.GlobalRoutes.HORAIRE_ROUTE.value}}
           </b-nav-item>
 
           <b-nav-item-dropdown text="Galérie" right>
@@ -22,12 +22,12 @@
             <b-dropdown-item>Réparation</b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item :to="{ name: RouteNames.ABOUT_ROUTE.name }" :active="$route.name === RouteNames.ABOUT_ROUTE.name">
-            {{ RouteNames.ABOUT_ROUTE.value }}
+          <b-nav-item :to="{ name: LemkaEnums.GlobalRoutes.ABOUT_ROUTE.name }" :active="$route.name === LemkaEnums.GlobalRoutes.ABOUT_ROUTE.name">
+            {{ LemkaEnums.GlobalRoutes.ABOUT_ROUTE.value }}
           </b-nav-item>
 
-          <b-nav-item :to="{ name: RouteNames.CONTACT_ROUTE.name }" :active="$route.name === RouteNames.CONTACT_ROUTE.name">
-            {{ RouteNames.CONTACT_ROUTE.value }}
+          <b-nav-item :to="{ name: LemkaEnums.GlobalRoutes.CONTACT_ROUTE.name }" :active="$route.name === LemkaEnums.GlobalRoutes.CONTACT_ROUTE.name">
+            {{ LemkaEnums.GlobalRoutes.CONTACT_ROUTE.value }}
           </b-nav-item>
         </b-navbar-nav>
 
@@ -48,17 +48,17 @@
             <template v-slot:button-content>
               <i class="far fa-user"></i>
             </template>
-            <b-dropdown-item :to="{ name: RouteNames.LOGIN_ROUTE.name }">Se connecter</b-dropdown-item>
-            <b-dropdown-item :to="{ name: RouteNames.REGISTER_ROUTE.name }">S'inscrire</b-dropdown-item>
+            <b-dropdown-item :to="{ name: LemkaEnums.GlobalRoutes.LOGIN_ROUTE.name }">Se connecter</b-dropdown-item>
+            <b-dropdown-item :to="{ name: LemkaEnums.GlobalRoutes.REGISTER_ROUTE.name }">S'inscrire</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown right v-if="currentUser">
             <template v-slot:button-content>
               {{ currentUser.username }}
             </template>
-            <b-dropdown-item :to="{ name: RouteNames.PROFIL_ROUTE.name }">Mon profil</b-dropdown-item>
+            <b-dropdown-item :to="{ name: LemkaEnums.UserRoutes.PROFIL_ROUTE.name }">Mon profil</b-dropdown-item>
             <b-dropdown-item @click="refreshToken">Refresh Token</b-dropdown-item>
-            <b-dropdown-item v-if="currentUser.is_staff === true" :to="{ name: RouteNames.ADMIN_ROUTE.name}">Administration</b-dropdown-item>
+            <b-dropdown-item v-if="currentUser.is_staff === true" :to="{ name: LemkaEnums.AdminRoutes.ADMIN_ROUTE.name}">Administration</b-dropdown-item>
             <b-dropdown-item href="#">Prendre rendez-vous</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item @click.prevent="logOut">Se déconnecter</b-dropdown-item>
@@ -72,7 +72,7 @@
 
 <script>
 import SearchModal from "@/components/SearchModal";
-import {RouteNames} from "@/helpers/enums.helper";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "Navbar",
@@ -87,7 +87,7 @@ export default {
   },
   data() {
     return {
-      RouteNames,
+      LemkaEnums,
       show: false,
       brandVisible: false,
       register_login_logo_size: '250px',
