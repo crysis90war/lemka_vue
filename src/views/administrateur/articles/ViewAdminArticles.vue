@@ -1,5 +1,5 @@
 <template>
-  <b-card v-if="$route.name === AdminRouteName.ARTICLES.name">
+  <b-card v-if="$route.name === links.articlesLink">
     <b-card-body>
       <b-container>
         <b-row>
@@ -92,7 +92,7 @@
 
       <b-row class="mt-3">
         <b-col lg="5" class="my-1">
-          <b-button variant="outline-success" size="sm" :to="{name: AdminRouteName.ARTICLE_ADD.name}">Créer un nouveau article</b-button>
+          <b-button variant="outline-success" size="sm" :to="{name: links.articleAddLink}">Créer un nouveau article</b-button>
         </b-col>
         <b-col lg="7" class="my-1">
           <b-pagination v-model="currentPage"
@@ -140,7 +140,7 @@
         </template>
 
         <template #cell(titre)="data">
-          <router-link :to="{name: AdminRouteName.ARTICLES_DETAIL.name, params: {slug: data.item.slug}}">
+          <router-link :to="{name: links.articleDetailLink, params: {slug: data.item.slug}}">
             {{ data.item.titre }}
           </router-link>
         </template>
@@ -168,14 +168,17 @@
 
 <script>
 import AdminApiService from "@/services/administrateur";
-import {AdminRouteName, FontAwesomeIcons} from '@/helpers/enums.helper';
+import {LemkaEnums} from '@/helpers/enums.helper';
 
 export default {
-  name: "ViewArticles",
+  name: "ViewAdminArticles",
   data() {
     return {
-      AdminRouteName,
-      FontAwesomeIcons,
+      links: {
+        articlesLink: LemkaEnums.AdminRoutes.ARTICLES.name,
+        articleDetailLink: LemkaEnums.AdminRoutes.ARTICLES_DETAIL.name,
+        articleAddLink: LemkaEnums.AdminRoutes.ARTICLE_ADD.name,
+      },
       items: [],
       fields: [
         {key: 'created_at', label: 'Date création', sortable: true},

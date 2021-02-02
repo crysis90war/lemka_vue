@@ -109,7 +109,7 @@
 import AdminApiService from "@/services/administrateur";
 
 export default {
-  name: "ViewAddArticle",
+  name: "ViewAdminArticlesAdd",
   data() {
     return {
       tags: [],

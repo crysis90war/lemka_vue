@@ -1,5 +1,5 @@
 import axios from 'axios';
-import authHeader from '../auth-header';
+import authHeader from './auth-header';
 import Outils from '@/mixins/outils.mixin'
 import {Endpoints} from "@/helpers/enums.helper";
 

@@ -1,37 +1,46 @@
 import axios from "axios";
-import {Endpoints} from "@/helpers/enums.helper";
+import {LemkaEnums} from "@/helpers/enums.helper";
 import authHeader from "@/services/auth-header";
+
+const ROUTE = LemkaEnums.AdminEndpoints.USERS_ENDPOINT;
 
 class UserService {
 
     getUserList() {
-        let endpoint = Endpoints.USERS_ENDPOINT;
         return axios
-            .get(endpoint, {headers: authHeader()})
+            .get(ROUTE, {headers: authHeader()})
     }
 
     getUserDetail(userSlug) {
-        let endpoint = `${Endpoints.USERS_ENDPOINT}${userSlug}/`;
+        let endpoint = `${ROUTE}${userSlug}/`;
         return axios
             .get(endpoint, {headers: authHeader()})
     }
 
     postUser(payload) {
-        let endpoint = Endpoints.USERS_ENDPOINT;
         return axios
-            .post(endpoint, payload, {headers: authHeader()})
+            .post(ROUTE, payload, {headers: authHeader()})
     }
 
     updateUser(userId, payload) {
-        let endpoint = `${Endpoints.USERS_ENDPOINT}${userId}/`
+        let endpoint = `${ROUTE}${userId}/`
         return axios
             .put(endpoint, payload, {headers: authHeader()})
     }
 
     deleteUser(userId) {
-        let endpoint = `${Endpoints.USERS_ENDPOINT}${userId}/`;
+        let endpoint = `${ROUTE}${userId}/`;
         return axios
             .delete(endpoint, {headers: authHeader()})
+    }
+
+    async checkUser(username) {
+        let endpoint = `${LemkaEnums.AdminEndpoints.CHECK_USER_EXISTS_ENDPOINT}${username}/`
+        let message = false
+        await axios.get(endpoint, {headers: authHeader()}).then(response => {
+            message = response.data.message
+        })
+        return message
     }
 }
 

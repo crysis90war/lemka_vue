@@ -129,8 +129,8 @@
 </template>
 
 <script>
-import UtilisateurPutService from "@/services/utilisateur/utilisateur.put.service"
-import UtilisateurGetService from "@/services/utilisateur/utilisateur.get.service"
+import UtilisateurPutService from "@/services/utilisateur.put.service"
+import UtilisateurGetService from "@/services/utilisateur.get.service"
 import Profil from "@/models/profil.model";
 
 export default {

@@ -1,4 +1,5 @@
 const DOMAIN = 'https://lemka-api.herokuapp.com/api';
+const PROFIL = DOMAIN + '/profil';
 const AdminView = 'ViewAdmin';
 const UserView = 'ViewUser';
 const GlobalView = 'ViewGlobal';
@@ -16,7 +17,8 @@ const GlobalRoutes = {
 const UserRoutes = {
     PROFIL_ROUTE: {name: UserView + 'Profil', value: 'Profil'},
     INFORMATIONS: {name: UserView + 'Informations', value: 'Informations'},
-    MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'}
+    ADRESSE_ADD: {name: UserView + 'AdresseAdd', value: 'Ajouter une adresse'},
+    MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
 }
 
 const AdminRoutes = {
@@ -56,22 +58,7 @@ const AdminRoutes = {
 }
 
 export const Endpoints = {
-    GENRES_ENDPOINT: DOMAIN + '/genres/',
-    MENSURATION_ENDPOINT: DOMAIN + /mensurations/,
-    USERS_ENDPOINT: DOMAIN + '/utilisateurs/',
 
-    TYPES_SERVICES_ENDPOINT: DOMAIN + '/types_services/',
-    CATALOGUES_ENDPOINT: DOMAIN + '/catalogues/',
-    RAYON_ENDPOINT: DOMAIN + '/rayons/',
-    SECTION_ENDPOINT: DOMAIN + '/sections/',
-    TYPE_PRODUIT_ENDPOINT: DOMAIN + '/type_produits/',
-    CATEGORIES_ENDPOINT: DOMAIN + '/categories/',
-    CHECK_USER_EXISTS_ENDPOINT: DOMAIN + '/check/',
-    ENTREPRISE_ENDPOINT: DOMAIN + '/entreprise/',
-    DASHBOARD_ENDPOINT: DOMAIN + '/admin-dashboard/',
-    ARTICLES_ENDPOINT: DOMAIN + '/articles/',
-    MERCERIE_ENDPOINT: DOMAIN + '/merceries/',
-    TAGS_ENDPOINT: DOMAIN + '/tags/',
 }
 
 const GlobalEndpoints = {
@@ -81,34 +68,66 @@ const GlobalEndpoints = {
 }
 
 const UserEndpoints = {
-    PROFILE_ENDPOINT: DOMAIN + '/profil/',
-    PROFIL_GENRE_ENDPOINT: DOMAIN + '/profil/genres/',
-    USER_MENSURATION_ENDPOINT: DOMAIN + /user_mensurations/,
-    ADRESSE_ENDPOINT: DOMAIN + '/user_adresses/',
-    VILLES_ENDPOINT: DOMAIN + '/user_adresses/villes/',
+    PROFILE_ENDPOINT: PROFIL + '/',
+    PROFIL_GENRE_ENDPOINT: PROFIL + '/genres/',
+
+    USER_MENSURATION_ENDPOINT: PROFIL + /mensurations/,
+
+    ADRESSE_GUD_ENPOINT: PROFIL + '/adresse/',
+    ADRESSE_CREATE_ENDPOINT: PROFIL + '/adresses/',
+
+    VILLE_ENDPOINT: PROFIL + '/villes/',
+    PAYS_ENDPOINT: PROFIL + '/pays/'
 }
 
 const AdminEndpoints = {
+    USERS_ENDPOINT: DOMAIN + '/utilisateurs/',
+    GENRES_ENDPOINT: DOMAIN + '/genres/',
+    ARTICLES_ENDPOINT: DOMAIN + '/articles/',
+    MERCERIE_ENDPOINT: DOMAIN + '/merceries/',
 
+    MENSURATION_ENDPOINT: DOMAIN + /mensurations/,
+
+    TAGS_ENDPOINT: DOMAIN + '/tags/',
+    TYPES_SERVICES_ENDPOINT: DOMAIN + '/types_services/',
+    CATALOGUES_ENDPOINT: DOMAIN + '/catalogues/',
+    RAYON_ENDPOINT: DOMAIN + '/rayons/',
+    SECTION_ENDPOINT: DOMAIN + '/sections/',
+    TYPE_PRODUIT_ENDPOINT: DOMAIN + '/type_produits/',
+
+    CATEGORIES_ENDPOINT: DOMAIN + '/categories/',
+
+    ENTREPRISE_ENDPOINT: DOMAIN + '/entreprise/',
+
+    DASHBOARD_ENDPOINT: DOMAIN + '/admin-dashboard/',
+    CHECK_USER_EXISTS_ENDPOINT: DOMAIN + '/check/',
 }
 
 const FontAwesomeIcons = {
     HOME: 'fas fa-home',
-    PROFILE: 'fas fa-user-circle',
+    USER: 'fas fa-user-alt',
+    USER_CIRCLE: 'fas fa-user-circle',
+    USERS: 'fas fa-users',
     MESURE: 'fas fa-ruler-horizontal',
     INFO: 'fas fa-eye',
     MODIFIER: 'fas fa-edit',
     SUPPRIMER: 'fas fa-trash-alt',
     TACHOMETRE: 'fas fa-tachometer-alt',
-    USERS: 'fas fa-users',
     STORE: 'fas fa-store-alt',
-    FOLDEROPEN: 'far fa-folder-open',
+    FOLDER_OPEN: 'far fa-folder-open',
     FOLDER: 'far fa-folder',
     PLATEAU: 'fas fa-dolly-flatbed',
-    SHOPPINTCART: 'fas fa-shopping-cart',
+    SHOPPING_CART: 'fas fa-shopping-cart',
     MONEY: 'fas fa-money-bill',
     CALENDAR: 'fas fa-calendar-check',
-    PARAMETRES: 'fas fa-sliders-h'
+    PARAMETRES: 'fas fa-sliders-h',
+    EMAIL: 'far fa-envelope',
+    PHONE: 'fas fa-phone',
+    GENRE: 'fas fa-venus-mars'
+}
+
+const BootstrapClass = {
+    CARD_BORDERLESS_SHADOW: 'border-0 shadow p-3 mb-5 bg-white rounded'
 }
 
 export const LemkaEnums = {
@@ -119,5 +138,6 @@ export const LemkaEnums = {
     UserRoutes,
     AdminRoutes,
     FontAwesomeIcons,
+    BootstrapClass,
     Endpoints,
 }

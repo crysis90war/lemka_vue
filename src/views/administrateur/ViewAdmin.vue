@@ -8,64 +8,11 @@
       </div>
 
       <ul class="list-unstyled components">
-        <li class="active">
-          <b-nav-item :to="{name: AdminRouteName.DASHBOARD.name}" :active="$route.name === AdminRouteName.DASHBOARD.name">
-            <i class="fas fa-tachometer-alt"></i>
-            {{ AdminRouteName.DASHBOARD.value }}
-          </b-nav-item>
-        </li>
 
         <li>
-          <b-nav-item :to="{name: AdminRouteName.UTILISATEURS.name}" :active="$route.name === AdminRouteName.UTILISATEURS.name">
-            <i class="fas fa-users"></i>
-            {{ AdminRouteName.UTILISATEURS.value }}
-          </b-nav-item>
-
-          <b-nav-item :to="{name: AdminRouteName.ARTICLES.name}" :active="$route.name === AdminRouteName.ARTICLES.name">
-            <i class="fas fa-store-alt"></i>
-            {{ AdminRouteName.ARTICLES.value }}
-          </b-nav-item>
-
-          <b-nav-item :to="{name: AdminRouteName.MERCERIES.name}" :active="$route.name === AdminRouteName.MERCERIES.name">
-            <i class="fas fa-dolly-flatbed"></i>
-            {{ AdminRouteName.MERCERIES.value }}
-          </b-nav-item>
-
-          <b-nav-item :to="{name: AdminRouteName.DEMANDE_DE_DEVIS.name}" :active="$route.name === AdminRouteName.DEMANDE_DE_DEVIS.name">
-            <i class="far fa-folder-open"></i>
-            <b-badge pill variant="danger">1</b-badge>
-            {{ AdminRouteName.DEMANDE_DE_DEVIS.value }}
-          </b-nav-item>
-
-          <b-nav-item :to="{name: AdminRouteName.DEVIS.name}" :active="$route.name === AdminRouteName.DEVIS.name">
-            <i class="far fa-folder"></i>
-            {{ AdminRouteName.DEVIS.value }}
-          </b-nav-item>
-
-          <b-nav-item :to="{name: AdminRouteName.BONS_DE_COMMANDE.name}" :active="$route.name === AdminRouteName.BONS_DE_COMMANDE.name">
-            <i class="fas fa-shopping-cart"></i>
-            {{ AdminRouteName.BONS_DE_COMMANDE.value }}
-          </b-nav-item>
-
-          <b-nav-item :to="{name: AdminRouteName.FACTURE.name}" :active="$route.name === AdminRouteName.FACTURE.name">
-            <i class="fas fa-money-bill"></i>
-            {{ AdminRouteName.FACTURE.value }}
-          </b-nav-item>
-
-          <b-nav>
-            <i class=""></i>
-            HORAIRE
-          </b-nav>
-
-          <b-nav-item :to="{name: AdminRouteName.RENDEZ_VOUS.name}" :active="$route.name === AdminRouteName.RENDEZ_VOUS.name">
-            <i class="fas fa-calendar-check"></i>
-            <b-badge pill variant="danger">1</b-badge>
-            {{ AdminRouteName.RENDEZ_VOUS.value }}
-          </b-nav-item>
-
-          <b-nav-item :to="{name: AdminRouteName.ENTREPRISE.name}" :active="$route.name === AdminRouteName.PARAMETRES.name">
-            <i class="fas fa-sliders-h"></i>
-            {{ AdminRouteName.PARAMETRES.value }}
+          <b-nav-item v-for="(item, index) in menu" :key="index" :to="item.href">
+            <i :class="item.icon"></i>
+            {{item.title}}
           </b-nav-item>
         </li>
       </ul>
@@ -76,7 +23,6 @@
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light my-0">
         <div class="container-fluid">
-
           <button type="button" id="sidebarCollapse" @click="sidebarCollapse" class="btn">
             <i class="fas fa-align-left"></i>
           </button>
@@ -86,29 +32,31 @@
           </p>
         </div>
       </nav>
-      <router-view v-if="$route.name !== MainRouteName.ADMIN_ROUTE.name"></router-view>
 
-      <b-card v-else title="Administration de l'atelier de couture">
-        <hr>
-        <b-card-body>
-          <h4>Bienvenue sur la page d'administration de Lemka - Atelier de couture</h4>
-          <p>Si c'est le premier lancement, veuillez d'abord configurer votre boutique avant d'aller plus loin</p>
-        </b-card-body>
-      </b-card>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import {AdminRouteName} from "@/helpers/enums.helper";
-import {RouteNames} from "@/helpers/enums.helper";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "ViewAdmin",
   data() {
     return {
-      AdminRouteName,
-      MainRouteName: RouteNames,
+      menu: [
+        {href: {name: LemkaEnums.AdminRoutes.DASHBOARD.name}, title: LemkaEnums.AdminRoutes.DASHBOARD.value, icon: LemkaEnums.FontAwesomeIcons.TACHOMETRE},
+        {href: {name: LemkaEnums.AdminRoutes.UTILISATEURS.name}, title: LemkaEnums.AdminRoutes.UTILISATEURS.value, icon: LemkaEnums.FontAwesomeIcons.USERS},
+        {href: {name: LemkaEnums.AdminRoutes.ARTICLES.name}, title: LemkaEnums.AdminRoutes.ARTICLES.value, icon: LemkaEnums.FontAwesomeIcons.STORE},
+        {href: {name: LemkaEnums.AdminRoutes.MERCERIES.name}, title: LemkaEnums.AdminRoutes.MERCERIES.value, icon: LemkaEnums.FontAwesomeIcons.PLATEAU},
+        {href: {name: LemkaEnums.AdminRoutes.DEMANDE_DE_DEVIS.name}, title: LemkaEnums.AdminRoutes.DEMANDE_DE_DEVIS.value, icon: LemkaEnums.FontAwesomeIcons.FOLDER_OPEN},
+        {href: {name: LemkaEnums.AdminRoutes.DEVIS.name}, title: LemkaEnums.AdminRoutes.DEVIS.value, icon: LemkaEnums.FontAwesomeIcons.FOLDER},
+        {href: {name: LemkaEnums.AdminRoutes.BONS_DE_COMMANDE.name}, title: LemkaEnums.AdminRoutes.BONS_DE_COMMANDE.value, icon: LemkaEnums.FontAwesomeIcons.SHOPPING_CART},
+        {href: {name: LemkaEnums.AdminRoutes.FACTURE.name}, title: LemkaEnums.AdminRoutes.FACTURE.value, icon: LemkaEnums.FontAwesomeIcons.MONEY},
+        {href: {name: LemkaEnums.AdminRoutes.RENDEZ_VOUS.name}, title: LemkaEnums.AdminRoutes.RENDEZ_VOUS.value, icon: LemkaEnums.FontAwesomeIcons.CALENDAR},
+        {href: {name: LemkaEnums.AdminRoutes.PARAMETRES_ENTREPRISE.name}, title: LemkaEnums.AdminRoutes.PARAMETRES_ENTREPRISE.value, icon: LemkaEnums.FontAwesomeIcons.PARAMETRES},
+      ],
       toggled: false,
       imageLogo: require('@/assets/logo.png')
     }
@@ -116,13 +64,6 @@ export default {
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
-    }
-  },
-  watch: {
-    currentUser() {
-      if (!this.currentUser) {
-        this.$router.push({name: RouteNames.HOME_ROUTE.name})
-      }
     }
   },
 
@@ -137,12 +78,21 @@ export default {
       }
     }
   },
+
+  watch: {
+    currentUser() {
+      if (!this.currentUser) {
+        this.$router.push({name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name})
+      }
+    }
+  },
+
   async beforeRouteEnter(to, from, next) {
     let currentUser = JSON.parse(sessionStorage.getItem('user'))
     if (currentUser.is_staff === true) {
       next();
     } else {
-      next({name: RouteNames.HOME_ROUTE.name})
+      next({name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name})
     }
   }
 }

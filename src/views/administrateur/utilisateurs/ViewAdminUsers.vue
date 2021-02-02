@@ -1,5 +1,5 @@
 <template>
-  <b-card v-if="$route.name === AdminRouteName.UTILISATEURS.name">
+  <b-card v-if="$route.name === links.usersLink">
     <b-card-body>
       <div v-if="items">
         <!-- User Interface controls -->
@@ -126,7 +126,7 @@
             <b-avatar variant="info" :src="data.item.image"></b-avatar>
           </template>
           <template #cell(username)="data">
-            <router-link :to="{name: AdminRouteName.UTILISATEURS_DETAIL.name, params: {username: data.item.username}}">
+            <router-link :to="{name: links.userDetailLink, params: {username: data.item.username}}">
               {{ data.item.username }}
             </router-link>
           </template>
@@ -154,14 +154,17 @@
 </template>
 
 <script>
-import AdminApiService from '@/services/administrateur/index';
-import {AdminRouteName} from "@/helpers/enums.helper";
+import AdminApiService from '@/services/administrateur';
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
-  name: "AdminUsers",
+  name: "ViewAdminUsers",
   data() {
     return {
-      AdminRouteName,
+      links: {
+        usersLink: LemkaEnums.AdminRoutes.UTILISATEURS.name,
+        userDetailLink: LemkaEnums.AdminRoutes.UTILISATEURS_DETAIL.name
+      },
       items: [],
       fields: [
         {key: 'image', label: 'Image', sortable: false},

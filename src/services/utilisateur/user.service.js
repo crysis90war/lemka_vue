@@ -9,14 +9,8 @@ class UserService {
         return axios.get(ROUTE, {headers: authHeader()})
     }
 
-    getGenreList() {
-        let endpoint = `${ROUTE}`
-        return axios.get(endpoint)
-    }
+    putUser() {
 
-    getGenreDetail(genreId) {
-        let endpoint
-        return axios.get()
     }
 }
 

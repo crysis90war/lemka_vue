@@ -1,5 +1,5 @@
 <template>
-  <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="bg-white border-0 nav-shadow colored">
+  <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="border-0 nav-shadow colored">
     <b-container>
       <b-navbar-brand :to="{name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name}" v-if="brandVisible"><img src="../assets/logo.png" alt="" style="max-width: 100px;"></b-navbar-brand>
       <b-navbar-brand :to="{name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name}" v-else><img src="../assets/logo.png" alt="" style="max-width: 150px;"></b-navbar-brand>
@@ -56,7 +56,7 @@
             <template v-slot:button-content>
               {{ currentUser.username }}
             </template>
-            <b-dropdown-item :to="{ name: LemkaEnums.UserRoutes.PROFIL_ROUTE.name }">Mon profil</b-dropdown-item>
+            <b-dropdown-item :to="{ name: LemkaEnums.UserRoutes.INFORMATIONS.name }">Mon profil</b-dropdown-item>
             <b-dropdown-item @click="refreshToken">Refresh Token</b-dropdown-item>
             <b-dropdown-item v-if="currentUser.is_staff === true" :to="{ name: LemkaEnums.AdminRoutes.ADMIN_ROUTE.name}">Administration</b-dropdown-item>
             <b-dropdown-item href="#">Prendre rendez-vous</b-dropdown-item>
@@ -87,7 +87,7 @@ export default {
   },
   data() {
     return {
-      LemkaEnums,
+        LemkaEnums,
       show: false,
       brandVisible: false,
       register_login_logo_size: '250px',

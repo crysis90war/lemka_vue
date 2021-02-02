@@ -1,51 +1,39 @@
 <template>
-  <div class="d-flex">
-    <sidebar-menu
-        theme='white-theme'
-        class="sidebar"
-        :menu="menu"
-        :collapsed="collapsed"
-        @item-click="onItemClick"
-        @collapse="onCollapse"
-    />
-    <b-container id="view" :class="[{'collapsed' : collapsed}]">
+  <div>
+    <profil-navbar/>
+
+    <b-container class="my-2">
       <router-view/>
     </b-container>
   </div>
+
 </template>
 
 <script>
+import ProfilNavbar from "@/components/ProfilNavbar";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "ViewUserProfil",
-  data() {
-    return {
-      menu: [
-        {header: true, title: 'Mon profil', hiddenOnCollapse: true},
-        {href: {name: 'ViewUserInformations'}, title: 'Informations', icon: LemkaEnums.FontAwesomeIcons.PROFILE},
-        {href: {name: 'ViewUserMensurations'}, title: 'Mensurations', icon: LemkaEnums.FontAwesomeIcons.MESURE},
-      ],
-      collapsed: false
-    }
+  components: {
+    'profil-navbar': ProfilNavbar
   },
+
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
     },
-  },
-  methods: {
-    // eslint-disable-next-line no-unused-vars
-    onItemClick(e, i) {
-      console.log("onItemClick");
-    },
-    onCollapse(c) {
-      this.collapsed = c;
+    thisRoute() {
+      return this.$route.name
     }
   },
-  mounted() {
+
+  created() {
     if (!this.currentUser) {
       this.$router.push('/');
+    }
+    if (this.$route.name === LemkaEnums.UserRoutes.PROFIL_ROUTE.name) {
+      this.$router.push({name: LemkaEnums.UserRoutes.INFORMATIONS.name})
     }
   },
 
@@ -53,6 +41,11 @@ export default {
     currentUser: function () {
       if (!this.currentUser) {
         this.$router.push('/');
+      }
+    },
+    thisRoute: function () {
+      if (this.thisRoute === LemkaEnums.UserRoutes.PROFIL_ROUTE.name) {
+        this.$router.push({name: LemkaEnums.UserRoutes.INFORMATIONS.name})
       }
     }
   }
@@ -62,6 +55,6 @@ export default {
 <style scoped>
 
 .v-sidebar-menu {
-  position: relative!important;
+  position: relative !important;
 }
 </style>

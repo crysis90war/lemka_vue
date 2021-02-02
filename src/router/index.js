@@ -42,19 +42,28 @@ const router = new VueRouter({
       component: () => import('../views/global/ViewGlobalHoraire')
     },
     {
+      path: '/contact',
+      name: LemkaEnums.GlobalRoutes.CONTACT_ROUTE.name,
+      meta: {value: LemkaEnums.GlobalRoutes.CONTACT_ROUTE.value},
+      component: () => import('../views/global/ViewGlobalContact')
+    },
+    {
       path: PROFIL,
       name: LemkaEnums.UserRoutes.PROFIL_ROUTE.name,
-      meta: {
-        value: LemkaEnums.UserRoutes.PROFIL_ROUTE.value,
-        requiresAuth: true
-      },
+      meta: {value: LemkaEnums.UserRoutes.PROFIL_ROUTE.value, requiresAuth: true},
       component: () => import('../views/utilisateur/profil/ViewUserProfil'),
       children: [
         {
           path: PROFIL + 'informations',
-          name: 'ViewUserInformations',
-          meta: {value: 'Informations de l\'utilisateur'},
-          component: () => import('../views/utilisateur/profil/informations/ViewUserInformations')
+          name: LemkaEnums.UserRoutes.INFORMATIONS.name,
+          meta: {value: LemkaEnums.UserRoutes.INFORMATIONS.value},
+          component: () => import('../views/utilisateur/profil/informations/ViewUserInformations'),
+        },
+        {
+          path: PROFIL + 'ajouter adresse',
+          name: LemkaEnums.UserRoutes.ADRESSE_ADD.name,
+          meta: {value: LemkaEnums.UserRoutes.ADRESSE_ADD.value},
+          component: () => import('../views/utilisateur/profil/informations/ViewUserAdresseAdd')
         },
         {
           path: PROFIL + 'mensurations',
@@ -65,37 +74,31 @@ const router = new VueRouter({
       ]
     },
     {
-      path: '/contact',
-      name: LemkaEnums.GlobalRoutes.CONTACT_ROUTE.name,
-      meta: {value: LemkaEnums.GlobalRoutes.CONTACT_ROUTE.value},
-      component: () => import('../views/global/ViewGlobalContact')
-    },
-    {
-      path: '/admin',
+      path: ADMIN,
       name: LemkaEnums.AdminRoutes.ADMIN_ROUTE.name,
       meta: {
         value: LemkaEnums.AdminRoutes.ADMIN_ROUTE.value,
         requiresAuth: true
       },
-      component: () => import('../components/administrateur/view.admin'),
+      component: () => import('../views/administrateur/ViewAdmin'),
       children: [
         {
           path: ADMIN + 'dashboard',
           name: LemkaEnums.AdminRoutes.DASHBOARD.name,
           meta: {value: LemkaEnums.AdminRoutes.DASHBOARD.value},
-          component: () => import('../components/administrateur/dashboard/view.admin.dashboard')
+          component: () => import('../views/administrateur/dashboard/view.admin.dashboard')
         },
         {
           path: ADMIN + 'utilisateurs',
           name: LemkaEnums.AdminRoutes.UTILISATEURS.name,
           meta: {value: LemkaEnums.AdminRoutes.UTILISATEURS.value},
-          component: () => import('../components/administrateur/utilisateurs/view.admin.users'),
+          component: () => import('../views/administrateur/utilisateurs/ViewAdminUsers'),
           children: [
             {
-              path: ADMIN + 'utiilisateurs/:username',
+              path: ADMIN + 'utilisateurs/:username/detail',
               name: LemkaEnums.AdminRoutes.UTILISATEURS_DETAIL.name,
               meta: {value: LemkaEnums.AdminRoutes.UTILISATEURS_DETAIL.value},
-              component: () => import('../components/administrateur/utilisateurs/view.admin.users.detail'),
+              component: () => import('../views/administrateur/utilisateurs/ViewAdminUsersDetail'),
               props: true,
             }
           ]
@@ -104,26 +107,26 @@ const router = new VueRouter({
           path: ADMIN + 'articles',
           name: LemkaEnums.AdminRoutes.ARTICLES.name,
           meta: {value: LemkaEnums.AdminRoutes.ARTICLES.value},
-          component: () => import('../components/administrateur/articles/view.admin.articles'),
+          component: () => import('../views/administrateur/articles/ViewAdminArticles'),
           children: [
             {
               path: ADMIN + 'articles/add',
               name: LemkaEnums.AdminRoutes.ARTICLE_ADD.name,
               meta: {value: LemkaEnums.AdminRoutes.ARTICLE_ADD.value},
-              component: () => import('../components/administrateur/articles/view.admin.articles.ajouter')
+              component: () => import('../views/administrateur/articles/ViewAdminArticlesAdd')
             },
             {
               path: ADMIN + 'articles/:slug/detail',
               name: LemkaEnums.AdminRoutes.ARTICLES_DETAIL.name,
               meta: {value: LemkaEnums.AdminRoutes.ARTICLES_DETAIL.value},
-              component: () => import('../components/administrateur/articles/view.admin.articles.detail'),
+              component: () => import('../views/administrateur/articles/ViewAdminArticlesDetail'),
               props: true
             },
             {
               path: ADMIN + 'articles/:slug/update',
               name: LemkaEnums.AdminRoutes.ARTICLES_UPDATE.name,
               meta: {value: LemkaEnums.AdminRoutes.ARTICLES_UPDATE.value},
-              component: () => import('../components/administrateur/articles/view.admin.articles.update'),
+              component: () => import('../views/administrateur/articles/ViewAdminArticlesUpdate'),
               props: true
             }
           ]
@@ -132,55 +135,55 @@ const router = new VueRouter({
           path: ADMIN + 'merceries',
           name: LemkaEnums.AdminRoutes.MERCERIES.name,
           meta: {value: LemkaEnums.AdminRoutes.MERCERIES.value},
-          component: () => import('../components/administrateur/merceries/view.merceries')
+          component: () => import('../views/administrateur/merceries/view.merceries')
         },
         {
           path: ADMIN + 'demande-de-devis',
           name: LemkaEnums.AdminRoutes.DEMANDE_DE_DEVIS.name,
           meta: {value: LemkaEnums.AdminRoutes.DEMANDE_DE_DEVIS.value},
-          component: () => import('../components/administrateur/demande de devis/view.admin.demandeDeDevis')
+          component: () => import('../views/administrateur/demande de devis/view.admin.demandeDeDevis')
         },
         {
           path: ADMIN + 'devis',
           name: LemkaEnums.AdminRoutes.DEVIS.name,
           meta: {value: LemkaEnums.AdminRoutes.DEVIS.value},
-          component: () => import('../components/administrateur/devis/view.admin.devis')
+          component: () => import('../views/administrateur/devis/view.admin.devis')
         },
         {
           path: ADMIN + 'bons-de-commande',
           name: LemkaEnums.AdminRoutes.BONS_DE_COMMANDE.name,
           meta: {value: LemkaEnums.AdminRoutes.BONS_DE_COMMANDE.value},
-          component: () => import('../components/administrateur/bon de commande/view.admin.bonDeCommande')
+          component: () => import('../views/administrateur/bon de commande/view.admin.bonDeCommande')
         },
         {
           path: ADMIN + 'facture',
           name: LemkaEnums.AdminRoutes.FACTURE.name,
           meta: {value: LemkaEnums.AdminRoutes.FACTURE.value},
-          component: () => import('../components/administrateur/factures/view.facture')
+          component: () => import('../views/administrateur/factures/view.facture')
         },
         {
           path: ADMIN + 'rendez-vous',
           name: LemkaEnums.AdminRoutes.RENDEZ_VOUS.name,
           meta: {value: LemkaEnums.AdminRoutes.RENDEZ_VOUS.value},
-          component: () => import('../components/administrateur/rendez-vous/view.rendezVous')
+          component: () => import('../views/administrateur/rendez-vous/view.rendezVous')
         },
         {
           path: ADMIN + 'parametres',
           name: LemkaEnums.AdminRoutes.PARAMETRES.name,
           meta: {value: LemkaEnums.AdminRoutes.PARAMETRES.value},
-          component: () => import('../components/administrateur/parametres/view.admin.parametres'),
+          component: () => import('../views/administrateur/parametres/view.admin.parametres'),
           children: [
             {
               path: ADMIN + 'parametres/entreprise',
               name: LemkaEnums.AdminRoutes.PARAMETRES_ENTREPRISE.name,
               meta: {value: LemkaEnums.AdminRoutes.PARAMETRES_ENTREPRISE.value},
-              component: () => import('../components/administrateur/parametres/entreprise/view.admin.entreprise'),
+              component: () => import('../views/administrateur/parametres/entreprise/view.admin.entreprise'),
               children: [
                 {
                   path: ADMIN + 'parametres/entreprise/ajouter',
                   name: LemkaEnums.AdminRoutes.PARAMETRES_ENTREPRISE_ADD.name,
                   meta: {value: LemkaEnums.AdminRoutes.PARAMETRES_ENTREPRISE_ADD.value},
-                  component: () => import('../components/administrateur/parametres/entreprise/view.admin.entreprise.add')
+                  component: () => import('../views/administrateur/parametres/entreprise/view.admin.entreprise.add')
                 }
               ]
             },
@@ -188,13 +191,13 @@ const router = new VueRouter({
               path: ADMIN + 'parametres/genres',
               name: LemkaEnums.AdminRoutes.PARAMETRES_GENRE.name,
               meta: {value: LemkaEnums.AdminRoutes.PARAMETRES_GENRE.value},
-              component: () => import('../components/administrateur/parametres/genre/view.admin.genre'),
+              component: () => import('../views/administrateur/parametres/genre/view.admin.genre'),
               children: [
                 {
                   path: ADMIN + 'parametres/genres/ajouter',
                   name: LemkaEnums.AdminRoutes.PARAMETRES_GENRE_ADD.name,
                   meta: {value: LemkaEnums.AdminRoutes.PARAMETRES_GENRE_ADD.value},
-                  component: () => import('../components/administrateur/parametres/genre/view.admin.genre.add')
+                  component: () => import('../views/administrateur/parametres/genre/view.admin.genre.add')
                 }
               ]
             },
@@ -202,13 +205,13 @@ const router = new VueRouter({
               path: '/admin/parametres/mensurations',
               name: LemkaEnums.AdminRoutes.PARAMETRES_MENSURATION.name,
               meta: {value: LemkaEnums.AdminRoutes.PARAMETRES_MENSURATION.value},
-              component: () => import('../components/administrateur/parametres/mensuration/view.admin.mensurations'),
+              component: () => import('../views/administrateur/parametres/mensuration/view.admin.mensurations'),
               children: [
                 {
                   path: '/admin/parametres/mensurations/ajouter',
                   name: LemkaEnums.AdminRoutes.PARAMETRES_MENSURATION_ADD.name,
                   meta: {value: LemkaEnums.AdminRoutes.PARAMETRES_MENSURATION_ADD.value},
-                  component: () => import('../components/administrateur/parametres/mensuration/view.admin.mensurations.add')
+                  component: () => import('../views/administrateur/parametres/mensuration/view.admin.mensurations.add')
                 }
               ]
             },
@@ -216,13 +219,13 @@ const router = new VueRouter({
               path: '/admin/parametres/services',
               name: LemkaEnums.AdminRoutes.PARAMETRES_SERVICE.name,
               meta: {value: LemkaEnums.AdminRoutes.PARAMETRES_SERVICE.value},
-              component: ()=>import('../components/administrateur/parametres/service/view.admin.service'),
+              component: () => import('../views/administrateur/parametres/service/view.admin.service'),
               children: [
                 {
                   path: '/admin/parametres/services/ajouter',
                   name: LemkaEnums.AdminRoutes.PARAMETRES_SERVICE_ADD.name,
                   meta: {value: LemkaEnums.AdminRoutes.PARAMETRES_SERVICE_ADD.value},
-                  component: () => import('../components/administrateur/parametres/service/view.admin.service.add')
+                  component: () => import('../views/administrateur/parametres/service/view.admin.service.add')
                 }
               ]
             }

@@ -214,10 +214,10 @@
 
 <script>
 import METHODS from "@/mixins/methods.mixin"
-import UtilisateurGetService from "@/services/utilisateur/utilisateur.get.service";
-import UtilisateurPostService from "@/services/utilisateur/utilisateur.post.service";
-import UtilisateurPutService from "@/services/utilisateur/utilisateur.put.service";
-import UtilisateurDeleteService from "@/services/utilisateur/utilisateur.delete.service";
+import UtilisateurGetService from "@/services/utilisateur.get.service";
+import UtilisateurPostService from "@/services/utilisateur.post.service";
+import UtilisateurPutService from "@/services/utilisateur.put.service";
+import UtilisateurDeleteService from "@/services/utilisateur.delete.service";
 import Outils from "@/mixins/outils.mixin";
 import UserAddress from "@/models/address.model";
 

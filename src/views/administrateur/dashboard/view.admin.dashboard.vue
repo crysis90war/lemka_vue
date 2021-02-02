@@ -78,7 +78,7 @@
 import {AdminRouteName, Endpoints} from "@/helpers/enums.helper";
 import axios from "axios";
 import authHeader from "@/services/auth-header";
-import DashboardCard from "@/components/administrateur/dashboard/component.dashboard.card"
+import DashboardCard from "@/views/administrateur/dashboard/component.dashboard.card"
 
 export default {
   name: "ViewDashboard",

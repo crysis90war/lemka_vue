@@ -8,7 +8,7 @@
         {{ item.meta.value }}
       </b-breadcrumb-item>
     </b-breadcrumb>
-    <router-view class="my-4"></router-view>
+    <router-view></router-view>
     <lemka-footer></lemka-footer>
   </div>
 </template>
@@ -43,8 +43,8 @@ export default {
       this.getRoute();
     },
   },
-  mounted() {
-    this.chargerVilles();
+  created() {
+    // this.chargerVilles();
     this.getRoute();
     axios.interceptors.response.use(response => {
       return response;

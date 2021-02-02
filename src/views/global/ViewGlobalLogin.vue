@@ -1,10 +1,11 @@
 <template>
   <b-container>
     <div class="form-container sign-in-container">
-      <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
-        <b-form @submit.prevent="handleSubmit(handleLogin)">
 
-          <img src="../../assets/logo.png" alt="" :style="`max-width: ${ logo_size };`"/>
+      <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
+        <b-form @submit.prevent="handleSubmit(onSubmit)">
+
+          <img src="../../assets/logo.png" alt="" style="max-width: 250px"/>
 
           <div class="social-container">
             <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -20,7 +21,7 @@
 
           <ValidationProvider name="Password" ref="password" rules="required" v-slot="{ errors }">
             <b-input v-model="user.password" type="password" placeholder="Mot de passe"/>
-            <b-badge pill variant="danger" v-for="(error) in errors" :key="error">{{ error }}</b-badge>
+            <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
           </ValidationProvider>
 
           <a href="#">Mot de passe oublié ?</a>
@@ -31,7 +32,12 @@
           </button>
         </b-form>
       </ValidationObserver>
-      <b-badge pill variant="danger">{{ message }}</b-badge>
+
+      <div class="my-2">
+        <pre>{{user}}</pre>
+        <pre class="bg-warning">{{message}}</pre>
+      </div>
+
     </div>
   </b-container>
 </template>
@@ -41,12 +47,6 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "ViewGlobalLogin",
-  props: {
-    logo_size: {
-      type: String,
-      default: '250px'
-    }
-  },
 
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
         password: null
       },
       loading: false,
-      message: ''
+      message: '',
     }
   },
 
@@ -66,17 +66,15 @@ export default {
   },
 
   methods: {
-    handleLogin() {
+    onSubmit() {
       if (this.user.email && this.user.password) {
         this.loading = true;
         this.$store.dispatch('auth/login', this.user).then(() => {
               this.$router.push({name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name});
             }, error => {
-              this.loading = false;
-              this.message =
-                  (error.response && error.response.data && error.response.data.message) ||
-                  error.message ||
-                  error.toString();
+          this.loading = false
+              console.log(error)
+              this.message = 'Identifiants non valides, réessayez'
             }
         )
       }

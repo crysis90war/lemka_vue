@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button variant="light" :to="{name: AdminRouteName.ARTICLES_DETAIL.name, params: {slug: slug}}">
+    <b-button variant="light" :to="{name: returnLink, params: {slug: slug}}">
       <i class="fas fa-arrow-left"></i>
     </b-button>
     {{slug}}
@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import {AdminRouteName} from "@/helpers/enums.helper";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
-  name: "view.admin.articles.update",
+  name: "ViewAdminArticlesUpdate",
   props: {
     slug: {
       type: String,
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      AdminRouteName,
+      returnLink: LemkaEnums.AdminRoutes.ARTICLES_DETAIL.name,
     }
   },
 }
