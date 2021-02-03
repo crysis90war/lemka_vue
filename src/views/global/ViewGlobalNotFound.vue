@@ -8,7 +8,7 @@
       </div>
       <h1>oups!</h1>
       <h2>{{ message }}</h2>
-      <b-link class="btn-grad" :to="{ name: 'Home' }">
+      <b-link class="btn-grad" :to="{ name: homeLink }">
         Page d'accueil
       </b-link>
       <lemka-social />
@@ -19,6 +19,7 @@
 <script>
 import Outils from "@/mixins/outils.mixin";
 import Social from "@/components/Social";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "ViewGlobalNotFound",
@@ -30,6 +31,7 @@ export default {
   },
   data() {
     return {
+      homeLink: LemkaEnums.GlobalRoutes.HOME_ROUTE.name,
       message: "Erreur 404 - Page Non Trouvée"
     }
   }

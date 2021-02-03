@@ -17,6 +17,7 @@ const GlobalRoutes = {
 const UserRoutes = {
     PROFIL_ROUTE: {name: UserView + 'Profil', value: 'Profil'},
     INFORMATIONS: {name: UserView + 'Informations', value: 'Informations'},
+    INFORMATIONS_UPDATE: {name: UserView + 'InformationsUpdate', value: 'Modifier'},
     ADRESSE_ADD: {name: UserView + 'AdresseAdd', value: 'Ajouter une adresse'},
     MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
 }

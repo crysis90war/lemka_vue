@@ -1,13 +1,8 @@
 <template>
-  <div class="my-4">
-
-
-
-    <b-card class="my-2" :class="bootstrap.shadow" >
-      <b-button variant="outline-primary">Modifier profil</b-button>
+    <b-card v-if="loading === false" class="my-4" :class="bootstrap.shadow" >
       <b-card-body>
         <b-row>
-          <b-col lg="6">
+          <b-col lg="7">
             <h2>{{user.first_name !== '' ? user.first_name : 'Prénom'}}</h2>
             <h2>{{user.last_name !== '' ? user.last_name : 'Nom'}}</h2>
             <span>@{{user.username}}</span>
@@ -38,17 +33,17 @@
             <div v-if="Object.entries(adresse).length !== 0" class="mt-2">
               <span>{{ adresse.rue }}, {{ adresse.numero }} {{adresse.boite}}</span><br>
               <span>{{adresse.ref_ville.code_postale }} - {{adresse.ref_ville.ville}}</span><br>
-              <span>{{ adresse.ref_ville.ref_pays }}</span>
+              <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
             </div>
-
             <hr>
+            <b-button :to="{name: links.updateInformationsLink}" variant="outline-primary">Modifier profil</b-button>
             <div class="mt-5">
               <span><small>Membre depuis {{user.created_at}}</small></span><br>
               <span><small>Dernière mise à jour {{user.updated_at}}</small></span>
             </div>
           </b-col>
 
-          <b-col lg="6" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center" >
+          <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center" >
             <b-img thumbnail rounded :src="user.image" class="h-100"></b-img>
             <b-button variant="light" class="position-absolute bottom-0 start-0">Modifier photo</b-button>
           </b-col>
@@ -57,20 +52,26 @@
       </b-card-body>
     </b-card>
 
-    <pre>{{user}}</pre>
-    <pre>{{adresse}}</pre>
-  </div>
+    <b-card v-else>
+      <b-card-body class="text-center">
+        <b-spinner variant="secondary" type="grow" size="5em"></b-spinner>
+      </b-card-body>
+    </b-card>
+
 </template>
 
 <script>
 import UserApiService from "@/services/utilisateur";
 import {LemkaEnums} from "@/helpers/enums.helper";
+import {customConsole} from "@/helpers/functions.helper";
 
 export default {
   name: "ViewUserInformations",
   data() {
     return {
       links: {
+        thisRouteLink: LemkaEnums.UserRoutes.INFORMATIONS.name,
+        updateInformationsLink: LemkaEnums.UserRoutes.INFORMATIONS_UPDATE.name,
         ajouterAdresseLink: LemkaEnums.UserRoutes.ADRESSE_ADD.name,
       },
       bootstrap: {
@@ -83,7 +84,8 @@ export default {
         genre: LemkaEnums.FontAwesomeIcons.GENRE,
       },
       user: {},
-      adresse: {}
+      adresse: {},
+      loading: false
     }
   },
 
@@ -147,12 +149,24 @@ export default {
         pays = response.data
       })
       return pays
+    },
+
+    async loadData() {
+      try {
+        this.loading = true
+        await this.chargerUser()
+        await this.chargerAdresse()
+      } catch (e) {
+        customConsole(e, 'ERROR')
+      }
+      finally {
+        this.loading = false
+      }
     }
   },
 
   created() {
-    this.chargerUser()
-    this.chargerAdresse()
+    this.loadData()
   }
 }
 </script>

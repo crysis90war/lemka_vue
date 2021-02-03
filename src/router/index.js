@@ -4,7 +4,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 
 Vue.use(VueRouter)
 
-const PROFIL = '/profil/';
+const PROFIL = '/profil';
 const ADMIN = '/admin/';
 
 const router = new VueRouter({
@@ -54,22 +54,28 @@ const router = new VueRouter({
       component: () => import('../views/utilisateur/profil/ViewUserProfil'),
       children: [
         {
-          path: PROFIL + 'informations',
+          path: PROFIL + '/informations',
           name: LemkaEnums.UserRoutes.INFORMATIONS.name,
           meta: {value: LemkaEnums.UserRoutes.INFORMATIONS.value},
           component: () => import('../views/utilisateur/profil/informations/ViewUserInformations'),
         },
         {
-          path: PROFIL + 'ajouter adresse',
+          path: PROFIL + '/informations/update',
+          name: LemkaEnums.UserRoutes.INFORMATIONS_UPDATE.name,
+          meta: {value: LemkaEnums.UserRoutes.INFORMATIONS_UPDATE.value},
+          component: () => import('../views/utilisateur/profil/informations/ViewUserInformationsUpdate')
+        },
+        {
+          path: PROFIL + '/adresse',
           name: LemkaEnums.UserRoutes.ADRESSE_ADD.name,
           meta: {value: LemkaEnums.UserRoutes.ADRESSE_ADD.value},
           component: () => import('../views/utilisateur/profil/informations/ViewUserAdresseAdd')
         },
         {
-          path: PROFIL + 'mensurations',
+          path: PROFIL + '/mensurations',
           name: 'ViewUserMensurations',
           meta: {value: 'Mes mensurations'},
-          component: () => import('@/views/utilisateur/profil/mensurations/ViewUserMensurations')
+          component: () => import('../views/utilisateur/profil/mensurations/ViewUserMensurations')
         }
       ]
     },
