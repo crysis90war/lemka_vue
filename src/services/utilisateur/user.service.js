@@ -9,8 +9,15 @@ class UserService {
         return axios.get(ROUTE, {headers: authHeader()})
     }
 
-    putUser() {
+    putUser(payload) {
+        return axios.put(ROUTE, payload, {headers: authHeader()})
+    }
 
+    patchUserImage(payload) {
+        let data = {
+            image: payload.image
+        }
+        return axios.patch(ROUTE, data, {headers: authHeader()})
     }
 }
 

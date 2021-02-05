@@ -3,7 +3,7 @@ import CatalogueModel from '@/models/catalogue.model'
 import TagModel from "@/models/tag.model";
 
 export default class ArticleModel {
-    constructor() {
+    constructor(id, created_at, slug, likes_count) {
         this.id = Number
         this.created_at = Date
         this.slug = String

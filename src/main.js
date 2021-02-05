@@ -17,6 +17,7 @@ import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 
 Vue.use(Lightbox)
 Vue.use(VueSidebarMenu)
+
 Vue.config.productionTip = false
 Vue.component('v-pack-select', vSelect)
 Vue.mixin(titleMixin)

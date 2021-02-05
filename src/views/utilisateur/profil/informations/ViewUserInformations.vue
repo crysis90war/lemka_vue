@@ -45,7 +45,8 @@
 
           <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center" >
             <b-img thumbnail rounded :src="user.image" class="h-100"></b-img>
-            <b-button variant="light" class="position-absolute bottom-0 start-0">Modifier photo</b-button>
+            <b-button id="toggle-btn" variant="light" class="position-absolute bottom-0 start-0" @click="showModal">Modifier photo</b-button>
+            <lemka-upload-modal :user="user" :multiple="true"></lemka-upload-modal>
           </b-col>
 
         </b-row>
@@ -64,9 +65,13 @@
 import UserApiService from "@/services/utilisateur";
 import {LemkaEnums} from "@/helpers/enums.helper";
 import {customConsole} from "@/helpers/functions.helper";
+import UploadModal from "@/components/UploadModal";
 
 export default {
   name: "ViewUserInformations",
+  components: {
+    'lemka-upload-modal': UploadModal
+  },
   data() {
     return {
       links: {
@@ -149,6 +154,10 @@ export default {
         pays = response.data
       })
       return pays
+    },
+
+    showModal() {
+      this.$bvModal.show('image-modal')
     },
 
     async loadData() {
