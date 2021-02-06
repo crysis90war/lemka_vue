@@ -131,7 +131,6 @@
 <script>
 import UtilisateurPutService from "@/services/utilisateur.put.service"
 import UtilisateurGetService from "@/services/utilisateur.get.service"
-import Profil from "@/models/profil.model";
 
 export default {
   name: "ProfilInformations",
@@ -142,7 +141,7 @@ export default {
 
   data() {
     return {
-      userProfil: new Profil(),
+      userProfil: {},
       editInfo: false,
       loading: false,
       imageUpload: null,

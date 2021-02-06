@@ -3,6 +3,7 @@
     <div class="d-block text-center">
       <b-form-file v-model="image" multiple accept="image/jpeg, image/png" required></b-form-file>
     </div>
+
     <b-img :src="preview" alt="" class="w-100"></b-img>
 
     <b-button class="mt-2" variant="outline-success" block>Modifier</b-button>

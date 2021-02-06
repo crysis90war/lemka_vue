@@ -219,7 +219,6 @@ import UtilisateurPostService from "@/services/utilisateur.post.service";
 import UtilisateurPutService from "@/services/utilisateur.put.service";
 import UtilisateurDeleteService from "@/services/utilisateur.delete.service";
 import Outils from "@/mixins/outils.mixin";
-import UserAddress from "@/models/address.model";
 
 export default {
   name: "ProfilAdresses",
@@ -236,10 +235,10 @@ export default {
       modalDeleteUserAddress: 'modal-supprimer-adresse',
 
       listUserAddress: [],
-      getUserAddress: new UserAddress(),
+      getUserAddress: {},
       villeUtilisateur: '',
-      createUserAddress: new UserAddress(),
-      updateUserAddress: new UserAddress(),
+      createUserAddress: {},
+      updateUserAddress: {},
 
       villeSelectionne: {},
       updateVilleSelectionne: {
@@ -292,7 +291,7 @@ export default {
           this.monModal(this.modalCreateUserAddress, false)
           this.chargerAdresses()
           Outils.makeToast(this, 'success', 'Adresse ajoutée avec succès', 'Ajout')
-          this.createUserAddress = new UserAddress()
+          this.createUserAddress = {}
         }).catch(err => {
           Outils.makeToast(this, 'danger', err, 'Erreur')
         })

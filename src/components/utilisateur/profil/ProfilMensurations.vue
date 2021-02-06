@@ -193,8 +193,6 @@ import UtilisateurGetService from "@/services/utilisateur.get.service";
 import UtilisateurPostService from "@/services/utilisateur.post.service";
 import UtilisateurPutService from "@/services/utilisateur.put.service";
 import UtilisateurDeleteService from "@/services/utilisateur.delete.service";
-import UserMensuration from "@/models/user_mensuration.model";
-import MensurationUserMensuration from "@/models/mensuration_user_mensuration.model";
 
 export default {
   name: "ProfilMensurations",
@@ -211,9 +209,9 @@ export default {
       modalDeleteUserMensuration: 'modal-supprimer-mensuration',
 
       listUserMensuration: [],
-      getUserMensuration: new UserMensuration(),
-      createUserMensuration: new UserMensuration(),
-      updateUserMensuration: new UserMensuration(),
+      getUserMensuration: {},
+      createUserMensuration: {},
+      updateUserMensuration: {},
 
       updating: false,
       userMensurations: null
@@ -231,7 +229,7 @@ export default {
       UtilisateurGetService.getUserListMensurations().then(response => {
         let mensurations = []
         for (let i = 0; i < response.data.length; i++) {
-          let mensuration = new UserMensuration(response.data[i].id, response.data[i].titre, response.data[i].is_main)
+          let mensuration = response.data[i]
           mensurations.push(mensuration)
         }
         this.listUserMensuration = mensurations
@@ -244,7 +242,7 @@ export default {
           this.monModal(this.modalCreateUserMensuration, false)
           this.chargerMensurations()
           Outils.makeToast(this, 'success', 'Mensuration ajoutée avec succès', 'Ajout')
-          this.createUserMensuration = new UserMensuration()
+          this.createUserMensuration = {}
         }).catch(err => {
           Outils.makeToast(this,'danger', err, 'Erreur')
         })
@@ -259,7 +257,7 @@ export default {
         let mensurations = []
         UtilisateurGetService.getMensurationUserMensuration(item_id).then(response => {
           for (let i = 0; i < response.data.length; i ++) {
-            let objetMensuration = new MensurationUserMensuration()
+            let objetMensuration = {}
             objetMensuration.id = response.data[i].id
             objetMensuration.mesure = response.data[i].mesure
             objetMensuration.ref_mensuration = response.data[i].ref_mensuration
@@ -267,7 +265,7 @@ export default {
           }
         })
         UtilisateurGetService.getUserMensuration(item_id).then(response => {
-          this.getUserMensuration = new UserMensuration(response.data.id, response.data.titre, response.data.is_main, mensurations)
+          this.getUserMensuration = response.data
           this.monModal(this.modalGetUserMensuration + item_id)
         })
       }
@@ -281,7 +279,7 @@ export default {
         let mensurations = []
         UtilisateurGetService.getMensurationUserMensuration(item_id).then(response => {
           for (let i = 0; i < response.data.length; i ++) {
-            let objetMensuration = new MensurationUserMensuration()
+            let objetMensuration = {}
             objetMensuration.id = response.data[i].id
             objetMensuration.mesure = response.data[i].mesure
             objetMensuration.ref_mensuration = response.data[i].ref_mensuration
@@ -289,7 +287,7 @@ export default {
           }
         })
         UtilisateurGetService.getUserMensuration(item_id).then(response => {
-          this.updateUserMensuration = new UserMensuration(response.data.id, response.data.titre, response.data.is_main, mensurations)
+          this.updateUserMensuration = response.data
           this.monModal(this.modalUpdateUserMensuration + item_id)
         })
       }
