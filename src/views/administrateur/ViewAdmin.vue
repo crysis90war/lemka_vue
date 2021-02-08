@@ -46,16 +46,16 @@ export default {
   data() {
     return {
       menu: [
-        {href: {name: LemkaEnums.AdminRoutes.DASHBOARD.name}, title: LemkaEnums.AdminRoutes.DASHBOARD.value, icon: LemkaEnums.FontAwesomeIcons.TACHOMETRE},
-        {href: {name: LemkaEnums.AdminRoutes.UTILISATEURS.name}, title: LemkaEnums.AdminRoutes.UTILISATEURS.value, icon: LemkaEnums.FontAwesomeIcons.USERS},
-        {href: {name: LemkaEnums.AdminRoutes.ARTICLES.name}, title: LemkaEnums.AdminRoutes.ARTICLES.value, icon: LemkaEnums.FontAwesomeIcons.STORE},
-        {href: {name: LemkaEnums.AdminRoutes.MERCERIES.name}, title: LemkaEnums.AdminRoutes.MERCERIES.value, icon: LemkaEnums.FontAwesomeIcons.PLATEAU},
-        {href: {name: LemkaEnums.AdminRoutes.DEMANDE_DE_DEVIS.name}, title: LemkaEnums.AdminRoutes.DEMANDE_DE_DEVIS.value, icon: LemkaEnums.FontAwesomeIcons.FOLDER_OPEN},
-        {href: {name: LemkaEnums.AdminRoutes.DEVIS.name}, title: LemkaEnums.AdminRoutes.DEVIS.value, icon: LemkaEnums.FontAwesomeIcons.FOLDER},
-        {href: {name: LemkaEnums.AdminRoutes.BONS_DE_COMMANDE.name}, title: LemkaEnums.AdminRoutes.BONS_DE_COMMANDE.value, icon: LemkaEnums.FontAwesomeIcons.SHOPPING_CART},
-        {href: {name: LemkaEnums.AdminRoutes.FACTURE.name}, title: LemkaEnums.AdminRoutes.FACTURE.value, icon: LemkaEnums.FontAwesomeIcons.MONEY},
-        {href: {name: LemkaEnums.AdminRoutes.RENDEZ_VOUS.name}, title: LemkaEnums.AdminRoutes.RENDEZ_VOUS.value, icon: LemkaEnums.FontAwesomeIcons.CALENDAR},
-        {href: {name: LemkaEnums.AdminRoutes.PARAMETRES_ENTREPRISE.name}, title: LemkaEnums.AdminRoutes.PARAMETRES_ENTREPRISE.value, icon: LemkaEnums.FontAwesomeIcons.PARAMETRES},
+        {href: {name: LemkaEnums.Routes.DASHBOARD.name}, title: LemkaEnums.Routes.DASHBOARD.value, icon: LemkaEnums.FontAwesomeIcons.TACHOMETRE},
+        {href: {name: LemkaEnums.Routes.UTILISATEURS.name}, title: LemkaEnums.Routes.UTILISATEURS.value, icon: LemkaEnums.FontAwesomeIcons.USERS},
+        {href: {name: LemkaEnums.Routes.ARTICLES.name}, title: LemkaEnums.Routes.ARTICLES.value, icon: LemkaEnums.FontAwesomeIcons.STORE},
+        {href: {name: LemkaEnums.Routes.MERCERIES.name}, title: LemkaEnums.Routes.MERCERIES.value, icon: LemkaEnums.FontAwesomeIcons.PLATEAU},
+        {href: {name: LemkaEnums.Routes.DEMANDE_DE_DEVIS.name}, title: LemkaEnums.Routes.DEMANDE_DE_DEVIS.value, icon: LemkaEnums.FontAwesomeIcons.FOLDER_OPEN},
+        {href: {name: LemkaEnums.Routes.DEVIS.name}, title: LemkaEnums.Routes.DEVIS.value, icon: LemkaEnums.FontAwesomeIcons.FOLDER},
+        {href: {name: LemkaEnums.Routes.BONS_DE_COMMANDE.name}, title: LemkaEnums.Routes.BONS_DE_COMMANDE.value, icon: LemkaEnums.FontAwesomeIcons.SHOPPING_CART},
+        {href: {name: LemkaEnums.Routes.FACTURE.name}, title: LemkaEnums.Routes.FACTURE.value, icon: LemkaEnums.FontAwesomeIcons.MONEY},
+        {href: {name: LemkaEnums.Routes.RENDEZ_VOUS.name}, title: LemkaEnums.Routes.RENDEZ_VOUS.value, icon: LemkaEnums.FontAwesomeIcons.CALENDAR},
+        {href: {name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name}, title: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.value, icon: LemkaEnums.FontAwesomeIcons.PARAMETRES},
       ],
       toggled: false,
       imageLogo: require('@/assets/logo.png')
@@ -82,7 +82,7 @@ export default {
   watch: {
     currentUser() {
       if (!this.currentUser) {
-        this.$router.push({name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name})
+        this.$router.push({name: LemkaEnums.Routes.LOGIN_ROUTE.name})
       }
     }
   },
@@ -92,7 +92,7 @@ export default {
     if (currentUser.is_staff === true) {
       next();
     } else {
-      next({name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name})
+      next({name: LemkaEnums.Routes.LOGIN_ROUTE.name})
     }
   }
 }

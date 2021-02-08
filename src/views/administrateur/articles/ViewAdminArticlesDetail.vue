@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
+import ApiService from "@/services";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
@@ -67,8 +67,8 @@ export default {
       loading: false,
       error: null,
       links: {
-        articlesLink: LemkaEnums.AdminRoutes.ARTICLES.name,
-        articleUpdateLink: LemkaEnums.AdminRoutes.ARTICLES_UPDATE.name
+        articlesLink: LemkaEnums.Routes.ARTICLES.name,
+        articleUpdateLink: LemkaEnums.Routes.ARTICLES_UPDATE.name
       },
       article: null,
       images: []
@@ -88,7 +88,7 @@ export default {
         let typeProduit = {}
         let tags = []
 
-        await AdminApiService.ArticleService.getArticleDetail(this.slug).then(response => {
+        await ApiService.ArticleService.getArticleDetail(this.slug).then(response => {
           article = response.data
         })
 
@@ -107,7 +107,7 @@ export default {
           tag = await this.fetchTag(article.ref_tag[i])
           tags.push(tag)
         }
-        await AdminApiService.ArticleService.getArticleImagesList(article.slug).then(response => {
+        await ApiService.ArticleService.getArticleImagesList(article.slug).then(response => {
           response.data.forEach(image => {
             this.images.push(image.image)
           })
@@ -129,7 +129,7 @@ export default {
 
     async fetchTypeService(typeServiceId) {
       let typeService = {}
-      await AdminApiService.TypeServiceService.getTypeServiceDetail(typeServiceId).then(response => {
+      await ApiService.TypeServiceService.getTypeServiceDetail(typeServiceId).then(response => {
         typeService = response.data
       })
       return typeService
@@ -138,7 +138,7 @@ export default {
     async fetchCatalogue(catalogueId) {
       let catalogue = {}
 
-      await AdminApiService.CatalogueService.getCatalogueDetail(catalogueId).then(response => {
+      await ApiService.CatalogueService.getCatalogueDetail(catalogueId).then(response => {
         catalogue = response.data
       })
 
@@ -147,7 +147,7 @@ export default {
 
     async fetchRayon(rayonId) {
       let rayon = {}
-      await AdminApiService.RayonService.getRayonDetail(rayonId).then(response => {
+      await ApiService.RayonService.getRayonDetail(rayonId).then(response => {
         rayon = response.data
       })
       return rayon
@@ -155,7 +155,7 @@ export default {
 
     async fetchSection(sectionId) {
       let section = {}
-      await AdminApiService.SectionService.getSectionDetail(sectionId).then(response => {
+      await ApiService.SectionService.getSectionDetail(sectionId).then(response => {
         section = response.data
       })
       return section
@@ -163,7 +163,7 @@ export default {
 
     async fetchTypeProduit(typeProduitId) {
       let typeProduit = {}
-      await AdminApiService.TypeProduitService.getTypeProduitDetail(typeProduitId).then(response => {
+      await ApiService.TypeProduitService.getTypeProduitDetail(typeProduitId).then(response => {
         typeProduit = response.data
       })
       return typeProduit
@@ -171,7 +171,7 @@ export default {
 
     async fetchTag(tagId) {
       let tag = {}
-      await AdminApiService.TagService.getTagDetail(tagId).then(response => {
+      await ApiService.TagService.getTagDetail(tagId).then(response => {
         tag = response.data
       })
       return tag

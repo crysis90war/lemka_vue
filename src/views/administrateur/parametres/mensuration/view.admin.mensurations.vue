@@ -1,8 +1,8 @@
 <template>
-  <div v-if="$route.name === AdminRouteName.MENSURATION.name">
+  <div v-if="$route.name === routes.mensuration.name">
     <b-card>
       <b-card-body>
-        <b-button :to="{name: AdminRouteName.MENSURATION_ADD.name}" variant="outline-success">Ajouter une mensuration</b-button>
+        <b-button :to="{name: routes.mensuration_add.name}" variant="outline-success">{{ routes.mensuration_add.value }}</b-button>
         <b-table :items="items" :fields="fields"
                  stacked="md"
                  show-empty
@@ -30,14 +30,22 @@
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
-import {AdminRouteName} from "@/helpers/enums.helper";
+import ApiService from "@/services";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "view.mensurations",
   data() {
     return {
-      AdminRouteName,
+      routes: {
+        mensuration: {
+          name: LemkaEnums.Routes.PARAMETRES_MENSURATION.name
+        },
+        mensuration_add: {
+          name: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD.name,
+          value: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD.value
+        }
+      },
       items: [],
       fields: [
         {key: 'id', label: 'Id'},
@@ -48,13 +56,13 @@ export default {
   },
   methods: {
     chargerMensurations() {
-      AdminApiService.MensurationService.getMensurationList().then(response => {
+      ApiService.MensurationService.getMensurationList().then(response => {
         this.items = response.data
       })
     },
 
     supprimerMensuration(mensurationId) {
-      AdminApiService.MensurationService.deleteMensuration(mensurationId)
+      ApiService.MensurationService.deleteMensuration(mensurationId)
     }
   },
   created() {

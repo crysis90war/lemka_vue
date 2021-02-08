@@ -39,25 +39,28 @@
             </ValidationProvider>
             <!-- endregion -->
 
-            <div class="d-flex justify-content-between">
-              <!-- region Numero -->
-              <ValidationProvider name="numero" ref="numero" rules="required|min:1|max:255" v-slot="{ errors }">
-                <b-form-group label="numero" description="Veuillez encoder votre numéro" class="mt-3 mr-1">
-                  <b-input v-model="adresse.numero" required></b-input>
-                  <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
-                </b-form-group>
-              </ValidationProvider>
-              <!-- endregion -->
-
-              <!-- region Boite -->
-              <ValidationProvider name="boite" ref="boite" v-slot="{ errors }">
-                <b-form-group label="Boite" description="Veuillez encoder votre boite" class="mt-3 ml-1">
-                  <b-input v-model="adresse.boite"></b-input>
-                  <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
-                </b-form-group>
-              </ValidationProvider>
-              <!-- endregion -->
-            </div>
+            <b-row>
+              <b-col>
+                <!-- region Numero -->
+                <ValidationProvider name="numero" ref="numero" rules="required|min:1|max:255" v-slot="{ errors }">
+                  <b-form-group label="numero" description="Veuillez encoder votre numéro" class="mt-3 mr-1">
+                    <b-input v-model="adresse.numero" required></b-input>
+                    <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
+                  </b-form-group>
+                </ValidationProvider>
+                <!-- endregion -->
+              </b-col>
+              <b-col>
+                <!-- region Boite -->
+                <ValidationProvider name="boite" ref="boite" v-slot="{ errors }">
+                  <b-form-group label="Boite" description="Veuillez encoder votre boite" class="mt-3 ml-1">
+                    <b-input v-model="adresse.boite"></b-input>
+                    <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
+                  </b-form-group>
+                </ValidationProvider>
+                <!-- endregion -->
+              </b-col>
+            </b-row>
 
             <b-button-group class="mt-3 float-right">
               <b-button type="submit" variant="outline-success">Créer</b-button>
@@ -77,7 +80,7 @@ export default {
   data() {
     return {
       bootstrap: {
-        shadow: LemkaEnums.BootstrapClass.CARD_BORDERLESS_SHADOW
+        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
       },
       pays: {},
       ville: {},

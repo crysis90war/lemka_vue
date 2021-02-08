@@ -1,9 +1,9 @@
 import axios from "axios";
-import authHeader from "@/services/auth-header";
+import authHeader from "@/configs/auth-header";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
-const ADD_ADRESSE = LemkaEnums.UserEndpoints.ADRESSE_CREATE_ENDPOINT;
-const ROUTE = LemkaEnums.UserEndpoints.ADRESSE_GUD_ENPOINT;
+const ADD_ADRESSE = LemkaEnums.Endpoints.ADRESSE_CREATE_ENDPOINT;
+const ROUTE = LemkaEnums.Endpoints.ADRESSE_GUD_ENPOINT;
 
 class AdresseService {
     getAdresse() {

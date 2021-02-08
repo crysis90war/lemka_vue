@@ -5,8 +5,8 @@
         <b-form-group label="Genre" description="Veuillez encoder le genre">
           <b-form-input v-model="genre.genre" placeholder="exemple: Femme"></b-form-input>
         </b-form-group>
-        <pre>{{genre}}</pre>
-        <pre class="bg-warning">{{response}}</pre>
+        <pre>{{ genre }}</pre>
+        <pre class="bg-warning">{{ response }}</pre>
         <b-button variant="outline-success" @click="ajouterGenre">Ajouter</b-button>
       </b-form>
     </b-card-body>
@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
-import {AdminRouteName} from "@/helpers/enums.helper";
+import ApiService from "@/services";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "ViewGenreAdd",
@@ -28,11 +28,11 @@ export default {
     }
   },
   methods: {
-    ajouterGenre() {
-      AdminApiService.GenreService.postGenre(this.genre)
+    async ajouterGenre() {
+      await ApiService.GenreService.postGenre(this.genre)
           .then(response => {
             if (response.status === 201) {
-              this.$router.push({name: AdminRouteName.GENRE.name})
+              this.$router.push({name: LemkaEnums.Routes.PARAMETRES_GENRE.name})
             }
           })
           .catch(error => {

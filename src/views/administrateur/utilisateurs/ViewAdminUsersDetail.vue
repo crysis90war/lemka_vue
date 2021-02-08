@@ -17,7 +17,7 @@
 
 <script>
 import {LemkaEnums} from "@/helpers/enums.helper";
-import AdminApiService from "@/services/administrateur";
+import ApiService from "@/services";
 
 export default {
   name: "ViewAdminUsers",
@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       links: {
-        usersLink: LemkaEnums.AdminRoutes.UTILISATEURS.name
+        usersLink: LemkaEnums.Routes.UTILISATEURS.name
       },
       user: {}
     }
@@ -38,7 +38,7 @@ export default {
 
   methods: {
     async chargerUser(username) {
-      await AdminApiService.UserService.getUserDetail(username).then(response => {
+      await ApiService.ProfilService.getUserDetail(username).then(response => {
         this.user = response.data;
       })
     }
@@ -51,14 +51,14 @@ export default {
   async beforeRouteEnter(to, from, next) {
     async function isValid (param) {
       if (param !== undefined) {
-        return await AdminApiService.UserService.checkUser(param)
+        return await ApiService.ProfilService.checkUser(param)
       } else {
         return false
       }
     }
 
     if (!await isValid(to.params.username)) {
-      next({ name: LemkaEnums.GlobalRoutes.PAGE_NOT_FOUND_ROUTE.name });
+      next({ name: LemkaEnums.Routes.PAGE_NOT_FOUND_ROUTE.name });
     } else {
       next();
     }

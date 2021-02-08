@@ -1,35 +1,35 @@
 import axios from "axios";
-import {Endpoints} from "@/helpers/enums.helper";
-import authHeader from "@/services/auth-header";
+import authHeader from "@/configs/auth-header";
+import {LemkaEnums} from "@/helpers/enums.helper";
+
+const ROUTE = LemkaEnums.Endpoints.RAYON_ENDPOINT
 
 class RayonService {
 
     getRayonList() {
-        let endpoint = Endpoints.RAYON_ENDPOINT;
         return axios
-            .get(endpoint, {headers: authHeader()})
+            .get(ROUTE, {headers: authHeader()})
     }
 
     getRayonDetail(rayonId) {
-        let endpoint = `${Endpoints.RAYON_ENDPOINT}${rayonId}/`
+        let endpoint = `${ROUTE}${rayonId}/`
         return axios
             .get(endpoint, {headers: authHeader()})
     }
 
     postRayon(payload) {
-        let endpoint = Endpoints.RAYON_ENDPOINT;
         return axios
-            .post(endpoint, payload, {headers: authHeader()})
+            .post(ROUTE, payload, {headers: authHeader()})
     }
 
     updateRaon(rayonId, payload) {
-        let endpoint = `${Endpoints.RAYON_ENDPOINT}${rayonId}/`;
+        let endpoint = `${ROUTE}${rayonId}/`;
         return axios
             .put(endpoint, payload, {headers: authHeader()})
     }
 
     deleteRayon(rayonId) {
-        let endpoint = `${Endpoints.RAYON_ENDPOINT}${rayonId}/`;
+        let endpoint = `${ROUTE}${rayonId}/`;
         return axios
             .delete(endpoint)
     }

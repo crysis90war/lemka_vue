@@ -15,6 +15,12 @@ import LemkaSeparateur from "@/components/LemkaSeparateur";
 
 export default {
   name: 'ViewGlobalHome',
+
+  components: {
+    LemkaSeparateur,
+    'lemka-carousel': Carousel
+  },
+
   data() {
     return {
       separateurs: [
@@ -28,11 +34,6 @@ export default {
   title () {
     return Outils.htmlTitle()
   },
-
-  components: {
-    LemkaSeparateur,
-    'lemka-carousel': Carousel
-  }
 }
 </script>
 

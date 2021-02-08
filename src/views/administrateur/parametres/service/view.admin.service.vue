@@ -1,8 +1,8 @@
 <template>
-  <div v-if="$route.name === AdminRouteName.SERVICE.name">
+  <div v-if="$route.name === routes.service.name">
     <b-card>
       <b-card-body>
-        <b-button variant="outline-success" :to="{name: AdminRouteName.SERVICE_ADD.name}">Ajouter un service</b-button>
+        <b-button variant="outline-success" :to="{name: routes.service_add.name}">{{ routes.service_add.value }}</b-button>
         <b-table :items="items"
                  :fields="fields"
                  stacked="md"
@@ -18,14 +18,22 @@
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
-import {AdminRouteName} from "@/helpers/enums.helper";
+import ApiService from "@/services";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "view.admin.service",
   data() {
     return {
-      AdminRouteName,
+      routes: {
+        service: {
+          name: LemkaEnums.Routes.PARAMETRES_SERVICE.name
+        },
+        service_add: {
+          name: LemkaEnums.Routes.PARAMETRES_SERVICE_ADD.name,
+          value: LemkaEnums.Routes.PARAMETRES_SERVICE_ADD.value
+        }
+      },
       items: [],
       fields: [
         {key: 'id', label: 'Id'},
@@ -37,7 +45,7 @@ export default {
   },
   methods: {
     chargerServices() {
-      AdminApiService.TypeServiceService.getTypeServiceList().then(response => {
+      ApiService.TypeServiceService.getTypeServiceList().then(response => {
         this.items = response.data
       })
     },

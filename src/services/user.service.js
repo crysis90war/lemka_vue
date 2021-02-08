@@ -1,8 +1,8 @@
 import axios from "axios";
 import {LemkaEnums} from "@/helpers/enums.helper";
-import authHeader from "@/services/auth-header";
+import authHeader from "@/configs/auth-header";
 
-const ROUTE = LemkaEnums.AdminEndpoints.USERS_ENDPOINT;
+const ROUTE = LemkaEnums.Endpoints.USERS_ENDPOINT;
 
 class UserService {
 
@@ -35,7 +35,7 @@ class UserService {
     }
 
     async checkUser(username) {
-        let endpoint = `${LemkaEnums.AdminEndpoints.CHECK_USER_EXISTS_ENDPOINT}${username}/`
+        let endpoint = `${LemkaEnums.Endpoints.CHECK_USER_EXISTS_ENDPOINT}${username}/`
         let message = false
         await axios.get(endpoint, {headers: authHeader()}).then(response => {
             message = response.data.message

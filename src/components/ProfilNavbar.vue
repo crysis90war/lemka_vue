@@ -20,18 +20,15 @@ export default {
     return {
       menu: [
         {
-          href: {name: LemkaEnums.UserRoutes.INFORMATIONS.name},
-          title: LemkaEnums.UserRoutes.INFORMATIONS.value,
+          href: {name: LemkaEnums.Routes.INFORMATIONS.name},
+          title: LemkaEnums.Routes.INFORMATIONS.value,
           icon: LemkaEnums.FontAwesomeIcons.USER
         },
         {
-          href: {name: LemkaEnums.UserRoutes.MENSURATIONS.name},
-          title: LemkaEnums.UserRoutes.MENSURATIONS.value,
+          href: {name: LemkaEnums.Routes.MENSURATIONS.name},
+          title: LemkaEnums.Routes.MENSURATIONS.value,
           icon: LemkaEnums.FontAwesomeIcons.MESURE
         },
-        {href: {name: 'ViewUserMensurations'}, title: 'Mensurations', icon: LemkaEnums.FontAwesomeIcons.MESURE},
-        {href: {name: 'ViewUserMensurations'}, title: 'Mensurations', icon: LemkaEnums.FontAwesomeIcons.MESURE},
-        {href: {name: 'ViewUserMensurations'}, title: 'Mensurations', icon: LemkaEnums.FontAwesomeIcons.MESURE},
       ],
     }
   },

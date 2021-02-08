@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
+import ApiService from "@/services";
 
 export default {
   name: "ViewAdminArticlesAdd",
@@ -180,7 +180,7 @@ export default {
     },
 
     async chargerService() {
-      await AdminApiService.TypeServiceService.getTypeServiceList().then(response => {
+      await ApiService.TypeServiceService.getTypeServiceList().then(response => {
         response.data.forEach(item => {
           let service = {}
           service.value = item.id;

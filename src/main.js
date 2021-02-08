@@ -12,9 +12,10 @@ import './plugins/bootstrap-vue'
 import "./vee-validate";
 import Lightbox from '@morioh/v-lightbox';
 import '@morioh/v-lightbox/dist/lightbox.css';
+import Vuelidate from "vuelidate/src";
 
 Vue.use(Lightbox)
-
+Vue.use(Vuelidate)
 Vue.config.productionTip = false
 Vue.component('v-pack-select', vSelect)
 Vue.mixin(titleMixin)

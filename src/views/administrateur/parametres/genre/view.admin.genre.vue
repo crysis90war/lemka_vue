@@ -1,8 +1,8 @@
 <template>
-  <div v-if="$route.name === AdminRouteName.GENRE.name">
+  <div v-if="$route.name === routes.genre.name">
     <b-card>
       <b-card-body>
-        <b-button :to="{name: AdminRouteName.GENRE_ADD.name}" variant="outline-success">Ajouter un genre</b-button>
+        <b-button :to="{name: routes.genre_add.name}" variant="outline-success">{{ routes.genre_add.value }}</b-button>
 
         <b-table :items="items" :fields="fields"
                  stacked="md"
@@ -31,14 +31,17 @@
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
-import {AdminRouteName} from "@/helpers/enums.helper";
+import ApiService from "@/services";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "ViewGenre",
   data() {
     return {
-      AdminRouteName,
+      routes: {
+        genre: {name: LemkaEnums.Routes.PARAMETRES_GENRE.name},
+        genre_add: {name: LemkaEnums.Routes.PARAMETRES_GENRE_ADD.name, value: LemkaEnums.Routes.PARAMETRES_GENRE_ADD.value}
+      },
       param: this.$route.params.param,
       items: [],
       fields: [
@@ -48,17 +51,16 @@ export default {
       ]
     }
   },
-  created() {
-    this.chargerGenres()
-  },
+
   methods: {
-    chargerGenres() {
-      AdminApiService.GenreService.getGenreList().then(response => {
+    async chargerGenres() {
+      await ApiService.GenreService.getGenreList().then(response => {
         this.items = response.data
       })
     },
-    supprimerGenre(genreId) {
-      AdminApiService.GenreService.deleteGenre(genreId).then(response => {
+
+    async supprimerGenre(genreId) {
+      await ApiService.GenreService.deleteGenre(genreId).then(response => {
         console.log(response)
         if (response.status === 204) {
           this.chargerGenres()
@@ -68,6 +70,11 @@ export default {
       })
     }
   },
+
+  created() {
+    this.chargerGenres()
+  },
+
   beforeRouteUpdate(to, from, next) {
     this.param = to.params.param;
     next();

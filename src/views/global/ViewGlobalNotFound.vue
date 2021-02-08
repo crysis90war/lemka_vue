@@ -8,7 +8,7 @@
       </div>
       <h1>oups!</h1>
       <h2>{{ message }}</h2>
-      <b-link class="btn-grad" :to="{ name: homeLink }">
+      <b-link class="btn-grad" :to="{ name: home }">
         Page d'accueil
       </b-link>
       <lemka-social />
@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      homeLink: LemkaEnums.GlobalRoutes.HOME_ROUTE.name,
+      home: LemkaEnums.Routes.HOME_ROUTE.name,
       message: "Erreur 404 - Page Non Trouvée"
     }
   }

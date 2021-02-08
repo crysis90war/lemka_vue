@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
+import ApiService from "@/services";
 
 export default {
   name: "view.admin.service.add",
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     ajouterService() {
-      AdminApiService.TypeServiceService.postTypeService(this.service).then(response => {
+      ApiService.TypeServiceService.postTypeService(this.service).then(response => {
         this.response = response
       }).catch(error => {
         this.response = error

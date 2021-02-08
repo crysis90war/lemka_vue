@@ -1,8 +1,8 @@
 import axios from "axios";
-import {Endpoints} from "@/helpers/enums.helper";
-import authHeader from "@/services/auth-header";
+import authHeader from "@/configs/auth-header";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
-const ROUTE = Endpoints.SECTION_ENDPOINT;
+const ROUTE = LemkaEnums.Endpoints.SECTION_ENDPOINT;
 
 class SectionService {
 

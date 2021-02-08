@@ -167,7 +167,7 @@
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
+import ApiService from "@/services";
 import {LemkaEnums} from '@/helpers/enums.helper';
 
 export default {
@@ -175,9 +175,9 @@ export default {
   data() {
     return {
       links: {
-        articlesLink: LemkaEnums.AdminRoutes.ARTICLES.name,
-        articleDetailLink: LemkaEnums.AdminRoutes.ARTICLES_DETAIL.name,
-        articleAddLink: LemkaEnums.AdminRoutes.ARTICLE_ADD.name,
+        articlesLink: LemkaEnums.Routes.ARTICLES.name,
+        articleDetailLink: LemkaEnums.Routes.ARTICLES_DETAIL.name,
+        articleAddLink: LemkaEnums.Routes.ARTICLE_ADD.name,
       },
       items: [],
       fields: [
@@ -237,26 +237,26 @@ export default {
         let articles = []
         let typeService, catalogue, rayon, section, typeProduit;
 
-        await AdminApiService.ArticleService.getArticleList().then(response => {
+        await ApiService.ArticleService.getArticleList().then(response => {
           response.data.forEach(item => {
             articles.push(item)
           })
         })
 
         for (let i = 0; i < articles.length; i++) {
-          await AdminApiService.TypeServiceService.getTypeServiceDetail(articles[i].ref_type_service).then(response => {
+          await ApiService.TypeServiceService.getTypeServiceDetail(articles[i].ref_type_service).then(response => {
             typeService = response.data;
           })
-          await AdminApiService.CatalogueService.getCatalogueDetail(articles[i].ref_catalogue).then(response => {
+          await ApiService.CatalogueService.getCatalogueDetail(articles[i].ref_catalogue).then(response => {
             catalogue = response.data
           })
-          await AdminApiService.RayonService.getRayonDetail(catalogue.ref_rayon).then(response => {
+          await ApiService.RayonService.getRayonDetail(catalogue.ref_rayon).then(response => {
             rayon = response.data
           })
-          await AdminApiService.SectionService.getSectionDetail(catalogue.ref_section).then(response => {
+          await ApiService.SectionService.getSectionDetail(catalogue.ref_section).then(response => {
             section = response.data
           })
-          await AdminApiService.TypeProduitService.getTypeProduitDetail(catalogue.ref_type_produit).then(response => {
+          await ApiService.TypeProduitService.getTypeProduitDetail(catalogue.ref_type_produit).then(response => {
             typeProduit = response.data
           })
           articles[i].ref_type_service = typeService
@@ -288,7 +288,7 @@ export default {
         let data = {
           "est_active": !article.est_active
         }
-        await AdminApiService.ArticleService.patchArticle(articleSlug, data)
+        await ApiService.ArticleService.patchArticle(articleSlug, data)
       } catch (error) {
         console.log(error)
       } finally {

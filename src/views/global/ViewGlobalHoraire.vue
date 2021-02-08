@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import VisiteurGetService from "@/services/visiteur.get.service"
 import Outils from "@/mixins/outils.mixin";
 
 export default {
@@ -50,10 +49,7 @@ export default {
     return Outils.htmlTitle(this.title)
   },
 
-  mounted() {
-    VisiteurGetService.getHorairePublic().then(response => {
-      this.horaires = response.data
-    })
+  created() {
   },
 
   methods: {

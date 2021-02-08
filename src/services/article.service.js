@@ -1,8 +1,8 @@
 import axios from "axios";
-import {Endpoints} from "@/helpers/enums.helper";
-import authHeader from "@/services/auth-header";
+import authHeader from "@/configs/auth-header";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
-const ROUTE = Endpoints.ARTICLES_ENDPOINT;
+const ROUTE = LemkaEnums.Endpoints.ARTICLES_ENDPOINT;
 const ROUTE_IMAGES = '/images/';
 
 class ArticleService {

@@ -15,6 +15,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "ViewUserProfil",
+
   components: {
     'profil-navbar': ProfilNavbar
   },
@@ -30,22 +31,22 @@ export default {
 
   created() {
     if (!this.currentUser) {
-      this.$router.push('/');
+      this.$router.push({name: LemkaEnums.Routes.LOGIN_ROUTE.name});
     }
-    if (this.$route.name === LemkaEnums.UserRoutes.PROFIL_ROUTE.name) {
-      this.$router.push({name: LemkaEnums.UserRoutes.INFORMATIONS.name})
+    if (this.$route.name === LemkaEnums.Routes.PROFIL_ROUTE.name) {
+      this.$router.push({name: LemkaEnums.Routes.INFORMATIONS.name})
     }
   },
 
   watch: {
     currentUser: function () {
       if (!this.currentUser) {
-        this.$router.push('/');
+        this.$router.push({name: LemkaEnums.Routes.LOGIN_ROUTE.name});
       }
     },
     thisRoute: function () {
-      if (this.thisRoute === LemkaEnums.UserRoutes.PROFIL_ROUTE.name) {
-        this.$router.push({name: LemkaEnums.UserRoutes.INFORMATIONS.name})
+      if (this.thisRoute === LemkaEnums.Routes.PROFIL_ROUTE.name) {
+        this.$router.push({name: LemkaEnums.Routes.INFORMATIONS.name})
       }
     }
   }

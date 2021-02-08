@@ -1,19 +1,19 @@
 import axios from "axios";
-import authHeader from "@/services/auth-header";
+import authHeader from "@/configs/auth-header";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
-const ROUTE = LemkaEnums.UserEndpoints.PROFILE_ENDPOINT;
+const ROUTE = LemkaEnums.Endpoints.PROFILE_ENDPOINT;
 
-class UserService {
-    getUserDetail() {
+class ProfilService {
+    getProfilDetail() {
         return axios.get(ROUTE, {headers: authHeader()})
     }
 
-    putUser(payload) {
+    putProfil(payload) {
         return axios.put(ROUTE, payload, {headers: authHeader()})
     }
 
-    patchUserImage(payload) {
+    patchProfilImage(payload) {
         let data = {
             image: payload.image
         }
@@ -21,4 +21,4 @@ class UserService {
     }
 }
 
-export default new UserService();
+export default new ProfilService();

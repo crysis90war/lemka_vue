@@ -2,8 +2,8 @@
   <div id="app">
 <!--    <lemka-header></lemka-header>-->
     <lemka-navbar></lemka-navbar>
-    <b-breadcrumb v-if="checkRoute() === true">
-      <b-breadcrumb-item :to="{name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name}"><i class="fas fa-home"></i></b-breadcrumb-item>
+    <b-breadcrumb v-if="checkRoute() === true" class="mb-0">
+      <b-breadcrumb-item :to="{name: homeLink}"><i class="fas fa-home"></i></b-breadcrumb-item>
       <b-breadcrumb-item v-for="item in items" :key="item.path" :to="item.path" :active="$route.name === item.name">
         {{ item.meta.value }}
       </b-breadcrumb-item>
@@ -14,11 +14,11 @@
 </template>
 
 <script>
+import axios from "axios";
+import {LemkaEnums} from "@/helpers/enums.helper";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 // import Header from "@/components/Header";
-import {LemkaEnums} from "@/helpers/enums.helper";
-import axios from "axios";
 
 export default {
   name: 'Home',
@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      LemkaEnums,
+      homeLink: LemkaEnums.Routes.HOME_ROUTE.name,
       items: [],
     }
   },
@@ -38,10 +38,20 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
   },
-  watch: {
-    $route() {
-      this.getRoute();
+  methods: {
+    getRoute() {
+      this.items = this.$route.matched;
     },
+
+    checkRoute() {
+      let route = this.$route.name;
+
+      return (
+          (route !== LemkaEnums.Routes.HOME_ROUTE.name) &&
+          (route !== LemkaEnums.Routes.LOGIN_ROUTE.name) &&
+          (route !== LemkaEnums.Routes.REGISTER_ROUTE.name)
+      );
+    }
   },
   created() {
     // this.chargerVilles();
@@ -56,24 +66,10 @@ export default {
       return Promise.reject(error);
     })
   },
-  methods: {
-    getRoute() {
-      this.items = this.$route.matched;
+  watch: {
+    $route() {
+      this.getRoute();
     },
-
-    async chargerVilles() {
-      await this.$store.dispatch('villes/fetchCities');
-    },
-
-    checkRoute() {
-      let route = this.$route.name;
-
-      return (
-          (route !== LemkaEnums.GlobalRoutes.HOME_ROUTE.name) &&
-          (route !== LemkaEnums.GlobalRoutes.LOGIN_ROUTE.name) &&
-          (route !== LemkaEnums.GlobalRoutes.REGISTER_ROUTE.name)
-      );
-    }
   },
 }
 </script>

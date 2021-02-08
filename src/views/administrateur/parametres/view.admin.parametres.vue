@@ -2,78 +2,52 @@
   <div>
     <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="nav-shadow border-top colored m-0">
       <b-navbar-nav>
-        <b-nav-item :to="{name: AdminRouteName.ENTREPRISE.name}" :active="$route.name === AdminRouteName.ENTREPRISE.name">Entreprise</b-nav-item>
-        <b-nav-item :to="{name: AdminRouteName.GENRE.name}" :active="$route.name === AdminRouteName.GENRE.name">Genres</b-nav-item>
-        <b-nav-item :to="{name: AdminRouteName.MENSURATION.name}" :active="$route.name === AdminRouteName.MENSURATION.name">Mensurations</b-nav-item>
-        <b-nav-item :to="{name: AdminRouteName.SERVICE.name}" :active="$route.name === AdminRouteName.SERVICE.name">Service</b-nav-item>
+        <b-nav-item :to="{name: routes.entreprise.name}" :active="$route.name === routes.entreprise.name">
+          {{ routes.entreprise.value }}
+        </b-nav-item>
+
+        <b-nav-item :to="{name: routes.genre.name}" :active="$route.name === routes.genre.name">
+          {{ routes.genre.value }}
+        </b-nav-item>
+
+        <b-nav-item :to="{name: routes.mensuration.name}" :active="$route.name === routes.mensuration.name">
+          {{ routes.mensuration.value }}
+        </b-nav-item>
+
+        <b-nav-item :to="{name: routes.service.name}" :active="$route.name === routes.service.name">
+          {{ routes.service.value }}
+        </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
-      <router-view :key="$route.fullPath"></router-view>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
-
-<!--  <b-card  v-if="$route.name === AdminRouteName.PARAMETRES.name" class="bg-danger">-->
-<!--      <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="nav-shadow colored m-0">-->
-<!--        <b-navbar-nav>-->
-<!--          <b-nav-item>Entreprise</b-nav-item>-->
-<!--        </b-navbar-nav>-->
-<!--      </b-navbar>-->
-<!--    <b-card-body>-->
-<!--      <div>-->
-<!--        <b-tabs content-class="mt-3">-->
-<!--          <b-tab title="Entreprise" active>-->
-<!--            <div v-if="entreprise === null">-->
-<!--              <b-button :to="{name:AdminRouteName.ADD_ENTREPRISE.name}" variant="outline-success">Ajouter informations</b-button>-->
-<!--              <hr>-->
-<!--            </div>-->
-<!--            <pre>{{ JSON.stringify(entreprise, null, '\t') }}</pre>-->
-<!--          </b-tab>-->
-<!--          <b-tab title="Catalogue">-->
-<!--            <b-table stacked="sm" :items="catalogues"></b-table>-->
-<!--          </b-tab>-->
-<!--          <b-tab title="Service">-->
-<!--            <b-table caption-top small hover stacked="sm" :items="services"></b-table>-->
-<!--          </b-tab>-->
-<!--          <b-tab title="Catégories">-->
-<!--            <b-table stacked="sm" :items="categories"></b-table>-->
-<!--          </b-tab>-->
-
-<!--          <b-tab title="Genre">-->
-<!--            <b-table stacked="md" :items="genres"></b-table>-->
-<!--          </b-tab>-->
-<!--        </b-tabs>-->
-<!--      </div>-->
-<!--    </b-card-body>-->
-<!--  </b-card>-->
-
-
 </template>
 
 <script>
-import AdminApiService from "@/services/administrateur";
-import {Endpoints, AdminRouteName} from "@/helpers/enums.helper";
+import ApiService from "@/services";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "ViewParametres",
   data() {
     return {
+      routes: {
+        entreprise: {name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name, value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.value},
+        genre: {name: LemkaEnums.Routes.PARAMETRES_GENRE.name, value: LemkaEnums.Routes.PARAMETRES_GENRE.value},
+        mensuration: {name: LemkaEnums.Routes.PARAMETRES_MENSURATION.name, value: LemkaEnums.Routes.PARAMETRES_MENSURATION.value},
+        service: {name: LemkaEnums.Routes.PARAMETRES_SERVICE.name, value: LemkaEnums.Routes.PARAMETRES_SERVICE.value}
+      },
       services: [],
       catalogues: [],
       categories: [],
       entreprise: null,
       genres: [],
-      Endpoints,
-      AdminRouteName
     }
   },
-  mounted() {
-    this.chargerEntreprise();
-    this.chargerCatalogues();
-    this.chargerServices();
-    this.chargerCategories();
-  },
+
   methods: {
-    chargerEntreprise() {
-      AdminApiService.EntrepriseService.getEntrepriseList().then(response => {
+    async chargerEntreprise() {
+      await ApiService.EntrepriseService.getEntrepriseList().then(response => {
         if (response.data.length === 0) {
           this.entreprise = null
         } else {
@@ -82,25 +56,33 @@ export default {
       })
     },
 
-    chargerServices() {
-      AdminApiService.TypeServiceService.getTypeServiceList().then(response => {
+    async chargerServices() {
+      await ApiService.TypeServiceService.getTypeServiceList().then(response => {
         this.services = response.data
       })
     },
 
-    chargerCatalogues() {
-      AdminApiService.CatalogueService.getCatalogueList().then(response => {
+    async chargerCatalogues() {
+      await ApiService.CatalogueService.getCatalogueList().then(response => {
         this.catalogues = response.data
       })
     },
 
-    chargerCategories() {
-      AdminApiService.CategorieService.getCategorieList().then(response => {
+    async chargerCategories() {
+      await ApiService.CategorieService.getCategorieList().then(response => {
         this.categories = response.data;
       })
     },
 
   },
+
+  created() {
+    this.chargerEntreprise();
+    this.chargerCatalogues();
+    this.chargerServices();
+    this.chargerCategories();
+  },
+
   filters: {
     pretty: function (value) {
       return JSON.stringify(JSON.parse(value), null, 2);

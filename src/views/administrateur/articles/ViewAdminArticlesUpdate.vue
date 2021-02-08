@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      returnLink: LemkaEnums.AdminRoutes.ARTICLES_DETAIL.name,
+      returnLink: LemkaEnums.Routes.ARTICLES_DETAIL.name,
     }
   },
 }

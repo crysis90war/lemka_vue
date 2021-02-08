@@ -75,9 +75,9 @@
 </template>
 
 <script>
-import {AdminRouteName, Endpoints} from "@/helpers/enums.helper";
+import {LemkaEnums} from "@/helpers/enums.helper";
 import axios from "axios";
-import authHeader from "@/services/auth-header";
+import authHeader from "@/configs/auth-header";
 import DashboardCard from "@/views/administrateur/dashboard/component.dashboard.card"
 
 export default {
@@ -87,7 +87,6 @@ export default {
   },
   data() {
     return {
-      AdminRouteName,
       dashboard: {
         articles_count: 0,
         bons_de_commande_count: 0,
@@ -105,7 +104,7 @@ export default {
   },
   methods: {
     async loadDashboard() {
-      await axios.get(Endpoints.DASHBOARD_ENDPOINT, {headers: authHeader()}).then(response => {
+      await axios.get(LemkaEnums.Endpoints.DASHBOARD_ENDPOINT, {headers: authHeader()}).then(response => {
         this.dashboard = response.data
       })
     }

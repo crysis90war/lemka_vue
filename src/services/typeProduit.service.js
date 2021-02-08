@@ -1,8 +1,8 @@
 import axios from "axios";
-import authHeader from "@/services/auth-header";
-import {Endpoints} from "@/helpers/enums.helper";
+import authHeader from "@/configs/auth-header";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
-const ROUTE = Endpoints.TYPE_PRODUIT_ENDPOINT
+const ROUTE = LemkaEnums.Endpoints.TYPE_PRODUIT_ENDPOINT
 
 class TypeProduitService {
 

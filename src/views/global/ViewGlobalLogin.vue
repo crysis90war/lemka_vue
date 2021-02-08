@@ -70,7 +70,7 @@ export default {
       if (this.user.email && this.user.password) {
         this.loading = true;
         this.$store.dispatch('auth/login', this.user).then(() => {
-              this.$router.push({name: LemkaEnums.GlobalRoutes.HOME_ROUTE.name});
+              this.$router.push({name: LemkaEnums.Routes.PROFIL_ROUTE.name});
             }, error => {
           this.loading = false
               console.log(error)

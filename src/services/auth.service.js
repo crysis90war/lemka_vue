@@ -3,7 +3,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 
 class AuthService {
     login(user) {
-        return axios.post(LemkaEnums.GlobalEndpoints.LOGIN_ENDPOINT, {
+        return axios.post(LemkaEnums.Endpoints.LOGIN_ENDPOINT, {
             email: user.email,
             password: user.password
         }).then(response => {
@@ -24,7 +24,7 @@ class AuthService {
     }
 
     refreshToken(user) {
-        return axios.post(LemkaEnums.GlobalRoutes.REFRESH_ENDPOINT, {
+        return axios.post(LemkaEnums.Endpoints.REFRESH_ENDPOINT, {
             refresh: user.tokens.refresh
         }).then(response => {
             let utilisateur = user
@@ -38,7 +38,7 @@ class AuthService {
     }
 
     register(user) {
-        return axios.post(LemkaEnums.GlobalRoutes.REGISTER_ENDPOINT, {
+        return axios.post(LemkaEnums.Endpoints.REGISTER_ENDPOINT, {
             username: user.username,
             email: user.email,
             password: user.password,

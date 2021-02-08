@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import UserApiService from "@/services/utilisateur";
+import ApiService from "@/services/";
 
 export default {
   name: "ViewUserMensurations",
@@ -25,12 +25,12 @@ export default {
   },
   methods: {
     chargerUserMensurations() {
-      UserApiService.UserMensurationsService.getUserMensurationsList().then(response => {
+      ApiService.UserMensurationsService.getUserMensurationsList().then(response => {
         this.userMensurations = response.data
       })
     },
     async deleteUserMensuration(mensurationId) {
-      await UserApiService.UserMensurationsService.deleteUserMensurations(mensurationId)
+      await ApiService.UserMensurationsService.deleteUserMensurations(mensurationId)
     }
   },
   created() {

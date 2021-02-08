@@ -4,25 +4,27 @@ const AdminView = 'ViewAdmin';
 const UserView = 'ViewUser';
 const GlobalView = 'ViewGlobal';
 
-const GlobalRoutes = {
+const Routes = {
+    // region Global routes
     HOME_ROUTE: {name: GlobalView + 'Home', value: 'Accueil'},
-    LOGIN_ROUTE: {name: GlobalView + 'Login', value: 'Login'},
-    REGISTER_ROUTE: {name: GlobalView + 'Register', value: 'Register'},
+    LOGIN_ROUTE: {name: GlobalView + 'Login', value: 'Se connecter'},
+    REGISTER_ROUTE: {name: GlobalView + 'Register', value: 'S\'inscrire'},
     HORAIRE_ROUTE: {name: GlobalView + 'Horaire', value: 'Horaire'},
     CONTACT_ROUTE: {name: GlobalView + 'Contact', value: 'Contact'},
     ABOUT_ROUTE: {name: GlobalView + 'About', value: 'À propos'},
-    PAGE_NOT_FOUND_ROUTE: {name: GlobalView + 'PageNotFound', value: 'PageNotFound'}
-}
+    PAGE_NOT_FOUND_ROUTE: {name: GlobalView + 'PageNotFound', value: 'PageNotFound'},
+    // endregion
 
-const UserRoutes = {
+    // region User routes
     PROFIL_ROUTE: {name: UserView + 'Profil', value: 'Profil'},
     INFORMATIONS: {name: UserView + 'Informations', value: 'Informations'},
     INFORMATIONS_UPDATE: {name: UserView + 'InformationsUpdate', value: 'Modifier'},
     ADRESSE_ADD: {name: UserView + 'AdresseAdd', value: 'Ajouter une adresse'},
+    ADRESSE_UPDATE: {name: UserView + 'AdresseUpdate', value: 'Modifier l\'adresse'},
     MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
-}
+    // endregion
 
-const AdminRoutes = {
+    // region Admin routes
     ADMIN_ROUTE: {name: AdminView, value: 'Administration'},
 
     DASHBOARD: {name: AdminView + 'Dashboard', value: 'Dashboard'},
@@ -55,33 +57,30 @@ const AdminRoutes = {
     PARAMETRES_MENSURATION: {name: AdminView + 'Mensuration', value: 'Mensurations'},
     PARAMETRES_MENSURATION_ADD: {name: AdminView + 'MensurationAdd', value: 'Ajouter mensuration'},
     PARAMETRES_SERVICE: {name: AdminView + 'Service', value: 'Services'},
-    PARAMETRES_SERVICE_ADD: {name: AdminView + 'ServiceAdd', value: 'Ajouter un service'}
+    PARAMETRES_SERVICE_ADD: {name: AdminView + 'ServiceAdd', value: 'Ajouter un service'},
+    // endregion
 }
 
-export const Endpoints = {
-
-}
-
-const GlobalEndpoints = {
+const Endpoints = {
+    // region Global endpoints
     LOGIN_ENDPOINT: DOMAIN + '/login/',
     REGISTER_ENDPOINT: DOMAIN + '/register/',
     REFRESH_ENDPOINT: DOMAIN + '/token/refresh/',
-}
+    VILLE_ENDPOINT: DOMAIN + '/villes/',
+    // endregion
 
-const UserEndpoints = {
+    // region User endpoints
     PROFILE_ENDPOINT: PROFIL + '/',
-    PROFIL_GENRE_ENDPOINT: PROFIL + '/genres/',
 
     USER_MENSURATION_ENDPOINT: PROFIL + /mensurations/,
 
     ADRESSE_GUD_ENPOINT: PROFIL + '/adresse/',
     ADRESSE_CREATE_ENDPOINT: PROFIL + '/adresses/',
 
-    VILLE_ENDPOINT: PROFIL + '/villes/',
-    PAYS_ENDPOINT: PROFIL + '/pays/'
-}
+    PAYS_ENDPOINT: DOMAIN + '/pays/',
+    // endregion
 
-const AdminEndpoints = {
+    // region Admin endpoints
     USERS_ENDPOINT: DOMAIN + '/utilisateurs/',
     GENRES_ENDPOINT: DOMAIN + '/genres/',
     ARTICLES_ENDPOINT: DOMAIN + '/articles/',
@@ -102,6 +101,8 @@ const AdminEndpoints = {
 
     DASHBOARD_ENDPOINT: DOMAIN + '/admin-dashboard/',
     CHECK_USER_EXISTS_ENDPOINT: DOMAIN + '/check/',
+    // endregion
+
 }
 
 const FontAwesomeIcons = {
@@ -127,18 +128,13 @@ const FontAwesomeIcons = {
     GENRE: 'fas fa-venus-mars'
 }
 
-const BootstrapClass = {
+const BSClass = {
     CARD_BORDERLESS_SHADOW: 'border-0 shadow p-3 mb-5 bg-white rounded'
 }
 
 export const LemkaEnums = {
-    GlobalEndpoints,
-    UserEndpoints,
-    AdminEndpoints,
-    GlobalRoutes,
-    UserRoutes,
-    AdminRoutes,
-    FontAwesomeIcons,
-    BootstrapClass,
+    Routes,
     Endpoints,
+    FontAwesomeIcons,
+    BSClass,
 }

@@ -154,7 +154,7 @@
 </template>
 
 <script>
-import AdminApiService from '@/services/administrateur';
+import ApiService from '@/services';
 import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
@@ -162,8 +162,8 @@ export default {
   data() {
     return {
       links: {
-        usersLink: LemkaEnums.AdminRoutes.UTILISATEURS.name,
-        userDetailLink: LemkaEnums.AdminRoutes.UTILISATEURS_DETAIL.name
+        usersLink: LemkaEnums.Routes.UTILISATEURS.name,
+        userDetailLink: LemkaEnums.Routes.UTILISATEURS_DETAIL.name
       },
       items: [],
       fields: [
@@ -214,8 +214,8 @@ export default {
     this.chargerUtilisateurs();
   },
   methods: {
-    chargerUtilisateurs() {
-      AdminApiService.UserService.getUserList().then(response => {
+    async chargerUtilisateurs() {
+      await ApiService.ProfilService.getUserList().then(response => {
         this.items = response.data
         this.totalRows = this.items.length
       })
