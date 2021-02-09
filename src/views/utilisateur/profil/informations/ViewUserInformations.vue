@@ -3,25 +3,25 @@
     <b-card-body>
       <b-row>
         <b-col lg="7">
-          <h2>{{ user.first_name !== '' ? user.first_name : 'Prénom' }}</h2>
-          <h2>{{ user.last_name !== '' ? user.last_name : 'Nom' }}</h2>
-          <span>@{{ user.username }}</span>
+          <h2>{{ profil.first_name !== '' ? profil.first_name : 'Prénom' }}</h2>
+          <h2>{{ profil.last_name !== '' ? profil.last_name : 'Nom' }}</h2>
+          <span>@{{ profil.username }}</span>
           <div>
-            <b-badge v-if="user.is_staff === true" pill variant="success">Administrateur</b-badge>
+            <b-badge v-if="profil.is_staff === true" pill variant="success">Administrateur</b-badge>
             <b-badge v-else pill variant="primary">Utilisateur</b-badge>
           </div>
           <hr>
-          <div v-if="user.email">
+          <div v-if="profil.email">
             <span class="mr-2"><i :class="icons.email"></i></span>
-            <span>{{ user.email }}</span>
+            <span>{{ profil.email }}</span>
           </div>
-          <div v-if="user.numero_tel">
+          <div v-if="profil.numero_tel">
             <span class="mr-2"><i :class="icons.phone"></i></span>
-            <span>{{ user.numero_tel }}</span>
+            <span>{{ profil.numero_tel }}</span>
           </div>
-          <div v-if="user.ref_genre !== null && user.ref_genre !== undefined">
+          <div v-if="profil.ref_genre !== null && profil.ref_genre !== undefined">
             <span class="mr-2"><i :class="icons.genre"></i></span>
-            <span>{{ user.ref_genre.genre }}</span>
+            <span>{{ profil.ref_genre.genre }}</span>
           </div>
           <hr>
           <div>
@@ -45,17 +45,17 @@
         </b-col>
 
         <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center">
-          <b-img thumbnail rounded="" :src="user.image" class="h-100"></b-img>
+          <b-img thumbnail rounded="" :src="profil.image" class="h-100"></b-img>
           <b-button id="toggle-btn" variant="light" class="position-absolute bottom-0 start-0" @click="showModal">
             Modifier photo
           </b-button>
-          <lemka-upload-modal :user="user" :multiple="true"></lemka-upload-modal>
+          <lemka-upload-modal :user="profil" :multiple="true"></lemka-upload-modal>
         </b-col>
 
       </b-row>
       <div>
-        <span><small>Membre depuis {{ user.created_at }}</small></span><br>
-        <span><small>Dernière mise à jour {{ user.updated_at }}</small></span>
+        <span><small>Membre depuis {{ profil.created_at }}</small></span><br>
+        <span><small>Dernière mise à jour {{ profil.updated_at }}</small></span>
       </div>
     </b-card-body>
   </b-card>
@@ -70,7 +70,6 @@
 
 <script>
 import {LemkaEnums} from "@/helpers/enums.helper";
-import {customConsole} from "@/helpers/functions.helper";
 import UploadModal from "@/components/UploadModal";
 import GenreModel from "@/models/genre.model";
 import ProfilModel from "@/models/profil.model";
@@ -100,22 +99,22 @@ export default {
         adresse: LemkaEnums.FontAwesomeIcons.HOME,
         genre: LemkaEnums.FontAwesomeIcons.GENRE,
       },
-      user: new ProfilModel(),
+      profil: new ProfilModel(),
       adresse: new AdresseModel(),
       loading: false
     }
   },
 
   methods: {
-    async chargerUser() {
-      let user = {}
+    async chargerProfil() {
+      let profil = {}
       let genre = {}
-      user = await ProfilModel.fetchProfil()
-      if (user.ref_genre !== null && user.ref_genre !== undefined) {
-        genre = await GenreModel.fetchGenre(user.ref_genre)
-        user.ref_genre = genre
+      profil = await ProfilModel.fetchProfil()
+      if (profil.ref_genre !== null && profil.ref_genre !== undefined) {
+        genre = await GenreModel.fetchGenre(profil.ref_genre)
+        profil.ref_genre = genre
       }
-      Object.assign(this.user, user)
+      Object.assign(this.profil, profil)
     },
 
     async chargerAdresse() {
@@ -123,15 +122,19 @@ export default {
       let ville = {}
       let pays= {}
       adresse = await AdresseModel.fetchAdresse()
-      if (adresse.ref_ville !== null && adresse.ref_ville !== undefined) {
-        ville = await VilleModel.fetchVille(adresse.ref_ville)
-        adresse.ref_ville = ville
+      if (adresse !== null && adresse !== undefined && Object.entries(adresse).length !== 0) {
+        if (adresse.ref_ville !== null && adresse.ref_ville !== undefined) {
+          ville = await VilleModel.fetchVille(adresse.ref_ville)
+          adresse.ref_ville = ville
+        }
+        if (ville.ref_pays !== null && ville.ref_pays !== undefined) {
+          pays = await PaysModel.fetchPays(ville.ref_pays)
+          ville.ref_pays = pays
+        }
+        Object.assign(this.adresse, adresse)
+      } else {
+        this.adresse = adresse
       }
-      if (ville.ref_pays !== null && ville.ref_pays !== undefined) {
-        pays = await PaysModel.fetchPays(ville.ref_pays)
-        ville.ref_pays = pays
-      }
-      Object.assign(this.adresse, adresse)
     },
 
     showModal() {
@@ -141,10 +144,8 @@ export default {
     async loadData() {
       try {
         this.loading = true
-        await this.chargerUser()
+        await this.chargerProfil()
         await this.chargerAdresse()
-      } catch (e) {
-        customConsole(e, 'ERROR')
       } finally {
         this.loading = false
       }

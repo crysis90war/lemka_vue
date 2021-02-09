@@ -10,13 +10,13 @@ class AdresseService {
         return axios.get(ROUTE, {headers: authHeader()})
     }
 
-    postAdresse(payload) {
-        return axios.post(ADD_ADRESSE, payload, {headers: authHeader()})
-    }
-
     getAdressesDetail(adresseId) {
         let endpoint = `${ROUTE}${adresseId}/`;
         return axios.get(endpoint, {headers: authHeader()})
+    }
+
+    postAdresse(payload) {
+        return axios.post(ADD_ADRESSE, payload, {headers: authHeader()})
     }
 }
 

@@ -6,14 +6,16 @@
                       label="Username"
                       description="Veuillez encoder votre nom d'utilisateur"
                       label-for="input-username">
-          <b-form-input v-model="$v.user.username.$model"
+          <b-form-input id="input-username"
                         name="input-username"
-                        :state="validateState('username')"
-                        placeholder="Username:"></b-form-input>
+                        placeholder="Username ..."
+                        type="text"
+                        v-model="$v.profil.username.$model"
+                        :state="validateState('username')"></b-form-input>
           <b-form-invalid-feedback>
-            <span v-if="!$v.user.username.required">Ceci est un champ obligatoire.</span><br>
-            <span v-if="!$v.user.username.minLength">Ce champ doit contenir au moins 4 caractères.</span><br>
-            <span v-if="!$v.user.username.alphaNum">Ce champ doit être alphanumérique.</span>
+            <span v-if="!$v.profil.username.required">Ceci est un champ obligatoire.</span><br>
+            <span v-if="!$v.profil.username.minLength">Ce champ doit contenir au moins 4 caractères.</span><br>
+            <span v-if="!$v.profil.username.alphaNum">Ce champ doit être alphanumérique.</span>
           </b-form-invalid-feedback>
         </b-form-group>
 
@@ -25,11 +27,12 @@
                           label-for="input-last-name">
               <b-form-input id="input-last-name"
                             name="input-last-name"
+                            placeholder="Nom ..."
                             type="text"
-                            v-model="$v.user.last_name.$model"
+                            v-model="$v.profil.last_name.$model"
                             :state="validateState('last_name')"></b-form-input>
               <b-form-invalid-feedback>
-                <span v-if="!$v.user.last_name.minLength">Ce champ doit contenir au moins 2 caractères.</span><br>
+                <span v-if="!$v.profil.last_name.minLength">Ce champ doit contenir au moins 2 caractères.</span><br>
               </b-form-invalid-feedback>
             </b-form-group>
           </b-col>
@@ -40,12 +43,12 @@
                           label-for="input-first-name">
               <b-form-input id="input-first-name"
                             name="input-first-name"
+                            placeholder="Prénom ..."
                             type="text"
-                            placeholder="Prénom"
-                            v-model="$v.user.first_name.$model"
+                            v-model="$v.profil.first_name.$model"
                             :state="validateState('first_name')"></b-form-input>
               <b-form-invalid-feedback>
-                <span v-if="!$v.user.first_name.minLength">Ce champ doit contenir au moins 2 caractères.</span><br>
+                <span v-if="!$v.profil.first_name.minLength">Ce champ doit contenir au moins 2 caractères.</span><br>
               </b-form-invalid-feedback>
             </b-form-group>
           </b-col>
@@ -57,13 +60,13 @@
                       label-for="input-numero-tel">
           <b-form-input id="input-numero-tel"
                         name="input-numero-tel"
+                        placeholder="Numero téléphone ..."
                         type="text"
-                        placeholder="Nom"
-                        v-model="$v.user.numero_tel.$model"
+                        v-model="$v.profil.numero_tel.$model"
                         :state="validateState('numero_tel')"></b-form-input>
           <b-form-invalid-feedback>
-            <span v-if="!$v.user.numero_tel.minLength">Ce champ doit contenir au moins 6 caractères.</span><br>
-            <span v-if="!$v.user.numero_tel.alphaNum">Ce champ doit être numérique.</span>
+            <span v-if="!$v.profil.numero_tel.minLength">Ce champ doit contenir au moins 6 caractères.</span><br>
+            <span v-if="!$v.profil.numero_tel.alphaNum">Ce champ doit être numérique.</span>
           </b-form-invalid-feedback>
         </b-form-group>
 
@@ -87,20 +90,23 @@
 
 <script>
 import {LemkaEnums} from "@/helpers/enums.helper";
-import UserModel from '@/models/user.model'
-import ApiService from "@/services/";
 import {validationMixin} from "vuelidate";
 import GenreModel from "@/models/genre.model";
+import ProfilModel from "@/models/profil.model";
 
 export default {
   name: "ViewUserInformationsUpdate",
+  mixins: validationMixin,
+  validations: {
+    profil: ProfilModel.validations
+  },
   data() {
     return {
       link: LemkaEnums.Routes.INFORMATIONS.name,
       bootstrap: {
         shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
       },
-      user: new UserModel(),
+      profil: new ProfilModel(),
       genre: null,
       genres: [],
       submitStatus: null
@@ -108,38 +114,30 @@ export default {
   },
 
   methods: {
-    async chargerUser() {
-      let user = {}
+    async chargerProfil() {
+      let profil = {}
       let genre = {}
-      await ApiService.ProfilService.getProfilDetail().then(response => {
-        Object.assign(user, response.data)
-      })
-
-      await ApiService.GenreService.getGenreDetail(user.ref_genre).then(response => {
-        Object.assign(genre, response.data)
-        user.ref_genre = genre
-      })
-
-      Object.assign(this.user, user)
-      this.genre = this.user.ref_genre.id
+      profil = await ProfilModel.fetchProfil()
+      if (profil.ref_genre !== null && profil.ref_genre !== undefined) {
+        genre = await GenreModel.fetchGenre(profil.ref_genre)
+        profil.ref_genre = genre
+      }
+      Object.assign(this.profil, profil)
+      this.genre = this.profil.ref_genre.id
     },
 
     async chargerGenres() {
-      await ApiService.GenreService.getGenreList().then(response => {
-        let genres = response.data
-        genres.forEach(item => {
-          let genre = new GenreModel()
-          Object.assign(genre, item)
-          let object = {
-            value: genre.id,
-            text: genre.genre
-          }
-          if (object.value !== null && object.value !== undefined) {
-            this.genres.push(object)
-          }
-          console.log(this.user.ref_genre.id)
-
-        })
+      let genres = await GenreModel.fetchGenres()
+      genres.forEach(item => {
+        let genre = new GenreModel()
+        Object.assign(genre, item)
+        let object = {
+          value: genre.id,
+          text: genre.genre
+        }
+        if (object.value !== null && object.value !== undefined) {
+          this.genres.push(object)
+        }
       })
     },
 
@@ -148,15 +146,12 @@ export default {
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
       } else {
-        // do your submit logic here
         this.submitStatus = 'PENDING'
         let object = new GenreModel()
-        await ApiService.GenreService.getGenreDetail(this.genre).then(response => {
-          Object.assign(object, response.data)
-        })
-        let payload = this.user
+        object = await GenreModel.fetchGenre(this.genre)
+        let payload = this.profil
         payload.ref_genre = object
-        await ApiService.ProfilService.putProfil(this.user.toUpdatePayload())
+        await ProfilModel.updateProfil(this.profil.toUpdatePayload())
         setTimeout(() => {
           this.submitStatus = 'OK'
           this.$router.push({name: this.link})
@@ -165,20 +160,14 @@ export default {
     },
 
     validateState(name) {
-      const {$dirty, $error} = this.$v.user[name];
+      const {$dirty, $error} = this.$v.profil[name];
       return $dirty ? !$error : null;
     },
 
   },
 
-  mixins: validationMixin,
-
-  validations: {
-    user: UserModel.validations
-  },
-
   created() {
-    this.chargerUser()
+    this.chargerProfil()
     this.chargerGenres()
   },
 }

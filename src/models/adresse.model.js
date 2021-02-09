@@ -3,7 +3,6 @@ import VilleModel from "@/models/ville.model";
 import ApiService from "@/services/";
 import {minLength, alphaNum} from "vuelidate/lib/validators"
 
-
 export default class AdresseModel {
     constructor(adresse = {}) {
         this.rue = R.is(String, adresse.rue) ? adresse.rue : ""
@@ -44,9 +43,13 @@ export default class AdresseModel {
     }
 
     static async fetchAdresse() {
-        let adresse = {}
+        let adresse = null
         await ApiService.AdresseService.getAdresse().then(response => {
             adresse = response.data
+        }).catch(error => {
+            if (error.response.status === 404) {
+                adresse = {}
+            }
         })
         return adresse
     }

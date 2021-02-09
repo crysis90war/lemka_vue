@@ -7,7 +7,8 @@ const ROUTE = LemkaEnums.Endpoints.VILLE_ENDPOINT;
 class VilleService {
     getVillesList(searchField = '') {
         let searchParam = `?search=${searchField}`
-        return axios.get(ROUTE + searchField === '' ? searchField : searchParam, {headers: authHeader()})
+        let endpoint = `${ROUTE}${searchField === '' ? searchField : searchParam}`;
+        return axios.get(endpoint, {headers: authHeader()})
     }
 
     getVillesDetail(villeId) {

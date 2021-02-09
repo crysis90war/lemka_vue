@@ -52,10 +52,15 @@ export default class ProfilModel {
     }
 
     static async fetchProfil() {
-        let user = {}
+        let profil = {}
         await ApiService.ProfilService.getProfilDetail().then(response => {
-            user = response.data
+            profil = response.data
+            profil.is_staff = profil.is_staff === 'True';
         })
-        return user
+        return profil
+    }
+
+    static async updateProfil(payload) {
+        await ApiService.ProfilService.putProfil(payload)
     }
 }

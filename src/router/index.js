@@ -263,7 +263,7 @@ router.beforeEach((to, from, next) => {
   const loggedIn = sessionStorage.getItem('user');
 
   if (authRequired && !loggedIn) {
-    next({name: LemkaEnums.Routes.HOME_ROUTE.name});
+    next({name: LemkaEnums.Routes.LOGIN_ROUTE.name});
   } else {
     next();
   }

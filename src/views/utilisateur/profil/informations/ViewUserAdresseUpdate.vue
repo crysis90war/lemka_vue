@@ -17,19 +17,36 @@
           </b-form-select>
         </b-form-group>
 
-        <b-form-group label="Ville" description="Selectionner votre ville">
-          <v-pack-select v-model="ville"
-                         :options="villeOptions"
-                         :select-on-tab="true"
-                         placeholder="Veuillez selectionner votre ville">
-            <template v-slot:no-options="{ search, searching }">
-              <template v-if="searching">
-                Aucune ville correspond <em>{{ search }}</em>.
-              </template>
-              <em v-else>Veuillez selectionner votre ville</em>
+        <b-form-group label="Ville Bis"
+                      description="Selectionn selectionner votre ville bis">
+          <multiselect v-model="adresse.ref_ville"
+                       label="ville"
+                       track-by="ville"
+                       placeholder="Type to search"
+                       open-direction="bottom"
+                       :options="cities"
+                       :multiple="false"
+                       :searchable="true"
+                       :loading="isLoading"
+                       :internal-search="false"
+                       :clear-on-select="false"
+                       :close-on-select="true"
+                       :options-limit="20"
+                       :max-height="600"
+                       :show-no-results="false"
+                       :hide-selected="true"
+                       @search-change="updateSelect">
+            <template slot="singleLabel" slot-scope="{ option }">
+              <span>{{ option.code_postale }} - {{ option.ville }}</span>
             </template>
-          </v-pack-select>
+            <template slot="option" slot-scope="{ option }">
+              <span>{{ option.code_postale }} - {{ option.ville }}</span>
+            </template>
+            <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+          </multiselect>
         </b-form-group>
+
+        <pre>{{ adresse }}</pre>
 
         <b-form-group id="input-groupe-rue"
                       label="Rue"
@@ -82,24 +99,28 @@
 </template>
 
 <script>
-import AdresseModel from "@/models/adresse.model";
-import {LemkaEnums} from "@/helpers/enums.helper";
-import VilleModel from "@/models/ville.model";
-import PaysModel from "@/models/pays.model";
 import {validationMixin} from "vuelidate";
+import {LemkaEnums} from "@/helpers/enums.helper";
+import AdresseModel from "@/models/adresse.model";
+import PaysModel from "@/models/pays.model";
+import VilleModel from "@/models/ville.model";
 
 export default {
   name: "ViewUserAdresseUpdate",
 
   data() {
     return {
+      adresse: new AdresseModel(),
+
       pays: null,
       paysOptions: [],
 
       ville: null,
       villeOptions: [],
 
-      adresse: new AdresseModel(),
+      selectedCity: null,
+      cities: [],
+      isLoading: false,
 
       submitStatus: null,
 
@@ -128,6 +149,7 @@ export default {
     },
 
     async chargerPays() {
+      this.villeOptions = []
       let listPays = await PaysModel.fetchPaysList()
       if (listPays.length > 0) {
         listPays.forEach(item => {
@@ -144,16 +166,30 @@ export default {
     },
 
     async chargerVilles() {
-      let listVilles = await VilleModel.fetchVilles()
-      if (listVilles.length > 0) {
-        listVilles.forEach(item => {
-          let villeOption = {
-            value: item.id,
-            label: `${item.code_postale} - ${item.ville}`
-          }
-          this.villeOptions.push(villeOption)
-        })
-      }
+      let forCities = []
+      let cities = await VilleModel.fetchVilles()
+      cities.forEach(item => {
+        forCities.push(item)
+      })
+      this.selectedCity = this.adresse.ref_ville
+      this.cities = forCities
+    },
+
+    async updateSelect(query) {
+      this.isLoading = true
+      let forCities = []
+      let cities = await VilleModel.fetchVilles(query)
+      cities.forEach(item => {
+        forCities.push(item)
+      })
+      this.cities = forCities
+      this.isLoading = false
+
+      console.log(this.cities)
+    },
+
+    clearAll() {
+      this.selectedCity = null
     },
 
     onSubmit() {
@@ -180,10 +216,15 @@ export default {
 
   created() {
     this.loadData()
+  },
+
+  watch: {
+    ville: function () {
+      console.log(this.ville)
+    }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

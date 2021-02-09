@@ -5,19 +5,20 @@ import i18n from './i18n'
 import titleMixin from "@/mixins/title.mixin";
 import store from './store'
 import router from './router'
-import vSelect from 'vue-select'
 import 'mutationobserver-shim'
 import './plugins/axios'
 import './plugins/bootstrap-vue'
 import "./vee-validate";
 import Lightbox from '@morioh/v-lightbox';
 import '@morioh/v-lightbox/dist/lightbox.css';
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 import Vuelidate from "vuelidate/src";
+import Multiselect from 'vue-multiselect'
 
-Vue.use(Lightbox)
-Vue.use(Vuelidate)
 Vue.config.productionTip = false
-Vue.component('v-pack-select', vSelect)
+Vue.component('multiselect', Multiselect)
+Vue.use(Vuelidate)
+Vue.use(Lightbox)
 Vue.mixin(titleMixin)
 
 new Vue({

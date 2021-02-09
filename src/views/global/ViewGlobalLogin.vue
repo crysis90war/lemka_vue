@@ -32,12 +32,6 @@
           </button>
         </b-form>
       </ValidationObserver>
-
-      <div class="my-2">
-        <pre>{{user}}</pre>
-        <pre class="bg-warning">{{message}}</pre>
-      </div>
-
     </div>
   </b-container>
 </template>
@@ -83,7 +77,7 @@ export default {
 
   created() {
     if (this.loggedIn) {
-      this.$router.push('/profil');
+      this.$router.push({name: LemkaEnums.Routes.PROFIL_ROUTE.name});
     }
   },
 }

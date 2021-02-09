@@ -43,7 +43,7 @@ export default class VilleModel {
     static async fetchVilles(searchParam = '') {
         let villes = []
         await ApiService.VilleService.getVillesList(searchParam).then(response => {
-            villes = response.data
+            villes = response.data.results
         })
         return villes
     }
