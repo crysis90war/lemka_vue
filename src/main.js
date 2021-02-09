@@ -1,6 +1,8 @@
 import Vue from 'vue'
-import '@babel/polyfill'
 import App from './App.vue'
+import '@babel/polyfill'
+import '@morioh/v-lightbox/dist/lightbox.css';
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 import i18n from './i18n'
 import titleMixin from "@/mixins/title.mixin";
 import store from './store'
@@ -10,8 +12,6 @@ import './plugins/axios'
 import './plugins/bootstrap-vue'
 import "./vee-validate";
 import Lightbox from '@morioh/v-lightbox';
-import '@morioh/v-lightbox/dist/lightbox.css';
-import 'vue-multiselect/dist/vue-multiselect.min.css'
 import Vuelidate from "vuelidate/src";
 import Multiselect from 'vue-multiselect'
 

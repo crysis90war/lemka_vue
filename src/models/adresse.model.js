@@ -5,6 +5,7 @@ import {minLength, alphaNum} from "vuelidate/lib/validators"
 
 export default class AdresseModel {
     constructor(adresse = {}) {
+        this.id = R.is(Number, adresse.id) ? adresse.id : null
         this.rue = R.is(String, adresse.rue) ? adresse.rue : ""
         this.numero = R.is(String, adresse.numero) ? adresse.numero : ""
         this.boite = R.is(String, adresse.boite) ? adresse.boite : ""
@@ -23,6 +24,7 @@ export default class AdresseModel {
     toUpdatePayload() {
         return {
             ...this.toCreatePayload(),
+            // id: this.id
         }
     }
 
@@ -52,5 +54,9 @@ export default class AdresseModel {
             }
         })
         return adresse
+    }
+
+    static async updateAdresse(payload) {
+        await ApiService.AdresseService.putAdresse(payload)
     }
 }

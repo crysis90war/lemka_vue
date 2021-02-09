@@ -18,6 +18,10 @@ class AdresseService {
     postAdresse(payload) {
         return axios.post(ADD_ADRESSE, payload, {headers: authHeader()})
     }
+
+    putAdresse(payload) {
+        return axios.put(ROUTE, payload, {headers: authHeader()})
+    }
 }
 
 export default new AdresseService();

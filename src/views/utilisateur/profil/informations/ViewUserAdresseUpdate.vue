@@ -17,14 +17,14 @@
           </b-form-select>
         </b-form-group>
 
-        <b-form-group label="Ville Bis"
-                      description="Selectionn selectionner votre ville bis">
+        <b-form-group label="Ville"
+                      description="Selectionn selectionner votre ville">
           <multiselect v-model="adresse.ref_ville"
                        label="ville"
                        track-by="ville"
-                       placeholder="Type to search"
+                       placeholder="Veuillez encoder pour lancer la recherche..."
                        open-direction="bottom"
-                       :options="cities"
+                       :options="villeOptions"
                        :multiple="false"
                        :searchable="true"
                        :loading="isLoading"
@@ -42,11 +42,9 @@
             <template slot="option" slot-scope="{ option }">
               <span>{{ option.code_postale }} - {{ option.ville }}</span>
             </template>
-            <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+            <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
           </multiselect>
         </b-form-group>
-
-        <pre>{{ adresse }}</pre>
 
         <b-form-group id="input-groupe-rue"
                       label="Rue"
@@ -107,6 +105,10 @@ import VilleModel from "@/models/ville.model";
 
 export default {
   name: "ViewUserAdresseUpdate",
+  mixins: validationMixin,
+  validations: {
+    adresse: AdresseModel.validations
+  },
 
   data() {
     return {
@@ -115,11 +117,8 @@ export default {
       pays: null,
       paysOptions: [],
 
-      ville: null,
       villeOptions: [],
 
-      selectedCity: null,
-      cities: [],
       isLoading: false,
 
       submitStatus: null,
@@ -166,34 +165,29 @@ export default {
     },
 
     async chargerVilles() {
-      let forCities = []
-      let cities = await VilleModel.fetchVilles()
-      cities.forEach(item => {
-        forCities.push(item)
-      })
-      this.selectedCity = this.adresse.ref_ville
-      this.cities = forCities
+      this.villeOptions = await VilleModel.fetchVilles()
     },
 
     async updateSelect(query) {
       this.isLoading = true
-      let forCities = []
-      let cities = await VilleModel.fetchVilles(query)
-      cities.forEach(item => {
-        forCities.push(item)
-      })
-      this.cities = forCities
+      this.villeOptions = await VilleModel.fetchVilles(query)
       this.isLoading = false
-
-      console.log(this.cities)
     },
 
-    clearAll() {
-      this.selectedCity = null
-    },
+    async onSubmit() {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
 
-    onSubmit() {
+        await AdresseModel.to(this.profil.toUpdatePayload(this.adresse.toUpdatePayload()))
 
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          this.$router.push({name: this.link})
+        }, 500)
+      }
     },
 
     validateState(name) {
@@ -208,20 +202,8 @@ export default {
     }
   },
 
-  mixins: validationMixin,
-
-  validations: {
-    adresse: AdresseModel.validations
-  },
-
   created() {
     this.loadData()
-  },
-
-  watch: {
-    ville: function () {
-      console.log(this.ville)
-    }
   }
 }
 </script>
