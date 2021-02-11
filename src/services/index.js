@@ -4,6 +4,7 @@ import CatalogueService from '@/services/catalogue.service';
 import CategorieService from '@/services/categorie.service';
 import EntrepriseService from '@/services/entreprise.service';
 import GenreService from '@/services/genre.service';
+import MensurationUserMensurationService from '@/services/mensurationUserMensuration.service';
 import MensurationService from '@/services/mensuration.service';
 import MercerieService from '@/services/mercerie.service';
 import PaysService from '@/services/pays.service';
@@ -13,7 +14,7 @@ import SectionService from '@/services/section.service';
 import TagService from '@/services/tag.service';
 import TypeProduitService from '@/services/typeProduit.service';
 import TypeServiceService from '@/services/typeService.service';
-import UserMensurationsService from '@/services/userMensurations.service';
+import UserMensurationsService from '@/services/userMensuration.service';
 import UserService from '@/services/user.service';
 import VilleService from '@/services/ville.service';
 
@@ -24,6 +25,7 @@ const ApiService = {
     CategorieService,
     EntrepriseService,
     GenreService,
+    MensurationUserMensurationService,
     MensurationService,
     MercerieService,
     PaysService,

@@ -1,106 +1,167 @@
 <template>
   <b-card title="Ajouter une adresse" :class="bootstrap.shadow" class="my-2">
     <b-card-body>
+      <b-form @submit.prevent="submit">
+<!--        <b-form-group id="input-groupe-pays"-->
+<!--                      label="Pays"-->
+<!--                      description="Veuillez selectionner votre pays"-->
+<!--                      label-for="select-pays">-->
+<!--          <b-form-select id="select-pays"-->
+<!--                         name="select-pays"-->
+<!--                         v-model="pays"-->
+<!--                         :options="paysOptions">-->
+<!--            <template #first>-->
+<!--              <b-form-select-option :value="null" disabled>&#45;&#45; Veuillez selectionner votre pays &#45;&#45;</b-form-select-option>-->
+<!--            </template>-->
+<!--          </b-form-select>-->
+<!--        </b-form-group>-->
 
-      <b-container class="px-5">
-        <ValidationObserver ref="is_main" v-slot="{ handleSubmit }">
-          <b-form @submit.prevent="handleSubmit(onSubmit)" class="px-5">
-            <b-form-group label="Pays" description="Veuillez selectionner votre pays">
-              <b-form-select v-model="pays" :options="paysOptions">
-                <template #first>
-                  <b-form-select-option :value="null" disabled>-- Veuillez selectionner la ville --</b-form-select-option>
-                </template>
-              </b-form-select>
+        <b-form-group label="Ville"
+                      description="Selectionn selectionner votre ville">
+          <multiselect v-model="adresse.ref_ville"
+                       label="ville"
+                       track-by="ville"
+                       placeholder="Veuillez encoder pour lancer la recherche..."
+                       open-direction="bottom"
+                       :options="villeOptions"
+                       :multiple="false"
+                       :searchable="true"
+                       :loading="isLoading"
+                       :internal-search="false"
+                       :clear-on-select="false"
+                       :close-on-select="true"
+                       :options-limit="20"
+                       :max-height="600"
+                       :show-no-results="false"
+                       :hide-selected="true"
+                       @search-change="updateSelect">
+            <template slot="singleLabel" slot-scope="{ option }">
+              <span>{{ option.code_postale }} - {{ option.ville }}</span>
+            </template>
+            <template slot="option" slot-scope="{ option }">
+              <span>{{ option.code_postale }} - {{ option.ville }}</span>
+            </template>
+            <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+          </multiselect>
+        </b-form-group>
+
+        <b-form-group id="input-groupe-rue"
+                      label="Rue"
+                      description="Veuillez encoder votre rue"
+                      label-for="input-rue">
+          <b-form-input v-model="$v.adresse.rue.$model"
+                        name="input-rue"
+                        :state="validateState('rue')"
+                        placeholder="Rue :"></b-form-input>
+          <b-form-invalid-feedback>
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-row>
+          <b-col lg="6">
+            <b-form-group id="input-groupe-numero"
+                          label="Numero"
+                          description="Veuillez encoder votre numero"
+                          label-for="input-numero">
+              <b-form-input v-model="$v.adresse.numero.$model"
+                            name="input-numero"
+                            :state="validateState('numero')"
+                            placeholder="Numéro :"></b-form-input>
+              <b-form-invalid-feedback>
+              </b-form-invalid-feedback>
             </b-form-group>
+          </b-col>
+          <b-col lg="6">
+            <b-form-group id="input-groupe-boite"
+                          label="Boite"
+                          description="Veuillez encoder votre boite"
+                          label-for="input-boite">
+              <b-form-input v-model="$v.adresse.boite.$model"
+                            name="input-boite"
+                            :state="validateState('boite')"
+                            placeholder="Boite :"></b-form-input>
+              <b-form-invalid-feedback>
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-            <ValidationProvider name="ville" ref="ville" rules="required" v-slot="{ errors }">
-              <b-form-group label="Ville" description="Veuillez encoder votre ville">
-                <v-pack-select v-model="ville"
-                               :options="optionsVille"
-                               :select-on-tab="true"
-                               placeholder="Veuillez selectionner votre ville">
-                  <template v-slot:no-options="{ search, searching }">
-                    <template v-if="searching">
-                      Aucune ville correspond <em>{{ search }}</em>.
-                    </template>
-                    <em style="opacity: 0.5;" v-else>Veuillez selectionner votre ville</em>
-                  </template>
-                </v-pack-select>
-                <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
-              </b-form-group>
-            </ValidationProvider>
-
-            <!-- region Rue -->
-            <ValidationProvider name="rue" ref="rue" rules="required|min:3|max:255" v-slot="{ errors }">
-              <b-form-group label="Rue" description="Veuillez encoder votre rue" class="mt-3">
-                <b-input v-model="adresse.rue" required></b-input>
-                <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
-              </b-form-group>
-            </ValidationProvider>
-            <!-- endregion -->
-
-            <b-row>
-              <b-col>
-                <!-- region Numero -->
-                <ValidationProvider name="numero" ref="numero" rules="required|min:1|max:255" v-slot="{ errors }">
-                  <b-form-group label="numero" description="Veuillez encoder votre numéro" class="mt-3 mr-1">
-                    <b-input v-model="adresse.numero" required></b-input>
-                    <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
-                  </b-form-group>
-                </ValidationProvider>
-                <!-- endregion -->
-              </b-col>
-              <b-col>
-                <!-- region Boite -->
-                <ValidationProvider name="boite" ref="boite" v-slot="{ errors }">
-                  <b-form-group label="Boite" description="Veuillez encoder votre boite" class="mt-3 ml-1">
-                    <b-input v-model="adresse.boite"></b-input>
-                    <b-badge pill variant="danger">{{ errors[0] }}</b-badge>
-                  </b-form-group>
-                </ValidationProvider>
-                <!-- endregion -->
-              </b-col>
-            </b-row>
-
-            <b-button-group class="mt-3 float-right">
-              <b-button type="submit" variant="outline-success">Créer</b-button>
-            </b-button-group>
-          </b-form>
-        </ValidationObserver>
-      </b-container>
+        <b-button-group>
+          <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
+          </b-button>
+          <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
+        </b-button-group>
+      </b-form>
     </b-card-body>
   </b-card>
 </template>
 
 <script>
 import {LemkaEnums} from "@/helpers/enums.helper";
+import AdresseModel from "@/models/adresse.model";
+import {validationMixin} from "vuelidate";
+import VilleModel from "@/models/ville.model";
 
 export default {
   name: "ViewUserAdresseAdd",
+  mixins: validationMixin,
+  validations: {
+    adresse: AdresseModel.validations
+  },
   data() {
     return {
+      adresse: new AdresseModel(),
+
+      pays: null,
+      paysOptions: [],
+
+      villeOptions: [],
+
+      isLoading: false,
+
+      submitStatus: null,
+
       bootstrap: {
         shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
       },
-      pays: {},
-      ville: {},
-      paysOptions: [
-        {value: 1, text: 'Belgique'}
-      ],
-      optionsVille: [],
-      adresse: {
-        rue: '',
-        numero: null,
-        boite: '',
-        ref_pays: null,
-      }
+      link: LemkaEnums.Routes.INFORMATIONS.name,
     }
   },
   methods: {
-    onSubmit() {
+    async chargerVilles() {
+      this.villeOptions = await VilleModel.fetchVilles()
+    },
 
-    }
+    async updateSelect(query) {
+      this.isLoading = true
+      this.villeOptions = await VilleModel.fetchVilles(query)
+      this.isLoading = false
+    },
+
+    async submit() {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
+
+        await AdresseModel.createAdresse(this.adresse.toCreatePayload())
+
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          this.$router.push({name: this.link})
+        }, 500)
+      }
+    },
+
+    validateState(name) {
+      const {$dirty, $error} = this.$v.adresse[name];
+      return $dirty ? !$error : null;
+    },
   },
+  created() {
+    this.chargerVilles()
+  }
 }
 </script>
 

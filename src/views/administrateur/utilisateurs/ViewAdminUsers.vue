@@ -126,9 +126,9 @@
             <b-avatar variant="info" :src="data.item.image"></b-avatar>
           </template>
           <template #cell(username)="data">
-            <router-link :to="{name: links.userDetailLink, params: {username: data.item.username}}">
+            <b-link :to="{name: links.userDetailLink, params: {username: data.item.username}}">
               {{ data.item.username }}
-            </router-link>
+            </b-link>
           </template>
 
           <template #cell(is_staff)="data">
@@ -215,7 +215,7 @@ export default {
   },
   methods: {
     async chargerUtilisateurs() {
-      await ApiService.ProfilService.getUserList().then(response => {
+      await ApiService.UserService.getUserList().then(response => {
         this.items = response.data
         this.totalRows = this.items.length
       })

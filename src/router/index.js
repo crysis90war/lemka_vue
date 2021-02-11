@@ -82,6 +82,26 @@ const router = new VueRouter({
           name: 'ViewUserMensurations',
           meta: {value: 'Mes mensurations'},
           component: () => import('../views/utilisateur/profil/mensurations/ViewUserMensurations')
+        },
+        {
+          path: PROFIL + '/mensurations/ajouter',
+          name: LemkaEnums.Routes.MENSURATION_ADD.name,
+          meta: {value: LemkaEnums.Routes.MENSURATION_ADD.value},
+          component: () => import('../views/utilisateur/profil/mensurations/ViewUserMensurationAdd')
+        },
+        {
+          path: PROFIL + '/mensurations/:id/detail',
+          name: LemkaEnums.Routes.MENSURATION_DETAIL.name,
+          meta: {value: LemkaEnums.Routes.MENSURATION_DETAIL.value},
+          component: () => import('../views/utilisateur/profil/mensurations/ViewUserMensurationsDetail'),
+          props: true
+        },
+        {
+          path: PROFIL + 'mensurations/:id/update',
+          name: LemkaEnums.Routes.MENSURATION_UPDATE.name,
+          meta: {value: LemkaEnums.Routes.MENSURATION_UPDATE.value},
+          component: () => import('../views/utilisateur/profil/mensurations/ViewUserMensurationUpdate'),
+          props: true
         }
       ]
     },

@@ -1,21 +1,20 @@
 <template>
   <b-card title="Modifier l'adresse" :class="bootstrap.shadow" class="my-2">
     <b-card-body>
-
-      <b-form @submit="onSubmit">
-        <b-form-group id="input-groupe-pays"
-                      label="Pays"
-                      description="Veuillez selectionner votre pays"
-                      label-for="select-pays">
-          <b-form-select id="select-pays"
-                         name="select-pays"
-                         v-model="pays"
-                         :options="paysOptions">
-            <template #first>
-              <b-form-select-option :value="null" disabled>-- Veuillez selectionner votre pays --</b-form-select-option>
-            </template>
-          </b-form-select>
-        </b-form-group>
+      <b-form @submit.prevent="submit">
+<!--        <b-form-group id="input-groupe-pays"-->
+<!--                      label="Pays"-->
+<!--                      description="Veuillez selectionner votre pays"-->
+<!--                      label-for="select-pays">-->
+<!--          <b-form-select id="select-pays"-->
+<!--                         name="select-pays"-->
+<!--                         v-model="pays"-->
+<!--                         :options="paysOptions">-->
+<!--            <template #first>-->
+<!--              <b-form-select-option :value="null" disabled>&#45;&#45; Veuillez selectionner votre pays &#45;&#45;</b-form-select-option>-->
+<!--            </template>-->
+<!--          </b-form-select>-->
+<!--        </b-form-group>-->
 
         <b-form-group label="Ville"
                       description="Selectionn selectionner votre ville">
@@ -174,14 +173,14 @@ export default {
       this.isLoading = false
     },
 
-    async onSubmit() {
+    async submit() {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
 
-        await AdresseModel.to(this.profil.toUpdatePayload(this.adresse.toUpdatePayload()))
+        await AdresseModel.updateAdresse(this.adresse.toUpdatePayload())
 
         setTimeout(() => {
           this.submitStatus = 'OK'

@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import VilleModel from "@/models/ville.model";
-import ApiService from "@/services/";
 import {minLength, alphaNum} from "vuelidate/lib/validators"
+import ApiService from "@/services";
 
 export default class AdresseModel {
     constructor(adresse = {}) {
@@ -58,5 +58,9 @@ export default class AdresseModel {
 
     static async updateAdresse(payload) {
         await ApiService.AdresseService.putAdresse(payload)
+    }
+
+    static async createAdresse(payload) {
+        await ApiService.AdresseService.postAdresse(payload)
     }
 }

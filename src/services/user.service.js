@@ -7,8 +7,7 @@ const ROUTE = LemkaEnums.Endpoints.USERS_ENDPOINT;
 class UserService {
 
     getUserList() {
-        return axios
-            .get(ROUTE, {headers: authHeader()})
+        return axios.get(ROUTE, {headers: authHeader()})
     }
 
     getUserDetail(userSlug) {
@@ -30,8 +29,7 @@ class UserService {
 
     deleteUser(userId) {
         let endpoint = `${ROUTE}${userId}/`;
-        return axios
-            .delete(endpoint, {headers: authHeader()})
+        return axios.delete(endpoint, {headers: authHeader()})
     }
 
     async checkUser(username) {

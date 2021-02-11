@@ -38,7 +38,7 @@ export default {
 
   methods: {
     async chargerUser(username) {
-      await ApiService.ProfilService.getUserDetail(username).then(response => {
+      await ApiService.UserService.getUserDetail(username).then(response => {
         this.user = response.data;
       })
     }
@@ -51,7 +51,7 @@ export default {
   async beforeRouteEnter(to, from, next) {
     async function isValid (param) {
       if (param !== undefined) {
-        return await ApiService.ProfilService.checkUser(param)
+        return await ApiService.UserService.checkUser(param)
       } else {
         return false
       }

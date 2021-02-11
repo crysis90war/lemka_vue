@@ -22,6 +22,9 @@ const Routes = {
     ADRESSE_ADD: {name: UserView + 'AdresseAdd', value: 'Ajouter une adresse'},
     ADRESSE_UPDATE: {name: UserView + 'AdresseUpdate', value: 'Modifier l\'adresse'},
     MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
+    MENSURATION_ADD: {name: UserView + 'MensurationAdd', value: 'Ajouter Mensuration'},
+    MENSURATION_DETAIL: {name: UserView + 'MensurationDetail', value: 'Détail'},
+    MENSURATION_UPDATE: {name: UserView + 'MensurationUpdate', value: 'Modification'},
     // endregion
 
     // region Admin routes
@@ -125,7 +128,8 @@ const FontAwesomeIcons = {
     PARAMETRES: 'fas fa-sliders-h',
     EMAIL: 'far fa-envelope',
     PHONE: 'fas fa-phone',
-    GENRE: 'fas fa-venus-mars'
+    GENRE: 'fas fa-venus-mars',
+    LONG_LEFT_ARROW: 'fas fa-long-arrow-alt-left'
 }
 
 const BSClass = {

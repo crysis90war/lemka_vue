@@ -1,0 +1,113 @@
+<template>
+  <b-card >
+    <b-card-body>
+      <b-badge pill :variant="userMensuration.is_main === true ? 'success' : 'primary'">
+        {{ userMensuration.is_main === true ? 'Principale' : 'Secondaire' }}
+      </b-badge>
+      <h5><em>{{ userMensuration.titre }}</em></h5>
+      <b-form @submit.prevent="submit">
+
+        <hr>
+        <div class="d-flex justify-content-center my-2">
+          <b-button-group>
+            <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Enregistrer</b-button>
+            <b-button variant="outline-danger" :to="{name: links.mensurations}">Retour</b-button>
+          </b-button-group>
+        </div>
+        <hr>
+        <b-form-group v-for="v in $v.mensurationUserMensurations.$each.$iter"
+                      :key="v.$model.id"
+                      :label="v.$model.ref_mensuration"
+                      :state="validateState(v.mesure)"
+                      :description="`Mesure : ${v.$model.mesure} cm`">
+          <b-form-input v-model.trim="v.mesure.$model" type="range" min="0" max="250" step="0.5"></b-form-input>
+          <b-form-invalid-feedback>
+            <span v-if="!v.mesure.numeric">La mesure doit être numérique.</span>
+            <span v-if="!v.mesure.between">La mesure doit être comprise entre 0 et 250 cm</span>
+          </b-form-invalid-feedback>
+        </b-form-group>
+      </b-form>
+    </b-card-body>
+  </b-card>
+</template>
+
+<script>
+import {LemkaEnums} from "@/helpers/enums.helper";
+import MensurationUserMensurationModel from "@/models/mensurationUserMensuration.model";
+import {validationMixin} from "vuelidate";
+import UserMensurationModel from "@/models/userMensuration.model";
+
+export default {
+  name: "ViewUserMensurationsDetail",
+  props: {
+    id: {
+      required: true
+    }
+  },
+  mixins: validationMixin,
+  validations: {
+    mensurationUserMensurations: {
+      $each: MensurationUserMensurationModel.validations
+    }
+  },
+  data() {
+    return {
+      userMensuration: new UserMensurationModel(),
+      mensurationUserMensurations: [],
+      submitStatus: null,
+      links: {
+        mensurations: LemkaEnums.Routes.MENSURATIONS.name
+      },
+      icons: {
+        leftArrow: LemkaEnums.FontAwesomeIcons.LONG_LEFT_ARROW
+      }
+    }
+  },
+
+  methods: {
+    async chargerMensurationsUserMensurations() {
+      Object.assign(this.userMensuration, await UserMensurationModel.fetchUserMensuration(this.id))
+      let listMensurations = await MensurationUserMensurationModel.fetchMensurationUserMensurationList(this.userMensuration.id)
+      for (const item of listMensurations) {
+        let mensuration = new MensurationUserMensurationModel()
+        this.mensurationUserMensurations.push(Object.assign(mensuration, item))
+      }
+    },
+
+    async submit() {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
+
+        for (const item of this.mensurationUserMensurations) {
+          await MensurationUserMensurationModel.updateMensurationUserMensuration(this.id, item.id, item.toUpdatePayload())
+        }
+
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          this.$router.push({name: this.links.mensurations})
+        }, 500)
+      }
+    },
+
+    validateState(item) {
+      const {$dirty, $error} = item;
+      return $dirty ? !$error : null;
+    },
+  },
+
+  created() {
+    if (this.id === null || this.id === undefined || isNaN(this.id)) {
+      this.$router.push({name: this.links.mensurations})
+    } else {
+      this.chargerMensurationsUserMensurations()
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

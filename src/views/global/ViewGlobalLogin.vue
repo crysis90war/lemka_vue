@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <div class="form-container sign-in-container">
+    <div class="form-container sign-in-container my-4">
 
       <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
         <b-form @submit.prevent="handleSubmit(onSubmit)">

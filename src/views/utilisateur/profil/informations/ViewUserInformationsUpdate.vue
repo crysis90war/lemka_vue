@@ -79,8 +79,7 @@
         </b-form-group>
 
         <b-button-group class="float-right">
-          <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
-          </b-button>
+          <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder</b-button>
           <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
         </b-button-group>
       </b-form>

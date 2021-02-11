@@ -5,29 +5,25 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 const ROUTE = LemkaEnums.Endpoints.USER_MENSURATION_ENDPOINT;
 const MENSURATION = '/mensurations/';
 
-class UserMensurationsService {
+class UserMensurationService {
 
     getUserMensurationsList() {
-        return axios
-            .get(ROUTE, {headers: authHeader()})
+        return axios.get(ROUTE, {headers: authHeader()})
     }
 
     getUserMensurationsDetail(userMensurationId) {
         let endpoint = `${ROUTE}${userMensurationId}/`;
-        return axios
-            .get(endpoint, {headers: authHeader()})
+        return axios.get(endpoint, {headers: authHeader()})
     }
 
-    postUserMensuration() {
-        return axios
-            .post(ROUTE, {headers: authHeader()})
+    postUserMensuration(payload) {
+        return axios.post(ROUTE, payload, {headers: authHeader()})
     }
 
     putUserMensurations(userMensurationId, payload) {
         let endpoint = `${ROUTE}${userMensurationId}/`;
 
-        return axios
-            .put(endpoint, payload, {headers: authHeader()})
+        return axios.put(endpoint, payload, {headers: authHeader()})
     }
 
     deleteUserMensurations(userMensurationId) {
@@ -54,4 +50,4 @@ class UserMensurationsService {
     }
 }
 
-export default new UserMensurationsService();
+export default new UserMensurationService();
