@@ -54,7 +54,8 @@ const Routes = {
 
     PARAMETRES: {name: AdminView + 'Parametres', value: 'Parametres'},
     PARAMETRES_ENTREPRISE: {name: AdminView + 'Entreprise', value: 'Entreprise'},
-    PARAMETRES_ENTREPRISE_ADD: {name: AdminView + 'AddEntreprise', value: 'Ajout des informations de l\'entreprise'},
+    PARAMETRES_ENTREPRISE_ADD: {name: AdminView + 'EntrepriseAdd', value: 'Ajout des informations de l\'entreprise'},
+    PARAMETRES_ENTREPRISE_UPDATE: {name: AdminView + 'EntrepriseUpdate', value: 'Modifier information de l\'entreprise'},
     PARAMETRES_GENRE: {name: AdminView + 'Genre', value: 'Genres'},
     PARAMETRES_GENRE_ADD: {name: AdminView + 'GenreAdd', value: 'Ajouter un genre'},
     PARAMETRES_MENSURATION: {name: AdminView + 'Mensuration', value: 'Mensurations'},

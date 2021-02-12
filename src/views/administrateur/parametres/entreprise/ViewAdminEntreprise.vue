@@ -1,15 +1,14 @@
 <template>
-  <div v-if="$route.name === LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name">
+  <div v-if="$route.name === links.entreprise">
     <b-card>
       <b-card-body>
         <div v-if="entLength === 0">
-          <b-button :to="{name:LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.name}" variant="outline-success">Ajouter informations</b-button>
+          <b-button :to="{name:links.addEntreprise}" variant="outline-success">Ajouter informations</b-button>
           <p>Aucune information pour le moment, veuillez en ajouter</p>
         </div>
         <div v-if="entLength === 1">
           <b-card :class="card_shadow">
             <b-card-body>
-              <b-button variant="outline-primary" class="mb-3">Modifier</b-button>
               <h3>{{entreprise.nom_societe}}</h3>
               <h5>{{entreprise.numero_tva}}</h5>
               <hr>
@@ -36,6 +35,7 @@
                 <span>{{ entreprise.ref_ville.ref_pays.pays }}</span>
               </div>
             </b-card-body>
+            <b-button variant="outline-primary" :to="{name: links.updateEntreprise}" class="mb-3">Modifier</b-button>
           </b-card>
         </div>
         <div v-else>
@@ -57,10 +57,14 @@ export default {
   name: "ViewAdminEntreprise",
   data() {
     return {
-      LemkaEnums,
       entLength: null,
       entreprise: new EntrepriseModel(),
       card_shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW,
+      links: {
+        entreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name,
+        addEntreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.name,
+        updateEntreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_UPDATE.name,
+      },
       icons: {
         email: LemkaEnums.FontAwesomeIcons.EMAIL,
         phone: LemkaEnums.FontAwesomeIcons.PHONE,
@@ -70,9 +74,9 @@ export default {
     }
   },
   methods: {
-    async chargerEntreprise(entrepriseId) {
+    async chargerEntreprise() {
       this.entLength = (await this.checkEntreprise()).length
-      entrepriseId = (await this.checkEntreprise()).id
+      let entrepriseId = (await this.checkEntreprise()).id
       if (entrepriseId !== null && entrepriseId !== undefined) {
         let entreprise = await EntrepriseModel.getEntrepriseDetail(entrepriseId)
         if (entreprise.ref_ville !== null && entreprise.ref_ville !== undefined) {

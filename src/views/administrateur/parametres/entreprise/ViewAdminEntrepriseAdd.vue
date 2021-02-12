@@ -134,7 +134,7 @@
           </b-form-group>
 
           <b-button-group>
-            <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
+            <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">Créer
             </b-button>
             <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
           </b-button-group>

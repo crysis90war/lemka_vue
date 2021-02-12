@@ -216,6 +216,12 @@ const router = new VueRouter({
                   name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.name,
                   meta: {value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.value},
                   component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntrepriseAdd')
+                },
+                {
+                  path: ADMIN + 'parametres/entreprise/update',
+                  name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_UPDATE.name,
+                  meta: {value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_UPDATE.value},
+                  component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntrepriseUpdate')
                 }
               ]
             },

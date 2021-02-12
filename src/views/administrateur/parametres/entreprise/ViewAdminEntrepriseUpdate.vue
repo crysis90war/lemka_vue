@@ -1,6 +1,6 @@
 <template>
   <b-card>
-    <b-card title="Ajouter entreprise" :class="bootstrap.shadow">
+    <b-card title="Modifier entreprise" :class="bootstrap.shadow">
       <b-card-body>
         <b-form @submit.prevent="submit">
           <b-row>
@@ -173,7 +173,7 @@
           </b-form-group>
 
           <b-button-group>
-            <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
+            <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Modifier
             </b-button>
             <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
           </b-button-group>
@@ -189,6 +189,7 @@ import {validationMixin} from "vuelidate";
 import EntrepriseModel from "@/models/entreprise.model";
 import {LemkaEnums} from "@/helpers/enums.helper";
 import VilleModel from "@/models/ville.model";
+import PaysModel from "@/models/pays.model";
 
 export default {
   name: "ViewAdminEntrepriseUpdate",
@@ -211,6 +212,38 @@ export default {
   },
 
   methods: {
+    async chargerEntreprise() {
+      this.entLength = (await this.checkEntreprise()).length
+      let entrepriseId = (await this.checkEntreprise()).id
+      if (entrepriseId !== null && entrepriseId !== undefined) {
+        let entreprise = await EntrepriseModel.getEntrepriseDetail(entrepriseId)
+        if (entreprise.ref_ville !== null && entreprise.ref_ville !== undefined) {
+          let ville = await VilleModel.fetchVille(entreprise.ref_ville)
+          entreprise.ref_ville = ville
+          if (ville.ref_pays !== null && ville.ref_pays !== undefined) {
+            ville.ref_pays = await PaysModel.fetchPays(ville.ref_pays)
+          }
+        }
+
+        Object.assign(this.entreprise, entreprise)
+      } else {
+        this.entreprise = new EntrepriseModel()
+      }
+    },
+
+    async checkEntreprise() {
+      let id = null
+      let entreprises = await EntrepriseModel.getEntrepriseList()
+      let length = entreprises.length
+      if (length > 0) {
+        id = entreprises[0].id
+      }
+      return {
+        length: length,
+        id: id
+      }
+    },
+
     async chargerVilles() {
       this.villeOptions = await VilleModel.fetchVilles()
     },
@@ -227,7 +260,7 @@ export default {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
-        await EntrepriseModel.createEntreprise(this.entreprise.toCreatePayload())
+        await EntrepriseModel.updateEntreprise(this.entreprise.toUpdatePayload())
         setTimeout(() => {
           this.submitStatus = 'OK'
           this.$router.push({name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name})
@@ -243,6 +276,7 @@ export default {
 
   created() {
     this.chargerVilles()
+    this.chargerEntreprise()
   },
 
   async beforeRouteEnter(to, from, next) {
