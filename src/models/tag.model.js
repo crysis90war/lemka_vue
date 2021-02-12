@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import {maxLength, minLength, required} from "vuelidate/lib/validators";
+import ApiService from "@/services";
 
 export default class TagModel {
     constructor(tag = {}) {
@@ -29,5 +30,21 @@ export default class TagModel {
                 maxLength: maxLength(50)
             }
         }
+    }
+
+    static async getTagList() {
+        let tags = []
+        await ApiService.TagService.getTagList().then(response => {
+            tags = response.data
+        })
+        return tags
+    }
+
+    static async getTagDetail(tagId) {
+        let tag = {}
+        await ApiService.TagService.getTagDetail(tagId).then(response => {
+            tag = response.data
+        })
+        return tag
     }
 }

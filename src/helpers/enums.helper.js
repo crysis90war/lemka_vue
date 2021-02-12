@@ -129,7 +129,9 @@ const FontAwesomeIcons = {
     EMAIL: 'far fa-envelope',
     PHONE: 'fas fa-phone',
     GENRE: 'fas fa-venus-mars',
-    LONG_LEFT_ARROW: 'fas fa-long-arrow-alt-left'
+    LONG_LEFT_ARROW: 'fas fa-long-arrow-alt-left',
+    HEART: 'fas fa-heart',
+    GLOBE: 'fas fa-globe'
 }
 
 const BSClass = {

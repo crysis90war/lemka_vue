@@ -1,13 +1,11 @@
 <template>
-  <b-card>
+  <b-card title="Créer un article">
     <b-card-body>
-      <b-container>
-        <b-card-text>
           <b-form>
 
             <b-input-group class="my-1">
-              <b-form-checkbox v-model="active" name="check-button" switch>
-                <p v-if="active">Publier</p>
+              <b-form-checkbox v-model="article.est_active" name="check-button" switch>
+                <p v-if="article.est_active">Publier</p>
                 <p v-else>En attente</p>
               </b-form-checkbox>
             </b-input-group>
@@ -17,6 +15,7 @@
                           class="my-1">
               <b-form-input id="input-formatter"
                             placeholder="Entrer le titre"
+                            v-model="article.titre"
               ></b-form-input>
             </b-form-group>
 
@@ -24,25 +23,63 @@
                           description="Encodez la description de l'article"
                           class="my-1">
               <b-form-textarea id="input-formatter"
-                               placeholder="Encodage de la description"></b-form-textarea>
+                               placeholder="Encodage de la description"
+                               v-model="article.description"
+              ></b-form-textarea>
             </b-form-group>
+
             <b-row>
               <b-col>
                 <b-form-group label="Service"
                               description="Veuillez selectionner le service de l'article"
                               class="my-1">
-                  <b-select v-model="selected" :options="serviceOptions">
-                    <template #first>
-                      <b-select-option :value="null" disabled>-- Selectionnez le service --</b-select-option>
+                  <multiselect v-model="article.ref_type_service"
+                               :options="serviceOptions"
+                               placeholder="Veuillez selectionner le service"
+                               label="type_service"
+                               track-by="type_service"
+                               :allow-empty="false"
+                  >
+                    <template slot="singleLabel" slot-scope="{ option }">
+                      <span>{{ option.type_service }}</span>
                     </template>
-                  </b-select>
+                    <template slot="option" slot-scope="{ option }">
+                      <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
+                    </template>
+                    <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+                  </multiselect>
+
                 </b-form-group>
               </b-col>
+
               <b-col>
                 <b-form-group label="Catalogue"
                               description="Veuillez selectionner le catalogue de l'article"
                               class="my-1">
-                  <v-pack-select placeholder="Catalogue"></v-pack-select>
+                  <multiselect v-model="article.ref_catalogue"
+                               label="ville"
+                               track-by="ville"
+                               placeholder="Veuillez encoder pour lancer la recherche..."
+                               open-direction="bottom"
+                               :options="catalogueOptions"
+                               :multiple="false"
+                               :searchable="true"
+                               :loading="isLoading"
+                               :internal-search="false"
+                               :clear-on-select="false"
+                               :close-on-select="true"
+                               :options-limit="20"
+                               :max-height="600"
+                               :show-no-results="false"
+                               :hide-selected="true">
+                    <template slot="singleLabel" slot-scope="{ option }">
+                      <span>{{ option.code_postale }} - {{ option.ville }}</span>
+                    </template>
+                    <template slot="option" slot-scope="{ option }">
+                      <span>{{ option.code_postale }} - {{ option.ville }}</span>
+                    </template>
+                    <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+                  </multiselect>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -52,7 +89,7 @@
                           class="my-1">
               <b-form-tags  input-id="tags-remove-on-delete"
                            :input-attrs="{ 'aria-describedby': 'tags-validation-help' }"
-                           v-model="tags"
+                           v-model="article.ref_tag"
                            :tag-validator="tagValidator"
                            :state="stateTag"
                            separator=" "
@@ -98,29 +135,34 @@
               <b-button variant="outline-danger" @click="reset">Reset</b-button>
             </b-button-group>
           </b-form>
-        </b-card-text>
-      </b-container>
 
+      <pre>{{article}}</pre>
     </b-card-body>
   </b-card>
 </template>
 
 <script>
-import ApiService from "@/services";
+import ArticleModel from "@/models/article.model";
+import TypeServiceModel from "@/models/typeService.model";
 
 export default {
   name: "ViewAdminArticlesAdd",
   data() {
     return {
+      article: new ArticleModel(),
       tags: [],
       dirty: false,
       preview: null,
       image: null,
       preview_list: [],
       image_list: [],
+
+      catalogueOptions: [],
+
       serviceOptions: [],
       selected: '',
       active: false,
+      isLoading: false
     }
   },
 
@@ -180,14 +222,16 @@ export default {
     },
 
     async chargerService() {
-      await ApiService.TypeServiceService.getTypeServiceList().then(response => {
-        response.data.forEach(item => {
-          let service = {}
-          service.value = item.id;
-          service.text = item.type_service;
-          this.serviceOptions.push(service)
-        })
-      })
+      this.serviceOptions = await TypeServiceModel.getTypeServiceList()
+
+      // await ApiService.TypeServiceService.getTypeServiceList().then(response => {
+      //   response.data.forEach(item => {
+      //     let service = {}
+      //     service.value = item.id;
+      //     service.text = item.type_service;
+      //     this.serviceOptions.push(service)
+      //   })
+      // })
     }
   },
 

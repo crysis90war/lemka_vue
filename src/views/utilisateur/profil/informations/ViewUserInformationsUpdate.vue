@@ -99,6 +99,7 @@ export default {
   validations: {
     profil: ProfilModel.validations
   },
+
   data() {
     return {
       link: LemkaEnums.Routes.INFORMATIONS.name,

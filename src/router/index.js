@@ -118,7 +118,7 @@ const router = new VueRouter({
           path: ADMIN + 'dashboard',
           name: LemkaEnums.Routes.DASHBOARD.name,
           meta: {value: LemkaEnums.Routes.DASHBOARD.value},
-          component: () => import('../views/administrateur/dashboard/view.admin.dashboard')
+          component: () => import('../views/administrateur/dashboard/ViewAdminDashboard')
         },
         {
           path: ADMIN + 'utilisateurs',
@@ -167,7 +167,7 @@ const router = new VueRouter({
           path: ADMIN + 'merceries',
           name: LemkaEnums.Routes.MERCERIES.name,
           meta: {value: LemkaEnums.Routes.MERCERIES.value},
-          component: () => import('../views/administrateur/merceries/view.merceries')
+          component: () => import('../views/administrateur/merceries/ViewAdminMerceries')
         },
         {
           path: ADMIN + 'demande-de-devis',
@@ -203,19 +203,19 @@ const router = new VueRouter({
           path: ADMIN + 'parametres',
           name: LemkaEnums.Routes.PARAMETRES.name,
           meta: {value: LemkaEnums.Routes.PARAMETRES.value},
-          component: () => import('../views/administrateur/parametres/view.admin.parametres'),
+          component: () => import('../views/administrateur/parametres/ViewAdminParametres'),
           children: [
             {
               path: ADMIN + 'parametres/entreprise',
               name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name,
               meta: {value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.value},
-              component: () => import('../views/administrateur/parametres/entreprise/view.admin.entreprise'),
+              component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntreprise'),
               children: [
                 {
                   path: ADMIN + 'parametres/entreprise/ajouter',
                   name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.name,
                   meta: {value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.value},
-                  component: () => import('../views/administrateur/parametres/entreprise/view.admin.entreprise.add')
+                  component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntrepriseAdd')
                 }
               ]
             },

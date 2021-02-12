@@ -55,15 +55,19 @@ export default {
         {href: {name: LemkaEnums.Routes.BONS_DE_COMMANDE.name}, title: LemkaEnums.Routes.BONS_DE_COMMANDE.value, icon: LemkaEnums.FontAwesomeIcons.SHOPPING_CART},
         {href: {name: LemkaEnums.Routes.FACTURE.name}, title: LemkaEnums.Routes.FACTURE.value, icon: LemkaEnums.FontAwesomeIcons.MONEY},
         {href: {name: LemkaEnums.Routes.RENDEZ_VOUS.name}, title: LemkaEnums.Routes.RENDEZ_VOUS.value, icon: LemkaEnums.FontAwesomeIcons.CALENDAR},
-        {href: {name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name}, title: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.value, icon: LemkaEnums.FontAwesomeIcons.PARAMETRES},
+        {href: {name: LemkaEnums.Routes.PARAMETRES.name}, title: LemkaEnums.Routes.PARAMETRES.value, icon: LemkaEnums.FontAwesomeIcons.PARAMETRES},
       ],
       toggled: false,
       imageLogo: require('@/assets/logo.png')
     }
   },
+
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    thisRoute() {
+      return this.$route.name
     }
   },
 
@@ -79,10 +83,25 @@ export default {
     }
   },
 
+  created() {
+    if (!this.currentUser) {
+      this.$router.push({name: LemkaEnums.Routes.LOGIN_ROUTE.name})
+    } else {
+      if (this.$route.name === LemkaEnums.Routes.ADMIN_ROUTE.name) {
+        this.$router.push({name: LemkaEnums.Routes.DASHBOARD.name})
+      }
+    }
+  },
+
   watch: {
     currentUser() {
       if (!this.currentUser) {
         this.$router.push({name: LemkaEnums.Routes.LOGIN_ROUTE.name})
+      }
+    },
+    thisRoute: function () {
+      if (this.thisRoute === LemkaEnums.Routes.ADMIN_ROUTE.name) {
+        this.$router.push({name: LemkaEnums.Routes.DASHBOARD.name})
       }
     }
   },

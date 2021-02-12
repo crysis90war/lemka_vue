@@ -1,39 +1,16 @@
 <template>
   <b-card>
-    <template title>
-      <div class="d-flex justify-start">
-        <b-button variant="light" :to="{name: links.articlesLink}">
-          <i class="fas fa-arrow-left"></i>
-        </b-button>
-        <h3 class="ml-3">{{article.titre}}</h3>
-      </div>
-    </template>
-
-    <b-card-body v-if="article">
-
-      <div v-if="loading" class="loading">
+    <b-card-body>
+      <div v-if="loading === true" class="loading">
         <b-spinner type="grow" label="Loading..." variant="secondary"></b-spinner>
       </div>
 
-      <div v-if="error" class="error">
-        {{ error }}
-      </div>
-
-      <div v-if="article">
-        <b-button-group>
-          <b-button variant="primary" :to="{name: links.articleUpdateLink, params: {slug: article.slug}}">
-            Modifier
-          </b-button>
-          <b-button variant="danger">
-            Supprimer
-          </b-button>
-        </b-button-group>
-
+      <b-card v-else :class="bootstrap.shadow">
         <b-row>
-          <b-col lg="5">
-            <lightbox css="h-200 h-lg-250" :items="images" :cells="3"></lightbox>
-          </b-col>
           <b-col lg="7">
+            <lightbox cells="2" :items="images"></lightbox>
+          </b-col>
+          <b-col lg="5">
             <span class="text-muted">{{ article.created_at }}</span>
             <h3>{{ article.titre }}</h3>
             <h5>{{ article.ref_type_service.type_service }}</h5>
@@ -41,18 +18,46 @@
             <span v-for="(tag, index) in article.ref_tag" :key="index">
               <b-badge pill variant="secondary" class="mr-1">{{tag.tag}}</b-badge>
             </span>
+            <br>
+            <br>
+            <span class="text-danger">
+              <i :class="icons.heart"></i>
+              {{article.likes_count}}
+            </span>
+
+            <div class="pull-bottom mt-5">
+              <b-button-group class="d-flex justify-content-center">
+                <b-button variant="outline-primary" :to="{name: links.articleUpdateLink, params: {slug: article.slug}}">
+                  Modifier
+                </b-button>
+                <b-button variant="outline-warning">
+                  Désactiver
+                </b-button>
+                <b-button variant="outline-danger">
+                  Supprimer
+                </b-button>
+              </b-button-group>
+            </div>
           </b-col>
         </b-row>
-        <pre>{{article}}</pre>
-      </div>
+      </b-card>
+
+      <pre>{{article}}</pre>
 
     </b-card-body>
   </b-card>
 </template>
 
 <script>
-import ApiService from "@/services";
 import {LemkaEnums} from "@/helpers/enums.helper";
+import ArticleModel from "@/models/article.model";
+import TypeServiceModel from "@/models/typeService.model";
+import CatalogueModel from "@/models/catalogue.model";
+import RayonModel from "@/models/rayon.model";
+import SectionModel from "@/models/section.model";
+import TypeProduitModel from "@/models/typeProduit.model";
+import TagModel from "@/models/tag.model";
+import ApiService from "@/services";
 
 export default {
   name: "ViewAdminArticlesDetail",
@@ -65,13 +70,26 @@ export default {
   data() {
     return {
       loading: false,
+      article: new ArticleModel(),
+      images: [],
+      articleObject: new ArticleModel(),
       error: null,
       links: {
         articlesLink: LemkaEnums.Routes.ARTICLES.name,
         articleUpdateLink: LemkaEnums.Routes.ARTICLES_UPDATE.name
       },
-      article: null,
-      images: []
+      bootstrap: {
+        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW,
+      },
+      icons: {
+        heart: LemkaEnums.FontAwesomeIcons.HEART
+      }
+    }
+  },
+
+  computed: {
+    thisRoute() {
+      return this.$route.name
     }
   },
 
@@ -88,95 +106,53 @@ export default {
         let typeProduit = {}
         let tags = []
 
-        await ApiService.ArticleService.getArticleDetail(this.slug).then(response => {
-          article = response.data
-        })
+        article = await ArticleModel.getArticleDetail(this.slug)
 
-        typeService = await this.fetchTypeService(article.ref_type_service)
-
-        catalogue = await this.fetchCatalogue(article.ref_catalogue)
-
-        rayon = await this.fetchRayon(catalogue.ref_rayon)
-
-        section = await this.fetchSection(catalogue.ref_section)
-
-        typeProduit = await this.fetchTypeProduit(catalogue.ref_type_produit)
-
-        for (let i = 0; i < article.ref_tag.length; i++) {
-          let tag = {}
-          tag = await this.fetchTag(article.ref_tag[i])
-          tags.push(tag)
+        if (article.ref_type_service !== null && article.ref_type_service !== undefined) {
+          typeService = await TypeServiceModel.getTypeServiceDetail(article.ref_type_service)
+          article.ref_type_service = typeService
         }
+
+        if (article.ref_catalogue !== null && article.ref_catalogue !== undefined) {
+          catalogue = await CatalogueModel.getCatalogueDetail(article.ref_catalogue)
+          if (catalogue.ref_rayon !== null && catalogue.ref_rayon !== undefined) {
+            rayon = await RayonModel.getRayonDetail(catalogue.ref_rayon)
+            catalogue.ref_rayon = rayon
+          }
+          if (catalogue.ref_section !== null && catalogue.ref_section !== undefined) {
+            section = await SectionModel.getSectionDetail(catalogue.ref_section)
+            catalogue.ref_section = section
+          }
+          if (catalogue.ref_type_produit !== null && catalogue.ref_type_produit !== undefined) {
+            typeProduit = await TypeProduitModel.getTypeProduitDetail(catalogue.ref_type_produit)
+            catalogue.ref_type_produit = typeProduit
+          }
+          article.ref_catalogue = catalogue
+        }
+
+        if (article.ref_tag.length > 0) {
+          for (const item of article.ref_tag) {
+            let tag = {}
+            tag = await TagModel.getTagDetail(item)
+            tags.push(tag)
+          }
+          article.ref_tag = tags
+        }
+
+        Object.assign(this.article, article)
+
         await ApiService.ArticleService.getArticleImagesList(article.slug).then(response => {
           response.data.forEach(image => {
             this.images.push(image.image)
           })
         })
-        article.ref_type_service = typeService
-        article.ref_catalogue = catalogue
-        article.ref_catalogue.ref_rayon = rayon
-        article.ref_catalogue.ref_section = section
-        article.ref_catalogue.ref_type_produit = typeProduit
-        article.ref_tag = tags
-        this.article = article
 
       } catch (e) {
         this.error = e
       } finally {
         this.loading = false
       }
-    },
-
-    async fetchTypeService(typeServiceId) {
-      let typeService = {}
-      await ApiService.TypeServiceService.getTypeServiceDetail(typeServiceId).then(response => {
-        typeService = response.data
-      })
-      return typeService
-    },
-
-    async fetchCatalogue(catalogueId) {
-      let catalogue = {}
-
-      await ApiService.CatalogueService.getCatalogueDetail(catalogueId).then(response => {
-        catalogue = response.data
-      })
-
-      return catalogue
-    },
-
-    async fetchRayon(rayonId) {
-      let rayon = {}
-      await ApiService.RayonService.getRayonDetail(rayonId).then(response => {
-        rayon = response.data
-      })
-      return rayon
-    },
-
-    async fetchSection(sectionId) {
-      let section = {}
-      await ApiService.SectionService.getSectionDetail(sectionId).then(response => {
-        section = response.data
-      })
-      return section
-    },
-
-    async fetchTypeProduit(typeProduitId) {
-      let typeProduit = {}
-      await ApiService.TypeProduitService.getTypeProduitDetail(typeProduitId).then(response => {
-        typeProduit = response.data
-      })
-      return typeProduit
-    },
-
-    async fetchTag(tagId) {
-      let tag = {}
-      await ApiService.TagService.getTagDetail(tagId).then(response => {
-        tag = response.data
-      })
-      return tag
     }
-
   },
 
   created() {
@@ -188,3 +164,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

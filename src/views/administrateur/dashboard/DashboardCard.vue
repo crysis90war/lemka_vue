@@ -1,7 +1,7 @@
 <template>
   <b-card>
     <template v-slot:header>
-      <i :class="`fas ${icon}`"></i>
+      <i :class="icon"></i>
       <span> {{ route_value }}</span>
     </template>
 

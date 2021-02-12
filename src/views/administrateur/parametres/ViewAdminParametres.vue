@@ -24,11 +24,10 @@
 </template>
 
 <script>
-import ApiService from "@/services";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
-  name: "ViewParametres",
+  name: "ViewAdminParametres",
   data() {
     return {
       routes: {
@@ -37,57 +36,28 @@ export default {
         mensuration: {name: LemkaEnums.Routes.PARAMETRES_MENSURATION.name, value: LemkaEnums.Routes.PARAMETRES_MENSURATION.value},
         service: {name: LemkaEnums.Routes.PARAMETRES_SERVICE.name, value: LemkaEnums.Routes.PARAMETRES_SERVICE.value}
       },
-      services: [],
-      catalogues: [],
-      categories: [],
-      entreprise: null,
-      genres: [],
     }
   },
 
-  methods: {
-    async chargerEntreprise() {
-      await ApiService.EntrepriseService.getEntrepriseList().then(response => {
-        if (response.data.length === 0) {
-          this.entreprise = null
-        } else {
-          this.entreprise = response.data[0]
-        }
-      })
-    },
-
-    async chargerServices() {
-      await ApiService.TypeServiceService.getTypeServiceList().then(response => {
-        this.services = response.data
-      })
-    },
-
-    async chargerCatalogues() {
-      await ApiService.CatalogueService.getCatalogueList().then(response => {
-        this.catalogues = response.data
-      })
-    },
-
-    async chargerCategories() {
-      await ApiService.CategorieService.getCategorieList().then(response => {
-        this.categories = response.data;
-      })
-    },
-
+  computed: {
+    thisRoute() {
+      return this.$route.name
+    }
   },
 
   created() {
-    this.chargerEntreprise();
-    this.chargerCatalogues();
-    this.chargerServices();
-    this.chargerCategories();
+    if (this.$route.name === LemkaEnums.Routes.PARAMETRES.name) {
+      this.$router.push({name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name})
+    }
   },
 
-  filters: {
-    pretty: function (value) {
-      return JSON.stringify(JSON.parse(value), null, 2);
+  watch: {
+    thisRoute: function () {
+      if (this.thisRoute === LemkaEnums.Routes.PARAMETRES.name) {
+        this.$router.push({name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name})
+      }
     }
-  }
+  },
 }
 </script>
 
