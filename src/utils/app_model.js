@@ -1,6 +1,3 @@
-/**
- * Created by denishuang on 2017/11/29.
- */
 import axios from '../configs/axios'
 import Qs from 'qs'
 export function joinErrors (errors) {

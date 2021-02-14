@@ -38,7 +38,7 @@
             <b-button variant="outline-primary" :to="{name: links.updateEntreprise}" class="mb-3">Modifier</b-button>
           </b-card>
         </div>
-        <div v-else>
+        <div v-if="entreprise < 0 && entLength > 1">
           <b-spinner type="grow" label="Loading..."></b-spinner>
         </div>
       </b-card-body>

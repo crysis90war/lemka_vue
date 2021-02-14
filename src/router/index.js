@@ -229,13 +229,13 @@ const router = new VueRouter({
               path: ADMIN + 'parametres/genres',
               name: LemkaEnums.Routes.PARAMETRES_GENRE.name,
               meta: {value: LemkaEnums.Routes.PARAMETRES_GENRE.value},
-              component: () => import('../views/administrateur/parametres/genre/view.admin.genre'),
+              component: () => import('../views/administrateur/parametres/genre/ViewAdminGenre'),
               children: [
                 {
                   path: ADMIN + 'parametres/genres/ajouter',
                   name: LemkaEnums.Routes.PARAMETRES_GENRE_ADD.name,
                   meta: {value: LemkaEnums.Routes.PARAMETRES_GENRE_ADD.value},
-                  component: () => import('../views/administrateur/parametres/genre/view.admin.genre.add')
+                  component: () => import('../views/administrateur/parametres/genre/ViewAdminGenreAdd')
                 }
               ]
             },

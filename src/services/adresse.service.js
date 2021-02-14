@@ -2,25 +2,29 @@ import axios from "axios";
 import authHeader from "@/configs/auth-header";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
-const ADD_ADRESSE = LemkaEnums.Endpoints.ADRESSE_CREATE_ENDPOINT;
-const ROUTE = LemkaEnums.Endpoints.ADRESSE_GUD_ENPOINT;
+const DOMAIN = LemkaEnums.Endpoints.DOMAIN
+const PROFIL = DOMAIN + '/profil/'
+const UTILISATEURS = DOMAIN + '/utilisateurs/'
 
 class AdresseService {
     getAdresse() {
-        return axios.get(ROUTE, {headers: authHeader()})
+        let endpoint = `${PROFIL}adresse/`
+        return axios.get(endpoint, {headers: authHeader()})
     }
 
-    getAdressesDetail(adresseId) {
-        let endpoint = `${ROUTE}${adresseId}/`;
+    getAdresseByUsername(username) {
+        let endpoint = `${UTILISATEURS}${username}/adresses/`;
         return axios.get(endpoint, {headers: authHeader()})
     }
 
     postAdresse(payload) {
-        return axios.post(ADD_ADRESSE, payload, {headers: authHeader()})
+        let endpoint = `${PROFIL}adresses/`
+        return axios.post(endpoint, payload, {headers: authHeader()})
     }
 
     putAdresse(payload) {
-        return axios.put(ROUTE, payload, {headers: authHeader()})
+        let endpoint = `${PROFIL}adresse/`
+        return axios.put(endpoint, payload, {headers: authHeader()})
     }
 }
 

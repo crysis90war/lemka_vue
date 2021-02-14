@@ -215,7 +215,7 @@ export default {
   },
   methods: {
     async chargerUtilisateurs() {
-      await ApiService.UserService.getUserList().then(response => {
+      await ApiService.UtilisateurService.getUtilisateurList().then(response => {
         this.items = response.data
         this.totalRows = this.items.length
       })

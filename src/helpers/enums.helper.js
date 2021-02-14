@@ -1,4 +1,5 @@
-const DOMAIN = 'https://lemka-api.herokuapp.com/api';
+// const DOMAIN = 'https://lemka-api.herokuapp.com/api';
+const DOMAIN = 'http://127.0.0.1:8000/api';
 const PROFIL = DOMAIN + '/profil';
 const AdminView = 'ViewAdmin';
 const UserView = 'ViewUser';
@@ -66,6 +67,7 @@ const Routes = {
 }
 
 const Endpoints = {
+    DOMAIN: DOMAIN,
     // region Global endpoints
     LOGIN_ENDPOINT: DOMAIN + '/login/',
     REGISTER_ENDPOINT: DOMAIN + '/register/',
@@ -77,9 +79,6 @@ const Endpoints = {
     PROFILE_ENDPOINT: PROFIL + '/',
 
     USER_MENSURATION_ENDPOINT: PROFIL + /mensurations/,
-
-    ADRESSE_GUD_ENPOINT: PROFIL + '/adresse/',
-    ADRESSE_CREATE_ENDPOINT: PROFIL + '/adresses/',
 
     PAYS_ENDPOINT: DOMAIN + '/pays/',
     // endregion

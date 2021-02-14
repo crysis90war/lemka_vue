@@ -1,7 +1,3 @@
-/**
- * Created by denishuang on 2020/4/29.
- */
-
 export function img2canvas(img) {
     let canvas = document.createElement('canvas')
     canvas.width = img.width

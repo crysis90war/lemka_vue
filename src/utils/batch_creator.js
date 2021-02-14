@@ -1,11 +1,8 @@
-/**
- * Created by denishuang on 2019/6/5.
- */
-
 import {Register} from './app_model'
 import Qs from 'qs'
 import axios from '../configs/axios'
 import queueLimit from './async_queue'
+// eslint-disable-next-line no-unused-vars
 import {countBy, groupBy, merge, last, uniqueId} from 'lodash'
 
 function flatten(ns, children_field_name) {
@@ -35,13 +32,13 @@ function ModelAccount(appModelName) {
         plainFields: [],
         defaults: {},
         model,
-        key (d){
+        key(d) {
             return typeof d === 'object' ? JSON.stringify(d) : d
         },
-        get (d) {
+        get(d) {
             return this.dmap[this.key(d)]
         },
-        getRemote(d){
+        getRemote(d) {
             return axios.get(`${this.model.listUrl}?${Qs.stringify(d)}`).then(({data}) => {
                 if (data.count === 1) {
                     return Promise.resolve(data.results[0])
@@ -50,7 +47,7 @@ function ModelAccount(appModelName) {
                 }
             })
         },
-        async getPk(d){
+        async getPk(d) {
             let pk = this.get(d)
             if (pk) {
                 return pk
@@ -73,7 +70,7 @@ function ModelAccount(appModelName) {
             this.set(d, pk)
             return pk
         },
-        async checkPk(series){
+        async checkPk(series) {
             let d = this.get(series)
 
             if (d.id) {
@@ -102,10 +99,10 @@ function ModelAccount(appModelName) {
             d.id = o && o.id ? o.id : -1
             return d
         },
-        postObject(d){
+        postObject(d) {
             return axios.post(this.model.listUrl, d).then(r => r.data)
         },
-        async create(series){
+        async create(series) {
             let d = this.get(series)
             if (d.id > 0) {
                 return d
@@ -130,10 +127,10 @@ function ModelAccount(appModelName) {
             return d
 
         },
-        set  (d, v) {
+        set(d, v) {
             this.dmap[this.key(d)] = v
         },
-        genData (series) {
+        genData(series) {
             let c = this.count
             let pfs = this.plainFields
             let pfsc = pfs.length
@@ -159,13 +156,13 @@ function ModelAccount(appModelName) {
             this.set(series, r)
             return r
         },
-        genDataList(dataframe){
+        genDataList(dataframe) {
             return dataframe.map(s => this.genData(s))
         },
-        getNotExists(){
+        getNotExists() {
             return Object.keys(this.dmap).filter(a => this.dmap[a].id < 0).map(a => this.dmap[a])
         },
-        getFieldMap(){
+        getFieldMap() {
             let actions = model.config.rest_options.actions
             return actions.POST || actions.LIST
         },
@@ -188,7 +185,7 @@ function ModelAccount(appModelName) {
             return r
 
         },
-        getModelNames(){
+        getModelNames() {
             let mns = []
             this.foreignKeys.forEach(a => mns = mns.concat(a.getModelNames()))
             mns.push(appModelName)
@@ -196,13 +193,14 @@ function ModelAccount(appModelName) {
         }
     }
 }
+
 export default {
-    batchLoadOptions(models){
+    batchLoadOptions(models) {
         return queueLimit(models, 3, (model) => {
             return Register.get(model).loadOptions()
         })
     },
-    getModels(d){
+    getModels(d) {
         let rs = []
         d.fields.forEach((f) => {
             if (f.model) {
@@ -214,7 +212,7 @@ export default {
         }
         return rs
     },
-    getStructure(s){
+    getStructure(s) {
         let r = ModelAccount(s.name)
         r.plainFields = s.plainFields
         r.rel = s.rel
@@ -265,7 +263,7 @@ export default {
         })
         return ls
     },
-    getFields(d){
+    getFields(d) {
         let ls = this.getFieldsByStep(d)
         let lcs = countBy(ls, a => a.label)
         ls.forEach(a => {
@@ -275,14 +273,14 @@ export default {
         })
         return ls
     },
-    groupByModel(fs){
+    groupByModel(fs) {
         return groupBy(fs, f => f.owner.fullName)
     },
-    create(fs, model){
+    create(fs, model) {
         let fns1 = fs.filter(f => f.owner.fullName === model).map(f => f.name)
         let fns2 = fs.filter(f => f.rel.fullName === model).map(f => f.rel_name)
     },
-    trimKeys(d){
+    trimKeys(d) {
         let r = {}
         Object.keys(d).forEach((k) => {
             let nk = last(k.split('.'))

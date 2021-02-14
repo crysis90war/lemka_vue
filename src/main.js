@@ -15,6 +15,7 @@ import Lightbox from '@morioh/v-lightbox';
 import Vuelidate from "vuelidate/src";
 import Multiselect from 'vue-multiselect'
 
+
 Vue.config.productionTip = false
 Vue.component('multiselect', Multiselect)
 Vue.use(Vuelidate)

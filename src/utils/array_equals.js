@@ -1,6 +1,3 @@
-/**
- * Created by denishuang on 2017/11/27.
- */
 // Warn if overriding existing method
 if (Array.prototype.equals) {
     console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.")
@@ -17,7 +14,7 @@ Array.prototype.equals = function (array) {
         return false
     }
 
-    for (var i = 0, l = this.length; i < l; i++) {
+    for (let i = 0, l = this.length; i < l; i++) {
         // Check if we have nested arrays
         if (this[i] instanceof Array && array[i] instanceof Array) {
             // recurse into the nested arrays

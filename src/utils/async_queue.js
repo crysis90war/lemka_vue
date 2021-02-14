@@ -1,7 +1,4 @@
 /**
- * Created by denishuang on 2019/1/13.
- */
-/**
  * @params list {Array} - 要迭代的数组
  * @params limit {Number} - 并发数量控制数
  * @params asyncHandle {Function} - 对`list`的每一个项的处理函数，参数为当前处理项，必须 return 一个Promise来确定是否继续进行迭代

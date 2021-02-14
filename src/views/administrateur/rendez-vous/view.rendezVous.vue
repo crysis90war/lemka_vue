@@ -1,17 +1,17 @@
 <template>
-  <b-card :title="AdminRouteName.RENDEZ_VOUS.value">
+  <b-card :title="rendez_vous">
 
   </b-card>
 </template>
 
 <script>
-import {AdminRouteName} from "@/helpers/enums.helper";
+import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
   name: "RendezVous",
   data() {
     return {
-      AdminRouteName,
+      rendez_vous: LemkaEnums.Routes.RENDEZ_VOUS.value,
     }
   },
 }

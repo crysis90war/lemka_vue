@@ -26,15 +26,15 @@
           <hr>
           <div>
             <span><i :class="icons.adresse" class="mr-2"></i></span>
-            <b-link v-if="Object.entries(adresse).length === 0" :to="{name: links.ajouterAdresseLink}" class="">
+            <b-link v-if="adresse === null" :to="{name: links.ajouterAdresseLink}" class="">
               <ins>Ajouter une adresse</ins>
             </b-link>
-            <b-link v-if="Object.entries(adresse).length !== 0" :to="{name: links.modifierAdresseLink}" class="">
+            <b-link v-if="adresse !== null" :to="{name: links.modifierAdresseLink}" class="">
               <ins>Modifier l'adresse</ins>
             </b-link>
           </div>
 
-          <div v-if="Object.entries(adresse).length !== 0" class="mt-2">
+          <div v-if="adresse !== null" class="mt-2">
             <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
             <span>{{ adresse.ref_ville.code_postale }} - {{ adresse.ref_ville.ville }}</span><br>
             <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
@@ -54,8 +54,8 @@
 
       </b-row>
       <div>
-        <span><small>Membre depuis {{ profil.created_at }}</small></span><br>
-        <span><small>Dernière mise à jour {{ profil.updated_at }}</small></span>
+        <span><small>Membre depuis {{ profil.created_at | localTimeStr }}</small></span><br>
+        <span><small>Dernière mise à jour {{ profil.updated_at | localTimeStr }}</small></span>
       </div>
     </b-card-body>
   </b-card>
@@ -74,8 +74,7 @@ import UploadModal from "@/components/UploadModal";
 import GenreModel from "@/models/genre.model";
 import ProfilModel from "@/models/profil.model";
 import AdresseModel from "@/models/adresse.model";
-import VilleModel from "@/models/ville.model";
-import PaysModel from "@/models/pays.model";
+import {localTimeStr} from "@/utils/filters";
 
 export default {
   name: "ViewUserInformations",
@@ -111,7 +110,7 @@ export default {
       let genre = {}
       profil = await ProfilModel.fetchProfil()
       if (profil.ref_genre !== null && profil.ref_genre !== undefined) {
-        genre = await GenreModel.fetchGenre(profil.ref_genre)
+        genre = await GenreModel.getGenreDetail(profil.ref_genre)
         profil.ref_genre = genre
       }
       Object.assign(this.profil, profil)
@@ -119,21 +118,11 @@ export default {
 
     async chargerAdresse() {
       let adresse = {}
-      let ville = {}
-      let pays= {}
-      adresse = await AdresseModel.fetchAdresse()
-      if (adresse !== null && adresse !== undefined && Object.entries(adresse).length !== 0) {
-        if (adresse.ref_ville !== null && adresse.ref_ville !== undefined) {
-          ville = await VilleModel.fetchVille(adresse.ref_ville)
-          adresse.ref_ville = ville
-        }
-        if (ville.ref_pays !== null && ville.ref_pays !== undefined) {
-          pays = await PaysModel.fetchPays(ville.ref_pays)
-          ville.ref_pays = pays
-        }
+      adresse = await AdresseModel.getAdresseDetail()
+      if (adresse !== null) {
         Object.assign(this.adresse, adresse)
       } else {
-        this.adresse = adresse
+        this.adresse = null
       }
     },
 
@@ -149,6 +138,12 @@ export default {
       } finally {
         this.loading = false
       }
+    }
+  },
+  filters: {
+    localTimeStr: function (value) {
+      value = localTimeStr(value)
+      return value
     }
   },
 

@@ -15,7 +15,7 @@ import TagService from '@/services/tag.service';
 import TypeProduitService from '@/services/typeProduit.service';
 import TypeServiceService from '@/services/typeService.service';
 import UserMensurationsService from '@/services/userMensuration.service';
-import UserService from '@/services/user.service';
+import UtilisateurService from '@/services/utilisateur.service';
 import VilleService from '@/services/ville.service';
 
 const ApiService = {
@@ -36,7 +36,7 @@ const ApiService = {
     TypeProduitService,
     TypeServiceService,
     UserMensurationsService,
-    UserService,
+    UtilisateurService,
     VilleService
 }
 

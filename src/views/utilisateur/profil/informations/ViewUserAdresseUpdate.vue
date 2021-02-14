@@ -132,17 +132,8 @@ export default {
   methods: {
     async chargerAdresses() {
       let adresse = {}
-      let ville = {}
-      let pays = {}
-      adresse = await AdresseModel.fetchAdresse()
-      if (adresse.ref_ville !== null && adresse.ref_ville) {
-        ville = await VilleModel.fetchVille(adresse.ref_ville)
-        adresse.ref_ville = ville
-      }
-      if (ville.ref_pays !== null && ville.ref_pays !== undefined) {
-        pays = await PaysModel.fetchPays(ville.ref_pays)
-        ville.ref_pays = pays
-      }
+      adresse = await AdresseModel.getAdresseDetail()
+
       Object.assign(this.adresse, adresse)
     },
 

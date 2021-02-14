@@ -1,12 +1,10 @@
-/**
- * Created by denishuang on 2017/11/16.
- */
-import {formatRelative, subDays, distance_in_words_to_now} from 'date-fns'
-import zh_cn from 'date-fns/locale/zh_cn'
+// eslint-disable-next-line no-unused-vars
+import {formatRelative, subDays, formatDistanceToNow} from 'date-fns'
+import be from 'date-fns/locale/be'
 
 export function dateTime (t) {
     if (typeof t === 'string' && !t.includes('+')) {
-        t = t.concat('+08:00')
+        t = t.concat('+02:00')
     }
     return new Date(t)
 }
@@ -16,7 +14,7 @@ export function date2now (d) {
 }
 
 export function date (d) {
-    return distance_in_words_to_now(d, {locale: zh_cn})
+    return formatDistanceToNow(d, {locale: be})
 }
 
 function pluralize (time, label) {
@@ -62,7 +60,7 @@ export function parseTime (time, cFormat) {
         s: date.getSeconds(),
         a: date.getDay()
     }
-    const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+    return format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
         let value = formatObj[key]
         if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
         if (result.length > 0 && value < 10) {
@@ -70,7 +68,6 @@ export function parseTime (time, cFormat) {
         }
         return value || 0
     })
-    return time_str
 }
 export function localTimeStr(t) {
     return dateTime(t).toLocaleString()
@@ -94,7 +91,7 @@ export function formatTime(time, option) {
     if (option) {
         return parseTime(time, option)
     } else {
-        if (d.getYear() != now.getYear()) {
+        if (d.getYear() !== now.getYear()) {
             return parseTime(d, '{y}-{m}-{d} {h}:{i}')
         }
         return (d.getMonth() + 1) + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
@@ -158,9 +155,9 @@ export function json(value, items) {
 }
 
 export default {
+    date,
     dateTime,
     date2now,
-    date,
     parseTime,
     timeAgo,
     formatTime,

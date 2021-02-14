@@ -9,7 +9,7 @@ export default class AdresseModel {
         this.rue = R.is(String, adresse.rue) ? adresse.rue : ""
         this.numero = R.is(String, adresse.numero) ? adresse.numero : ""
         this.boite = R.is(String, adresse.boite) ? adresse.boite : ""
-        this.ref_ville = R.is(Object, adresse.ref_ville) ? new VilleModel(adresse.ref_ville) : new VilleModel()
+        this.ref_ville = R.is(Object, adresse.ref_ville) ? new VilleModel(adresse.ref_ville) : null
     }
 
     toCreatePayload() {
@@ -44,16 +44,47 @@ export default class AdresseModel {
         }
     }
 
-    static async fetchAdresse() {
+    static async getAdresseDetail() {
         let adresse = null
         await ApiService.AdresseService.getAdresse().then(response => {
             adresse = response.data
         }).catch(error => {
             if (error.response.status === 404) {
-                adresse = {}
+                adresse = null
             }
         })
+        await this.recuperationVillePays(adresse);
         return adresse
+    }
+
+    static async getAdresseByUsername(username) {
+        let adresse = null;
+        await ApiService.AdresseService.getAdresseByUsername(username).then(response => {
+            adresse = response.data
+        }, error => {
+            if (error.response.status === 404) {
+                adresse = null
+            }
+        })
+        await this.recuperationVillePays(adresse);
+        return adresse
+    }
+
+    static async recuperationVillePays(adresse) {
+        if (adresse !== null && !R.isEmpty(adresse) && adresse !== undefined) {
+            let ville = null
+            await ApiService.VilleService.getVillesDetail(adresse.ref_ville).then(response => {
+                ville = response.data
+            })
+            if (ville !== null) {
+                let pays = null
+                await ApiService.PaysService.getPaysDetail(ville.ref_pays).then(response => {
+                    pays = response.data
+                    ville.ref_pays = pays
+                })
+            }
+            adresse.ref_ville = ville
+        }
     }
 
     static async updateAdresse(payload) {

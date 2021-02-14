@@ -4,16 +4,15 @@ import authHeader from "@/configs/auth-header";
 
 const ROUTE = LemkaEnums.Endpoints.USERS_ENDPOINT;
 
-class UserService {
+class UtilisateurService {
 
-    getUserList() {
+    getUtilisateurList() {
         return axios.get(ROUTE, {headers: authHeader()})
     }
 
-    getUserDetail(userSlug) {
-        let endpoint = `${ROUTE}${userSlug}/`;
-        return axios
-            .get(endpoint, {headers: authHeader()})
+    getUtilisateurDetail(username) {
+        let endpoint = `${ROUTE}${username}/`;
+        return axios.get(endpoint, {headers: authHeader()})
     }
 
     postUser(payload) {
@@ -42,4 +41,4 @@ class UserService {
     }
 }
 
-export default new UserService();
+export default new UtilisateurService();
