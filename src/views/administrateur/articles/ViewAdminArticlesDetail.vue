@@ -7,8 +7,11 @@
 
       <b-card v-else :class="bootstrap.shadow">
         <b-row>
-          <b-col lg="7">
-            <lightbox cells="2" :items="images"></lightbox>
+          <b-col lg="7" :class="images.length > 0 ? '' : 'my-auto'">
+            <lightbox v-if="images.length > 0" :cells="2" :items="images"></lightbox>
+            <div v-else class="text-center">
+              <p>Pas d'images</p>
+            </div>
           </b-col>
           <b-col lg="5">
             <span class="text-muted">{{ article.created_at }}</span>
@@ -41,8 +44,6 @@
           </b-col>
         </b-row>
       </b-card>
-
-      <pre>{{article}}</pre>
 
     </b-card-body>
   </b-card>
