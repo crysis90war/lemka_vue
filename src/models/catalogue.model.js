@@ -40,6 +40,15 @@ export default class CatalogueModel {
         await ApiService.CatalogueService.getCatalogueDetail(catalogueId).then(response => {
             catalogue = response.data
         })
+        if (catalogue.ref_rayon !== null && catalogue.ref_rayon !== undefined) {
+            catalogue.ref_rayon = await RayonModel.getRayonDetail(catalogue.ref_rayon)
+        }
+        if (catalogue.ref_section !== null && catalogue.ref_section !== undefined) {
+            catalogue.ref_section = await SectionModel.getSectionDetail(catalogue.ref_section)
+        }
+        if (catalogue.ref_type_produit !== null && catalogue.ref_type_produit !== undefined) {
+            catalogue.ref_type_produit = await TypeProduitModel.getTypeProduitDetail(catalogue.ref_type_produit)
+        }
         return catalogue
     }
 

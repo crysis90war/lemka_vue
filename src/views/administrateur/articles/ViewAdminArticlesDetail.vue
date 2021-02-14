@@ -52,12 +52,6 @@
 <script>
 import {LemkaEnums} from "@/helpers/enums.helper";
 import ArticleModel from "@/models/article.model";
-import TypeServiceModel from "@/models/typeService.model";
-import CatalogueModel from "@/models/catalogue.model";
-import RayonModel from "@/models/rayon.model";
-import SectionModel from "@/models/section.model";
-import TypeProduitModel from "@/models/typeProduit.model";
-import TagModel from "@/models/tag.model";
 import ApiService from "@/services";
 
 export default {
@@ -100,45 +94,7 @@ export default {
         this.loading = true
 
         let article = {}
-        let typeService = {}
-        let catalogue = {}
-        let rayon = {}
-        let section = {}
-        let typeProduit = {}
-        let tags = []
-
         article = await ArticleModel.getArticleDetail(this.slug)
-
-        if (article.ref_type_service !== null && article.ref_type_service !== undefined) {
-          typeService = await TypeServiceModel.getTypeServiceDetail(article.ref_type_service)
-          article.ref_type_service = typeService
-        }
-
-        if (article.ref_catalogue !== null && article.ref_catalogue !== undefined) {
-          catalogue = await CatalogueModel.getCatalogueDetail(article.ref_catalogue)
-          if (catalogue.ref_rayon !== null && catalogue.ref_rayon !== undefined) {
-            rayon = await RayonModel.getRayonDetail(catalogue.ref_rayon)
-            catalogue.ref_rayon = rayon
-          }
-          if (catalogue.ref_section !== null && catalogue.ref_section !== undefined) {
-            section = await SectionModel.getSectionDetail(catalogue.ref_section)
-            catalogue.ref_section = section
-          }
-          if (catalogue.ref_type_produit !== null && catalogue.ref_type_produit !== undefined) {
-            typeProduit = await TypeProduitModel.getTypeProduitDetail(catalogue.ref_type_produit)
-            catalogue.ref_type_produit = typeProduit
-          }
-          article.ref_catalogue = catalogue
-        }
-
-        if (article.ref_tag.length > 0) {
-          for (const item of article.ref_tag) {
-            let tag = {}
-            tag = await TagModel.getTagDetail(item)
-            tags.push(tag)
-          }
-          article.ref_tag = tags
-        }
 
         Object.assign(this.article, article)
 

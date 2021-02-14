@@ -159,7 +159,6 @@
           </b-button>
         </template>
       </b-table>
-
     </b-card-body>
   </b-card>
 
@@ -169,6 +168,7 @@
 <script>
 import ApiService from "@/services";
 import {LemkaEnums} from '@/helpers/enums.helper';
+import ArticleModel from "@/models/article.model";
 
 export default {
   name: "ViewAdminArticles",
@@ -234,40 +234,14 @@ export default {
     async loadArticles() {
       try {
         this.toggleBusy()
+
         let articles = []
-        let typeService, catalogue, rayon, section, typeProduit;
-
-        await ApiService.ArticleService.getArticleList().then(response => {
-          response.data.forEach(item => {
-            articles.push(item)
-          })
-        })
-
+        this.items = []
+        articles = await ArticleModel.getArticleList()
         for (let i = 0; i < articles.length; i++) {
-          await ApiService.TypeServiceService.getTypeServiceDetail(articles[i].ref_type_service).then(response => {
-            typeService = response.data;
-          })
-          await ApiService.CatalogueService.getCatalogueDetail(articles[i].ref_catalogue).then(response => {
-            catalogue = response.data
-          })
-          await ApiService.RayonService.getRayonDetail(catalogue.ref_rayon).then(response => {
-            rayon = response.data
-          })
-          await ApiService.SectionService.getSectionDetail(catalogue.ref_section).then(response => {
-            section = response.data
-          })
-          await ApiService.TypeProduitService.getTypeProduitDetail(catalogue.ref_type_produit).then(response => {
-            typeProduit = response.data
-          })
-          articles[i].ref_type_service = typeService
-          articles[i].ref_catalogue = catalogue
-          articles[i].ref_catalogue.ref_rayon = rayon
-          articles[i].ref_catalogue.ref_section = section
-          articles[i].ref_catalogue.ref_type_produit = typeProduit
+          let article = await ArticleModel.getArticleDetail(articles[i].slug)
+          this.items.push(Object.assign(new ArticleModel(), article))
         }
-
-        this.items = articles
-        this.totalRows = this.items.length
       } catch (error) {
         console.log(error)
       } finally {

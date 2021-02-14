@@ -55,10 +55,27 @@ export default class ArticleModel {
     }
 
     static async getArticleDetail(articlesSlug) {
-        let article = {}
+        let article = null
+        let typeService = null
         await ApiService.ArticleService.getArticleDetail(articlesSlug).then(response => {
             article = response.data
         })
+        if (article.ref_type_service !== null && article.ref_type_service !== undefined) {
+            typeService = await TypeServiceModel.getTypeServiceDetail(article.ref_type_service)
+            article.ref_type_service = typeService
+        }
+        if (article.ref_catalogue !== null && article.ref_catalogue !== undefined) {
+            article.ref_catalogue = await CatalogueModel.getCatalogueDetail(article.ref_catalogue)
+        }
+        if (article.ref_tag.length > 0) {
+            let tags = []
+            for (const item of article.ref_tag) {
+                let tag = {}
+                tag = await TagModel.getTagDetail(item)
+                tags.push(tag)
+            }
+            article.ref_tag = tags
+        }
         return article
     }
 
