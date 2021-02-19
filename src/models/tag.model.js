@@ -6,7 +6,6 @@ export default class TagModel {
     constructor(tag = {}) {
         this.id = R.is(Number, tag.id) ? tag.id : null
         this.tag = R.is(String, tag.slug) ? tag.slug : ""
-        this.tag_slug = R.is(String, tag.tag_slug) ? tag.tag_slug : ""
     }
 
     toCreatePayload() {
@@ -32,10 +31,10 @@ export default class TagModel {
         }
     }
 
-    static async getTagList() {
+    static async getTagList(searchParam = '') {
         let tags = []
-        await ApiService.TagService.getTagList().then(response => {
-            tags = response.data
+        await ApiService.TagService.getTagList(searchParam).then(response => {
+            tags = response.data.results
         })
         return tags
     }
@@ -46,5 +45,11 @@ export default class TagModel {
             tag = response.data
         })
         return tag
+    }
+
+    static async createTag(payload) {
+        await ApiService.TagService.postTag(payload).then(response => {
+            return response
+        })
     }
 }

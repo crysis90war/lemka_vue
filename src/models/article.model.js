@@ -13,7 +13,7 @@ export default class ArticleModel {
         this.est_active = R.is(Boolean, article.est_active) ? article.est_active : false
         this.ref_type_service = R.is(Object, article.ref_type_service) ? new TypeServiceModel(article.ref_type_service) : null
         this.ref_catalogue = R.is(Object, article.ref_catalogue) ? new CatalogueModel(article.ref_catalogue) : null
-        this.ref_tag = R.is(Array, article.ref_tag) ? new Array(new TagModel(article.ref_tag)) : new Array(null)
+        this.ref_tag = R.is(Array, article.ref_tag) ? new TagModel(article.ref_tag) : []
 
         this.created_at = article.created_at && isValid(article.created_at) ? format(article.created_at, "DD-MM-YYYY") : null
         this.slug = R.is(String, article.slug) ? article.slug : ""

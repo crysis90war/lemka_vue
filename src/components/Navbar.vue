@@ -37,11 +37,22 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
-            <b-dropdown-item href="#">ES</b-dropdown-item>
-            <b-dropdown-item href="#">RU</b-dropdown-item>
-            <b-dropdown-item href="#">FA</b-dropdown-item>
+          <b-nav-item-dropdown right>
+            <template #text>
+              <i class="fas fa-globe-europe"></i>
+            </template>
+            <b-dropdown-item href="#">
+              <span class="flag-icon flag-icon-fr flag-icon-squared mr-2"></span>
+              <small>Français</small>
+            </b-dropdown-item>
+            <b-dropdown-item href="#">
+              <span class="flag-icon flag-icon-nl flag-icon-squared mr-2"></span>
+              <small>Nederlands</small>
+            </b-dropdown-item>
+            <b-dropdown-item href="#">
+              <span class="flag-icon flag-icon-gb flag-icon-squared mr-2"></span>
+              <small>English</small>
+            </b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item v-b-modal.modal-no-backdrop>

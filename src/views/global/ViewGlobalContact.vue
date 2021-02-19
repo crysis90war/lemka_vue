@@ -1,25 +1,15 @@
 <template>
   <b-container class="text-center">
-    <p>CONTACT</p>
+    <ImageCropper></ImageCropper>
   </b-container>
 </template>
 
 <script>
 
+import ImageCropper from "@/components/ImageCropper";
 export default {
   name: "ViewGlobalContact",
-  data() {
-    return {
-
-    }
-  },
-
-  methods: {
-
-  },
-
-  created() {
-  }
+  components: {ImageCropper},
 }
 </script>
 

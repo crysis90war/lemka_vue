@@ -2,35 +2,33 @@ import axios from "axios";
 import authHeader from "@/configs/auth-header";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
-const ROUTE = LemkaEnums.Endpoints.TAGS_ENDPOINT;
+const DOMAIN = LemkaEnums.Endpoints.DOMAIN;
 
 class TagService {
-    getTagList() {
-        return axios
-            .get(ROUTE, {headers: authHeader()})
+    getTagList(searchField = '') {
+        let searchParam = `?search=${searchField}`
+        let endpoint = `${DOMAIN}/tags/${searchField === '' ? searchField : searchParam}`
+        return axios.get(endpoint, {headers: authHeader()})
     }
 
     getTagDetail(tagId) {
-        let endpoint = `${ROUTE}${tagId}/`;
-        return axios
-            .get(endpoint, {headers: authHeader()})
+        let endpoint = `${DOMAIN}/tags/${tagId}/`;
+        return axios.get(endpoint, {headers: authHeader()})
     }
 
     postTag(payload) {
-        return axios
-            .post(ROUTE, payload, {headers: authHeader()})
+        let endpoint = `${DOMAIN}/tags/`
+        return axios.post(endpoint, payload, {headers: authHeader()})
     }
 
     updateTag(tagId, payload) {
-        let endpoint = `${ROUTE}${tagId}/`;
-        return axios
-            .put(endpoint, payload, {headers: authHeader()})
+        let endpoint = `${DOMAIN}/tags/${tagId}/`;
+        return axios.put(endpoint, payload, {headers: authHeader()})
     }
 
     deleteTag(tagId) {
-        let endpoint = `${ROUTE}${tagId}/`
-        return axios
-            .delete(endpoint, {headers: authHeader()})
+        let endpoint = `${DOMAIN}/tags/${tagId}/`;
+        return axios.delete(endpoint, {headers: authHeader()})
     }
 
 }

@@ -139,6 +139,10 @@
           </div>
         </template>
 
+        <template #cell(created_at)="data">
+          {{ data.item.created_at | localTimeStr }}
+        </template>
+
         <template #cell(titre)="data">
           <router-link :to="{name: links.articleDetailLink, params: {slug: data.item.slug}}">
             {{ data.item.titre }}
@@ -169,16 +173,12 @@
 import ApiService from "@/services";
 import {LemkaEnums} from '@/helpers/enums.helper';
 import ArticleModel from "@/models/article.model";
+import {localTimeStr} from "@/utils/filters";
 
 export default {
   name: "ViewAdminArticles",
   data() {
     return {
-      links: {
-        articlesLink: LemkaEnums.Routes.ARTICLES.name,
-        articleDetailLink: LemkaEnums.Routes.ARTICLES_DETAIL.name,
-        articleAddLink: LemkaEnums.Routes.ARTICLE_ADD.name,
-      },
       items: [],
       fields: [
         {key: 'created_at', label: 'Date création', sortable: true},
@@ -215,7 +215,12 @@ export default {
       filter: null,
       filterOn: [],
       isBusy: false,
-      options: []
+      options: [],
+      links: {
+        articlesLink: LemkaEnums.Routes.ARTICLES.name,
+        articleDetailLink: LemkaEnums.Routes.ARTICLES_DETAIL.name,
+        articleAddLink: LemkaEnums.Routes.ARTICLE_ADD.name,
+      },
     }
   },
 
@@ -278,6 +283,13 @@ export default {
 
     toggleBusy() {
       this.isBusy = !this.isBusy
+    }
+  },
+
+  filters: {
+    localTimeStr: function (value) {
+      value = localTimeStr(value)
+      return value
     }
   },
 

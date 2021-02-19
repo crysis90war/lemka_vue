@@ -1,8 +1,9 @@
 <template>
-  <b-card title="Créer un article">
+  <b-card>
     <b-card-body>
-          <b-form>
-
+      <b-card :class="shadow">
+        <b-card-body>
+          <b-form @submit.prevent="submit">
             <b-input-group class="my-1">
               <b-form-checkbox v-model="article.est_active" name="check-button" switch>
                 <p v-if="article.est_active">Publier</p>
@@ -29,7 +30,7 @@
             </b-form-group>
 
             <b-row>
-              <b-col>
+              <b-col lg="6">
                 <b-form-group label="Service"
                               description="Veuillez selectionner le service de l'article"
                               class="my-1">
@@ -38,8 +39,7 @@
                                placeholder="Veuillez selectionner le service"
                                label="type_service"
                                track-by="type_service"
-                               :allow-empty="false"
-                  >
+                               :allow-empty="false">
                     <template slot="singleLabel" slot-scope="{ option }">
                       <span>{{ option.type_service }}</span>
                     </template>
@@ -48,11 +48,10 @@
                     </template>
                     <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
                   </multiselect>
-
                 </b-form-group>
               </b-col>
 
-              <b-col>
+              <b-col lg="6">
                 <b-form-group label="Catalogue"
                               description="Veuillez selectionner le catalogue de l'article"
                               class="my-1">
@@ -84,31 +83,36 @@
               </b-col>
             </b-row>
 
-            <b-form-group label="Tags"
-                          description="Veuillez selectionner ou ajouter des tags"
+            <b-form-group label="Tag multiselect taggable" description="Veuillez chercher ou ajouter un tag"
                           class="my-1">
-              <b-form-tags  input-id="tags-remove-on-delete"
-                           :input-attrs="{ 'aria-describedby': 'tags-validation-help' }"
-                           v-model="article.ref_tag"
-                           :tag-validator="tagValidator"
-                           :state="stateTag"
-                           separator=" "
-                           tag-variant="secondary"
-                           tag-pills
-                           limit="7"
-                           placeholder="Encodez de nouveaux tags séparés par un espace"
-                           remove-on-delete></b-form-tags>
-              <template #invalid-feedback>
-                Vous devez fournir au moins 1 tag et pas plus de 7
+              <multiselect v-model="article.ref_tag"
+                           :options="tagOptions"
+                           :multiple="true"
+                           :loading="isLoading"
+                           label="tag"
+                           track-by="tag"
+                           selectLabel="Appuyez sur enter pour selectionner."
+                           :taggable="true"
+                           tag-placeholder="Ajoutez ça comme nouveau tag"
+                           placeholder="Cherchez ou ajoutez un tag"
+                           @tag="addTag"
+                           @search-change="updateSelect"></multiselect>
+
+              <template slot="singleLabel" slot-scope="{ option }">
+                <span>{{ option.tag }}</span>
               </template>
 
-              <template #description>
-                <div id="tags-validation-help">
-                  Les tags doivent comporter de 3 à 128 caractères et toutes en minuscules.
-                  Encodez les tags séparées par des espaces ou appuyez sur Entrée.
-                </div>
+              <template slot="option" slot-scope="{ option }">
+                <span>{{ option.tag }}</span>
               </template>
+
+              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
             </b-form-group>
+
+            <b-row>
+              <b-col lg="6"><pre>{{ tagOptions }}</pre></b-col>
+              <b-col lg="6"><pre>{{ article.ref_tag }}</pre></b-col>
+            </b-row>
 
             <b-form-group label="Images"
                           description="Veuillez ajouter des images à l'article"
@@ -128,15 +132,17 @@
               </b-list-group>
             </div>
 
-            <pre>{{selected}}</pre>
+            <pre>{{ selected }}</pre>
+
 
             <b-button-group class="mt-1">
               <b-button variant="outline-success">Créer</b-button>
               <b-button variant="outline-danger" @click="reset">Reset</b-button>
             </b-button-group>
           </b-form>
-
-      <pre>{{article}}</pre>
+        </b-card-body>
+      </b-card>
+      <pre>{{ article }}</pre>
     </b-card-body>
   </b-card>
 </template>
@@ -144,25 +150,28 @@
 <script>
 import ArticleModel from "@/models/article.model";
 import TypeServiceModel from "@/models/typeService.model";
+import {LemkaEnums} from "@/helpers/enums.helper";
+import TagModel from "@/models/tag.model";
 
 export default {
   name: "ViewAdminArticlesAdd",
   data() {
     return {
       article: new ArticleModel(),
-      tags: [],
       dirty: false,
       preview: null,
       image: null,
       preview_list: [],
       image_list: [],
 
+      tagOptions: [],
       catalogueOptions: [],
-
       serviceOptions: [],
+
       selected: '',
       active: false,
-      isLoading: false
+      isLoading: false,
+      shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
     }
   },
 
@@ -172,37 +181,36 @@ export default {
     }
   },
 
-  watch: {
-    // eslint-disable-next-line no-unused-vars
-    tags(newValue, oldValue) {
-      this.dirty = true
-    }
-  },
-
   methods: {
-    previewImage: function (event) {
-      let input = event.target;
-      if (input.files) {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          this.preview = e.target.result;
-        }
-        this.image = input.files[0];
-        reader.readAsDataURL(input.files[0]);
-      }
+    chargerTags: async function() {
+      this.tagOptions = await TagModel.getTagList()
     },
-    previewMultiImage: function (event) {
-      let input = event.target;
-      if (input.files) {
-        for (let index = 0; index < input.files.length; index++) {
-          let reader = new FileReader();
-          reader.onload = (e) => {
-            this.preview_list.push(e.target.result);
-          }
-          this.image_list.push(input.files[index]);
-          reader.readAsDataURL(input.files[index]);
-        }
+
+    chargerServices: async function() {
+      this.serviceOptions = await TypeServiceModel.getTypeServiceList()
+    },
+
+    chargerCatalogue: async function() {
+
+    },
+
+    updateSelect: async function(query) {
+      this.isLoading = true
+      this.tagOptions = await TagModel.getTagList(query)
+      this.isLoading = false
+    },
+
+    submit: async function() {
+
+    },
+
+    addTag: function(newTag) {
+      const tag = {
+        id: null,
+        tag: newTag,
       }
+      this.tagOptions.push(tag)
+      this.article.ref_tag.push(tag)
     },
 
     deleteImage: function (index) {
@@ -216,27 +224,43 @@ export default {
       this.preview_list = [];
     },
 
-    tagValidator(tag) {
-      // Individual tag validator function
-      return tag === tag.toLowerCase() && tag.length > 2 && tag.length < 129
+    previewImage: function (event) {
+      let input = event.target;
+      if (input.files) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          this.preview = e.target.result;
+        }
+        this.image = input.files[0];
+        reader.readAsDataURL(input.files[0]);
+      }
     },
 
-    async chargerService() {
-      this.serviceOptions = await TypeServiceModel.getTypeServiceList()
+    previewMultiImage: function (event) {
+      let input = event.target;
+      if (input.files) {
+        for (let index = 0; index < input.files.length; index++) {
+          let reader = new FileReader();
+          reader.onload = (e) => {
+            this.preview_list.push(e.target.result);
+          }
+          this.image_list.push(input.files[index]);
+          reader.readAsDataURL(input.files[index]);
+        }
+      }
+    },
+  },
 
-      // await ApiService.TypeServiceService.getTypeServiceList().then(response => {
-      //   response.data.forEach(item => {
-      //     let service = {}
-      //     service.value = item.id;
-      //     service.text = item.type_service;
-      //     this.serviceOptions.push(service)
-      //   })
-      // })
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    tags(newValue, oldValue) {
+      this.dirty = true
     }
   },
 
   created() {
-    this.chargerService()
+    this.chargerServices()
+    this.chargerTags()
   }
 }
 </script>

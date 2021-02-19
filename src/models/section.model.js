@@ -6,7 +6,6 @@ export default class SectionModel {
     constructor(section = {}) {
         this.id = R.is(Number, section.id) ? section.id : null
         this.section = R.is(String, section.section) ? section.id : ""
-        this.section_slug = R.is(String, section.section_slug) ? section.slug : ""
     }
 
     toCreatePayload() {

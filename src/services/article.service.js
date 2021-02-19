@@ -2,63 +2,57 @@ import axios from "axios";
 import authHeader from "@/configs/auth-header";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
-const ROUTE = LemkaEnums.Endpoints.ARTICLES_ENDPOINT;
+const DOMAIN = LemkaEnums.Endpoints.DOMAIN
+const ARTICLES = DOMAIN + '/articles/'
 const ROUTE_IMAGES = '/images/';
 
 class ArticleService {
 
-    async getArticleList() {
+    getArticleList() {
         try {
-            return await axios
-                .get(ROUTE, {headers: authHeader()})
+            return axios.get(ARTICLES, {headers: authHeader()})
         } catch (error) {
             return error
         }
     }
 
-    async getArticleDetail(articleSlug) {
+    getArticleDetail(articleSlug) {
         try {
-            let endpoint = `${ROUTE}${articleSlug}/`;
-            return await axios
+            let endpoint = `${ARTICLES}${articleSlug}/`;
+            return axios
                 .get(endpoint, {headers: authHeader()})
         } catch (error) {
             return error
         }
     }
 
-    async postArticle(payload) {
-        return await axios
-            .post(ROUTE, payload, {headers: authHeader()})
+    postArticle(payload) {
+        return axios.post(ARTICLES, payload, {headers: authHeader()})
     }
 
-    async putArticle(articleSlug, payload) {
-        let endpoint = `${ROUTE}${articleSlug}/`;
-        return await axios
-            .put(endpoint, payload, {headers: authHeader()})
+    putArticle(articleSlug, payload) {
+        let endpoint = `${ARTICLES}${articleSlug}/`;
+        return axios.put(endpoint, payload, {headers: authHeader()})
     }
 
-    async patchArticle(articleSlug, payload) {
-        let endpoint = `${ROUTE}${articleSlug}/`;
-        return await axios
-            .patch(endpoint, payload, {headers: authHeader()})
+    patchArticle(articleSlug, payload) {
+        let endpoint = `${ARTICLES}${articleSlug}/`;
+        return axios.patch(endpoint, payload, {headers: authHeader()})
     }
 
-    async deleteArticle(articleSlug) {
-        let endpoint = `${ROUTE}${articleSlug}/`;
-        return await axios
-            .delete(endpoint, {headers: authHeader()})
+    deleteArticle(articleSlug) {
+        let endpoint = `${ARTICLES}${articleSlug}/`;
+        return axios.delete(endpoint, {headers: authHeader()})
     }
 
-    async getArticleImagesList(articleSlug) {
-        let endpoint = `${ROUTE}${articleSlug}${ROUTE_IMAGES}`;
-        return await axios
-            .get(endpoint, {headers: authHeader()})
+    getArticleImagesList(articleSlug) {
+        let endpoint = `${ARTICLES}${articleSlug}${ROUTE_IMAGES}`;
+        return axios.get(endpoint, {headers: authHeader()})
     }
     
-    async postArticleImage(articleSlug, payload) {
-        let endpoint = `${ROUTE}${articleSlug}${ROUTE_IMAGES}`;
-        return await axios
-            .post(endpoint, payload, {headers: authHeader()})
+    postArticleImage(articleSlug, payload) {
+        let endpoint = `${ARTICLES}${articleSlug}${ROUTE_IMAGES}`;
+        return axios.post(endpoint, payload, {headers: authHeader()})
     }
 }
 

@@ -117,7 +117,7 @@ export default {
     async chargerProfil() {
       let profil = {}
       let genre = {}
-      profil = await ProfilModel.fetchProfil()
+      profil = await ProfilModel.getProfil()
       if (profil.ref_genre !== null && profil.ref_genre !== undefined) {
         genre = await GenreModel.getGenreDetail(profil.ref_genre)
         profil.ref_genre = genre

@@ -83,6 +83,10 @@ export default {
   },
   data() {
     return {
+      image: null,
+      profil: new ProfilModel(),
+      adresse: new AdresseModel(),
+      loading: false,
       links: {
         thisRouteLink: LemkaEnums.Routes.INFORMATIONS.name,
         updateInformationsLink: LemkaEnums.Routes.INFORMATIONS_UPDATE.name,
@@ -98,9 +102,6 @@ export default {
         adresse: LemkaEnums.FontAwesomeIcons.HOME,
         genre: LemkaEnums.FontAwesomeIcons.GENRE,
       },
-      profil: new ProfilModel(),
-      adresse: new AdresseModel(),
-      loading: false
     }
   },
 
@@ -108,7 +109,7 @@ export default {
     async chargerProfil() {
       let profil = {}
       let genre = {}
-      profil = await ProfilModel.fetchProfil()
+      profil = await ProfilModel.getProfil()
       if (profil.ref_genre !== null && profil.ref_genre !== undefined) {
         genre = await GenreModel.getGenreDetail(profil.ref_genre)
         profil.ref_genre = genre
@@ -125,6 +126,8 @@ export default {
         this.adresse = null
       }
     },
+
+
 
     showModal() {
       this.$bvModal.show('image-modal')

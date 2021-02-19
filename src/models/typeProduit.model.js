@@ -6,12 +6,11 @@ export default class TypeProduitModel {
     constructor(typeProduit = {}) {
         this.id = R.is(Number, typeProduit.id) ? typeProduit.id : null
         this.type_produit = R.is(String, typeProduit.type_produit) ? typeProduit.type_produit : ""
-        this.type_produit_slug = R.is(String, typeProduit.type_produit_slug) ? typeProduit.type_produit_slug : ""
     }
 
     toCreatePayload() {
         return {
-            type_produit: this.type_produit_slug
+            type_produit: this.type_produit
         }
     }
 

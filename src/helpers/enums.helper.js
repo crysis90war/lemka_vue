@@ -68,6 +68,7 @@ const Routes = {
 
 const Endpoints = {
     DOMAIN: DOMAIN,
+    PROFIL: DOMAIN + '/profil',
     // region Global endpoints
     LOGIN_ENDPOINT: DOMAIN + '/login/',
     REGISTER_ENDPOINT: DOMAIN + '/register/',
@@ -76,8 +77,6 @@ const Endpoints = {
     // endregion
 
     // region User endpoints
-    PROFILE_ENDPOINT: PROFIL + '/',
-
     USER_MENSURATION_ENDPOINT: PROFIL + /mensurations/,
 
     PAYS_ENDPOINT: DOMAIN + '/pays/',
@@ -86,12 +85,10 @@ const Endpoints = {
     // region Admin endpoints
     USERS_ENDPOINT: DOMAIN + '/utilisateurs/',
     GENRES_ENDPOINT: DOMAIN + '/genres/',
-    ARTICLES_ENDPOINT: DOMAIN + '/articles/',
     MERCERIE_ENDPOINT: DOMAIN + '/merceries/',
 
     MENSURATION_ENDPOINT: DOMAIN + /mensurations/,
 
-    TAGS_ENDPOINT: DOMAIN + '/tags/',
     TYPES_SERVICES_ENDPOINT: DOMAIN + '/types_services/',
     CATALOGUES_ENDPOINT: DOMAIN + '/catalogues/',
     RAYON_ENDPOINT: DOMAIN + '/rayons/',

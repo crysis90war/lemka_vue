@@ -51,7 +51,7 @@ export default class ProfilModel {
         }
     }
 
-    static async fetchProfil() {
+    static async getProfil() {
         let profil = {}
         await ApiService.ProfilService.getProfilDetail().then(response => {
             profil = response.data
@@ -62,5 +62,9 @@ export default class ProfilModel {
 
     static async updateProfil(payload) {
         await ApiService.ProfilService.putProfil(payload)
+    }
+
+    static async updateProfilImage(payload) {
+        await ApiService.ProfilService.updateProfilImage(payload)
     }
 }
