@@ -32,7 +32,27 @@ export default class CatalogueModel {
         await ApiService.CatalogueService.getCatalogueList().then(response => {
             catalogues = response.data
         })
-        return catalogues
+
+        let newCatalogue= []
+        if (catalogues.length > 0) {
+            for (let i = 0; i < catalogues.length; i++) {
+                let catalogue = new CatalogueModel()
+                catalogue.id = catalogues[i].id
+                if (catalogues[i].ref_rayon !== null && catalogues[i].ref_rayon !== undefined) {
+                    console.log(catalogues[i])
+                    catalogue.ref_rayon = await RayonModel.getRayonDetail(catalogues[i].ref_rayon)
+                }
+                if (catalogues[i].ref_section !== null && catalogues[i].ref_section !== undefined) {
+                    catalogue.ref_section = await SectionModel.getSectionDetail(catalogues[i].ref_section)
+                }
+                if (catalogues[i].ref_type_produit !== null && catalogues[i].ref_type_produit !== undefined) {
+                    catalogue.ref_type_produit = await TypeProduitModel.getTypeProduitDetail(catalogues[i].ref_type_produit)
+                }
+                newCatalogue.push(catalogue)
+            }
+        }
+
+        return newCatalogue
     }
 
     static async getCatalogueDetail(catalogueId) {

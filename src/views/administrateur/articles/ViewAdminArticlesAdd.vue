@@ -56,26 +56,27 @@
                               description="Veuillez selectionner le catalogue de l'article"
                               class="my-1">
                   <multiselect v-model="article.ref_catalogue"
-                               label="ville"
-                               track-by="ville"
-                               placeholder="Veuillez encoder pour lancer la recherche..."
-                               open-direction="bottom"
                                :options="catalogueOptions"
+                               :loading="isLoading"
                                :multiple="false"
                                :searchable="true"
-                               :loading="isLoading"
                                :internal-search="false"
                                :clear-on-select="false"
                                :close-on-select="true"
                                :options-limit="20"
                                :max-height="600"
+                               :hide-selected="true"
                                :show-no-results="false"
-                               :hide-selected="true">
+                               label="catalogue"
+                               track-by="id"
+                               placeholder="Veuillez encoder pour lancer la recherche..."
+                               selectLabel="Appuyez sur enter pour selectionner."
+                               open-direction="bottom">
                     <template slot="singleLabel" slot-scope="{ option }">
-                      <span>{{ option.code_postale }} - {{ option.ville }}</span>
+                      <span>{{ option.ref_rayon.rayon }} - {{ option.ref_section.section }} - {{ option.ref_type_produit.type_produit }}</span>
                     </template>
                     <template slot="option" slot-scope="{ option }">
-                      <span>{{ option.code_postale }} - {{ option.ville }}</span>
+                      <span>{{ option.ref_rayon.rayon }} - {{ option.ref_section.section }} - {{ option.ref_type_produit.type_produit }}</span>
                     </template>
                     <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
                   </multiselect>
@@ -111,7 +112,7 @@
 
             <b-row>
               <b-col lg="6"><pre>{{ tagOptions }}</pre></b-col>
-              <b-col lg="6"><pre>{{ article.ref_tag }}</pre></b-col>
+              <b-col lg="6"><pre>{{ catalogueOptions }}</pre></b-col>
             </b-row>
 
             <b-form-group label="Images"
@@ -152,6 +153,7 @@ import ArticleModel from "@/models/article.model";
 import TypeServiceModel from "@/models/typeService.model";
 import {LemkaEnums} from "@/helpers/enums.helper";
 import TagModel from "@/models/tag.model";
+import CatalogueModel from "@/models/catalogue.model";
 
 export default {
   name: "ViewAdminArticlesAdd",
@@ -191,7 +193,7 @@ export default {
     },
 
     chargerCatalogue: async function() {
-
+      this.catalogueOptions = await CatalogueModel.getCatalogueList()
     },
 
     updateSelect: async function(query) {
@@ -261,6 +263,7 @@ export default {
   created() {
     this.chargerServices()
     this.chargerTags()
+    this.chargerCatalogue()
   }
 }
 </script>
