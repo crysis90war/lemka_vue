@@ -33,7 +33,8 @@ export default class TypeServiceModel {
             },
             duree_minute: {
                 numeric,
-                between: between(0, 120)
+                between: between(0, 180),
+                required
             }
         }
     }
@@ -55,7 +56,13 @@ export default class TypeServiceModel {
     }
 
     static async createTypeService(payload) {
-        await ApiService.TypeServiceService.postTypeService(payload)
+        let response = null
+        await ApiService.TypeServiceService.postTypeService(payload).then(res => {
+            response = res
+        }, err => {
+            response = err
+        })
+        return response
     }
 
     static async updateTypeService(payload) {

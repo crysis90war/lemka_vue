@@ -249,7 +249,7 @@ const router = new VueRouter({
                   path: '/admin/parametres/mensurations/ajouter',
                   name: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD.name,
                   meta: {value: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD.value},
-                  component: () => import('../views/administrateur/parametres/mensuration/view.admin.mensurations.add')
+                  component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensurationAdd')
                 }
               ]
             },
@@ -257,13 +257,13 @@ const router = new VueRouter({
               path: '/admin/parametres/services',
               name: LemkaEnums.Routes.PARAMETRES_SERVICE.name,
               meta: {value: LemkaEnums.Routes.PARAMETRES_SERVICE.value},
-              component: () => import('../views/administrateur/parametres/service/view.admin.service'),
+              component: () => import('../views/administrateur/parametres/service/ViewAdminService'),
               children: [
                 {
                   path: '/admin/parametres/services/ajouter',
                   name: LemkaEnums.Routes.PARAMETRES_SERVICE_ADD.name,
                   meta: {value: LemkaEnums.Routes.PARAMETRES_SERVICE_ADD.value},
-                  component: () => import('../views/administrateur/parametres/service/view.admin.service.add')
+                  component: () => import('../views/administrateur/parametres/service/ViewAdminServiceAdd')
                 }
               ]
             }

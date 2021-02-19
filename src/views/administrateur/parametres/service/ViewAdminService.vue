@@ -1,19 +1,18 @@
 <template>
   <div v-if="$route.name === routes.service.name">
-    <b-card>
-      <b-card-body>
-        <b-button variant="outline-success" :to="{name: routes.service_add.name}">{{ routes.service_add.value }}</b-button>
-        <b-table :items="items"
-                 :fields="fields"
-                 stacked="md"
-                 show-empty
-                 bordered
-                 hover
-                 class="mt-3">
-        </b-table>
-      </b-card-body>
-    </b-card>
+    <b-button variant="outline-success" :to="{name: routes.service_add.name}">
+      {{ routes.service_add.value }}
+    </b-button>
+    <b-table :items="items"
+             :fields="fields"
+             stacked="md"
+             show-empty
+             bordered
+             hover
+             class="mt-3">
+    </b-table>
   </div>
+
   <router-view v-else></router-view>
 </template>
 
@@ -22,7 +21,7 @@ import ApiService from "@/services";
 import {LemkaEnums} from "@/helpers/enums.helper";
 
 export default {
-  name: "view.admin.service",
+  name: "ViewAdminService",
   data() {
     return {
       routes: {

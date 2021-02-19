@@ -13,7 +13,7 @@
                         v-model="$v.profil.username.$model"
                         :state="validateState('username')"></b-form-input>
           <b-form-invalid-feedback>
-            <span v-if="!$v.profil.username.required">Ceci est un champ obligatoire.</span><br>
+            <span v-if="!$v.profil.username.required">Ce champ est obligatoire !</span><br>
             <span v-if="!$v.profil.username.minLength">Ce champ doit contenir au moins 4 caractères.</span><br>
             <span v-if="!$v.profil.username.alphaNum">Ce champ doit être alphanumérique.</span>
           </b-form-invalid-feedback>

@@ -1,4 +1,4 @@
-export const REGEX = {
+export const Regex = {
     email: '/^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$/',
     alpha: '/^[A-Za-z]+$/',
     alphaNum: '/^[0-9a-zA-Z]+$/',

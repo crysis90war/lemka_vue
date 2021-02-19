@@ -2,20 +2,6 @@
   <b-card title="Ajouter une adresse" :class="bootstrap.shadow" class="my-2">
     <b-card-body>
       <b-form @submit.prevent="submit">
-<!--        <b-form-group id="input-groupe-pays"-->
-<!--                      label="Pays"-->
-<!--                      description="Veuillez selectionner votre pays"-->
-<!--                      label-for="select-pays">-->
-<!--          <b-form-select id="select-pays"-->
-<!--                         name="select-pays"-->
-<!--                         v-model="pays"-->
-<!--                         :options="paysOptions">-->
-<!--            <template #first>-->
-<!--              <b-form-select-option :value="null" disabled>&#45;&#45; Veuillez selectionner votre pays &#45;&#45;</b-form-select-option>-->
-<!--            </template>-->
-<!--          </b-form-select>-->
-<!--        </b-form-group>-->
-
         <b-form-group label="Ville"
                       description="Selectionn selectionner votre ville">
           <multiselect v-model="adresse.ref_ville"

@@ -77,7 +77,7 @@ export function urltoFile(url, filename, mimeType){
 }
 
 /**
- * Fonction permettant de transformet Base64 vers un fichier.
+ * Fonction permettant de transformer Base64 vers un fichier.
  * Exemple d'utilisation :
  * let formData = new FormData()
  * let file = this.dataURLtoFile(canvas.toDataURL())

@@ -192,6 +192,7 @@
           </b-button>
           <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
         </b-button-group>
+
       </b-form>
     </b-card-body>
   </b-card>

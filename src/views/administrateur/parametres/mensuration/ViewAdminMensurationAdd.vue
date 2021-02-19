@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "view.admin.mensurations.add"
+  name: "ViewAdminMensurationAdd"
 }
 </script>
 
