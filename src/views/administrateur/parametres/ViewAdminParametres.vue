@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="nav-shadow border-top colored m-0">
+    <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="nav-shadow border-top colored">
       <b-navbar-nav>
         <b-nav-item :to="{name: routes.entreprise.name}" :active="$route.name === routes.entreprise.name">
           {{ routes.entreprise.value }}
@@ -19,7 +19,10 @@
         </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
-    <router-view :key="$route.fullPath"></router-view>
+
+    <b-card class="border-0">
+        <router-view :key="$route.fullPath"></router-view>
+    </b-card>
   </div>
 </template>
 

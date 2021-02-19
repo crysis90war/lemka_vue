@@ -1,35 +1,28 @@
 <template>
   <div v-if="$route.name === routes.genre.name">
-    <b-card>
-      <b-card-body>
-        <b-card :class="shadow" :title="$route.meta.value">
-          <b-card-body>
-            <b-button :to="{name: routes.genre_add.name}" variant="outline-success">{{ routes.genre_add.value }}</b-button>
 
-            <b-table :items="items" :fields="fields"
-                     stacked="md"
-                     show-empty
-                     bordered
-                     hover
-                     class="mt-3">
-              <template #empty>
-                <div class="text-center">
-                  <p>Il n'y a aucun enregistrement à afficher</p>
-                </div>
-              </template>
-              <template #cell(actions)="data">
-                <b-button size="sm"
-                          @click="supprimerGenre(data.item.id)"
-                          class="mr-1"
-                          variant="outline-danger">
-                  Suprrimer
-                </b-button>
-              </template>
-            </b-table>
-          </b-card-body>
-        </b-card>
-      </b-card-body>
-    </b-card>
+    <b-button :to="{name: routes.genre_add.name}" variant="outline-success">{{ routes.genre_add.value }}</b-button>
+
+    <b-table :items="items" :fields="fields"
+             stacked="md"
+             show-empty
+             bordered
+             hover
+             class="mt-3">
+      <template #empty>
+        <div class="text-center">
+          <p>Il n'y a aucun enregistrement à afficher</p>
+        </div>
+      </template>
+      <template #cell(actions)="data">
+        <b-button size="sm"
+                  @click="supprimerGenre(data.item.id)"
+                  class="mr-1"
+                  variant="outline-danger">
+          Suprrimer
+        </b-button>
+      </template>
+    </b-table>
   </div>
   <router-view v-else></router-view>
 </template>

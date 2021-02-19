@@ -29,11 +29,12 @@ export default class CatalogueModel {
 
     static async getCatalogueList() {
         let catalogues = []
+        let newCatalogues = []
+
         await ApiService.CatalogueService.getCatalogueList().then(response => {
             catalogues = response.data
         })
 
-        let newCatalogue= []
         if (catalogues.length > 0) {
             for (let i = 0; i < catalogues.length; i++) {
                 let catalogue = new CatalogueModel()
@@ -48,11 +49,11 @@ export default class CatalogueModel {
                 if (catalogues[i].ref_type_produit !== null && catalogues[i].ref_type_produit !== undefined) {
                     catalogue.ref_type_produit = await TypeProduitModel.getTypeProduitDetail(catalogues[i].ref_type_produit)
                 }
-                newCatalogue.push(catalogue)
+                newCatalogues.push(catalogue)
             }
         }
 
-        return newCatalogue
+        return newCatalogues
     }
 
     static async getCatalogueDetail(catalogueId) {

@@ -243,7 +243,7 @@ const router = new VueRouter({
               path: '/admin/parametres/mensurations',
               name: LemkaEnums.Routes.PARAMETRES_MENSURATION.name,
               meta: {value: LemkaEnums.Routes.PARAMETRES_MENSURATION.value},
-              component: () => import('../views/administrateur/parametres/mensuration/view.admin.mensurations'),
+              component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensuration'),
               children: [
                 {
                   path: '/admin/parametres/mensurations/ajouter',

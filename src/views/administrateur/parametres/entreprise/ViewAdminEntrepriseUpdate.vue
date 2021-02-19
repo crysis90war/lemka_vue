@@ -1,5 +1,4 @@
 <template>
-  <b-card>
     <b-card title="Modifier entreprise" :class="bootstrap.shadow">
       <b-card-body>
         <b-form @submit.prevent="submit">
@@ -139,7 +138,7 @@
           </b-row>
 
           <b-form-group label="Ville"
-                        description="Selectionn selectionner votre ville">
+                        description="Veuillez selectionner la ville ou se trouve votre entreprise">
             <multiselect v-model="$v.entreprise.ref_ville.$model"
                          :options="villeOptions"
                          :loading="isLoading"
@@ -180,8 +179,6 @@
         </b-form>
       </b-card-body>
     </b-card>
-    <pre>{{ entreprise }}</pre>
-  </b-card>
 </template>
 
 <script>

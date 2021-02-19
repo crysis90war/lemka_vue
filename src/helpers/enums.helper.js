@@ -132,7 +132,7 @@ const FontAwesomeIcons = {
 }
 
 const BSClass = {
-    CARD_BORDERLESS_SHADOW: 'border-0 shadow p-3 mb-5 bg-white rounded'
+    CARD_BORDERLESS_SHADOW: 'border-0 shadow p-3 bg-white rounded'
 }
 
 export const LemkaEnums = {

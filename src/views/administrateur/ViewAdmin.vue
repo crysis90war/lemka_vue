@@ -1,39 +1,37 @@
 <template>
-  <div class="wrapper">
-    <!-- Sidebar  -->
-    <nav id="sidebar" class="bg-light">
-      <div class="sidebar-header">
-        <h3><img :src="imageLogo" alt="" style="max-width: 200px;"/></h3>
-        <strong>LK</strong>
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light my-0">
+      <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" @click="sidebarCollapse" class="btn">
+          <i class="fas fa-align-left"></i>
+        </button>
+        <p class="nav navbar-nav ml-auto">{{ $route.meta.value }}</p>
       </div>
-
-      <ul class="list-unstyled components">
-
-        <li>
-          <b-nav-item v-for="(item, index) in menu" :key="index" :to="item.href">
-            <i :class="item.icon"></i>
-            {{item.title}}
-          </b-nav-item>
-        </li>
-      </ul>
     </nav>
 
-    <!-- Page Content  -->
-    <div id="content">
-
-      <nav class="navbar navbar-expand-lg navbar-light bg-light my-0">
-        <div class="container-fluid">
-          <button type="button" id="sidebarCollapse" @click="sidebarCollapse" class="btn">
-            <i class="fas fa-align-left"></i>
-          </button>
-
-          <p class="nav navbar-nav ml-auto">
-            {{ $route.meta.value }}
-          </p>
+    <div class="wrapper">
+      <!-- Sidebar  -->
+      <nav id="sidebar" class="bg-light">
+        <div class="sidebar-header">
+          <h3><img :src="imageLogo" alt="" style="max-width: 200px;"/></h3>
+          <strong>LK</strong>
         </div>
+        <ul class="list-unstyled components">
+          <li>
+            <b-nav-item v-for="(item, index) in menu" :key="index" :to="item.href">
+              <i :class="item.icon"></i>
+              {{item.title}}
+            </b-nav-item>
+          </li>
+        </ul>
       </nav>
 
-      <router-view></router-view>
+      <!-- Page Content  -->
+      <div id="content" class="p-4">
+        <b-card :class="shadow">
+          <router-view></router-view>
+        </b-card>
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +56,8 @@ export default {
         {href: {name: LemkaEnums.Routes.PARAMETRES.name}, title: LemkaEnums.Routes.PARAMETRES.value, icon: LemkaEnums.FontAwesomeIcons.PARAMETRES},
       ],
       toggled: false,
-      imageLogo: require('@/assets/logo.png')
+      imageLogo: require('@/assets/logo.png'),
+      shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
     }
   },
 
@@ -125,9 +124,11 @@ export default {
   background: #B4A8BF
 }
 
-/*
+/* ---------------------------------------------------
     DEMO STYLE
-*/
+----------------------------------------------------- */
+
+/* region demo style */
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -177,9 +178,13 @@ span {
   display: inline-block;
 }
 
+/* endregion */
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
+
+/* region sidebar style */
 
 .wrapper {
   display: flex;
@@ -318,6 +323,8 @@ a.article:hover {
   background: #6d7fcc !important;
   color: #fff !important;
 }
+
+/* endregion */
 
 /* ---------------------------------------------------
     CONTENT STYLE

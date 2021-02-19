@@ -1,48 +1,44 @@
 <template>
   <div v-if="$route.name === links.entreprise">
-    <b-card>
-      <b-card-body>
-        <div v-if="entLength === 0">
-          <b-button :to="{name:links.addEntreprise}" variant="outline-success">Ajouter informations</b-button>
-          <p>Aucune information pour le moment, veuillez en ajouter</p>
-        </div>
-        <div v-if="entLength === 1">
-          <b-card :class="card_shadow">
-            <b-card-body>
-              <h3>{{entreprise.nom_societe}}</h3>
-              <h5>{{entreprise.numero_tva}}</h5>
-              <hr>
-              <div>
-                <span class="mr-2"><i :class="icons.email"></i></span>
-                <span>{{ entreprise.mail_contact }}</span>
-              </div>
-              <div>
-                <span class="mr-2"><i :class="icons.phone"></i></span>
-                <span>{{ entreprise.numero_tel }}</span>
-              </div>
-              <div>
-                <span class="mr-2"><i :class="icons.globe"></i></span>
-                <span>{{ entreprise.site_web }}</span>
-              </div>
-              <hr>
-              <div>
-                <span><i :class="icons.adresse" class="mr-2"></i></span>
-              </div>
 
-              <div v-if="entreprise.ref_ville !== null">
-                <span>{{ entreprise.rue }}, {{ entreprise.numero }}</span><br>
-                <span>{{ entreprise.ref_ville.code_postale }} - {{ entreprise.ref_ville.ville }}</span><br>
-                <span>{{ entreprise.ref_ville.ref_pays.pays }}</span>
-              </div>
-            </b-card-body>
-            <b-button variant="outline-primary" :to="{name: links.updateEntreprise}" class="mb-3">Modifier</b-button>
-          </b-card>
-        </div>
-        <div v-if="entreprise < 0 && entLength > 1">
-          <b-spinner type="grow" label="Loading..."></b-spinner>
-        </div>
-      </b-card-body>
-    </b-card>
+    <div v-if="entLength === 0">
+      <b-button :to="{name:links.addEntreprise}" variant="outline-success">Ajouter informations</b-button>
+      <p>Aucune information pour le moment, veuillez en ajouter</p>
+    </div>
+
+    <div v-if="entLength === 1">
+      <b-button variant="outline-primary" :to="{name: links.updateEntreprise}" class="mb-3">Modifier</b-button>
+      <div>
+          <h3>{{entreprise.nom_societe}}</h3>
+          <h5>{{entreprise.numero_tva}}</h5>
+          <hr>
+          <div>
+            <span class="mr-2"><i :class="icons.email"></i></span>
+            <span>{{ entreprise.mail_contact }}</span>
+          </div>
+          <div>
+            <span class="mr-2"><i :class="icons.phone"></i></span>
+            <span>{{ entreprise.numero_tel }}</span>
+          </div>
+          <div>
+            <span class="mr-2"><i :class="icons.globe"></i></span>
+            <span>{{ entreprise.site_web }}</span>
+          </div>
+          <hr>
+          <div>
+            <span><i :class="icons.adresse" class="mr-2"></i></span>
+          </div>
+
+          <div v-if="entreprise.ref_ville !== null">
+            <span>{{ entreprise.rue }}, {{ entreprise.numero }}</span><br>
+            <span>{{ entreprise.ref_ville.code_postale }} - {{ entreprise.ref_ville.ville }}</span><br>
+            <span>{{ entreprise.ref_ville.ref_pays.pays }}</span>
+          </div>
+      </div>
+    </div>
+    <div v-if="entreprise < 0 && entLength > 1">
+      <b-spinner type="grow" label="Loading..."></b-spinner>
+    </div>
   </div>
   <router-view v-else></router-view>
 </template>

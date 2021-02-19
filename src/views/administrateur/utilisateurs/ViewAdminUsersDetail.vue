@@ -1,67 +1,61 @@
 <template>
-  <b-card v-if="loading === false">
-    <b-card-body>
-      <b-card :class="bootstrap.shadow">
-        <b-card-body>
-          <b-row>
-            <b-col lg="7">
-              <h2>{{ utilisateur.first_name !== '' ? utilisateur.first_name : 'Prénom' }}</h2>
-              <h2>{{ utilisateur.last_name !== '' ? utilisateur.last_name : 'Nom' }}</h2>
-              <span>@{{ utilisateur.username }}</span>
-              <div>
-                <b-badge v-if="utilisateur.is_staff === true" pill variant="success">Administrateur</b-badge>
-                <b-badge v-else pill variant="primary">Utilisateur</b-badge>
-              </div>
-              <hr>
-              <div v-if="utilisateur.email">
-                <span class="mr-2"><i :class="icons.email"></i></span>
-                <span>{{ utilisateur.email }}</span>
-              </div>
-              <div v-if="utilisateur.numero_tel">
-                <span class="mr-2"><i :class="icons.phone"></i></span>
-                <span>{{ utilisateur.numero_tel }}</span>
-              </div>
-              <div v-if="utilisateur.ref_genre !== null && utilisateur.ref_genre !== undefined">
-                <span class="mr-2"><i :class="icons.genre"></i></span>
-                <span>{{ utilisateur.ref_genre.genre }}</span>
-              </div>
-              <hr>
-              <div>
-                <span><i :class="icons.adresse" class="mr-2"></i></span>
-                <b-link v-if="Object.entries(adresse).length === 0" :to="{name: links.ajouterAdresseLink}" class="">
-                  <ins>Ajouter une adresse</ins>
-                </b-link>
-                <b-link v-if="Object.entries(adresse).length !== 0" :to="{name: links.modifierAdresseLink}" class="">
-                  <ins>Modifier l'adresse</ins>
-                </b-link>
-              </div>
+  <div v-if="loading === false">
+    <b-row>
+      <b-col lg="7">
+        <h2>{{ utilisateur.first_name !== '' ? utilisateur.first_name : 'Prénom' }}</h2>
+        <h2>{{ utilisateur.last_name !== '' ? utilisateur.last_name : 'Nom' }}</h2>
+        <span>@{{ utilisateur.username }}</span>
+        <div>
+          <b-badge v-if="utilisateur.is_staff === true" pill variant="success">Administrateur</b-badge>
+          <b-badge v-else pill variant="primary">Utilisateur</b-badge>
+        </div>
+        <hr>
+        <div v-if="utilisateur.email">
+          <span class="mr-2"><i :class="icons.email"></i></span>
+          <span>{{ utilisateur.email }}</span>
+        </div>
+        <div v-if="utilisateur.numero_tel">
+          <span class="mr-2"><i :class="icons.phone"></i></span>
+          <span>{{ utilisateur.numero_tel }}</span>
+        </div>
+        <div v-if="utilisateur.ref_genre !== null && utilisateur.ref_genre !== undefined">
+          <span class="mr-2"><i :class="icons.genre"></i></span>
+          <span>{{ utilisateur.ref_genre.genre }}</span>
+        </div>
+        <hr>
+        <div>
+          <span><i :class="icons.adresse" class="mr-2"></i></span>
+          <b-link v-if="Object.entries(adresse).length === 0" :to="{name: links.ajouterAdresseLink}" class="">
+            <ins>Ajouter une adresse</ins>
+          </b-link>
+          <b-link v-if="Object.entries(adresse).length !== 0" :to="{name: links.modifierAdresseLink}" class="">
+            <ins>Modifier l'adresse</ins>
+          </b-link>
+        </div>
 
-              <div v-if="Object.entries(adresse).length !== 0" class="mt-2">
-                <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
-                <span>{{ adresse.ref_ville.code_postale }} - {{ adresse.ref_ville.ville }}</span><br>
-                <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
-              </div>
-              <hr>
-              <b-button :to="{name: links.updateInformationsLink}" variant="outline-primary my-3">Modifier profil</b-button>
-            </b-col>
+        <div v-if="Object.entries(adresse).length !== 0" class="mt-2">
+          <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
+          <span>{{ adresse.ref_ville.code_postale }} - {{ adresse.ref_ville.ville }}</span><br>
+          <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
+        </div>
+        <hr>
+        <b-button :to="{name: links.updateInformationsLink}" variant="outline-primary my-3">Modifier profil</b-button>
+      </b-col>
 
-            <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center">
-              <b-img thumbnail rounded="" :src="utilisateur.image" class="h-100"></b-img>
-              <b-button id="toggle-btn" variant="light" class="position-absolute bottom-0 start-0" @click="showModal">
-                Modifier photo
-              </b-button>
-              <lemka-upload-modal :user="utilisateur" :multiple="true"></lemka-upload-modal>
-            </b-col>
-          </b-row>
+      <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center">
+        <b-img thumbnail rounded="" :src="utilisateur.image" class="h-100"></b-img>
+        <b-button id="toggle-btn" variant="light" class="position-absolute bottom-0 start-0" @click="showModal">
+          Modifier photo
+        </b-button>
+        <lemka-upload-modal :user="utilisateur" :multiple="true"></lemka-upload-modal>
+      </b-col>
+    </b-row>
 
-          <div>
-            <span><small>Membre depuis {{ utilisateur.created_at }}</small></span><br>
-            <span><small>Dernière mise à jour {{ utilisateur.updated_at }}</small></span>
-          </div>
-        </b-card-body>
-      </b-card>
-    </b-card-body>
-  </b-card>
+    <div>
+      <span><small>Membre depuis {{ utilisateur.created_at }}</small></span><br>
+      <span><small>Dernière mise à jour {{ utilisateur.updated_at }}</small></span>
+    </div>
+  </div>
 
   <b-card v-else>
     <b-card-body class="text-center">

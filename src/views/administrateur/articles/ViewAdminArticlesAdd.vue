@@ -1,151 +1,146 @@
 <template>
-  <b-card>
-    <b-card-body>
-      <b-card :class="shadow">
-        <b-card-body>
-          <b-form @submit.prevent="submit">
-            <b-input-group class="my-1">
-              <b-form-checkbox v-model="article.est_active" name="check-button" switch>
-                <p v-if="article.est_active">Publier</p>
-                <p v-else>En attente</p>
-              </b-form-checkbox>
-            </b-input-group>
 
-            <b-form-group label="Titre"
-                          description="Encodez le titre de l'article"
-                          class="my-1">
-              <b-form-input id="input-formatter"
-                            placeholder="Entrer le titre"
-                            v-model="article.titre"
-              ></b-form-input>
-            </b-form-group>
+  <b-form @submit.prevent="submit">
+    <b-input-group class="my-1">
+      <b-form-checkbox v-model="article.est_active" name="check-button" switch>
+        <p v-if="article.est_active">Publier</p>
+        <p v-else>En attente</p>
+      </b-form-checkbox>
+    </b-input-group>
 
-            <b-form-group label="Description"
-                          description="Encodez la description de l'article"
-                          class="my-1">
-              <b-form-textarea id="input-formatter"
-                               placeholder="Encodage de la description"
-                               v-model="article.description"
-              ></b-form-textarea>
-            </b-form-group>
+    <b-form-group label="Titre"
+                  description="Encodez le titre de l'article"
+                  class="my-1">
+      <b-form-input id="input-formatter"
+                    placeholder="Entrer le titre"
+                    v-model="article.titre"
+      ></b-form-input>
+    </b-form-group>
 
-            <b-row>
-              <b-col lg="6">
-                <b-form-group label="Service"
-                              description="Veuillez selectionner le service de l'article"
-                              class="my-1">
-                  <multiselect v-model="article.ref_type_service"
-                               :options="serviceOptions"
-                               placeholder="Veuillez selectionner le service"
-                               label="type_service"
-                               track-by="type_service"
-                               :allow-empty="false">
-                    <template slot="singleLabel" slot-scope="{ option }">
-                      <span>{{ option.type_service }}</span>
-                    </template>
-                    <template slot="option" slot-scope="{ option }">
-                      <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
-                    </template>
-                    <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-                  </multiselect>
-                </b-form-group>
-              </b-col>
+    <b-form-group label="Description"
+                  description="Encodez la description de l'article"
+                  class="my-1">
+      <b-form-textarea id="input-formatter"
+                       placeholder="Encodage de la description"
+                       v-model="article.description"
+      ></b-form-textarea>
+    </b-form-group>
 
-              <b-col lg="6">
-                <b-form-group label="Catalogue"
-                              description="Veuillez selectionner le catalogue de l'article"
-                              class="my-1">
-                  <multiselect v-model="article.ref_catalogue"
-                               :options="catalogueOptions"
-                               :loading="isLoading"
-                               :multiple="false"
-                               :searchable="true"
-                               :internal-search="false"
-                               :clear-on-select="false"
-                               :close-on-select="true"
-                               :options-limit="20"
-                               :max-height="600"
-                               :hide-selected="true"
-                               :show-no-results="false"
-                               label="catalogue"
-                               track-by="id"
-                               placeholder="Veuillez encoder pour lancer la recherche..."
-                               selectLabel="Appuyez sur enter pour selectionner."
-                               open-direction="bottom">
-                    <template slot="singleLabel" slot-scope="{ option }">
-                      <span>{{ option.ref_rayon.rayon }} - {{ option.ref_section.section }} - {{ option.ref_type_produit.type_produit }}</span>
-                    </template>
-                    <template slot="option" slot-scope="{ option }">
-                      <span>{{ option.ref_rayon.rayon }} - {{ option.ref_section.section }} - {{ option.ref_type_produit.type_produit }}</span>
-                    </template>
-                    <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-                  </multiselect>
-                </b-form-group>
-              </b-col>
-            </b-row>
+    <b-row>
+      <b-col lg="6">
+        <b-form-group label="Service"
+                      description="Veuillez selectionner le service de l'article"
+                      class="my-1">
+          <multiselect v-model="article.ref_type_service"
+                       :options="serviceOptions"
+                       placeholder="Veuillez selectionner le service"
+                       selectLabel="Appuyez sur enter pour selectionner."
+                       deselectLabel="Appuyez sur enter pour retirer"
+                       label="type_service"
+                       track-by="type_service"
+                       :allow-empty="false">
+            <template slot="singleLabel" slot-scope="{ option }">
+              <span>{{ option.type_service }}</span>
+            </template>
+            <template slot="option" slot-scope="{ option }">
+              <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
+            </template>
+            <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+          </multiselect>
+        </b-form-group>
+      </b-col>
 
-            <b-form-group label="Tag multiselect taggable" description="Veuillez chercher ou ajouter un tag"
-                          class="my-1">
-              <multiselect v-model="article.ref_tag"
-                           :options="tagOptions"
-                           :multiple="true"
-                           :loading="isLoading"
-                           label="tag"
-                           track-by="tag"
-                           selectLabel="Appuyez sur enter pour selectionner."
-                           :taggable="true"
-                           tag-placeholder="Ajoutez ça comme nouveau tag"
-                           placeholder="Cherchez ou ajoutez un tag"
-                           @tag="addTag"
-                           @search-change="updateSelect"></multiselect>
+      <b-col lg="6">
+        <b-form-group label="Catalogue"
+                      description="Veuillez selectionner le catalogue de l'article"
+                      class="my-1">
+          <multiselect v-model="article.ref_catalogue"
+                       :options="catalogueOptions"
+                       :loading="isLoading"
+                       :multiple="false"
+                       :searchable="true"
+                       :internal-search="false"
+                       :clear-on-select="false"
+                       :close-on-select="true"
+                       :options-limit="20"
+                       :max-height="600"
+                       :show-no-results="false"
+                       label="catalogue"
+                       track-by="id"
+                       placeholder="Veuillez encoder pour lancer la recherche..."
+                       selectLabel="Appuyez sur enter pour selectionner."
+                       deselectLabel="Appuyez sur enter pour retirer"
+                       open-direction="bottom">
+            <template slot="singleLabel" slot-scope="{ option }">
+              <span>{{ option.ref_rayon.rayon }} - {{ option.ref_section.section }} - {{ option.ref_type_produit.type_produit }}</span>
+            </template>
+            <template slot="option" slot-scope="{ option }">
+              <span>{{ option.ref_rayon.rayon }} - {{ option.ref_section.section }} - {{ option.ref_type_produit.type_produit }}</span>
+            </template>
+            <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+          </multiselect>
+        </b-form-group>
+      </b-col>
+    </b-row>
 
-              <template slot="singleLabel" slot-scope="{ option }">
-                <span>{{ option.tag }}</span>
-              </template>
+    <b-form-group label="Tags"
+                  description="Veuillez chercher ou ajouter un tag"
+                  class="my-1">
+      <multiselect v-model="article.ref_tag"
+                   :options="tagOptions"
+                   :multiple="true"
+                   :loading="isLoading"
+                   :hide-selected="true"
+                   label="tag"
+                   track-by="tag"
+                   selectLabel="Appuyez sur enter pour selectionner."
+                   deselectLabel="Appuyez sur enter pour retirer"
+                   :taggable="true"
+                   tag-placeholder="Ajoutez ça comme nouveau tag"
+                   placeholder="Cherchez ou ajoutez un tag"
+                   @tag="addTag"
+                   @search-change="updateSelect"></multiselect>
 
-              <template slot="option" slot-scope="{ option }">
-                <span>{{ option.tag }}</span>
-              </template>
+      <template slot="singleLabel" slot-scope="{ option }">
+        <span>{{ option.tag }}</span>
+      </template>
 
-              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-            </b-form-group>
+      <template slot="option" slot-scope="{ option }">
+        <span>{{ option.tag }}</span>
+      </template>
 
-            <b-row>
-              <b-col lg="6"><pre>{{ tagOptions }}</pre></b-col>
-              <b-col lg="6"><pre>{{ catalogueOptions }}</pre></b-col>
-            </b-row>
+      <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+    </b-form-group>
 
-            <b-form-group label="Images"
-                          description="Veuillez ajouter des images à l'article"
-                          class="my-1">
-              <b-file type="file" multiple @change="previewMultiImage"></b-file>
-            </b-form-group>
+    <b-form-group label="Images"
+                  description="Veuillez ajouter des images à l'article"
+                  class="my-1">
+      <b-file type="file" multiple @change="previewMultiImage"></b-file>
+    </b-form-group>
 
-            <div v-if="preview_list.length > 0">
-              <b-list-group horizontal="md">
-                <b-list-group-item v-for="(image, index) in preview_list" :key="index" class="text-center">
-                  <b-radio v-model="selected" name="is_main" :value="image">Principale</b-radio>
-                  <br/>
-                  <b-img :src="image" height="120" width="120"></b-img>
-                  <br/>
-                  <b-button variant="danger" @click="deleteImage(index)" class="mt-1">Supprimer</b-button>
-                </b-list-group-item>
-              </b-list-group>
-            </div>
+    <div v-if="preview_list.length > 0">
+      <b-list-group horizontal="md">
+        <b-list-group-item v-for="(image, index) in preview_list" :key="index" class="text-center">
+          <b-radio v-model="selected" name="is_main" :value="image">Principale</b-radio>
+          <br/>
+          <b-img :src="image" height="120" width="120"></b-img>
+          <br/>
+          <b-button variant="danger" @click="deleteImage(index)" class="mt-1">Supprimer</b-button>
+        </b-list-group-item>
+      </b-list-group>
+    </div>
 
-            <pre>{{ selected }}</pre>
+    <b-button-group class="mt-2">
+      <b-button variant="outline-success">Créer</b-button>
+      <b-button variant="outline-danger" @click="reset">Reset</b-button>
+    </b-button-group>
 
-
-            <b-button-group class="mt-1">
-              <b-button variant="outline-success">Créer</b-button>
-              <b-button variant="outline-danger" @click="reset">Reset</b-button>
-            </b-button-group>
-          </b-form>
-        </b-card-body>
-      </b-card>
-      <pre>{{ article }}</pre>
-    </b-card-body>
-  </b-card>
+    <b-row class="my-5">
+      <b-col lg="4"><pre>{{ tagOptions }}</pre></b-col>
+      <b-col lg="4"><pre>{{ catalogueOptions }}</pre></b-col>
+      <b-col lg="4"><pre>{{ article }}</pre></b-col>
+    </b-row>
+  </b-form>
 </template>
 
 <script>
@@ -160,19 +155,21 @@ export default {
   data() {
     return {
       article: new ArticleModel(),
-      dirty: false,
+
+      tagOptions: [],
+      selectedTags: [],
+      catalogueOptions: [],
+      serviceOptions: [],
+
       preview: null,
       image: null,
       preview_list: [],
       image_list: [],
 
-      tagOptions: [],
-      catalogueOptions: [],
-      serviceOptions: [],
-
       selected: '',
       active: false,
       isLoading: false,
+      dirty: false,
       shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
     }
   },
