@@ -1,11 +1,8 @@
-// const DOMAIN = 'https://lemka-api.herokuapp.com/api';
-const DOMAIN = 'http://127.0.0.1:8000/api';
-const PROFIL = DOMAIN + '/profil';
 const AdminView = 'ViewAdmin';
 const UserView = 'ViewUser';
 const GlobalView = 'ViewGlobal';
 
-const Routes = {
+export const Routes = {
     // region Global routes
     HOME_ROUTE: {name: GlobalView + 'Home', value: 'Accueil'},
     LOGIN_ROUTE: {name: GlobalView + 'Login', value: 'Se connecter'},
@@ -60,54 +57,11 @@ const Routes = {
     PARAMETRES_ENTREPRISE_ADD: {name: AdminView + 'EntrepriseAdd', value: 'Ajout des informations de l\'entreprise'},
     PARAMETRES_ENTREPRISE_UPDATE: {name: AdminView + 'EntrepriseUpdate', value: 'Modifier information de l\'entreprise'},
     PARAMETRES_GENRE: {name: AdminView + 'Genre', value: 'Genres'},
-    PARAMETRES_GENRE_ADD: {name: AdminView + 'GenreAdd', value: 'Ajouter un genre'},
+    PARAMETRES_GENRE_DETAIL: {name: AdminView + 'GenreDetail', value: 'Détail'},
+    PARAMETRES_GENRE_ADD_OR_UPDATE: {name: AdminView + 'GenreAddOrUpdate', value: 'Ajouter - Modifier genre'},
     PARAMETRES_MENSURATION: {name: AdminView + 'Mensuration', value: 'Mensurations'},
     PARAMETRES_MENSURATION_ADD: {name: AdminView + 'MensurationAdd', value: 'Ajouter mensuration'},
     PARAMETRES_SERVICE: {name: AdminView + 'Service', value: 'Services'},
     PARAMETRES_SERVICE_ADD: {name: AdminView + 'ServiceAdd', value: 'Ajouter un service'},
     // endregion
-}
-
-const Endpoints = {
-    DOMAIN: DOMAIN,
-    PROFIL: DOMAIN + '/profil',
-    // region Global endpoints
-    LOGIN_ENDPOINT: DOMAIN + '/login/',
-    REGISTER_ENDPOINT: DOMAIN + '/register/',
-    REFRESH_ENDPOINT: DOMAIN + '/token/refresh/',
-    VILLE_ENDPOINT: DOMAIN + '/villes/',
-    // endregion
-
-    // region User endpoints
-    USER_MENSURATION_ENDPOINT: PROFIL + /mensurations/,
-
-    PAYS_ENDPOINT: DOMAIN + '/pays/',
-    // endregion
-
-    // region Admin endpoints
-    USERS_ENDPOINT: DOMAIN + '/utilisateurs/',
-    GENRES_ENDPOINT: DOMAIN + '/genres/',
-    MERCERIE_ENDPOINT: DOMAIN + '/merceries/',
-
-    MENSURATION_ENDPOINT: DOMAIN + /mensurations/,
-
-    TYPES_SERVICES_ENDPOINT: DOMAIN + '/types_services/',
-    CATALOGUES_ENDPOINT: DOMAIN + '/catalogues/',
-    RAYON_ENDPOINT: DOMAIN + '/rayons/',
-    SECTION_ENDPOINT: DOMAIN + '/sections/',
-    TYPE_PRODUIT_ENDPOINT: DOMAIN + '/type_produits/',
-
-    CATEGORIES_ENDPOINT: DOMAIN + '/categories/',
-
-    ENTREPRISE_ENDPOINT: DOMAIN + '/entreprise/',
-
-    DASHBOARD_ENDPOINT: DOMAIN + '/admin-dashboard/',
-    CHECK_USER_EXISTS_ENDPOINT: DOMAIN + '/check/',
-    // endregion
-
-}
-
-export const LemkaEnums = {
-    Routes,
-    Endpoints,
 }

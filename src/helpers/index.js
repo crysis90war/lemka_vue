@@ -1,11 +1,13 @@
-import {FontAwesomeIcons} from '@/helpers/fontAwesomeIcons'
-import {Regex} from '@/helpers/regex'
-import {ValidationMessages} from "@/helpers/validationMessages";
+import {Regex} from '@/helpers/regex.helper'
+import {FontAwesomeIcons} from "@/helpers/font_awesome_icons.helper";
+import {BSClass} from "@/helpers/bootstrap_class.helper";
+import {Routes} from "@/helpers/routes.helper";
 
 const LemkaHelpers = {
     FontAwesomeIcons,
     Regex,
-    ValidationMessages,
+    BSClass,
+    Routes
 }
 
 export default LemkaHelpers

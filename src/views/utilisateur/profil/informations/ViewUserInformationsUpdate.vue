@@ -1,5 +1,5 @@
 <template>
-  <b-card title="Update" :class="bootstrap.shadow">
+  <b-card title="Update" :class="BSClass.CARD_BORDERLESS_SHADOW">
     <b-card-body>
       <b-form @submit.prevent="submit">
         <b-form-group id="input-groupe-username"
@@ -90,12 +90,14 @@
 <script>
 import {LemkaEnums} from "@/helpers/enums.helper";
 import {validationMixin} from "vuelidate";
+import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import GenreModel from "@/models/genre.model";
 import ProfilModel from "@/models/profil.model";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewUserInformationsUpdate",
-  mixins: validationMixin,
+  mixins: [validationMixin, validationMessageMixin],
   validations: {
     profil: ProfilModel.validations
   },
@@ -103,9 +105,7 @@ export default {
   data() {
     return {
       link: LemkaEnums.Routes.INFORMATIONS.name,
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
-      },
+      BSClass: LemkaHelpers.BSClass,
       profil: new ProfilModel(),
       genre: null,
       genres: [],

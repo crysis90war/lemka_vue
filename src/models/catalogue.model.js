@@ -40,7 +40,6 @@ export default class CatalogueModel {
                 let catalogue = new CatalogueModel()
                 catalogue.id = catalogues[i].id
                 if (catalogues[i].ref_rayon !== null && catalogues[i].ref_rayon !== undefined) {
-                    console.log(catalogues[i])
                     catalogue.ref_rayon = await RayonModel.getRayonDetail(catalogues[i].ref_rayon)
                 }
                 if (catalogues[i].ref_section !== null && catalogues[i].ref_section !== undefined) {

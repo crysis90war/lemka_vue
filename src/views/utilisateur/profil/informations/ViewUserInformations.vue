@@ -1,5 +1,5 @@
 <template>
-  <b-card v-if="loading === false" class="my-4" :class="bootstrap.shadow">
+  <b-card v-if="loading === false" class="my-4" :class="BSClass.CARD_BORDERLESS_SHADOW">
     <b-card-body>
       <b-row>
         <b-col lg="7">
@@ -12,20 +12,20 @@
           </div>
           <hr>
           <div v-if="profil.email">
-            <span class="mr-2"><i :class="icons.email"></i></span>
+            <span class="mr-2"><i :class="icons.EMAIL"></i></span>
             <span>{{ profil.email }}</span>
           </div>
           <div v-if="profil.numero_tel">
-            <span class="mr-2"><i :class="icons.phone"></i></span>
+            <span class="mr-2"><i :class="icons.PHONE"></i></span>
             <span>{{ profil.numero_tel }}</span>
           </div>
           <div v-if="profil.ref_genre !== null && profil.ref_genre !== undefined">
-            <span class="mr-2"><i :class="icons.genre"></i></span>
+            <span class="mr-2"><i :class="icons.GENRE"></i></span>
             <span>{{ profil.ref_genre.genre }}</span>
           </div>
           <hr>
           <div>
-            <span><i :class="icons.adresse" class="mr-2"></i></span>
+            <span><i :class="icons.HOME" class="mr-2"></i></span>
             <b-link v-if="adresse === null" :to="{name: links.ajouterAdresseLink}" class="">
               <ins>Ajouter une adresse</ins>
             </b-link>
@@ -75,6 +75,7 @@ import GenreModel from "@/models/genre.model";
 import ProfilModel from "@/models/profil.model";
 import AdresseModel from "@/models/adresse.model";
 import {localTimeStr} from "@/utils/filters";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewUserInformations",
@@ -93,15 +94,8 @@ export default {
         ajouterAdresseLink: LemkaEnums.Routes.ADRESSE_ADD.name,
         modifierAdresseLink: LemkaEnums.Routes.ADRESSE_UPDATE.name
       },
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
-      },
-      icons: {
-        email: LemkaEnums.FontAwesomeIcons.EMAIL,
-        phone: LemkaEnums.FontAwesomeIcons.PHONE,
-        adresse: LemkaEnums.FontAwesomeIcons.HOME,
-        genre: LemkaEnums.FontAwesomeIcons.GENRE,
-      },
+      BSClass: LemkaHelpers.BSClass,
+      icons: LemkaHelpers.FontAwesomeIcons,
     }
   },
 

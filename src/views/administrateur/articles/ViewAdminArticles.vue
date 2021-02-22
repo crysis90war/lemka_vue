@@ -1,98 +1,108 @@
 <template>
   <div v-if="$route.name === links.articlesLink">
-    <b-container>
-      <b-row>
-        <b-col lg="6" class="my-1">
-          <b-form-group label-for="filter-input"
-                        label-align-sm="right"
-                        label-size="sm"
-                        class="mb-0">
-            <b-input-group size="sm">
-              <template #prepend>
-                <b-input-group-text>Filtrer</b-input-group-text>
-              </template>
+    <b-row>
+      <b-col lg="6">
+        <b-form-group id="input-group-filter"
+                      label-for="input-filter"
+                      label="Filtrer"
+                      label-size="sm"
+                      label-cols-sm="2"
+                      label-align-sm="right"
+                      description="Veuillez encoder pour chercher">
+          <b-input-group size="sm">
+            <b-form-input v-model="filter"
+                          id="input-filter"
+                          name="input-filter"
+                          type="search"
+                          placeholder="Chercher ...">
+            </b-form-input>
 
-              <b-form-input id="filter-input"
-                            v-model="filter"
-                            type="search"
-                            placeholder="Écrire pour chercher">
-              </b-form-input>
-
-              <b-input-group-append>
-                <b-button :disabled="!filter" @click="filter = ''">Supprimer</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-form-group>
-        </b-col>
-
-        <b-col lg="6" class="my-1">
-          <b-form-group label-for="sort-by-select"
-                        label-size="sm"
-                        class="mb-0"
-                        v-slot="{ ariaDescribedby }">
-            <b-input-group size="sm">
-              <template #prepend>
-                <b-input-group-text>Trier par</b-input-group-text>
-              </template>
-
-              <b-form-select id="sort-by-select"
-                             v-model="sortBy"
-                             :options="sortOptions"
-                             :aria-describedby="ariaDescribedby"
-                             class="w-50">
-                <template #first>
-                  <option value="">-- vide --</option>
-                </template>
-              </b-form-select>
-
-              <b-form-select v-model="sortDesc"
-                             :disabled="!sortBy"
-                             :aria-describedby="ariaDescribedby"
-                             size="sm">
-                <option :value="false">Asc</option>
-                <option :value="true">Desc</option>
-              </b-form-select>
-            </b-input-group>
-          </b-form-group>
-        </b-col>
-
-        <b-col lg="6" class="my-1">
-          <b-form-group class="mb-0">
-            <b-input-group size="sm">
-              <template #prepend>
-                <b-input-group-text>Par page</b-input-group-text>
-              </template>
-              <b-form-select id="per-page-select"
-                             v-model="perPage"
-                             :options="pageOptions">
-              </b-form-select>
-            </b-input-group>
-          </b-form-group>
-
-        </b-col>
-
-        <b-col lg="6" class="my-1">
-          <b-form-group v-model="sortDirection"
-                        label="Filtrer sur"
-                        description="Laissez tout décoché pour filtrer sur toutes les données"
-                        label-cols-sm="3"
-                        label-align-sm="right"
-                        label-size="sm"
-                        class="mb-0"
-                        v-slot="{ ariaDescribedby }">
-            <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby">
-              <b-form-checkbox value="created_at">Date création</b-form-checkbox>
-              <b-form-checkbox value="titre">Titre</b-form-checkbox>
-            </b-form-checkbox-group>
-          </b-form-group>
-        </b-col>
-      </b-row>
-    </b-container>
-
-    <b-row class="mt-3">
-      <b-col lg="5" class="my-1">
-        <b-button variant="outline-success" size="sm" :to="{name: links.articleAddLink}">Créer un nouveau article</b-button>
+            <b-input-group-append>
+              <b-button :disabled="!filter"
+                        @click="filter = ''">
+                Supprimer
+              </b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
       </b-col>
+
+      <b-col lg="6">
+        <b-form-group id="input-group-sort-by-select"
+                      label-for="input-sort-by-select"
+                      label="Trier par"
+                      label-size="sm"
+                      label-cols-sm="2"
+                      label-align-sm="right"
+                      description="Veuillez faire votre choix de tri"
+                      v-slot="{ ariaDescribedby }">
+          <b-input-group size="sm">
+            <b-form-select v-model="sortBy"
+                           id="input-sort-by-select"
+                           name="input-sort-by-select"
+                           :options="sortOptions"
+                           :aria-describedby="ariaDescribedby"
+                           class="w-75">
+              <template #first>
+                <option value="">-- vide --</option>
+              </template>
+            </b-form-select>
+
+            <b-form-select v-model="sortDesc"
+                           :disabled="!sortBy"
+                           :aria-describedby="ariaDescribedby"
+                           size="sm">
+              <option :value="false">Asc</option>
+              <option :value="true">Desc</option>
+            </b-form-select>
+          </b-input-group>
+        </b-form-group>
+      </b-col>
+    </b-row>
+
+    <b-row>
+      <b-col lg="6">
+        <b-form-group v-model="sortDirection"
+                      label="Filtrer sur"
+                      label-size="sm"
+                      label-cols-sm="2"
+                      label-align-sm="right"
+                      description="Laissez tout décoché pour filtrer sur toutes les données"
+                      v-slot="{ ariaDescribedby }">
+          <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby">
+            <b-form-checkbox value="created_at">Date création</b-form-checkbox>
+            <b-form-checkbox value="titre">Titre</b-form-checkbox>
+          </b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
+
+      <b-col lg="6">
+        <b-form-group id="input-group-per-page-select"
+                      label-for="input-per-page-select"
+                      label="Par page"
+                      label-size="sm"
+                      label-cols-sm="2"
+                      label-align-sm="right"
+                      description="Veuillez selectionner le nombre d'article par page">
+            <b-form-select v-model="perPage"
+                           id="input-per-page-select"
+                           name="input-per-page-select"
+                           size="sm"
+                           :options="pageOptions">
+            </b-form-select>
+        </b-form-group>
+      </b-col>
+    </b-row>
+
+    <b-row class="mt-3 mb-2">
+      <b-col lg="5" class="my-1">
+        <b-button variant="outline-success"
+                  size="sm"
+                  :to="{name: links.articleAddLink}">
+          Créer un nouveau article
+        </b-button>
+      </b-col>
+
       <b-col lg="7" class="my-1">
         <b-pagination v-model="currentPage"
                       :total-rows="totalRows"
@@ -117,7 +127,6 @@
              stacked="md"
              show-empty
              small
-             class="mt-1"
              @filtered="onFiltered">
       <template #table-busy>
         <div class="text-center text-secondary mt-3">
@@ -143,22 +152,17 @@
       </template>
 
       <template #cell(titre)="data">
-        <router-link :to="{name: links.articleDetailLink, params: {slug: data.item.slug}}">
+        <router-link :to="{name: links.articleAddLink, params: {slug: data.item.slug}}">
           {{ data.item.titre }}
         </router-link>
       </template>
 
       <template #cell(actions)="data">
-        <b-button v-if="data.item.est_active === true" size="sm"
-                  @click="activerDesactiverArticle(data.item.slug, data.item)"
+        <b-button size="sm"
                   class="mr-1"
-                  variant="outline-danger">
-          Desactiver
-        </b-button>
-        <b-button v-else size="sm"
-                  @click="activerDesactiverArticle(data.item.slug, data.item)"
-                  variant="outline-success">
-          Activer
+                  :variant="data.item.est_active === true ? 'outline-danger' : 'outline-success'"
+                  @click="activerDesactiverArticle(data.item.slug, data.item)">
+          {{ data.item.est_active === true ? 'Désactiver' : 'Activer' }}
         </b-button>
       </template>
     </b-table>
@@ -172,18 +176,19 @@
 import ApiService from "@/services";
 import {LemkaEnums} from '@/helpers/enums.helper';
 import ArticleModel from "@/models/article.model";
-import {localTimeStr} from "@/utils/filters";
+import {tableViewMixin} from "@/mixins/table_view.mixin";
 
 export default {
   name: "ViewAdminArticles",
+  mixins: [tableViewMixin],
   data() {
     return {
-      items: [],
       fields: [
-        {key: 'created_at', label: 'Date création', sortable: true},
+        {key: 'created_at', label: 'Date de création', sortable: true},
         {key: 'ref_type_service.type_service', label: 'Service', sortable: true},
         {key: 'titre', label: 'Titre', sortable: true},
         {key: 'images_count', label: 'Images', sortable: true},
+        {key: 'likes_count', label: 'Likes', sortable: true},
         {key: 'ref_catalogue.ref_rayon.rayon', label: 'Rayon', sortable: true},
         {key: 'ref_catalogue.ref_section.section', label: 'Section', sortable: true, sortDirection: 'desc'},
         {
@@ -204,47 +209,22 @@ export default {
         },
         {key: 'actions', label: 'Actions'}
       ],
-      totalRows: 1,
-      currentPage: 1,
-      perPage: 10,
-      pageOptions: [10, 20, 50, {value: 100, text: "Show a lot"}],
-      sortBy: '',
-      sortDesc: false,
-      sortDirection: 'asc',
-      filter: null,
-      filterOn: [],
-      isBusy: false,
-      options: [],
       links: {
         articlesLink: LemkaEnums.Routes.ARTICLES.name,
         articleDetailLink: LemkaEnums.Routes.ARTICLES_DETAIL.name,
-        articleAddLink: LemkaEnums.Routes.ARTICLE_ADD.name,
+        articleAddLink: LemkaEnums.Routes.ARTICLES_ADD_OR_UPDATE.name,
       },
     }
   },
 
-  computed: {
-    sortOptions() {
-      // Create an options list from our fields
-      return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return {text: f.label, value: f.key}
-          })
-    }
-  },
-
   methods: {
-    async loadArticles() {
+    loadArticles: async function() {
       try {
         this.toggleBusy()
-
-        let articles = []
         this.items = []
-        articles = await ArticleModel.getArticleList()
+        let articles = await ArticleModel.getArticleList()
         for (let i = 0; i < articles.length; i++) {
-          let article = await ArticleModel.getArticleDetail(articles[i].slug)
-          this.items.push(Object.assign(new ArticleModel(), article))
+          this.items.push(Object.assign(new ArticleModel(), await ArticleModel.getArticleDetail(articles[i].slug)))
         }
       } catch (error) {
         console.log(error)
@@ -253,15 +233,7 @@ export default {
       }
     },
 
-    chargerOptions() {
-      if (this.items.length !== 0) {
-        this.items.forEach(item => {
-          this.options.push(item.key)
-        })
-      }
-    },
-
-    async activerDesactiverArticle(articleSlug, article) {
+    activerDesactiverArticle: async function(articleSlug, article) {
       try {
         let data = {
           "est_active": !article.est_active
@@ -273,26 +245,9 @@ export default {
         await this.loadArticles()
       }
     },
-
-    onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
-    },
-
-    toggleBusy() {
-      this.isBusy = !this.isBusy
-    }
   },
 
-  filters: {
-    localTimeStr: function (value) {
-      value = localTimeStr(value)
-      return value
-    }
-  },
-
-  created() {
+  mounted() {
     this.loadArticles()
   }
 }

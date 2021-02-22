@@ -2,21 +2,21 @@
   <div>
     <b-card-group deck class="my-2">
       <!-- UTILISATEUR -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.USERS"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.USERS"
                      :route_value="LemkaEnums.Routes.UTILISATEURS.value"
                      :count="dashboard.user_count"
                      :route_link="LemkaEnums.Routes.UTILISATEURS.name"
                      :message="`${LemkaEnums.Routes.UTILISATEURS.value} actifs`"></DashboardCard>
 
       <!-- ARTICLE -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.STORE"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.STORE"
                      :route_value="LemkaEnums.Routes.ARTICLES.value"
                      :count="dashboard.articles_count"
                      :route_link="LemkaEnums.Routes.ARTICLES.name"
                      :message="`${LemkaEnums.Routes.ARTICLES.value} actifs`"></DashboardCard>
 
       <!-- MERCERIE -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.MERCERIES"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.MERCERIES"
                      :route_value="LemkaEnums.Routes.MERCERIES.value"
                      :count="dashboard.merceries_count"
                      :route_link="LemkaEnums.Routes.MERCERIES.name"
@@ -25,28 +25,28 @@
 
     <b-card-group deck class="my-2">
       <!-- DEMANDE DE DEVIS -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.FOLDER_OPEN"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.FOLDER_OPEN"
                      :route_value="LemkaEnums.Routes.DEMANDE_DE_DEVIS.value"
                      :count="dashboard.demandes_de_devis_count"
                      :route_link="LemkaEnums.Routes.DEMANDE_DE_DEVIS.name"
                      :message="`${LemkaEnums.Routes.DEMANDE_DE_DEVIS.value} actifs`"></DashboardCard>
 
       <!-- DEVIS -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.FOLDER"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.FOLDER"
                      :route_value="LemkaEnums.Routes.DEVIS.value"
                      :count="dashboard.devis_count"
                      :route_link="LemkaEnums.Routes.DEVIS.name"
                      :message="`${LemkaEnums.Routes.DEVIS.value} actifs`"></DashboardCard>
 
       <!-- BON DE COMMANDE -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.PLATEAU"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.PLATEAU"
                      :route_value="LemkaEnums.Routes.BONS_DE_COMMANDE.value"
                      :count="dashboard.bons_de_commande_count"
                      :route_link="LemkaEnums.Routes.BONS_DE_COMMANDE.name"
                      :message="`${LemkaEnums.Routes.BONS_DE_COMMANDE.value} actifs`"></DashboardCard>
 
       <!-- FACTURE -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.MONEY"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.MONEY"
                      :route_value="LemkaEnums.Routes.FACTURE.value"
                      :count="dashboard.factures_count"
                      :route_link="LemkaEnums.Routes.FACTURE.name"
@@ -55,14 +55,14 @@
 
     <b-card-group deck>
       <!-- RENDEZ-VOUS -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.CALENDAR"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.CALENDAR"
                      :route_value="LemkaEnums.Routes.RENDEZ_VOUS.value"
                      :count="dashboard.rendez_vous_count"
                      :route_link="LemkaEnums.Routes.RENDEZ_VOUS.name"
                      :message="`${LemkaEnums.Routes.RENDEZ_VOUS.value} actifs`"></DashboardCard>
 
       <!-- PARAMETRE -->
-      <DashboardCard :icon="LemkaEnums.FontAwesomeIcons.PARAMETRES"
+      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.PARAMETRES"
                      :route_value="LemkaEnums.Routes.PARAMETRES.value"
                      :route_link="LemkaEnums.Routes.PARAMETRES.name"
                      :message="`${LemkaEnums.Routes.PARAMETRES.value} actifs`"></DashboardCard>
@@ -75,6 +75,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 import axios from "axios";
 import authHeader from "@/configs/auth-header";
 import DashboardCard from "@/views/administrateur/dashboard/DashboardCard"
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewAdminDashboard",
@@ -84,6 +85,7 @@ export default {
   data() {
     return {
       LemkaEnums,
+      LemkaHelpers,
       dashboard: {
         articles_count: 0,
         bons_de_commande_count: 0,

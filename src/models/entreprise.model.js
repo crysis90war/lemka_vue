@@ -70,7 +70,6 @@ export default class EntrepriseModel {
             },
             numero: {
                 required,
-                minLength: minLength(1),
                 alphaNum
             },
             ref_ville: {

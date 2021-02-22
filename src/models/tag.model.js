@@ -48,8 +48,10 @@ export default class TagModel {
     }
 
     static async createTag(payload) {
-        await ApiService.TagService.postTag(payload).then(response => {
-            return response
+        let response = null
+        await ApiService.TagService.postTag(payload).then(res => {
+            response = res
         })
+        return response
     }
 }

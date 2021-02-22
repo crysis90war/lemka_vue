@@ -13,7 +13,16 @@
                         :state="validateState('type_service')"></b-form-input>
           <b-form-invalid-feedback>
             <b-badge v-if="!$v.typeService.type_service.required" pill variant="danger">
-              Ce champ est obligatoire
+              {{ required() }}
+            </b-badge>
+            <b-badge v-if="!$v.typeService.type_service.minLength" pill variant="danger">
+              {{ minLength($v.typeService.type_service.$params.minLength.min) }}
+            </b-badge>
+            <b-badge v-if="!$v.typeService.type_service.maxLength" pill variant="danger">
+              {{ maxLength($v.typeService.type_service.$params.maxLength.max) }}
+            </b-badge>
+            <b-badge v-if="!$v.typeService.type_service.alpha" pill variant="danger">
+              {{ alpha() }}
             </b-badge>
           </b-form-invalid-feedback>
         </b-form-group>
@@ -28,17 +37,23 @@
                         placeholder="exemple: 30"
                         :state="validateState('duree_minute')"></b-form-input>
           <b-form-invalid-feedback>
-
+            <b-badge v-if="!$v.typeService.duree_minute.required" pill variant="danger">
+              {{ required() }}
+            </b-badge>
+            <b-badge v-if="!$v.typeService.duree_minute.between" pill variant="danger">
+              {{ between($v.typeService.duree_minute.$params.between.min, $v.typeService.duree_minute.$params.between.max) }}
+            </b-badge>
+            <b-badge v-if="!$v.typeService.duree_minute.numeric" pill variant="danger">
+              {{ numeric() }}
+            </b-badge>
           </b-form-invalid-feedback>
         </b-form-group>
 
         <b-button-group>
           <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">Ajouter</b-button>
-          <b-button variant="outline-danger">retour</b-button>
+          <b-button variant="outline-danger" @click="$router.go(-1)">Retour</b-button>
         </b-button-group>
       </b-form>
-      <pre>{{ typeService }}</pre>
-      <pre class="bg-warning" v-if="response !== null">{{ JSON.stringify(response) }}</pre>
     </b-card-body>
   </b-card>
 </template>
@@ -47,10 +62,11 @@
 import {LemkaEnums} from "@/helpers/enums.helper";
 import TypeServiceModel from "@/models/typeService.model";
 import {validationMixin} from "vuelidate";
+import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 
 export default {
   name: "ViewAdminServiceAdd",
-  mixins: validationMixin,
+  mixins: [validationMixin, validationMessageMixin],
   validations: {
     typeService: TypeServiceModel.validations
   },
@@ -60,7 +76,7 @@ export default {
       typeService: new TypeServiceModel(),
       response: null,
       submitStatus: null,
-      shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
+      shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW,
     }
   },
 

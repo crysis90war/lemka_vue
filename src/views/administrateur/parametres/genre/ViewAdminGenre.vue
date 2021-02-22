@@ -1,7 +1,10 @@
 <template>
   <div v-if="$route.name === routes.genre.name">
 
-    <b-button :to="{name: routes.genre_add.name}" variant="outline-success">{{ routes.genre_add.value }}</b-button>
+    <b-button :to="{name: routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name}"
+              variant="outline-success">
+      {{ routes.PARAMETRES_GENRE_ADD_OR_UPDATE.value }}
+    </b-button>
 
     <b-table :items="items" :fields="fields"
              stacked="md"
@@ -14,6 +17,13 @@
           <p>Il n'y a aucun enregistrement à afficher</p>
         </div>
       </template>
+
+<!--      <template #cell(genre)="data">-->
+<!--        <router-link :to="{name: routes.PARAMETRES_GENRE_DETAIL.name, params: {id: data.item.id}}">-->
+<!--          {{ data.item.genre }}-->
+<!--        </router-link>-->
+<!--      </template>-->
+
       <template #cell(actions)="data">
         <b-button size="sm"
                   @click="supprimerGenre(data.item.id)"
@@ -28,8 +38,8 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import GenreModel from "@/models/genre.model";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewAdminGenre",
@@ -41,11 +51,8 @@ export default {
         {key: 'genre', label: 'Genre', sortable: true},
         {key: 'actions', label: 'Actions'}
       ],
-      routes: {
-        genre: {name: LemkaEnums.Routes.PARAMETRES_GENRE.name},
-        genre_add: {name: LemkaEnums.Routes.PARAMETRES_GENRE_ADD.name, value: LemkaEnums.Routes.PARAMETRES_GENRE_ADD.value}
-      },
-      shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW,
+      routes: LemkaHelpers.Routes,
+      BSClass: LemkaHelpers.BSClass,
     }
   },
 

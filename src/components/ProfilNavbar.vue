@@ -13,6 +13,7 @@
 
 <script>
 import {LemkaEnums} from "@/helpers/enums.helper";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ProfilNavbar",
@@ -22,12 +23,12 @@ export default {
         {
           href: {name: LemkaEnums.Routes.INFORMATIONS.name},
           title: LemkaEnums.Routes.INFORMATIONS.value,
-          icon: LemkaEnums.FontAwesomeIcons.USER
+          icon: LemkaHelpers.FontAwesomeIcons.USER
         },
         {
           href: {name: LemkaEnums.Routes.MENSURATIONS.name},
           title: LemkaEnums.Routes.MENSURATIONS.value,
-          icon: LemkaEnums.FontAwesomeIcons.MESURE
+          icon: LemkaHelpers.FontAwesomeIcons.MESURE
         },
       ],
     }

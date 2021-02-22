@@ -11,20 +11,20 @@
         </div>
         <hr>
         <div v-if="utilisateur.email">
-          <span class="mr-2"><i :class="icons.email"></i></span>
+          <span class="mr-2"><i :class="icons.EMAIL"></i></span>
           <span>{{ utilisateur.email }}</span>
         </div>
         <div v-if="utilisateur.numero_tel">
-          <span class="mr-2"><i :class="icons.phone"></i></span>
+          <span class="mr-2"><i :class="icons.PHONE"></i></span>
           <span>{{ utilisateur.numero_tel }}</span>
         </div>
         <div v-if="utilisateur.ref_genre !== null && utilisateur.ref_genre !== undefined">
-          <span class="mr-2"><i :class="icons.genre"></i></span>
+          <span class="mr-2"><i :class="icons.GENRE"></i></span>
           <span>{{ utilisateur.ref_genre.genre }}</span>
         </div>
         <hr>
         <div>
-          <span><i :class="icons.adresse" class="mr-2"></i></span>
+          <span><i :class="icons.HOME" class="mr-2"></i></span>
           <b-link v-if="Object.entries(adresse).length === 0" :to="{name: links.ajouterAdresseLink}" class="">
             <ins>Ajouter une adresse</ins>
           </b-link>
@@ -71,6 +71,7 @@ import AdresseModel from "@/models/adresse.model";
 import GenreModel from "@/models/genre.model";
 import UtilisateurModel from "@/models/utilisateur.model";
 import UploadModal from "@/components/UploadModal";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewAdminUsers",
@@ -94,15 +95,8 @@ export default {
         ajouterAdresseLink: LemkaEnums.Routes.ADRESSE_ADD.name,
         modifierAdresseLink: LemkaEnums.Routes.ADRESSE_UPDATE.name
       },
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
-      },
-      icons: {
-        email: LemkaEnums.FontAwesomeIcons.EMAIL,
-        phone: LemkaEnums.FontAwesomeIcons.PHONE,
-        adresse: LemkaEnums.FontAwesomeIcons.HOME,
-        genre: LemkaEnums.FontAwesomeIcons.GENRE,
-      },
+      BSClass: LemkaHelpers.BSClass,
+      icons: LemkaHelpers.FontAwesomeIcons,
     }
   },
 

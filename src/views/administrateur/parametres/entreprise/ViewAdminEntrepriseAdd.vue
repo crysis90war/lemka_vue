@@ -1,5 +1,5 @@
 <template>
-  <b-card title="Ajouter entreprise" :class="bootstrap.shadow">
+  <b-card title="Ajouter entreprise" :class="BSClass.CARD_BORDERLESS_SHADOW">
     <b-card-body>
       <b-form @submit.prevent="submit">
         <b-row>
@@ -203,6 +203,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 import EntrepriseModel from "@/models/entreprise.model";
 import VilleModel from "@/models/ville.model";
 import {validationMixin} from "vuelidate";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "viewAdminEntrepriseAdd",
@@ -218,9 +219,7 @@ export default {
       submitStatus: null,
 
       link: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name,
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
-      }
+      BSClass: LemkaHelpers.BSClass,
     }
   },
 

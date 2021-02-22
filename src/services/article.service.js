@@ -4,7 +4,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 
 const DOMAIN = LemkaEnums.Endpoints.DOMAIN
 const ARTICLES = DOMAIN + '/articles/'
-const ROUTE_IMAGES = '/images/';
+const IMAGES = '/images/';
 
 class ArticleService {
 
@@ -17,17 +17,14 @@ class ArticleService {
     }
 
     getArticleDetail(articleSlug) {
-        try {
-            let endpoint = `${ARTICLES}${articleSlug}/`;
-            return axios
-                .get(endpoint, {headers: authHeader()})
-        } catch (error) {
-            return error
-        }
+        let endpoint = `${ARTICLES}${articleSlug}/`;
+        return axios.get(endpoint, {headers: authHeader()})
+
     }
 
     postArticle(payload) {
-        return axios.post(ARTICLES, payload, {headers: authHeader()})
+        let endpoint = `${ARTICLES}new/`
+        return axios.post(endpoint, payload, {headers: authHeader()})
     }
 
     putArticle(articleSlug, payload) {
@@ -46,13 +43,23 @@ class ArticleService {
     }
 
     getArticleImagesList(articleSlug) {
-        let endpoint = `${ARTICLES}${articleSlug}${ROUTE_IMAGES}`;
+        let endpoint = `${ARTICLES}${articleSlug}${IMAGES}`;
         return axios.get(endpoint, {headers: authHeader()})
     }
-    
+
     postArticleImage(articleSlug, payload) {
-        let endpoint = `${ARTICLES}${articleSlug}${ROUTE_IMAGES}`;
+        let endpoint = `${ARTICLES}${articleSlug}${IMAGES}`;
         return axios.post(endpoint, payload, {headers: authHeader()})
+    }
+
+    updateArticleImage(articleSlug, articleImageId, payload) {
+        let endpoint = `${ARTICLES}${articleSlug}${IMAGES}${articleImageId}/`;
+        return axios.put(endpoint, payload, {headers: authHeader()})
+    }
+
+    deleteArticleImage(articleSlug, articleImageId) {
+        let endpoint = `${ARTICLES}${articleSlug}${IMAGES}${articleImageId}/`;
+        return axios.delete(endpoint, {headers: authHeader()})
     }
 }
 

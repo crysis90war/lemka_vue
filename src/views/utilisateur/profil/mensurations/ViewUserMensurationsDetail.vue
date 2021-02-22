@@ -1,26 +1,39 @@
 <template>
-  <b-card >
-    <b-card-body>
+  <b-card :class="BSClass.CARD_BORDERLESS_SHADOW">
+    <template title>
       <b-badge pill :variant="userMensuration.is_main === true ? 'success' : 'primary'">
         {{ userMensuration.is_main === true ? 'Principale' : 'Secondaire' }}
       </b-badge>
       <h5><em>{{ userMensuration.titre }}</em></h5>
+    </template>
+    <b-card-body>
+
+
       <b-form @submit.prevent="submit">
 
-        <hr>
-        <div class="d-flex justify-content-center my-2">
+        <div class="text-center">
           <b-button-group>
-            <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Enregistrer</b-button>
-            <b-button variant="outline-danger" :to="{name: links.mensurations}">Retour</b-button>
+            <b-button variant="outline-primary"
+                      type="submit"
+                      :disabled="submitStatus === 'PENDING'">Enregistrer</b-button>
+            <b-button variant="outline-danger" @click="$router.go(-1)">Retour</b-button>
           </b-button-group>
+          <hr>
         </div>
-        <hr>
+
+
+
+
         <b-form-group v-for="v in $v.mensurationUserMensurations.$each.$iter"
                       :key="v.$model.id"
                       :label="v.$model.ref_mensuration"
                       :state="validateState(v.mesure)"
                       :description="`Mesure : ${v.$model.mesure} cm`">
-          <b-form-input v-model.trim="v.mesure.$model" type="range" min="0" max="250" step="0.5"></b-form-input>
+          <b-form-input v-model.trim="v.mesure.$model"
+                        type="range"
+                        min="0"
+                        max="250"
+                        step="0.5"></b-form-input>
           <b-form-invalid-feedback>
             <span v-if="!v.mesure.numeric">La mesure doit être numérique.</span>
             <span v-if="!v.mesure.between">La mesure doit être comprise entre 0 et 250 cm</span>
@@ -36,6 +49,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 import MensurationUserMensurationModel from "@/models/mensurationUserMensuration.model";
 import {validationMixin} from "vuelidate";
 import UserMensurationModel from "@/models/userMensuration.model";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewUserMensurationsDetail",
@@ -44,7 +58,7 @@ export default {
       required: true
     }
   },
-  mixins: validationMixin,
+  mixins: [validationMixin],
   validations: {
     mensurationUserMensurations: {
       $each: MensurationUserMensurationModel.validations
@@ -59,8 +73,9 @@ export default {
         mensurations: LemkaEnums.Routes.MENSURATIONS.name
       },
       icons: {
-        leftArrow: LemkaEnums.FontAwesomeIcons.LONG_LEFT_ARROW
-      }
+        leftArrow: LemkaHelpers.FontAwesomeIcons.LONG_LEFT_ARROW
+      },
+      BSClass: LemkaHelpers.BSClass
     }
   },
 

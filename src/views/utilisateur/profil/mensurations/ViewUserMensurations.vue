@@ -1,10 +1,14 @@
 <template>
   <div>
-    <b-card :title="$route.meta.value" class="my-4" :class="bootstrap.shadow">
+    <b-card :title="$route.meta.value" class="my-4" :class="BSClass.CARD_BORDERLESS_SHADOW">
       <b-card-body>
 
-        <b-button v-if="userMensurations.length < 5" variant="outline-success" size="sm" class="mb-3" :to="{name: links.addMensuration}">Ajouter
-          mensuration
+        <b-button v-if="userMensurations.length < 5"
+                  variant="outline-success"
+                  size="sm"
+                  class="mb-3"
+                  :to="{name: links.addOrUpdate}">
+          Ajouter mensuration
         </b-button>
 
         <b-table :items="userMensurations"
@@ -30,22 +34,20 @@
             <b-badge pill v-else variant="primary">Secondaire</b-badge>
           </template>
 
-          <!--          <template #cell(titre)="data">-->
-          <!--            <router-link :to="{name: links.detailMensuration, params: {id: data.item.id}}">-->
-          <!--              {{ data.item.titre }}-->
-          <!--            </router-link>-->
-          <!--          </template>-->
+          <template #cell(titre)="data">
+            <router-link :to="{name: links.detail, params: {id: data.item.id}}">
+              {{ data.item.titre }}
+            </router-link>
+          </template>
 
           <template #cell(actions)="data">
             <b-button-group>
-              <b-button variant="outline-info" :to="{name: links.detailMensuration, params: {id: data.item.id}}">
-                <i :class="icons.info"></i>
-              </b-button>
-              <b-button variant="outline-primary" :to="{name: links.updateMensuration, params: {id: data.item.id}}">
-                <i :class="icons.edit"></i>
+              <b-button variant="outline-primary"
+                        :to="{name: links.addOrUpdate, params: {id: data.item.id}}">
+                Modifier
               </b-button>
               <b-button variant="outline-danger" @click="deleteUserMensuration(data.item.id/*, data.index*/)">
-                <i :class="icons.delete"></i>
+                Supprimer
               </b-button>
             </b-button-group>
           </template>
@@ -58,6 +60,7 @@
 <script>
 import UserMensurationModel from "@/models/userMensuration.model";
 import {LemkaEnums} from "@/helpers/enums.helper";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewUserMensurations",
@@ -71,18 +74,11 @@ export default {
       ],
       isBusy: false,
       links: {
-        addMensuration: LemkaEnums.Routes.MENSURATION_ADD.name,
-        detailMensuration: LemkaEnums.Routes.MENSURATION_DETAIL.name,
-        updateMensuration: LemkaEnums.Routes.MENSURATION_UPDATE.name
+        addOrUpdate: LemkaEnums.Routes.MENSURATION_ADD_OR_UPDATE.name,
+        detail: LemkaEnums.Routes.MENSURATION_DETAIL.name,
       },
-      icons: {
-        info: LemkaEnums.FontAwesomeIcons.INFO,
-        edit: LemkaEnums.FontAwesomeIcons.MODIFIER,
-        delete: LemkaEnums.FontAwesomeIcons.SUPPRIMER
-      },
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
-      },
+      icons: LemkaHelpers.FontAwesomeIcons,
+      BSClass: LemkaHelpers.BSClass,
     }
   },
 

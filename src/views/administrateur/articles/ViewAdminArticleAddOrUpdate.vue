@@ -8,14 +8,10 @@
         </b-form-checkbox>
       </b-input-group>
 
-      <b-form-group id="input-group-titre"
-                    label-for="input-titre"
-                    label="Titre"
+      <b-form-group label="Titre"
                     description="Encodez le titre de l'article"
                     class="my-1">
-        <b-form-input id="input-titre"
-                      name="input-titre"
-                      placeholder="Titre ..."
+        <b-form-input placeholder="Titre ..."
                       type="text"
                       v-model="$v.article.titre.$model"
                       :state="validateState('titre')"/>
@@ -29,14 +25,10 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group id="input-group-description"
-                    label-for="input-description"
-                    label="Description"
+      <b-form-group label="Description"
                     description="Veuillez encoder la description de l'article"
                     class="my-1">
-        <b-form-textarea id="input-description"
-                         name="input-description"
-                         placeholder="Encodage de la description"
+        <b-form-textarea placeholder="Encodage de la description"
                          v-model="$v.article.description.$model"
                          :state="validateState('description')"/>
         <b-form-invalid-feedback>
@@ -49,14 +41,11 @@
 
       <b-row>
         <b-col lg="6">
-          <b-form-group id="intput-group-ref_service"
-                        label-for="input-ref_service"
-                        label="Service"
+          <b-form-group label="Service"
                         description="Veuillez selectionner le service de l'article"
                         class="my-1">
             <multiselect v-model="article.ref_type_service"
                          :options="serviceOptions"
-                         id="input-ref_service"
                          placeholder="Veuillez selectionner le service"
                          selectLabel="Appuyez sur enter pour selectionner."
                          deselectLabel="Appuyez sur enter pour retirer"
@@ -80,14 +69,10 @@
                         class="my-1">
             <multiselect v-model="article.ref_catalogue"
                          :options="catalogueOptions"
-                         :loading="isLoading"
-                         :multiple="false"
-                         :searchable="true"
                          :internal-search="false"
                          :clear-on-select="false"
                          :close-on-select="true"
                          :options-limit="20"
-                         :max-height="600"
                          :show-no-results="false"
                          label="catalogue"
                          track-by="id"
@@ -159,56 +144,46 @@
       </div>
 
       <b-button-group class="mt-2">
-        <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">Ajouter</b-button>
-        <b-button variant="outline-danger" @click="reset">Reset</b-button>
+        <b-button type="submit"
+                  :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
+                  :disabled="submitStatus === 'PENDING'">
+          {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
+        </b-button>
+        <b-button variant="outline-danger"
+                  @click="reset">
+          Reset
+        </b-button>
+        <b-button variant="outline-secondary" @click="$router.go(-1)">Retour</b-button>
       </b-button-group>
-
-      <b-jumbotron header="Débugage" class="mt-4">
-        <b-row class="my-5">
-          <b-col lg="4">
-            <h3>Tags</h3>
-            <pre>{{ tagOptions }}</pre>
-          </b-col>
-          <b-col lg="4">
-            <h3>Selected Tags</h3>
-            <pre>{{ selectedTags }}</pre>
-          </b-col>
-          <b-col lg="4">
-            <h3>Article ref tag</h3>
-            <pre>{{ article.ref_tag }}</pre>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col lg="6">
-            <h3>toCreatePayload</h3>
-            <pre>{{ article.toCreatePayload }}</pre>
-          </b-col>
-          <b-col lg="6">
-            <h3>Article</h3>
-            <pre>{{ article }}</pre>
-          </b-col>
-        </b-row>
-      </b-jumbotron>
     </b-form>
+    <b-jumbotron>
+      <pre>{{ article }}</pre>
+    </b-jumbotron>
   </b-container>
 </template>
 
 <script>
 import ArticleModel from "@/models/article.model";
 import TypeServiceModel from "@/models/typeService.model";
-import {LemkaEnums} from "@/helpers/enums.helper";
-import TagModel from "@/models/tag.model";
 import CatalogueModel from "@/models/catalogue.model";
+import TagModel from "@/models/tag.model";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {validationMixin} from "vuelidate";
 import InvalidFeedback from "@/components/InvalidFeedback";
+import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewAdminArticlesAdd",
+  name: "ViewAdminArticlesAddOrUpdate",
   components: {InvalidFeedback},
   mixins: [validationMixin, validationMessageMixin],
   validations: {
     article: ArticleModel.validations
+  },
+  props: {
+    slug: {
+      type: String,
+      required: false
+    }
   },
   data() {
     return {
@@ -229,7 +204,9 @@ export default {
       isLoading: false,
       dirty: false,
       submitStatus: null,
-      shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
+
+      icons: LemkaHelpers.FontAwesomeIcons,
+      BSClass: LemkaHelpers.BSClass
     }
   },
 
@@ -240,6 +217,11 @@ export default {
   },
 
   methods: {
+    chargerArticle: async function() {
+      Object.assign(this.article, await ArticleModel.getArticleDetail(this.slug))
+      this.selectedTags = this.article.ref_tag
+    },
+
     chargerTags: async function () {
       this.tagOptions = await TagModel.getTagList()
     },
@@ -266,7 +248,8 @@ export default {
       } else {
         this.submitStatus = 'PENDING'
 
-        let selectedTags = this.selectedTags, tagsToSubmit = [], payload = this.article.toCreatePayload()
+        let selectedTags = this.selectedTags, tagsToSubmit = []
+        let payload = this.slug !== undefined ? this.article.toUpdatePayload() : this.article.toCreatePayload()
 
         if (selectedTags.length > 0) {
           for (let i = 0; i < selectedTags.length; i++) {
@@ -287,10 +270,16 @@ export default {
             payload.ref_tag.push(tag.id)
           })
         }
-        await ArticleModel.createArticle(payload)
+
+        if (this.slug === undefined) {
+          await ArticleModel.createArticle(payload)
+        } else {
+          await ArticleModel.updateArticle(payload)
+        }
 
         setTimeout(() => {
           this.submitStatus = 'OK'
+          this.$router.go(-1)
         }, 500)
       }
     },
@@ -304,15 +293,9 @@ export default {
       this.selectedTags.push(tag)
     },
 
-    deleteImage: function (index) {
-      this.preview_list.slice(index)
-    },
-
-    reset: function () {
-      this.image = null;
-      this.preview = null;
-      this.image_list = [];
-      this.preview_list = [];
+    validateState: function (name) {
+      const {$dirty, $error} = this.$v.article[name];
+      return $dirty ? !$error : null;
     },
 
     previewImage: function (event) {
@@ -341,9 +324,15 @@ export default {
       }
     },
 
-    validateState(name) {
-      const {$dirty, $error} = this.$v.article[name];
-      return $dirty ? !$error : null;
+    deleteImage: function (index) {
+      this.preview_list.slice(index)
+    },
+
+    reset: function () {
+      this.image = null;
+      this.preview = null;
+      this.image_list = [];
+      this.preview_list = [];
     },
   },
 
@@ -355,10 +344,30 @@ export default {
   },
 
   created() {
+    if (this.slug !== undefined) {
+      try {
+        this.chargerArticle()
+      } catch (e) {
+        console.log(e)
+        this.$router.go(-1)
+      }
+    }
     this.chargerServices()
-    this.chargerTags()
     this.chargerCatalogue()
-  }
+    this.chargerTags()
+  },
+  //
+  // async beforeRouteEnter(to, from, next) {
+  //   if (to.params.slug !== undefined) {
+  //     let article = new ArticleModel()
+  //     Object.assign(article, await ArticleModel.getArticleDetail(to.params.slug))
+  //     return next(vm => {
+  //       vm.article = article
+  //     })
+  //   } else {
+  //     return next()
+  //   }
+  // },
 }
 </script>
 

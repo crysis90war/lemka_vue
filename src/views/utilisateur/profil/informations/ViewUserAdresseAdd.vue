@@ -1,5 +1,5 @@
 <template>
-  <b-card title="Ajouter une adresse" :class="bootstrap.shadow" class="my-2">
+  <b-card title="Ajouter une adresse" :class="BSClass.CARD_BORDERLESS_SHADOW" class="my-2">
     <b-card-body>
       <b-form @submit.prevent="submit">
         <b-form-group label="Ville"
@@ -87,10 +87,11 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 import AdresseModel from "@/models/adresse.model";
 import {validationMixin} from "vuelidate";
 import VilleModel from "@/models/ville.model";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewUserAdresseAdd",
-  mixins: validationMixin,
+  mixins: [validationMixin],
   validations: {
     adresse: AdresseModel.validations
   },
@@ -107,9 +108,7 @@ export default {
 
       submitStatus: null,
 
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
-      },
+      BSClass: LemkaHelpers.BSClass,
       link: LemkaEnums.Routes.INFORMATIONS.name,
     }
   },

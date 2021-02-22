@@ -14,9 +14,15 @@
                             v-model="$v.genre.genre.$model"
                             :state="validateState('genre')"></b-form-input>
               <b-form-invalid-feedback>
-                <b-badge pill variant="danger" v-if="!$v.genre.genre.required">Ce champ est obligatoire</b-badge>
-                <b-badge pill variant="danger" v-if="!$v.genre.genre.minLength">Ce champ doit avoir au moins 3 caractères.</b-badge>
-                <b-badge pill variant="danger" v-if="!$v.genre.genre.maxLength">Ce champ doit avoir maximum 20 caractères.</b-badge>
+                <b-badge pill variant="danger" v-if="!$v.genre.genre.required">
+                  Ce champ est obligatoire
+                </b-badge>
+                <b-badge pill variant="danger" v-if="!$v.genre.genre.minLength">
+                  Ce champ doit avoir au moins 3 caractères.
+                </b-badge>
+                <b-badge pill variant="danger" v-if="!$v.genre.genre.maxLength">Ce champ doit avoir maximum 20
+                  caractères.
+                </b-badge>
               </b-form-invalid-feedback>
             </b-form-group>
             <pre>{{ genre }}</pre>
@@ -35,8 +41,13 @@ import GenreModel from "@/models/genre.model";
 import {validationMixin} from "vuelidate";
 
 export default {
-  name: "ViewAdminGenreAdd",
+  name: "ViewAdminGenreAddOrUpdate",
   mixins: validationMixin,
+  props: {
+    id: {
+      required: false
+    }
+  },
   validations: {
     genre: GenreModel.validations
   },

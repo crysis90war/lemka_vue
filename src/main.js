@@ -8,7 +8,7 @@ import 'mutationobserver-shim'
 import './plugins/axios'
 import './plugins/bootstrap-vue'
 import "./vee-validate";
-import Vuelidate from "vuelidate/src";
+// import Vuelidate from "vuelidate/src";
 import titleMixin from "@/mixins/title.mixin";
 
 import Lightbox from '@morioh/v-lightbox';
@@ -18,7 +18,7 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 Vue.config.productionTip = false
 Vue.component('multiselect', Multiselect)
-Vue.use(Vuelidate)
+// Vue.use(Vuelidate)
 Vue.use(Lightbox)
 Vue.mixin(titleMixin)
 

@@ -19,6 +19,7 @@ export const FontAwesomeIcons = {
     EMAIL: 'far fa-envelope',
     PHONE: 'fas fa-phone',
     GENRE: 'fas fa-venus-mars',
+    ARROW_LEFT: 'fas fa-arrow-left',
     LONG_LEFT_ARROW: 'fas fa-long-arrow-alt-left',
     HEART: 'fas fa-heart',
     GLOBE: 'fas fa-globe'

@@ -1,184 +1,231 @@
 <template>
-    <b-card title="Modifier entreprise" :class="bootstrap.shadow">
-      <b-card-body>
-        <b-form @submit.prevent="submit">
-          <b-row>
-            <b-col lg="6">
-              <b-form-group id="intput-groupe-societe" label="Nom de société"
-                            description="Veuillez encoder le nom de la société" label-for="input-societe">
-                <b-form-input v-model="$v.entreprise.nom_societe.$model" type="text" id="nom_societe" name="nom_societe"
-                              placeholder="Nom de société ..." :state="validateState('nom_societe')"></b-form-input>
-                <b-form-invalid-feedback>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.nom_societe.required">Ce champ est obligatoire.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.nom_societe.minLength">Ce champ doit contenir au
-                    moins 2 caractères.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.nom_societe.maxLength">Ce champ doit contenir au
-                    moins 255 caractères.
-                  </b-badge>
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
+  <b-card title="Modifier entreprise" :class="BSClass.CARD_BORDERLESS_SHADOW">
+    <b-card-body>
+      <b-form @submit.prevent="submit">
+        <b-row>
+          <b-col lg="6">
+            <b-form-group id="intput-group-societe"
+                          label-for="input-societe"
+                          label="Nom de société"
+                          description="Veuillez encoder le nom de la société">
+              <b-form-input v-model="$v.entreprise.nom_societe.$model"
+                            id="nom_societe"
+                            name="nom_societe"
+                            type="text"
+                            placeholder="Nom de société ..."
+                            :state="validateState('nom_societe')"></b-form-input>
+              <b-form-invalid-feedback>
+                <b-badge v-if="!$v.entreprise.nom_societe.required" pill variant="danger">
+                  {{ required() }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.nom_societe.minLength" pill variant="danger">
+                  {{ minLength($v.entreprise.nom_societe.$params.minLength.min) }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.nom_societe.maxLength" pill variant="danger">
+                  {{ maxLength($v.entreprise.nom_societe.$params.maxLength.max) }}
+                </b-badge>
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
 
-            <b-col lg="6">
-              <b-form-group id="intput-groupe-tva" label="Numéro de TVA"
-                            description="Veuillez encoder le numéro de TVA de la société" label-for="input-tva">
-                <b-form-input v-model="$v.entreprise.numero_tva.$model" type="text" id="input-tva" name="intput-tva"
-                              placeholder="Numero de tva ..." :state="validateState('numero_tva')"></b-form-input>
-                <b-form-invalid-feedback>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero_tva.required">Ce champ est obligatoire.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero_tva.minLength">Ce champ doit contenir au
-                    moins 2 caractères.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero_tva.maxLength">Ce champ doit contenir au
-                    moins 255 caractères.
-                  </b-badge>
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
-          </b-row>
+          <b-col lg="6">
+            <b-form-group id="intput-group-tva"
+                          label-for="input-tva"
+                          label="Numéro de TVA"
+                          description="Veuillez encoder le numéro de TVA de la société">
+              <b-form-input v-model="$v.entreprise.numero_tva.$model"
+                            id="input-tva"
+                            name="intput-tva"
+                            type="text"
+                            placeholder="Numero de tva ..."
+                            :state="validateState('numero_tva')"></b-form-input>
+              <b-form-invalid-feedback>
+                <b-badge v-if="!$v.entreprise.numero_tva.required" pill variant="danger">
+                  {{ required() }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.numero_tva.alphaNum" pill variant="danger">
+                  {{ alphaNum() }}
+                </b-badge>
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-          <b-row>
-            <b-col lg="4">
-              <b-form-group id="intput-groupe-mail" label="Email" description="Veuillez encoder l'email de la société"
-                            label-for="input-mail">
-                <b-form-input v-model="$v.entreprise.mail_contact.$model" type="email" id="intput-email"
-                              name="intput-mail"
-                              placeholder="Email ..." :state="validateState('mail_contact')"></b-form-input>
-                <b-form-invalid-feedback>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.mail_contact.required">Ce champ est obligatoire.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.mail_contact.minLength">Ce champ doit contenir au
-                    moins 5 caractères.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.mail_contact.maxLength">Ce champ doit contenir au
-                    moins 255 caractères.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.mail_contact.email">Ce champ doit être un email
-                    valide.
-                  </b-badge>
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
+        <b-row>
+          <b-col lg="4">
+            <b-form-group id="intput-group-mail"
+                          label-for="input-mail"
+                          label="Email"
+                          description="Veuillez encoder l'email de la société">
+              <b-form-input v-model="$v.entreprise.mail_contact.$model"
+                            id="intput-email"
+                            name="intput-mail"
+                            type="email"
+                            placeholder="Email ..."
+                            :state="validateState('mail_contact')"></b-form-input>
+              <b-form-invalid-feedback>
+                <b-badge v-if="!$v.entreprise.mail_contact.required" pill variant="danger">
+                  {{ required() }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.mail_contact.minLength" pill variant="danger">
+                  {{ minLength($v.entreprise.mail_contact.$params.minLength.min) }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.mail_contact.maxLength" pill variant="danger">
+                  {{ maxLength($v.entreprise.mail_contact.$params.maxLength.max) }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.mail_contact.email" pill variant="danger">
+                  {{ email() }}
+                </b-badge>
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
 
-            <b-col lg="4">
-              <b-form-group id="intput-groupe-tel" label="Tél." description="Veuillez encoder le numéro de téléphone"
-                            label-for="input-tel">
-                <b-form-input v-model="$v.entreprise.numero_tel.$model" type="tel" id="intput-tel" name="intput-tel"
-                              placeholder="Tél ..." :state="validateState('numero_tel')"></b-form-input>
-                <b-form-invalid-feedback>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero_tel.required">Ce champ est obligatoire.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero_tel.numeric">Ce champ doit être
-                    numérique.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero_tel.minLength">Ce champ doit contenir au
-                    moins 5 caractères.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero_tel.maxLength">Ce champ doit contenir au
-                    moins 255 caractères.
-                  </b-badge>
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
+          <b-col lg="4">
+            <b-form-group id="intput-group-tel"
+                          label-for="input-tel"
+                          label="Tél."
+                          description="Veuillez encoder le numéro de téléphone">
+              <b-form-input v-model="$v.entreprise.numero_tel.$model"
+                            id="intput-tel"
+                            name="intput-tel"
+                            type="tel"
+                            placeholder="Tél ..."
+                            :state="validateState('numero_tel')"></b-form-input>
+              <b-form-invalid-feedback>
+                <b-badge v-if="!$v.entreprise.numero_tel.required" pill variant="danger">
+                  {{ required() }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.numero_tel.numeric" pill variant="danger">
+                  {{ numeric() }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.numero_tel.minLength" pill variant="danger">
+                  {{ minLength($v.entreprise.numero_tel.$params.minLength.min) }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.numero_tel.maxLength" pill variant="danger">
+                  {{ maxLength($v.entreprise.numero_tel.$params.maxLength.max) }}
+                </b-badge>
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
 
-            <b-col lg="4">
-              <b-form-group id="intput-groupe-web" label="Site web" description="Veuillez encoder le site web"
-                            label-for="input-web">
-                <b-form-input v-model="$v.entreprise.site_web.$model" type="url" id="intput-web" name="intput-web"
-                              placeholder="https://www.exemple.be" :state="validateState('site_web')"></b-form-input>
-                <b-form-invalid-feedback>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.site_web.required">Ce champ est obligatoire.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.site_web.url">Ce champ doit être un url valide.
-                  </b-badge>
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
-          </b-row>
+          <b-col lg="4">
+            <b-form-group id="intput-group-web"
+                          label-for="input-web"
+                          label="Site web"
+                          description="Veuillez encoder le site web de l'entreprise">
+              <b-form-input v-model="$v.entreprise.site_web.$model"
+                            id="intput-web"
+                            name="intput-web"
+                            type="url"
+                            placeholder="https://www.exemple.be"
+                            :state="validateState('site_web')"></b-form-input>
+              <b-form-invalid-feedback>
+                <b-badge v-if="!$v.entreprise.site_web.required" pill variant="danger">
+                  {{ required() }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.site_web.url" pill variant="danger">
+                  {{ url() }}
+                </b-badge>
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-          <b-row>
-            <b-col lg="8">
-              <b-form-group id="intput-groupe-rue" label="Rue" description="Veuillez encoder la rue"
-                            label-for="input-rue">
-                <b-form-input v-model="$v.entreprise.rue.$model" type="text" id="intput-rue" name="intput-rue"
-                              placeholder="Rue ..." :state="validateState('rue')"></b-form-input>
-                <b-form-invalid-feedback>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.rue.required">Ce champ est obligatoire.</b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.rue.minLength">Ce champ doit contenir au moins 2
-                    caractères.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.rue.maxLength">Ce champ doit contenir au moins 255
-                    caractères.
-                  </b-badge>
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
-            <b-col lg="4">
-              <b-form-group id="input-groupe-numero" label="Numéro" description="Veuillez encoder le numéro"
-                            label-for="input-numero">
-                <b-form-input v-model="$v.entreprise.numero.$model" type="text" id="input-numero" name="intput-numero"
-                              placeholder="Numéro ..." :state="validateState('numero')"></b-form-input>
-                <b-form-invalid-feedback>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero.minLength">
-                    Ce champ doit contenir au moins 1 caractères.
-                  </b-badge>
-                  <br>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero.alphaNum">
-                    Ce champ doit être numérique.
-                  </b-badge>
-                  <b-badge pill variant="danger" v-if="!$v.entreprise.numero.required">
-                    Ce champ est obligatoire.
-                  </b-badge>
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
-          </b-row>
+        <b-row>
+          <b-col lg="8">
+            <b-form-group id="intput-group-rue"
+                          label-for="input-rue"
+                          label="Rue"
+                          description="Veuillez encoder la rue de l'entreprise">
+              <b-form-input v-model="$v.entreprise.rue.$model"
+                            id="intput-rue"
+                            name="intput-rue"
+                            type="text"
+                            placeholder="Rue ..."
+                            :state="validateState('rue')"></b-form-input>
+              <b-form-invalid-feedback>
+                <b-badge v-if="!$v.entreprise.rue.required" pill variant="danger">
+                  {{ required() }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.rue.minLength" pill variant="danger">
+                  {{ minLength($v.entreprise.rue.$params.minLength.min) }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.rue.maxLength" pill variant="danger">
+                  {{ maxLength($v.entreprise.rue.$params.maxLength.max) }}
+                </b-badge>
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
 
-          <b-form-group label="Ville"
-                        description="Veuillez selectionner la ville ou se trouve votre entreprise">
-            <multiselect v-model="$v.entreprise.ref_ville.$model"
-                         :options="villeOptions"
-                         :loading="isLoading"
-                         :multiple="false"
-                         :searchable="true"
-                         :internal-search="false"
-                         :clear-on-select="false"
-                         :close-on-select="true"
-                         :options-limit="20"
-                         :max-height="600"
-                         :show-no-results="true"
-                         :hide-selected="true"
-                         label="ville"
-                         track-by="ville"
-                         placeholder="Veuillez encoder pour lancer la recherche..."
-                         open-direction="bottom"
-                         @input="$v.entreprise.ref_ville.$touch()"
-                         @search-change="updateSelect">
-              <template slot="singleLabel" slot-scope="{ option }">
-                <span>{{ option.code_postale }} - {{ option.ville }}</span>
-              </template>
-              <template slot="option" slot-scope="{ option }">
-                <span>{{ option.code_postale }} - {{ option.ville }}</span>
-              </template>
-              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-            </multiselect>
-            <b-form-invalid-feedback>
-              <b-badge pill variant="danger" v-if="!$v.entreprise.ref_ville.required">Ce champ est obligatoire.
-              </b-badge>
-            </b-form-invalid-feedback>
-          </b-form-group>
+          <b-col lg="4">
+            <b-form-group id="input-group-numero"
+                          label-for="input-numero"
+                          label="Numéro"
+                          description="Veuillez encoder le numéro">
+              <b-form-input v-model="$v.entreprise.numero.$model"
+                            id="input-numero"
+                            name="intput-numero"
+                            type="text"
+                            placeholder="Numéro ..."
+                            :state="validateState('numero')"></b-form-input>
+              <b-form-invalid-feedback>
+                <b-badge v-if="!$v.entreprise.numero.required" pill variant="danger">
+                  {{ required() }}
+                </b-badge>
+                <b-badge v-if="!$v.entreprise.numero.alphaNum" pill variant="danger">
+                  {{ alphaNum() }}
+                </b-badge>
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-          <b-button-group>
-            <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Modifier
-            </b-button>
-            <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
-          </b-button-group>
-        </b-form>
-      </b-card-body>
-    </b-card>
+        <b-form-group id="input-group-ref_ville"
+                      label-for="input-ref_ville"
+                      label="Ville"
+                      description="Veuillez selectionner la ville ou se trouve votre entreprise">
+          <multiselect v-model="$v.entreprise.ref_ville.$model"
+                       :options="villeOptions"
+                       :loading="isLoading"
+                       :multiple="false"
+                       :searchable="true"
+                       :internal-search="false"
+                       :clear-on-select="false"
+                       :close-on-select="true"
+                       :options-limit="20"
+                       :max-height="600"
+                       :show-no-results="true"
+                       :hide-selected="true"
+                       label="ville"
+                       track-by="ville"
+                       placeholder="Veuillez encoder pour lancer la recherche..."
+                       open-direction="bottom"
+                       @input="$v.entreprise.ref_ville.$touch()"
+                       @search-change="updateSelect">
+            <template slot="singleLabel" slot-scope="{ option }">
+              <span>{{ option.code_postale }} - {{ option.ville }}</span>
+            </template>
+            <template slot="option" slot-scope="{ option }">
+              <span>{{ option.code_postale }} - {{ option.ville }}</span>
+            </template>
+            <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+          </multiselect>
+          <b-form-invalid-feedback>
+            <b-badge v-if="!$v.entreprise.ref_ville.required" pill variant="danger">
+              {{ required() }}
+            </b-badge>
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-button-group>
+          <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">
+            Modifier
+          </b-button>
+          <b-button variant="outline-danger" @click.prevent="$router.go(-1)">Retour</b-button>
+        </b-button-group>
+      </b-form>
+    </b-card-body>
+  </b-card>
 </template>
 
 <script>
@@ -187,10 +234,12 @@ import EntrepriseModel from "@/models/entreprise.model";
 import {LemkaEnums} from "@/helpers/enums.helper";
 import VilleModel from "@/models/ville.model";
 import PaysModel from "@/models/pays.model";
+import {validationMessageMixin} from "@/mixins/validation_message.mixin";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewAdminEntrepriseUpdate",
-  mixins: validationMixin,
+  mixins: [validationMixin, validationMessageMixin],
   validations: {
     entreprise: EntrepriseModel.validations
   },
@@ -201,10 +250,7 @@ export default {
       villeOptions: [],
       submitStatus: null,
 
-      link: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name,
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
-      }
+      BSClass: LemkaHelpers.BSClass,
     }
   },
 

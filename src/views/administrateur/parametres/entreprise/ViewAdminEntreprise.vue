@@ -13,20 +13,20 @@
           <h5>{{entreprise.numero_tva}}</h5>
           <hr>
           <div>
-            <span class="mr-2"><i :class="icons.email"></i></span>
+            <span class="mr-2"><i :class="icons.EMAIL"></i></span>
             <span>{{ entreprise.mail_contact }}</span>
           </div>
           <div>
-            <span class="mr-2"><i :class="icons.phone"></i></span>
+            <span class="mr-2"><i :class="icons.PHONE"></i></span>
             <span>{{ entreprise.numero_tel }}</span>
           </div>
           <div>
-            <span class="mr-2"><i :class="icons.globe"></i></span>
+            <span class="mr-2"><i :class="icons.GLOBE"></i></span>
             <span>{{ entreprise.site_web }}</span>
           </div>
           <hr>
           <div>
-            <span><i :class="icons.adresse" class="mr-2"></i></span>
+            <span><i :class="icons.HOME" class="mr-2"></i></span>
           </div>
 
           <div v-if="entreprise.ref_ville !== null">
@@ -48,6 +48,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 import EntrepriseModel from "@/models/entreprise.model";
 import VilleModel from "@/models/ville.model";
 import PaysModel from "@/models/pays.model";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewAdminEntreprise",
@@ -55,18 +56,13 @@ export default {
     return {
       entLength: null,
       entreprise: new EntrepriseModel(),
-      card_shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW,
+      BSClass: LemkaHelpers.BSClass,
       links: {
         entreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name,
         addEntreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.name,
         updateEntreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_UPDATE.name,
       },
-      icons: {
-        email: LemkaEnums.FontAwesomeIcons.EMAIL,
-        phone: LemkaEnums.FontAwesomeIcons.PHONE,
-        globe: LemkaEnums.FontAwesomeIcons.GLOBE,
-        adresse: LemkaEnums.FontAwesomeIcons.HOME,
-      },
+      icons: LemkaHelpers.FontAwesomeIcons,
     }
   },
   methods: {

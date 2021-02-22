@@ -1,20 +1,7 @@
 <template>
-  <b-card title="Modifier l'adresse" :class="bootstrap.shadow" class="my-2">
+  <b-card title="Modifier l'adresse" :class="BSClass.CARD_BORDERLESS_SHADOW" class="my-2">
     <b-card-body>
       <b-form @submit.prevent="submit">
-<!--        <b-form-group id="input-groupe-pays"-->
-<!--                      label="Pays"-->
-<!--                      description="Veuillez selectionner votre pays"-->
-<!--                      label-for="select-pays">-->
-<!--          <b-form-select id="select-pays"-->
-<!--                         name="select-pays"-->
-<!--                         v-model="pays"-->
-<!--                         :options="paysOptions">-->
-<!--            <template #first>-->
-<!--              <b-form-select-option :value="null" disabled>&#45;&#45; Veuillez selectionner votre pays &#45;&#45;</b-form-select-option>-->
-<!--            </template>-->
-<!--          </b-form-select>-->
-<!--        </b-form-group>-->
 
         <b-form-group label="Ville"
                       description="Selectionn selectionner votre ville">
@@ -101,10 +88,11 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 import AdresseModel from "@/models/adresse.model";
 import PaysModel from "@/models/pays.model";
 import VilleModel from "@/models/ville.model";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewUserAdresseUpdate",
-  mixins: validationMixin,
+  mixins: [validationMixin],
   validations: {
     adresse: AdresseModel.validations
   },
@@ -122,9 +110,7 @@ export default {
 
       submitStatus: null,
 
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW
-      },
+      BSClass: LemkaHelpers.BSClass,
       link: LemkaEnums.Routes.INFORMATIONS.name,
     }
   },

@@ -5,7 +5,7 @@
         <b-spinner type="grow" label="Loading..." variant="secondary"></b-spinner>
       </div>
 
-      <b-card v-else :class="bootstrap.shadow">
+      <b-card v-else :class="BSClass.CARD_BORDERLESS_SHADOW">
         <b-row>
           <b-col lg="7" :class="images.length > 0 ? '' : 'my-auto'">
             <lightbox v-if="images.length > 0" :cells="2" :items="images"></lightbox>
@@ -53,6 +53,7 @@
 import {LemkaEnums} from "@/helpers/enums.helper";
 import ArticleModel from "@/models/article.model";
 import ApiService from "@/services";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewAdminArticlesDetail",
@@ -73,11 +74,9 @@ export default {
         articlesLink: LemkaEnums.Routes.ARTICLES.name,
         articleUpdateLink: LemkaEnums.Routes.ARTICLES_UPDATE.name
       },
-      bootstrap: {
-        shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW,
-      },
+      BSClass: LemkaHelpers.BSClass,
       icons: {
-        heart: LemkaEnums.FontAwesomeIcons.HEART
+        heart: LemkaHelpers.FontAwesomeIcons.HEART
       }
     }
   },
