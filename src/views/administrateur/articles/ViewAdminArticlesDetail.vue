@@ -1,11 +1,9 @@
 <template>
-  <b-card>
-    <b-card-body>
-      <div v-if="loading === true" class="loading">
+      <div v-if="loading === true" class="loading text-center">
         <b-spinner type="grow" label="Loading..." variant="secondary"></b-spinner>
       </div>
 
-      <b-card v-else :class="BSClass.CARD_BORDERLESS_SHADOW">
+      <div v-else>
         <b-row>
           <b-col lg="7" :class="images.length > 0 ? '' : 'my-auto'">
             <lightbox v-if="images.length > 0" :cells="2" :items="images"></lightbox>
@@ -13,8 +11,9 @@
               <p>Pas d'images</p>
             </div>
           </b-col>
+
           <b-col lg="5">
-            <span class="text-muted">{{ article.created_at }}</span>
+            <span class="text-muted">{{ article.created_at | localTimeStr }}</span>
             <h3>{{ article.titre }}</h3>
             <h5>{{ article.ref_type_service.type_service }}</h5>
             <p>{{ article.description }}</p>
@@ -33,8 +32,9 @@
                 <b-button variant="outline-primary" :to="{name: links.articleUpdateLink, params: {slug: article.slug}}">
                   Modifier
                 </b-button>
-                <b-button variant="outline-warning">
-                  Désactiver
+                <b-button :variant="article.est_active === true ? 'outline-secondary' : 'outline-success'"
+                          @click="activerDesactiverArticle(article.slug, article.est_active)">
+                  {{ article.est_active === true ? 'Désactiver' : 'Publier' }}
                 </b-button>
                 <b-button variant="outline-danger">
                   Supprimer
@@ -43,10 +43,7 @@
             </div>
           </b-col>
         </b-row>
-      </b-card>
-
-    </b-card-body>
-  </b-card>
+      </div>
 </template>
 
 <script>
@@ -54,6 +51,7 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 import ArticleModel from "@/models/article.model";
 import ApiService from "@/services";
 import LemkaHelpers from "@/helpers";
+import {localTimeStr} from "@/utils/filters";
 
 export default {
   name: "ViewAdminArticlesDetail",
@@ -72,7 +70,7 @@ export default {
       error: null,
       links: {
         articlesLink: LemkaEnums.Routes.ARTICLES.name,
-        articleUpdateLink: LemkaEnums.Routes.ARTICLES_UPDATE.name
+        articleUpdateLink: LemkaHelpers.Routes.ARTICLES_ADD_OR_UPDATE.name
       },
       BSClass: LemkaHelpers.BSClass,
       icons: {
@@ -93,7 +91,7 @@ export default {
         this.loading = true
 
         let article = {}
-        article = await ArticleModel.getArticleDetail(this.slug)
+        article = await ArticleModel.fetch_article_by_slug(this.slug)
 
         Object.assign(this.article, article)
 
@@ -108,16 +106,32 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    activerDesactiverArticle: async function(articleSlug, article) {
+      try {
+        let data = {
+          "est_active": !article.est_active
+        }
+        await ApiService.ArticleService.patchArticle(articleSlug, data)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        await this.chargerArticle()
+      }
+    },
+  },
+
+  filters: {
+    localTimeStr: function (value) {
+      value = localTimeStr(value)
+      return value
     }
   },
 
   created() {
     this.chargerArticle()
   },
-
-  mounted() {
-
-  }
 }
 </script>
 

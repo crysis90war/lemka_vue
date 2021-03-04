@@ -1,5 +1,5 @@
 <template>
-  <carousel-3d
+  <carousel3d
       :controls-visible="true"
       :clickable="true"
       :border="0"
@@ -14,7 +14,8 @@
       :autoplayTimeout="5000"
       :animationSpeed="2000">
     <slide v-for="(slide, i) in slides" :key="i" :index="i">
-      <figure :style="`background-image: url(${slide}); background-repeat: no-repeat; background-size: cover;`" class="h-100 w-100">
+      <figure :style="`background-image: url(${slide}); background-repeat: no-repeat; background-size: cover;`"
+              class="h-100 w-100">
         <b-container class="h-100">
           <b-card
               class="text-center"
@@ -31,17 +32,16 @@
         </b-container>
       </figure>
     </slide>
-  </carousel-3d>
+  </carousel3d>
 </template>
 
 <script>
 import {Carousel3d, Slide} from "vue-carousel-3d";
 
 export default {
-name: "Carousel",
+  name: "Carousel",
   components: {
-    'carousel-3d': Carousel3d,
-    'slide': Slide
+    Carousel3d, Slide
   },
   data() {
     return {

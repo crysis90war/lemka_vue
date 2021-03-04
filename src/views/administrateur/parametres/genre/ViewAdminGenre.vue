@@ -1,15 +1,16 @@
 <template>
-  <div v-if="$route.name === routes.genre.name">
+  <div v-if="$route.name === routes.PARAMETRES_GENRE.name">
 
     <b-button :to="{name: routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name}"
-              variant="outline-success">
+              variant="outline-success"
+              size="sm">
       {{ routes.PARAMETRES_GENRE_ADD_OR_UPDATE.value }}
     </b-button>
 
     <b-table :items="items" :fields="fields"
              stacked="md"
              show-empty
-             bordered
+             small
              hover
              class="mt-3">
       <template #empty>
@@ -18,11 +19,11 @@
         </div>
       </template>
 
-<!--      <template #cell(genre)="data">-->
-<!--        <router-link :to="{name: routes.PARAMETRES_GENRE_DETAIL.name, params: {id: data.item.id}}">-->
-<!--          {{ data.item.genre }}-->
-<!--        </router-link>-->
-<!--      </template>-->
+      <!--      <template #cell(genre)="data">-->
+      <!--        <router-link :to="{name: routes.PARAMETRES_GENRE_DETAIL.name, params: {id: data.item.id}}">-->
+      <!--          {{ data.item.genre }}-->
+      <!--        </router-link>-->
+      <!--      </template>-->
 
       <template #cell(actions)="data">
         <b-button size="sm"

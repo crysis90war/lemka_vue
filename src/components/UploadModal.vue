@@ -14,21 +14,20 @@
                      required></b-form-file>
       </b-form-group>
 
-      <!-- TODO - Mettre le cropper a la suite de ce commentaire -->
       <div class="d-flex">
         <cropper class="cropper"
                  style="max-width: 720px; max-height: 576px"
                  :src="preview"
                  :stencil-props="{
-                 handlers: {},
-                 movable: true,
-                 scalable: true,
-                 resizable: true
-               }"
+                   handlers: {},
+                   movable: true,
+                   scalable: true,
+                   resizable: true
+                 }"
                  :stencil-size="{
-                 width: 480,
-                 height: 480
-               }"
+                   width: 480,
+                   height: 480
+                 }"
                  @change="change"/>
 
         <b-img v-if="destination !== null" :src="destination" height="360" width="360"></b-img>
@@ -53,14 +52,6 @@ export default {
     Cropper
   },
   props: {
-    user: {
-      type: Object,
-      required: true
-    },
-    multiple: {
-      type: Boolean,
-      default: false
-    },
     modalId: {
       type: String,
       default: 'image-modal'

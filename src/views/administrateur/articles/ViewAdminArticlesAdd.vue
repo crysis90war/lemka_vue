@@ -287,7 +287,7 @@ export default {
             payload.ref_tag.push(tag.id)
           })
         }
-        await ArticleModel.createArticle(payload)
+        await ArticleModel.create_article(payload)
 
         setTimeout(() => {
           this.submitStatus = 'OK'

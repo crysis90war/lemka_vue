@@ -52,7 +52,12 @@ class ArticleService {
         return axios.post(endpoint, payload, {headers: authHeader()})
     }
 
-    updateArticleImage(articleSlug, articleImageId, payload) {
+    putArticleImage(articleSlug, articleImageId, payload) {
+        let endpoint = `${ARTICLES}${articleSlug}${IMAGES}${articleImageId}/`;
+        return axios.put(endpoint, payload, {headers: authHeader()})
+    }
+
+    patchArticleImage(articleSlug, articleImageId, payload) {
         let endpoint = `${ARTICLES}${articleSlug}${IMAGES}${articleImageId}/`;
         return axios.put(endpoint, payload, {headers: authHeader()})
     }

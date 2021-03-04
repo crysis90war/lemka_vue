@@ -40,16 +40,23 @@
             <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
           </div>
           <hr>
-          <b-button :to="{name: links.updateInformationsLink}" variant="outline-primary my-3">Modifier profil</b-button>
+          <b-button :to="{name: links.updateInformationsLink}"
+                    variant="outline-primary my-3">
+            Modifier profil
+          </b-button>
 
         </b-col>
 
         <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center">
-          <b-img thumbnail rounded="" :src="profil.image" class="h-100"></b-img>
-          <b-button id="toggle-btn" variant="light" class="position-absolute bottom-0 start-0" @click="showModal">
+          <b-img thumbnail rounded=""
+                 :src="profil.image" class="h-100"></b-img>
+          <b-button id="toggle-btn"
+                    variant="light"
+                    class="position-absolute bottom-0 start-0"
+                    @click="showModal('image-modal')">
             Modifier photo
           </b-button>
-          <lemka-upload-modal :user="profil" :multiple="true"></lemka-upload-modal>
+          <lemka-upload-modal></lemka-upload-modal>
         </b-col>
 
       </b-row>
@@ -121,10 +128,8 @@ export default {
       }
     },
 
-
-
-    showModal() {
-      this.$bvModal.show('image-modal')
+    showModal(mondal_id) {
+      this.$bvModal.show(mondal_id)
     },
 
     async loadData() {

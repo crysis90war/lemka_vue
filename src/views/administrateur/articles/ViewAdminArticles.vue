@@ -98,7 +98,7 @@
       <b-col lg="5" class="my-1">
         <b-button variant="outline-success"
                   size="sm"
-                  :to="{name: links.articleAddLink}">
+                  :to="{name: links.addOrUpdate}">
           Créer un nouveau article
         </b-button>
       </b-col>
@@ -120,6 +120,7 @@
              :per-page="perPage"
              :filter="filter"
              :busy="isBusy"
+             hover
              :filter-included-fields="filterOn"
              :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc"
@@ -152,7 +153,7 @@
       </template>
 
       <template #cell(titre)="data">
-        <router-link :to="{name: links.articleAddLink, params: {slug: data.item.slug}}">
+        <router-link :to="{name: links.articleDetailLink, params: {slug: data.item.slug}}">
           {{ data.item.titre }}
         </router-link>
       </template>
@@ -166,6 +167,9 @@
         </b-button>
       </template>
     </b-table>
+    <b-jumbotron>
+      <pre>{{items}}</pre>
+    </b-jumbotron>
   </div>
 
   <router-view v-else></router-view>
@@ -177,6 +181,7 @@ import ApiService from "@/services";
 import {LemkaEnums} from '@/helpers/enums.helper';
 import ArticleModel from "@/models/article.model";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewAdminArticles",
@@ -185,18 +190,13 @@ export default {
     return {
       fields: [
         {key: 'created_at', label: 'Date de création', sortable: true},
-        {key: 'ref_type_service.type_service', label: 'Service', sortable: true},
+        {key: 'type_service', label: 'Service', sortable: true},
         {key: 'titre', label: 'Titre', sortable: true},
         {key: 'images_count', label: 'Images', sortable: true},
         {key: 'likes_count', label: 'Likes', sortable: true},
-        {key: 'ref_catalogue.ref_rayon.rayon', label: 'Rayon', sortable: true},
-        {key: 'ref_catalogue.ref_section.section', label: 'Section', sortable: true, sortDirection: 'desc'},
-        {
-          key: 'ref_catalogue.ref_type_produit.type_produit',
-          label: 'Type de produit',
-          sortable: true,
-          sortDirection: 'desc'
-        },
+        {key: 'rayon', label: 'Rayon', sortable: true},
+        {key: 'section', label: 'Section', sortable: true},
+        {key: 'type_produit', label: 'Type de produit', sortable: true},
         {
           key: 'est_active', label: 'Active',
           // eslint-disable-next-line no-unused-vars
@@ -209,10 +209,11 @@ export default {
         },
         {key: 'actions', label: 'Actions'}
       ],
+
       links: {
         articlesLink: LemkaEnums.Routes.ARTICLES.name,
         articleDetailLink: LemkaEnums.Routes.ARTICLES_DETAIL.name,
-        articleAddLink: LemkaEnums.Routes.ARTICLES_ADD_OR_UPDATE.name,
+        addOrUpdate: LemkaHelpers.Routes.ARTICLES_ADD_OR_UPDATE.name,
       },
     }
   },
@@ -221,11 +222,7 @@ export default {
     loadArticles: async function() {
       try {
         this.toggleBusy()
-        this.items = []
-        let articles = await ArticleModel.getArticleList()
-        for (let i = 0; i < articles.length; i++) {
-          this.items.push(Object.assign(new ArticleModel(), await ArticleModel.getArticleDetail(articles[i].slug)))
-        }
+        this.items = await ArticleModel.fetch_articles()
       } catch (error) {
         console.log(error)
       } finally {
