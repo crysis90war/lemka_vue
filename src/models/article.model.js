@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import {format, isValid} from "date-fns";
-import TypeServiceModel from "@/models/typeService.model";
+import TypeServiceModel from "@/models/type_service.model";
 import CatalogueModel from "@/models/catalogue.model";
 import TagModel from "@/models/tag.model";
 import ApiService from "@/services";
@@ -79,7 +79,7 @@ export default class ArticleModel {
         })
         if (article !== null && article !== 404) {
             if (article.ref_type_service !== null && article.ref_type_service !== undefined) {
-                typeService = await TypeServiceModel.getTypeServiceDetail(article.ref_type_service)
+                typeService = await TypeServiceModel.getTypeService(article.ref_type_service)
                 article.ref_type_service = typeService
             }
             if (article.ref_catalogue !== null && article.ref_catalogue !== undefined) {

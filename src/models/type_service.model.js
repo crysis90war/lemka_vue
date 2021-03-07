@@ -33,13 +33,13 @@ export default class TypeServiceModel {
             },
             duree_minute: {
                 numeric,
-                between: between(0, 180),
+                between: between(1, 180),
                 required
             }
         }
     }
 
-    static async getTypeServiceList() {
+    static async fetchTypeServices() {
         let typeService = []
         await ApiService.TypeServiceService.getTypeServiceList().then(response => {
             typeService = response.data
@@ -47,7 +47,7 @@ export default class TypeServiceModel {
         return typeService
     }
 
-    static async getTypeServiceDetail(typeServiceId) {
+    static async getTypeService(typeServiceId) {
         let typeService = {}
         await ApiService.TypeServiceService.getTypeServiceDetail(typeServiceId).then(response => {
             typeService = response.data
@@ -56,17 +56,19 @@ export default class TypeServiceModel {
     }
 
     static async createTypeService(payload) {
-        let response = null
+        let typeService = null
         await ApiService.TypeServiceService.postTypeService(payload).then(res => {
-            response = res
-        }, err => {
-            response = err
+            typeService = res.data
         })
-        return response
+        return typeService
     }
 
     static async updateTypeService(payload) {
-        await ApiService.TypeServiceService.updateTypeService(payload.id, payload)
+        let typeService = null
+        await ApiService.TypeServiceService.updateTypeService(payload.id, payload).then(res => {
+            typeService = res.data
+        })
+        return typeService
     }
 
     static async deleteTypeService(typeServiceId) {

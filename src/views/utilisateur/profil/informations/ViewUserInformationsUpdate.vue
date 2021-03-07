@@ -119,7 +119,7 @@ export default {
       let genre = {}
       profil = await ProfilModel.getProfil()
       if (profil.ref_genre !== null && profil.ref_genre !== undefined) {
-        genre = await GenreModel.getGenreDetail(profil.ref_genre)
+        genre = await GenreModel.fetchGenreById(profil.ref_genre)
         profil.ref_genre = genre
       }
       Object.assign(this.profil, profil)
@@ -127,7 +127,7 @@ export default {
     },
 
     async chargerGenres() {
-      let genres = await GenreModel.getGenreList()
+      let genres = await GenreModel.fetchGenres()
       genres.forEach(item => {
         let genre = new GenreModel()
         Object.assign(genre, item)
@@ -148,7 +148,7 @@ export default {
       } else {
         this.submitStatus = 'PENDING'
         let object = new GenreModel()
-        object = await GenreModel.getGenreDetail(this.genre)
+        object = await GenreModel.fetchGenreById(this.genre)
         let payload = this.profil
         payload.ref_genre = object
         await ProfilModel.updateProfil(this.profil.toUpdatePayload())

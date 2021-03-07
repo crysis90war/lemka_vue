@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import {maxLength, minLength, required} from "vuelidate/lib/validators";
 import ApiService from "@/services";
 
 export default class MensurationModel {
@@ -23,7 +24,9 @@ export default class MensurationModel {
     static get validations() {
         return {
             nom: {
-
+                required,
+                minLength: minLength(3),
+                maxLength: maxLength(50)
             }
         }
     }
@@ -39,11 +42,23 @@ export default class MensurationModel {
         return mensurations
     }
 
+    static async createMensuration(payload) {
+        let mensuration = null
+        await ApiService.MensurationService.postMensuration(payload).then(res => {
+            mensuration = res.data
+        })
+        return mensuration
+    }
+
     static async fetchMensuration(mensurationId) {
         let mensuration = {}
         await ApiService.MensurationService.getMensurationDetail(mensurationId).then(response => {
             mensuration = response.data
         })
         return mensuration
+    }
+
+    static async deleteMensuration(mensuration_id) {
+        await ApiService.MensurationService.deleteMensuration(mensuration_id)
     }
 }

@@ -1,36 +1,33 @@
 <template>
-  <b-card title="Ajouter un genre">
+  <b-card :class="shadow" :title="id !== undefined ? genre.genre : 'Ajouter un genre'">
     <b-card-body>
-      <b-card :class="shadow">
-        <b-card-body>
-          <b-form @submit.prevent="submit">
-            <b-form-group id="input-groupe-genre"
-                          label="Genre"
-                          description="Veuillez encoder le genre"
-                          label-for="input-genre">
-              <b-form-input id="input-genre"
-                            name="input-genre"
-                            placeholder="exemple: Femme"
-                            v-model="$v.genre.genre.$model"
-                            :state="validateState('genre')"></b-form-input>
-              <b-form-invalid-feedback>
-                <b-badge pill variant="danger" v-if="!$v.genre.genre.required">
-                  Ce champ est obligatoire
-                </b-badge>
-                <b-badge pill variant="danger" v-if="!$v.genre.genre.minLength">
-                  Ce champ doit avoir au moins 3 caractères.
-                </b-badge>
-                <b-badge pill variant="danger" v-if="!$v.genre.genre.maxLength">Ce champ doit avoir maximum 20
-                  caractères.
-                </b-badge>
-              </b-form-invalid-feedback>
-            </b-form-group>
-            <pre>{{ genre }}</pre>
-            <pre class="bg-warning">{{ response }}</pre>
-            <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">Créer</b-button>
-          </b-form>
-        </b-card-body>
-      </b-card>
+      <b-form>
+        <b-form-group label="Genre" description="Veuillez encoder le genre">
+          <b-form-input v-model="$v.genre.genre.$model" placeholder="exemple: Femme"
+                        :state="validateState('genre')"></b-form-input>
+          <b-form-invalid-feedback>
+            <invalid-feedback :condition="!$v.genre.genre.required"
+                              :error-message="required()">
+            </invalid-feedback>
+            <invalid-feedback :condition="!$v.genre.genre.minLength"
+                              :error-message="minLength($v.genre.genre.$params.minLength.min)">
+            </invalid-feedback>
+            <invalid-feedback :condition="!$v.genre.genre.maxLength"
+                              :error-message="maxLength($v.genre.genre.$params.maxLength.max)">
+            </invalid-feedback>
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-button-group>
+          <b-button variant="outline-dark" @click="$router.go(-1)">
+            <i class="fas fa-arrow-left"></i>
+          </b-button>
+          <b-button :variant="id !== undefined ? 'outline-primary' : 'outline-success'"
+                    :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
+            {{ id !== undefined ? 'Modifier' : 'Créer' }}
+          </b-button>
+        </b-button-group>
+      </b-form>
     </b-card-body>
   </b-card>
 </template>
@@ -39,10 +36,15 @@
 import {LemkaEnums} from "@/helpers/enums.helper";
 import GenreModel from "@/models/genre.model";
 import {validationMixin} from "vuelidate";
+import LemkaHelpers from "@/helpers";
+import InvalidFeedback from "@/components/InvalidFeedback";
+import {validationMessageMixin} from "@/mixins/validation_message.mixin";
+import {mapActions} from "vuex";
 
 export default {
   name: "ViewAdminGenreAddOrUpdate",
-  mixins: validationMixin,
+  components: {InvalidFeedback},
+  mixins: [validationMixin, validationMessageMixin],
   props: {
     id: {
       required: false
@@ -55,11 +57,11 @@ export default {
     return {
       genre: new GenreModel(),
       submitStatus: null,
-      shadow: LemkaEnums.BSClass.CARD_BORDERLESS_SHADOW,
-      response: {}
+      shadow: LemkaHelpers.BSClass.CARD_BORDERLESS_SHADOW,
     }
   },
   methods: {
+    ...mapActions({createGenre: 'Genres/createGenre', updateGenre: 'Genres/updateGenre'}),
     async submit() {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -67,17 +69,16 @@ export default {
       } else {
         this.submitStatus = 'PENDING'
 
-        try {
-          let response = await GenreModel.createGenre(this.genre.toCreatePayload())
-          if (response.status === 201) {
-            setTimeout(() => {
-              this.submitStatus = 'OK'
-              this.$router.push({name: LemkaEnums.Routes.PARAMETRES_GENRE.name})
-            }, 500)
-          }
-        } catch (e) {
-          console.log(e)
+        if (this.id !== undefined) {
+          await this.updateGenre(this.genre.toUpdatePayload())
+        } else {
+          await this.createGenre(this.genre.toCreatePayload())
         }
+
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          this.$router.push({name: LemkaEnums.Routes.PARAMETRES_GENRE.name})
+        }, 500)
       }
     },
 
@@ -86,6 +87,11 @@ export default {
       return $dirty ? !$error : null;
     },
   },
+  created() {
+    if (this.id !== undefined) {
+      Object.assign(this.genre, this.$store.getters["Genres/genre"](this.id))
+    }
+  }
 }
 </script>
 

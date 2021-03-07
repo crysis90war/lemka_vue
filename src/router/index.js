@@ -149,10 +149,11 @@ const adminRoutes = [
         component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensuration'),
         children: [
           {
-            path: '/admin/parametres/mensurations/ajouter',
-            name: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD.name,
-            meta: {value: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD.value},
-            component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensurationAdd')
+            path: '/admin/parametres/mensuration/:id?',
+            name: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD_OR_UPDATE.name,
+            meta: {value: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD_OR_UPDATE.value},
+            component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensurationAddOrUpdate'),
+            props: true
           }
         ]
       },
@@ -163,10 +164,11 @@ const adminRoutes = [
         component: () => import('../views/administrateur/parametres/service/ViewAdminService'),
         children: [
           {
-            path: '/admin/parametres/services/ajouter',
-            name: LemkaEnums.Routes.PARAMETRES_SERVICE_ADD.name,
-            meta: {value: LemkaEnums.Routes.PARAMETRES_SERVICE_ADD.value},
-            component: () => import('../views/administrateur/parametres/service/ViewAdminServiceAdd')
+            path: '/admin/parametres/service/:id?',
+            name: LemkaHelpers.Routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name,
+            meta: {value: LemkaHelpers.Routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.value},
+            component: () => import('../views/administrateur/parametres/service/ViewAdminServiceAddOrUpdate'),
+            props: true
           }
         ]
       }

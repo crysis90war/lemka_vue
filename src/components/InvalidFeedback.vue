@@ -1,5 +1,7 @@
 <template>
-  <span v-if="condition">{{ errorMessage }}</span>
+  <div>
+    <span v-if="condition">{{ errorMessage }}</span>
+  </div>
 </template>
 
 <script>

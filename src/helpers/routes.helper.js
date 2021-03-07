@@ -60,8 +60,8 @@ export const Routes = {
     PARAMETRES_GENRE_DETAIL: {name: AdminView + 'GenreDetail', value: 'Détail'},
     PARAMETRES_GENRE_ADD_OR_UPDATE: {name: AdminView + 'GenreAddOrUpdate', value: 'Ajouter - Modifier genre'},
     PARAMETRES_MENSURATION: {name: AdminView + 'Mensuration', value: 'Mensurations'},
-    PARAMETRES_MENSURATION_ADD: {name: AdminView + 'MensurationAdd', value: 'Ajouter mensuration'},
+    PARAMETRES_MENSURATION_ADD_OR_UPDATE: {name: AdminView + 'MensurationAddOrUpdate', value: 'Ajouter mensuration'},
     PARAMETRES_SERVICE: {name: AdminView + 'Service', value: 'Services'},
-    PARAMETRES_SERVICE_ADD: {name: AdminView + 'ServiceAdd', value: 'Ajouter un service'},
+    PARAMETRES_SERVICE_ADD_OR_UPDATE: {name: AdminView + 'ServiceAdd', value: 'Ajouter un service'},
     // endregion
 }

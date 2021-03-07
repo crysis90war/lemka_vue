@@ -106,7 +106,7 @@ export default {
       let genre = {}
       utilisateur = await UtilisateurModel.getUtilisateurDetail(this.username)
       if (utilisateur.ref_genre !== null && utilisateur.ref_genre !== undefined) {
-        genre = await GenreModel.getGenreDetail(utilisateur.ref_genre)
+        genre = await GenreModel.fetchGenreById(utilisateur.ref_genre)
         utilisateur.ref_genre = genre
       }
       if (utilisateur) {

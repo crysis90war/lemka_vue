@@ -112,7 +112,7 @@ export default {
       let genre = {}
       profil = await ProfilModel.getProfil()
       if (profil.ref_genre !== null && profil.ref_genre !== undefined) {
-        genre = await GenreModel.getGenreDetail(profil.ref_genre)
+        genre = await GenreModel.fetchGenreById(profil.ref_genre)
         profil.ref_genre = genre
       }
       Object.assign(this.profil, profil)

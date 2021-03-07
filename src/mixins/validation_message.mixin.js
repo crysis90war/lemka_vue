@@ -9,7 +9,7 @@ export let validationMessageMixin = {
         },
 
         between: function (min, max) {
-            return `Ce champ doit être compris entre ${min} et ${max}`
+            return `Ce champ doit être compris entre ${min} et ${max} !`
         },
 
         required: function() {
@@ -25,15 +25,15 @@ export let validationMessageMixin = {
         },
 
         numeric: function() {
-            return 'Ce champ doit être numérique !!'
+            return 'Ce champ doit être numérique !'
         },
 
         email: function() {
-            return 'Ce champ doit être un email valide'
+            return 'Ce champ doit être un email valide !'
         },
 
         url: function() {
-            return 'Ce champ doit être un lien Web valide!'
+            return 'Ce champ doit être un lien Web valide !'
         }
     }
 }

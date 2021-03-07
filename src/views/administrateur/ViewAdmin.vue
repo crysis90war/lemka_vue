@@ -29,7 +29,7 @@
       <!-- Page Content  -->
       <div id="content" class="p-4">
         <b-card :class="BSClass.CARD_BORDERLESS_SHADOW">
-          <router-view :key="$route.fullPath"></router-view>
+          <router-view></router-view>
         </b-card>
       </div>
     </div>

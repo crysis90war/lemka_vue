@@ -31,28 +31,36 @@ export default class GenreModel {
         }
     }
 
-    static async getGenreList() {
+    static async fetchGenres() {
         let genres = []
-        await ApiService.GenreService.getGenreList().then(response => {
+        await ApiService.GenreService.getGenres().then(response => {
             genres = response.data
         })
         return genres
     }
 
-    static async getGenreDetail(genreId) {
-        let genre = {}
-        await ApiService.GenreService.getGenreDetail(genreId).then(response => {
+    static async createGenre(payload) {
+        let genre = null
+        await ApiService.GenreService.postGenre(payload).then(response => {
             genre = response.data
         })
         return genre
     }
 
-    static async createGenre(payload) {
-        let message = null
-        await ApiService.GenreService.postGenre(payload).then(response => {
-            message = response
+    static async fetchGenreById(genreId) {
+        let genre = {}
+        await ApiService.GenreService.getGenre(genreId).then(response => {
+            genre = response.data
         })
-        return message
+        return genre
+    }
+
+    static async updateGenre(payload) {
+        let genre = null
+        await ApiService.GenreService.putGenre(payload.id, payload).then(res => {
+            genre = res.data
+        })
+        return genre
     }
 
     static async deleteGenre(genreId) {

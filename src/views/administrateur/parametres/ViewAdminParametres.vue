@@ -21,7 +21,7 @@
     </b-navbar>
 
     <b-card class="border-0">
-        <router-view :key="$route.fullPath"></router-view>
+        <router-view></router-view>
     </b-card>
   </div>
 </template>

@@ -47,7 +47,7 @@ export default class UtilisateurModel {
         }
     }
 
-    static async getUtilisateurList() {
+    static async fetchUtilisateurs() {
         let utilisateur = []
         await ApiService.UtilisateurService.getUtilisateurList().then(response => {
             utilisateur = response.data

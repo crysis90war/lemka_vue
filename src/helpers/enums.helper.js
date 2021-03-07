@@ -23,7 +23,7 @@ const Routes = {
     ADRESSE_ADD: {name: UserView + 'AdresseAdd', value: 'Ajouter une adresse'},
     ADRESSE_UPDATE: {name: UserView + 'AdresseUpdate', value: 'Modifier l\'adresse'},
     MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
-    MENSURATION_ADD_OR_UPDATE: {name: UserView + 'UserMensurationAddOrUpdate', value: 'Ajout-Modifier du mensuration'},
+    MENSURATION_ADD_OR_UPDATE: {name: UserView + 'UserMensurationAddOrUpdate', value: 'Ajout-Modification du mensuration'},
     // MENSURATION_ADD: {name: UserView + 'MensurationAdd', value: 'Ajouter Mensuration'},
     // MENSURATION_UPDATE: {name: UserView + 'MensurationUpdate', value: 'Modification'},
     MENSURATION_DETAIL: {name: UserView + 'MensurationDetail', value: 'Détail'},
@@ -62,7 +62,7 @@ const Routes = {
     PARAMETRES_GENRE: {name: AdminView + 'Genre', value: 'Genres'},
     PARAMETRES_GENRE_ADD: {name: AdminView + 'GenreAdd', value: 'Ajouter un genre'},
     PARAMETRES_MENSURATION: {name: AdminView + 'Mensuration', value: 'Mensurations'},
-    PARAMETRES_MENSURATION_ADD: {name: AdminView + 'MensurationAdd', value: 'Ajouter mensuration'},
+    PARAMETRES_MENSURATION_ADD_OR_UPDATE: {name: AdminView + 'MensurationAddOrUpdate', value: 'Ajouter/Modification de mensuration'},
     PARAMETRES_SERVICE: {name: AdminView + 'Service', value: 'Services'},
     PARAMETRES_SERVICE_ADD: {name: AdminView + 'ServiceAdd', value: 'Ajouter un service'},
     // endregion

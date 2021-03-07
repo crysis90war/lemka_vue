@@ -5,11 +5,11 @@ import {LemkaEnums} from "@/helpers/enums.helper";
 const ROUTE = LemkaEnums.Endpoints.GENRES_ENDPOINT;
 
 class GenreService {
-    getGenreList() {
+    getGenres() {
         return axios.get(ROUTE, {headers: authHeader()})
     }
 
-    getGenreDetail(genreId) {
+    getGenre(genreId) {
         let endpoint = `${ROUTE}${genreId}/`;
         return axios.get(endpoint, {headers: authHeader()})
     }
@@ -18,7 +18,7 @@ class GenreService {
         return axios.post(ROUTE, payload, {headers: authHeader()})
     }
 
-    updateGenre(genreId, payload) {
+    putGenre(genreId, payload) {
         let endpoint = `${ROUTE}${genreId}/`;
         return axios.put(endpoint, payload, {headers: authHeader()})
     }

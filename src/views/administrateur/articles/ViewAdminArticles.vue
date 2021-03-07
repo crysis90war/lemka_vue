@@ -2,24 +2,16 @@
   <div v-if="$route.name === links.articlesLink">
     <b-row>
       <b-col lg="6">
-        <b-form-group id="input-group-filter"
-                      label-for="input-filter"
-                      label="Filtrer"
-                      label-size="sm"
-                      label-cols-sm="2"
-                      label-align-sm="right"
+        <b-form-group label="Filtrer" label-size="sm"
+                      label-cols-sm="2" label-align-sm="right"
                       description="Veuillez encoder pour chercher">
           <b-input-group size="sm">
             <b-form-input v-model="filter"
-                          id="input-filter"
-                          name="input-filter"
-                          type="search"
-                          placeholder="Chercher ...">
+                          type="search" placeholder="Chercher ...">
             </b-form-input>
 
             <b-input-group-append>
-              <b-button :disabled="!filter"
-                        @click="filter = ''">
+              <b-button :disabled="!filter" @click="filter = ''">
                 Supprimer
               </b-button>
             </b-input-group-append>
@@ -28,30 +20,20 @@
       </b-col>
 
       <b-col lg="6">
-        <b-form-group id="input-group-sort-by-select"
-                      label-for="input-sort-by-select"
-                      label="Trier par"
-                      label-size="sm"
-                      label-cols-sm="2"
-                      label-align-sm="right"
+        <b-form-group label="Trier par" label-size="sm"
+                      label-cols-sm="2" label-align-sm="right"
                       description="Veuillez faire votre choix de tri"
                       v-slot="{ ariaDescribedby }">
           <b-input-group size="sm">
-            <b-form-select v-model="sortBy"
-                           id="input-sort-by-select"
-                           name="input-sort-by-select"
-                           :options="sortOptions"
-                           :aria-describedby="ariaDescribedby"
-                           class="w-75">
+            <b-form-select v-model="sortBy" :options="sortOptions"
+                           :aria-describedby="ariaDescribedby" class="w-75">
               <template #first>
                 <option value="">-- vide --</option>
               </template>
             </b-form-select>
 
-            <b-form-select v-model="sortDesc"
-                           :disabled="!sortBy"
-                           :aria-describedby="ariaDescribedby"
-                           size="sm">
+            <b-form-select v-model="sortDesc" :disabled="!sortBy"
+                           :aria-describedby="ariaDescribedby" size="sm">
               <option :value="false">Asc</option>
               <option :value="true">Desc</option>
             </b-form-select>
@@ -63,11 +45,8 @@
     <b-row>
       <b-col lg="6">
         <b-form-group v-model="sortDirection"
-                      label="Filtrer sur"
-                      label-size="sm"
-                      label-cols-sm="2"
-                      label-align-sm="right"
-                      description="Laissez tout décoché pour filtrer sur toutes les données"
+                      label="Filtrer sur" label-size="sm" label-cols-sm="2"
+                      label-align-sm="right" description="Laissez tout décoché pour filtrer sur toutes les données"
                       v-slot="{ ariaDescribedby }">
           <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby">
             <b-form-checkbox value="created_at">Date création</b-form-checkbox>
@@ -77,58 +56,34 @@
       </b-col>
 
       <b-col lg="6">
-        <b-form-group id="input-group-per-page-select"
-                      label-for="input-per-page-select"
-                      label="Par page"
-                      label-size="sm"
-                      label-cols-sm="2"
-                      label-align-sm="right"
-                      description="Veuillez selectionner le nombre d'article par page">
-            <b-form-select v-model="perPage"
-                           id="input-per-page-select"
-                           name="input-per-page-select"
-                           size="sm"
-                           :options="pageOptions">
-            </b-form-select>
+        <b-form-group label="Par page" label-size="sm" label-cols-sm="2"
+                      label-align-sm="right" description="Veuillez selectionner le nombre d'article par page">
+          <b-form-select v-model="perPage" :options="pageOptions" size="sm">
+          </b-form-select>
         </b-form-group>
       </b-col>
     </b-row>
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
-        <b-button variant="outline-success"
-                  size="sm"
+        <b-button variant="outline-success" size="sm"
                   :to="{name: links.addOrUpdate}">
           Créer un nouveau article
         </b-button>
       </b-col>
 
       <b-col lg="7" class="my-1">
-        <b-pagination v-model="currentPage"
-                      :total-rows="totalRows"
-                      :per-page="perPage"
-                      align="fill"
-                      size="sm"
-                      class="my-0">
+        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
+                      align="fill" size="sm" class="my-0">
         </b-pagination>
       </b-col>
     </b-row>
 
-    <b-table :items="items"
-             :fields="fields"
-             :current-page="currentPage"
-             :per-page="perPage"
-             :filter="filter"
-             :busy="isBusy"
-             hover
-             :filter-included-fields="filterOn"
-             :sort-by.sync="sortBy"
-             :sort-desc.sync="sortDesc"
-             :sort-direction="sortDirection"
-             stacked="md"
-             show-empty
-             small
-             @filtered="onFiltered">
+    <b-table :items="items" :fields="fields" :current-page="currentPage"
+             :per-page="perPage" :filter="filter" :busy="isBusy"
+             :filter-included-fields="filterOn" :sort-by.sync="sortBy"
+             :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
+             hover show-empty small stacked="md" @filtered="onFiltered">
       <template #table-busy>
         <div class="text-center text-secondary mt-3">
           <b-spinner class="align-middle mr-2"></b-spinner>
@@ -168,7 +123,7 @@
       </template>
     </b-table>
     <b-jumbotron>
-      <pre>{{items}}</pre>
+      <pre>{{ items }}</pre>
     </b-jumbotron>
   </div>
 
@@ -219,7 +174,7 @@ export default {
   },
 
   methods: {
-    loadArticles: async function() {
+    loadArticles: async function () {
       try {
         this.toggleBusy()
         this.items = await ArticleModel.fetch_articles()
@@ -230,7 +185,7 @@ export default {
       }
     },
 
-    activerDesactiverArticle: async function(articleSlug, article) {
+    activerDesactiverArticle: async function (articleSlug, article) {
       try {
         let data = {
           "est_active": !article.est_active

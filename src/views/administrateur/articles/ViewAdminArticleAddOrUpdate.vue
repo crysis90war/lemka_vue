@@ -252,7 +252,7 @@
 
 <script>
 import ArticleModel from "@/models/article.model";
-import TypeServiceModel from "@/models/typeService.model";
+import TypeServiceModel from "@/models/type_service.model";
 import CatalogueModel from "@/models/catalogue.model";
 import TagModel from "@/models/tag.model";
 import {Cropper} from 'vue-advanced-cropper';
@@ -332,7 +332,7 @@ export default {
     },
 
     chargerServices: async function () {
-      this.serviceOptions = await TypeServiceModel.getTypeServiceList()
+      this.serviceOptions = await TypeServiceModel.fetchTypeServices()
     },
 
     chargerCatalogue: async function () {
