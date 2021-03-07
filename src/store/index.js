@@ -7,12 +7,14 @@ import { genreModule } from "@/store/genre.module";
 import { utilisateurModule } from "@/store/utilisateur.module";
 import { mercerieModule } from "@/store/mercerie.module";
 import { categorieModule } from "@/store/categorie.module";
+import { articleModule } from "@/store/article.module";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     auth,
+    'Articles': articleModule,
     'Mensurations': mensurationModule,
     'TypeServices': typeServiceModule,
     'Genres': genreModule,

@@ -61,6 +61,30 @@ export default class ArticleModel {
         }
     }
 
+    static get tableFields() {
+        return [
+            {key: 'created_at', label: 'Date de création', sortable: true},
+            {key: 'type_service', label: 'Service', sortable: true},
+            {key: 'titre', label: 'Titre', sortable: true},
+            {key: 'images_count', label: 'Images', sortable: true},
+            {key: 'likes_count', label: 'Likes', sortable: true},
+            {key: 'rayon', label: 'Rayon', sortable: true},
+            {key: 'section', label: 'Section', sortable: true},
+            {key: 'type_produit', label: 'Type de produit', sortable: true},
+            {
+                key: 'est_active', label: 'Active',
+                // eslint-disable-next-line no-unused-vars
+                formatter: (value, key, item) => {
+                    return value ? 'Oui' : 'Non'
+                },
+                sortable: true,
+                sortByFormatted: true,
+                filterByFormatted: true
+            },
+            {key: 'actions', label: 'Actions'}
+        ]
+    }
+
     static async fetch_articles() {
         let articles = []
         await ApiService.ArticleService.getArticleList().then(response => {

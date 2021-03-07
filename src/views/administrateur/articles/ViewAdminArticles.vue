@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$route.name === links.articlesLink">
+  <div v-if="$route.name === routes.ARTICLES.name">
     <b-row>
       <b-col lg="6">
         <b-form-group label="Filtrer" label-size="sm"
@@ -66,8 +66,7 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
-        <b-button variant="outline-success" size="sm"
-                  :to="{name: links.addOrUpdate}">
+        <b-button variant="outline-success" size="sm" :to="{name: routes.ARTICLES_ADD_OR_UPDATE.name}">
           Créer un nouveau article
         </b-button>
       </b-col>
@@ -108,7 +107,7 @@
       </template>
 
       <template #cell(titre)="data">
-        <router-link :to="{name: links.articleDetailLink, params: {slug: data.item.slug}}">
+        <router-link :to="{name: routes.ARTICLES_ADD_OR_UPDATE.name, params: {slug: data.item.slug}}">
           {{ data.item.titre }}
         </router-link>
       </template>
@@ -133,7 +132,6 @@
 
 <script>
 import ApiService from "@/services";
-import {LemkaEnums} from '@/helpers/enums.helper';
 import ArticleModel from "@/models/article.model";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import LemkaHelpers from "@/helpers";
@@ -143,33 +141,8 @@ export default {
   mixins: [tableViewMixin],
   data() {
     return {
-      fields: [
-        {key: 'created_at', label: 'Date de création', sortable: true},
-        {key: 'type_service', label: 'Service', sortable: true},
-        {key: 'titre', label: 'Titre', sortable: true},
-        {key: 'images_count', label: 'Images', sortable: true},
-        {key: 'likes_count', label: 'Likes', sortable: true},
-        {key: 'rayon', label: 'Rayon', sortable: true},
-        {key: 'section', label: 'Section', sortable: true},
-        {key: 'type_produit', label: 'Type de produit', sortable: true},
-        {
-          key: 'est_active', label: 'Active',
-          // eslint-disable-next-line no-unused-vars
-          formatter: (value, key, item) => {
-            return value ? 'Oui' : 'Non'
-          },
-          sortable: true,
-          sortByFormatted: true,
-          filterByFormatted: true
-        },
-        {key: 'actions', label: 'Actions'}
-      ],
-
-      links: {
-        articlesLink: LemkaEnums.Routes.ARTICLES.name,
-        articleDetailLink: LemkaEnums.Routes.ARTICLES_DETAIL.name,
-        addOrUpdate: LemkaHelpers.Routes.ARTICLES_ADD_OR_UPDATE.name,
-      },
+      fields: ArticleModel.tableFields,
+      routes: LemkaHelpers.Routes
     }
   },
 

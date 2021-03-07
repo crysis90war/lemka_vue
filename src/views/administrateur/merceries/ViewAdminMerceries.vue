@@ -59,7 +59,8 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
-        <b-button variant="outline-success" size="sm" @click="toggleModal('create-modal')">
+        <b-button variant="outline-success" size="sm"
+                  @click="toggleModal('create-modal'); loadCategories()">
           Créer un nouveau
         </b-button>
       </b-col>
@@ -98,7 +99,7 @@
 
       <template #cell(nom)="data">
         <b-link>
-          {{data.item.nom}}
+          {{ data.item.nom }}
         </b-link>
       </template>
 
@@ -129,15 +130,27 @@
       </b-input-group>
 
       <b-form-group label="Catégorie" description="Veuillez choisir la catégorie">
-        <b-form-select v-model="selected" :options="options"></b-form-select>
+        <multiselect v-model="mercerie.ref_categorie" :options="categories" :allow-empty="false"
+                     label="nom" track-by="nom" placeholder="Veuillez selectionner la catégorie"
+                     selectLabel="Appuyez sur enter pour selectionner"
+                     deselectLabel="Appuyez sur enter pour retirer">
+          <template slot="singleLabel" slot-scope="{ option }">
+            <span>{{ option.nom }}</span>
+          </template>
+          <template slot="option" slot-scope="{ option }">
+            <span>{{ option.nom }}</span>
+          </template>
+          <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+        </multiselect>
       </b-form-group>
 
       <b-form-group label="Nom" description="Veuillez encoder le nom de la mercerie">
-        <b-form-input v-model="mercerie.name" type="text"></b-form-input>
+        <b-form-input v-model="mercerie.nom" type="text"></b-form-input>
       </b-form-group>
 
       <b-button variant="success">Créer</b-button>
     </b-modal>
+
   </div>
 </template>
 
@@ -162,8 +175,12 @@ export default {
       ]
     }
   },
-  computed:{
-    ...mapGetters({merceries: 'Merceries/merceries', busy: 'Merceries/loadingStatus'})
+  computed: {
+    ...mapGetters({
+      merceries: 'Merceries/merceries',
+      busy: 'Merceries/loadingStatus',
+      categories: 'Categories/categories'
+    })
   },
   methods: {
     ...mapActions({loadCategories: 'Categories/loadCategories'})

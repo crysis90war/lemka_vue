@@ -61,7 +61,7 @@ export default {
   },
   created() {
     if (this.typeServices.length === 0) {
-      this.$store.dispatch('TypeServices/loadTypeService')
+      this.$store.dispatch('TypeServices/loadTypeServices')
     }
   }
 }

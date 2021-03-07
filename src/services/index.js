@@ -20,9 +20,9 @@ import VilleService from '@/services/ville.service';
 
 const ApiService = {
     AdresseService,
-    ArticleService,
+    'Articles': ArticleService,
     CatalogueService,
-    CategorieService,
+    'Categories': CategorieService,
     EntrepriseService,
     GenreService,
     MensurationUserMensurationService,

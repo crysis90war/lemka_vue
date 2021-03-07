@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import ApiService from "@/services";
+import {maxLength, minLength, required} from "vuelidate/lib/validators";
 
 export default class CategorieModel {
     constructor(categorie = {}) {
@@ -23,36 +23,16 @@ export default class CategorieModel {
     static get validations() {
         return {
             nom: {
-
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(50)
             }
         }
     }
 
-    static async fetchCategories() {
-        let categories = []
-        await ApiService.CategorieService.getCategories().then(res => {
-            categories = res.data
-        })
-        return categories
-    }
+    static get tableFields() {
+        return [
 
-    static async createCategorie(payload) {
-        let categorie = null
-        await ApiService.CategorieService.postCategorie(payload).then(res => {
-            categorie = res.data
-        })
-        return categorie
-    }
-
-    static async updateCategorie(payload) {
-        let categorie = null
-        await ApiService.CategorieService.putCategorie(payload).then(res => {
-            categorie = res.data
-        })
-        return categorie
-    }
-
-    static async deleteCategorie(categorie_id) {
-        await ApiService.CategorieService.deleteCategorie(categorie_id)
+        ]
     }
 }

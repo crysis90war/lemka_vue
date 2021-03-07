@@ -8,7 +8,7 @@ export default class MercerieModel {
         this.nom = R.is(String, mercerie.nom) ? mercerie.nom : ""
         this.est_publie = R.is(Boolean, mercerie.est_publie) ? mercerie.est_publie : false
         this.categorie = R.is(String, mercerie.categorie) ? mercerie.categorie : ""
-        this.ref_categorie = R.is(Object, mercerie.ref_categorie) ? new CategorieModel(mercerie.ref_categorie) : new CategorieModel()
+        this.ref_categorie = R.is(Object, mercerie.ref_categorie) ? new CategorieModel(mercerie.ref_categorie) : null
     }
 
     toCreatePaypload() {

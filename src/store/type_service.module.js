@@ -28,20 +28,20 @@ export const typeServiceModule = {
             state.typeServices.push(newTypeService)
         },
         UPDATE_TYPE_SERVICE(state, typeService) {
-            const index = state.typeServices.findIndex(ts => ts.id === typeService.id)
+            const index = state.typeServices.findIndex(item => item.id === typeService.id)
             if (index !== -1) {
                 state.typeServices.splice(index, 1, typeService)
             }
         },
         DELETE_TYPE_SERVICE(state, typeService) {
-            const index = state.typeServices.findIndex(ts => ts.id === typeService.id)
+            const index = state.typeServices.findIndex(item => item.id === typeService.id)
             if (index !== -1) {
                 state.typeServices.splice(index, 1)
             }
         }
     },
     actions: {
-        loadTypeService: function ({commit}) {
+        loadTypeServices: function ({commit}) {
             return new Promise(((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.TypeService.getTypeServices().then(res => {

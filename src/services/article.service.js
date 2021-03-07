@@ -8,7 +8,7 @@ const IMAGES = '/images/';
 
 class ArticleService {
 
-    getArticleList() {
+    getArticles() {
         try {
             return axios.get(ARTICLES, {headers: authHeader()})
         } catch (error) {

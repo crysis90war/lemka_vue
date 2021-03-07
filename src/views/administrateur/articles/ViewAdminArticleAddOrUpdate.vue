@@ -8,17 +8,16 @@
     <div v-else>
       <b-form @submit.prevent="submit">
         <b-button-group class="float-right">
-          <b-button type="submit"
-                    :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
-                    :disabled="submitStatus === 'PENDING'">
+          <b-button :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
+                    :disabled="submitStatus === 'PENDING'" type="submit">
             {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
           </b-button>
-          <b-button variant="outline-danger"
-                    @click="reset">
+          <b-button variant="outline-danger" @click="reset">
             Reset
           </b-button>
           <b-button variant="outline-secondary" @click="$router.go(-1)">Retour</b-button>
         </b-button-group>
+
         <b-input-group class="my-1">
           <b-form-checkbox v-model="article.est_active" name="check-button" switch>
             <p v-if="article.est_active">Publier</p>
@@ -26,13 +25,9 @@
           </b-form-checkbox>
         </b-input-group>
 
-        <b-form-group label="Titre"
-                      description="Encodez le titre de l'article"
-                      class="my-1">
-          <b-form-input placeholder="Titre ..."
-                        type="text"
-                        v-model="$v.article.titre.$model"
-                        :state="validateState('titre')"/>
+        <b-form-group label="Titre" description="Encodez le titre de l'article" class="my-1">
+          <b-form-input v-model="$v.article.titre.$model"
+                        placeholder="Titre ..." type="text" :state="validateState('titre')"/>
           <b-form-invalid-feedback>
             <invalid-feedback :condition="!$v.article.titre.required"
                               :returned-function="required()"/>
@@ -43,12 +38,9 @@
           </b-form-invalid-feedback>
         </b-form-group>
 
-        <b-form-group label="Description"
-                      description="Veuillez encoder la description de l'article"
-                      class="my-1">
-          <b-form-textarea placeholder="Encodage de la description"
-                           v-model="$v.article.description.$model"
-                           :state="validateState('description')"/>
+        <b-form-group label="Description" description="Veuillez encoder la description de l'article" class="my-1">
+          <b-form-textarea v-model="$v.article.description.$model"
+                           placeholder="Encodage de la description" :state="validateState('description')"/>
           <b-form-invalid-feedback>
             <invalid-feedback :condition="!$v.article.description.required"
                               :returned-function="required()"/>
@@ -59,17 +51,11 @@
 
         <b-row>
           <b-col lg="6">
-            <b-form-group label="Service"
-                          description="Veuillez selectionner le service de l'article"
-                          class="my-1">
-              <multiselect v-model="article.ref_type_service"
-                           :options="serviceOptions"
-                           placeholder="Veuillez selectionner le service"
-                           selectLabel="Appuyez sur enter pour selectionner."
-                           deselectLabel="Appuyez sur enter pour retirer"
-                           label="type_service"
-                           track-by="type_service"
-                           :allow-empty="false">
+            <b-form-group label="Service" description="Veuillez selectionner le service de l'article" class="my-1">
+              <multiselect v-model="article.ref_type_service" :options="typeServices" :allow-empty="false"
+                           label="type_service" track-by="type_service" placeholder="Veuillez selectionner le service"
+                           selectLabel="Appuyez sur enter pour selectionner"
+                           deselectLabel="Appuyez sur enter pour retirer">
                 <template slot="singleLabel" slot-scope="{ option }">
                   <span>{{ option.type_service }}</span>
                 </template>
@@ -82,32 +68,29 @@
           </b-col>
 
           <b-col lg="6">
-            <b-form-group label="Catalogue"
-                          description="Veuillez selectionner le catalogue de l'article"
-                          class="my-1">
-              <multiselect v-model="article.ref_catalogue"
-                           :options="catalogueOptions"
-                           :internal-search="false"
-                           :clear-on-select="false"
-                           :close-on-select="true"
-                           :options-limit="20"
-                           :show-no-results="false"
-                           label="catalogue"
-                           track-by="id"
-                           placeholder="Veuillez encoder pour lancer la recherche..."
-                           selectLabel="Appuyez sur enter pour selectionner."
-                           deselectLabel="Appuyez sur enter pour retirer"
-                           open-direction="bottom">
+            <b-form-group label="Catalogue" description="Veuillez selectionner le catalogue de l'article" class="my-1">
+              <multiselect v-model="article.ref_catalogue" :options="catalogueOptions" :internal-search="false"
+                           :clear-on-select="false" :close-on-select="true" :options-limit="20" :show-no-results="false"
+                           label="catalogue" track-by="id" placeholder="Veuillez encoder pour lancer la recherche..."
+                           selectLabel="Appuyez sur enter pour selectionner." open-direction="bottom"
+                           deselectLabel="Appuyez sur enter pour retirer">
+
                 <template slot="singleLabel" slot-scope="{ option }">
-                <span>{{ option.ref_rayon.rayon }} - {{
+                <span>
+                  {{ option.ref_rayon.rayon }} - {{
                     option.ref_section.section
-                  }} - {{ option.ref_type_produit.type_produit }}</span>
+                  }} - {{ option.ref_type_produit.type_produit }}
+                </span>
                 </template>
+
                 <template slot="option" slot-scope="{ option }">
-                <span>{{ option.ref_rayon.rayon }} - {{
+                <span>
+                  {{ option.ref_rayon.rayon }} - {{
                     option.ref_section.section
-                  }} - {{ option.ref_type_produit.type_produit }}</span>
+                  }} - {{ option.ref_type_produit.type_produit }}
+                </span>
                 </template>
+
                 <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
               </multiselect>
             </b-form-group>
@@ -115,11 +98,10 @@
         </b-row>
 
         <b-form-group label="Tags" description="Veuillez chercher ou ajouter un tag" class="my-1">
-          <multiselect v-model="selected_tags" :options="tag_options" :loading="isLoading"
-                       :multiple="true" :hide-selected="true" :taggable="true"
-                       label="tag" track-by="tag" selectLabel="Appuyez sur enter pour selectionner."
+          <multiselect v-model="selected_tags" :options="tag_options" :loading="isLoading" :multiple="true"
+                       :hide-selected="true" :taggable="true" label="tag" track-by="tag"
+                       selectLabel="Appuyez sur enter pour selectionner." placeholder="Cherchez ou ajoutez un tag"
                        deselectLabel="Appuyez sur enter pour retirer" tag-placeholder="Ajoutez ça comme nouveau tag"
-                       placeholder="Cherchez ou ajoutez un tag"
                        @tag="addTag" @search-change="updateSelect"></multiselect>
 
           <template slot="singleLabel" slot-scope="{ option }">
@@ -139,29 +121,17 @@
                   size="sm" @click="showModal('image-modal')">Ajouter des images
         </b-button>
 
-        <b-modal id="image-modal"
-                 ref="image-modal"
-                 hide-footer
-                 title="Modifier image du profil"
-                 size="xl">
+        <b-modal id="image-modal" ref="image-modal" hide-footer title="Modifier image du profil" size="xl">
           <b-form @submit.prevent="createImage">
-
-            <b-form-group id="input-group-image" label-for="input-image"
-                          description="Formats autorisés .jpg et .png">
-              <b-form-file id="input-image"
-                           ref="image"
-                           name="input-image"
-                           accept="image/jpeg, image/png, .jpg, .png,"
-                           v-model="image"
-                           @change="previewImage"
-                           required></b-form-file>
+            <b-form-group id="input-group-image" label-for="input-image" description="Formats autorisés .jpg et .png">
+              <b-form-file v-model="image" id="input-image" ref="image" name="input-image" required
+                           accept="image/jpeg, image/png, .jpg, .png," @change="previewImage"></b-form-file>
             </b-form-group>
 
             <div class="d-flex">
               <cropper :src="preview" :stencil-size="{width: 800,height: 800}"
                        :stencil-props="{handlers: {}, movable: true, scalable: true, resizable: true}"
-                       class="cropper" style="max-width: 720px; max-height: 576px"
-                       @change="change"/>
+                       class="cropper" style="max-width: 720px; max-height: 576px" @change="change"/>
               <b-img v-if="destination !== null" :src="destination" height="360" width="360"></b-img>
             </div>
 
@@ -172,9 +142,7 @@
           </b-form>
         </b-modal>
 
-        <b-table :items="article_images" :fields="articles_images_fields"
-                 class="mt-2" stacked="md"
-                 small show-empty>
+        <b-table :items="article_images" :fields="articles_images_fields" class="mt-2" stacked="md" small show-empty>
           <template #empty>
             <div class="text-center">
               Cet article n'a pas d'images
@@ -214,7 +182,6 @@
 
 <script>
 import ArticleModel from "@/models/article.model";
-import TypeServiceModel from "@/models/type_service.model";
 import CatalogueModel from "@/models/catalogue.model";
 import TagModel from "@/models/tag.model";
 import {Cropper} from 'vue-advanced-cropper';
@@ -224,6 +191,7 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {validationMixin} from "vuelidate";
 import InvalidFeedback from "@/components/InvalidFeedback";
 import LemkaHelpers from "@/helpers";
+import {mapGetters} from "vuex";
 
 export default {
   name: "ViewAdminArticlesAddOrUpdate",
@@ -252,7 +220,6 @@ export default {
       tag_options: [],
       selected_tags: [],
       catalogueOptions: [],
-      serviceOptions: [],
 
       cropper: null,
       preview: null,
@@ -276,7 +243,9 @@ export default {
       BSClass: LemkaHelpers.BSClass
     }
   },
-
+  computed: {
+    ...mapGetters({typeServices: 'TypeServices/typeServices'})
+  },
   methods: {
     chargerArticle: async function () {
       this.toggleLoading()
@@ -293,8 +262,8 @@ export default {
       this.tag_options = await TagModel.getTagList()
     },
 
-    chargerServices: async function () {
-      this.serviceOptions = await TypeServiceModel.fetchTypeServices()
+    chargerTypeServices: async function () {
+      this.typeServices = await this.$store.dispatch('TypeServices/loadTypeServices')
     },
 
     chargerCatalogue: async function () {
@@ -461,8 +430,9 @@ export default {
   },
 
   created() {
-
-    this.chargerServices()
+    if (this.typeServices.length === 0) {
+      this.chargerTypeServices()
+    }
     this.chargerCatalogue()
     this.chargerTags()
 

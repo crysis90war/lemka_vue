@@ -1,4 +1,5 @@
 import CategorieModel from "@/models/categorie.model";
+import ApiService from "@/services";
 
 export const categorieModule = {
     namespaced: true,
@@ -41,45 +42,51 @@ export const categorieModule = {
     },
     actions: {
         loadCategories: async function ({commit}) {
-            try {
+            return new Promise(((resolve, reject) => {
                 commit('LOADING_STATUS', true)
-                let categories = await CategorieModel.fetchCategories()
-                commit('LOAD_CATEGORIES_SUCCESS', categories)
-                commit('LOADING_STATUS', false)
-                return Promise.resolve(categories)
-            } catch (e) {
-                commit('LOAD_CATEGORIES_FAILURE')
-                commit('LOADING_STATUS', false)
-                return Promise.reject(e)
-            }
+                ApiService.Categories.getCategories().then(res => {
+                    commit('LOAD_CATEGORIES_SUCCESS', res.data)
+                    commit('LOADING_STATUS', false)
+                    resolve(res)
+                }, error => {
+                    commit('LOAD_CATEGORIES_FAILURE')
+                    commit('LOADING_STATUS', false)
+                    reject(error)
+                })
+            }))
         },
 
         createCategorie: async function ({commit}, payload) {
-            try {
-                let categorie = await CategorieModel.createCategorie(payload)
-                commit('ADD_CATEGORIE', categorie)
-            } catch (e) {
-                return Promise.reject(e)
-            }
+            return new Promise(((resolve, reject) => {
+                ApiService.Categories.postCategorie(payload).then(res => {
+                    commit('ADD_CATEGORIE', Object.assign(new CategorieModel(),res.data))
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
         },
 
         updateCategorie: async function ({commit}, payload) {
-            try {
-                let categorie = await CategorieModel.updateCategorie(payload)
-                commit('UPDATE_CATEGORIE', Object.assign(new CategorieModel(), categorie))
-                return Promise.resolve(categorie)
-            } catch (e) {
-                return Promise.reject(e)
-            }
+            return new Promise(((resolve, reject) => {
+                ApiService.Categories.putCategorie(payload).then(res => {
+                    commit('UPDATE_CATEGORIE', Object.assign(new CategorieModel(),res.data))
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
         },
 
         deleteCategorie: async function ({commit}, categorie) {
-            try {
-                await CategorieModel.deleteCategorie(categorie.id)
-                commit('DELETE_CATEGORIE', categorie)
-            } catch (e) {
-                return Promise.reject(e)
-            }
+            return new Promise(((resolve, reject) => {
+                ApiService.Categories.deleteCategorie(categorie.id).then(res => {
+                    commit('DELETE_CATEGORIE', categorie)
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
         }
     },
 }
