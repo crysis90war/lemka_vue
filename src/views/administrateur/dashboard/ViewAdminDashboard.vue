@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dashboard">
     <b-card-group deck class="my-2">
       <!-- UTILISATEUR -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.USERS"
@@ -74,7 +74,7 @@
 import {LemkaEnums} from "@/helpers/enums.helper";
 import axios from "axios";
 import authHeader from "@/configs/auth-header";
-import DashboardCard from "@/views/administrateur/dashboard/DashboardCard"
+import DashboardCard from "@/components/DashboardCard"
 import LemkaHelpers from "@/helpers";
 
 export default {

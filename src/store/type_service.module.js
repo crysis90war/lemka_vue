@@ -1,4 +1,5 @@
 import TypeServiceModel from "@/models/type_service.model";
+import ApiService from "@/services";
 
 export const typeServiceModule = {
     namespaced: true,
@@ -40,44 +41,49 @@ export const typeServiceModule = {
         }
     },
     actions: {
-        loadTypeService: async function ({commit}) {
-            try {
+        loadTypeService: function ({commit}) {
+            return new Promise(((resolve, reject) => {
                 commit('LOADING_STATUS', true)
-                let typeServices = await TypeServiceModel.fetchTypeServices()
-                commit('LOAD_TYPE_SERVICES_SUCCESS', typeServices)
-                commit('LOADING_STATUS', false)
-                return Promise.resolve(typeServices)
-            } catch (e) {
-                commit('LOAD_TYPE_SERVICES_FAILURE')
-                commit('LOADING_STATUS', false)
-                return Promise.resolve(e)
-            }
+                ApiService.TypeService.getTypeServices().then(res => {
+                    commit('LOAD_TYPE_SERVICES_SUCCESS', res.data)
+                    commit('LOADING_STATUS', false)
+                    resolve(res)
+                }, error => {
+                    commit('LOAD_TYPE_SERVICES_FAILURE')
+                    commit('LOADING_STATUS', false)
+                    reject(error)
+                })
+            }))
         },
-        createTypeService: async function ({commit}, payload) {
-            try {
-                let typeService = await TypeServiceModel.createTypeService(payload)
-                commit('ADD_TYPE_SERVICE', Object.assign(new TypeServiceModel(), typeService))
-                return Promise.resolve(typeService)
-            } catch (e) {
-                return Promise.resolve(e)
-            }
+        createTypeService: function ({commit}, payload) {
+            return new Promise(((resolve, reject) => {
+                ApiService.TypeService.postTypeService(payload).then(res => {
+                    commit('ADD_TYPE_SERVICE', Object.assign(new TypeServiceModel(), res.data))
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
         },
-        updateTypeService: async function ({commit}, payload) {
-            try {
-                let typeService = await TypeServiceModel.updateTypeService(payload)
-                commit('UPDATE_TYPE_SERVICE', Object.assign(new TypeServiceModel(), typeService))
-                return Promise.resolve(typeService)
-            } catch (e) {
-                return Promise.reject(e)
-            }
+        updateTypeService: function ({commit}, payload) {
+            return new Promise(((resolve, reject) => {
+                ApiService.TypeService.putTypeService(payload).then(res => {
+                    commit('UPDATE_TYPE_SERVICE', Object.assign(new TypeServiceModel(), res.data))
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
         },
-        deleteTypeService: async function ({commit}, typeService) {
-            try {
-                await TypeServiceModel.deleteTypeService(typeService.id)
-                commit('DELETE_TYPE_SERVICE', typeService)
-            } catch (e) {
-                return Promise.reject(e)
-            }
+        deleteTypeService: function ({commit}, typeService) {
+            return new Promise(((resolve, reject) => {
+                ApiService.TypeService.deleteTypeService(typeService.id).then(res => {
+                    commit('DELETE_TYPE_SERVICE', typeService)
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
         }
     }
 }

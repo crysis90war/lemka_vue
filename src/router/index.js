@@ -44,23 +44,10 @@ const adminRoutes = [
         props: true
       },
       {
-        path: ADMIN + 'articles/add',
-        name: LemkaEnums.Routes.ARTICLE_ADD.name,
-        meta: {value: LemkaEnums.Routes.ARTICLE_ADD.value},
-        component: () => import('../views/administrateur/articles/ViewAdminArticlesAdd')
-      },
-      {
         path: ADMIN + 'articles/:slug/detail',
         name: LemkaEnums.Routes.ARTICLES_DETAIL.name,
         meta: {value: LemkaEnums.Routes.ARTICLES_DETAIL.value},
         component: () => import('../views/administrateur/articles/ViewAdminArticlesDetail'),
-        props: true
-      },
-      {
-        path: ADMIN + 'articles/:slug/update',
-        name: LemkaEnums.Routes.ARTICLES_UPDATE.name,
-        meta: {value: LemkaEnums.Routes.ARTICLES_UPDATE.value},
-        component: () => import('../views/administrateur/articles/ViewAdminArticlesUpdate'),
         props: true
       }
     ]

@@ -1,5 +1,5 @@
 <template>
-  <b-container >
+  <b-container>
 
     <div v-if="loading === true" class="loading text-center">
       <b-spinner type="grow" label="Loading..." variant="secondary"></b-spinner>
@@ -114,23 +114,13 @@
           </b-col>
         </b-row>
 
-        <b-form-group label="Tags"
-                      description="Veuillez chercher ou ajouter un tag"
-                      class="my-1">
-          <multiselect v-model="selected_tags"
-                       :options="tag_options"
-                       :multiple="true"
-                       :loading="isLoading"
-                       :hide-selected="true"
-                       label="tag"
-                       track-by="tag"
-                       selectLabel="Appuyez sur enter pour selectionner."
-                       deselectLabel="Appuyez sur enter pour retirer"
-                       :taggable="true"
-                       tag-placeholder="Ajoutez ça comme nouveau tag"
+        <b-form-group label="Tags" description="Veuillez chercher ou ajouter un tag" class="my-1">
+          <multiselect v-model="selected_tags" :options="tag_options" :loading="isLoading"
+                       :multiple="true" :hide-selected="true" :taggable="true"
+                       label="tag" track-by="tag" selectLabel="Appuyez sur enter pour selectionner."
+                       deselectLabel="Appuyez sur enter pour retirer" tag-placeholder="Ajoutez ça comme nouveau tag"
                        placeholder="Cherchez ou ajoutez un tag"
-                       @tag="addTag"
-                       @search-change="updateSelect"></multiselect>
+                       @tag="addTag" @search-change="updateSelect"></multiselect>
 
           <template slot="singleLabel" slot-scope="{ option }">
             <span>{{ option.tag }}</span>
@@ -142,24 +132,6 @@
 
           <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
         </b-form-group>
-
-        <!--      <b-form-group label="Images"-->
-        <!--                    description="Veuillez ajouter des images à l'article"-->
-        <!--                    class="my-1">-->
-        <!--        <b-file type="file" multiple @change="previewMultiImage"></b-file>-->
-        <!--      </b-form-group>-->
-
-        <!--      <div v-if="preview_list.length > 0">-->
-        <!--        <b-list-group horizontal="md">-->
-        <!--          <b-list-group-item v-for="(image, index) in preview_list" :key="index" class="text-center">-->
-        <!--            <b-radio v-model="selected" name="is_main" :value="image">Principale</b-radio>-->
-        <!--            <br/>-->
-        <!--            <b-img :src="image" height="120" width="120"></b-img>-->
-        <!--            <br/>-->
-        <!--            <b-button variant="danger" @click="deleteImage(index)" class="mt-1">Supprimer</b-button>-->
-        <!--          </b-list-group-item>-->
-        <!--        </b-list-group>-->
-        <!--      </div>-->
       </b-form>
 
       <div v-if="slug" class="mt-4">
@@ -174,8 +146,7 @@
                  size="xl">
           <b-form @submit.prevent="createImage">
 
-            <b-form-group id="input-group-image"
-                          label-for="input-image"
+            <b-form-group id="input-group-image" label-for="input-image"
                           description="Formats autorisés .jpg et .png">
               <b-form-file id="input-image"
                            ref="image"
@@ -187,15 +158,13 @@
             </b-form-group>
 
             <div class="d-flex">
-              <cropper class="cropper"
-                       style="max-width: 720px; max-height: 576px"
-                       :src="preview"
+              <cropper :src="preview" :stencil-size="{width: 800,height: 800}"
                        :stencil-props="{handlers: {}, movable: true, scalable: true, resizable: true}"
-                       :stencil-size="{width: 800,height: 800}"
+                       class="cropper" style="max-width: 720px; max-height: 576px"
                        @change="change"/>
-
               <b-img v-if="destination !== null" :src="destination" height="360" width="360"></b-img>
             </div>
+
             <b-button-group class="d-flex">
               <b-button variant="outline-success" type="submit">Créer</b-button>
               <b-button variant="outline-danger" @click="hideModal('image-modal')">Annuler</b-button>
@@ -203,12 +172,9 @@
           </b-form>
         </b-modal>
 
-        <b-table :items="article_images"
-                 :fields="articles_images_fields"
-                 class="mt-2"
-                 stacked="md"
-                 small
-                 show-empty>
+        <b-table :items="article_images" :fields="articles_images_fields"
+                 class="mt-2" stacked="md"
+                 small show-empty>
           <template #empty>
             <div class="text-center">
               Cet article n'a pas d'images
@@ -228,8 +194,7 @@
           </template>
 
           <template #cell(define)="data">
-            <b-button v-if="data.item.is_main === false" size="sm"
-                      variant="outline-success"
+            <b-button v-if="data.item.is_main === false" size="sm" variant="outline-success"
                       @click="update_image_is_main(data.item.id, data.item.is_main)">
               Définir comme principale
             </b-button>
@@ -244,9 +209,6 @@
         </b-table>
       </div>
     </div>
-
-
-
   </b-container>
 </template>
 
@@ -453,7 +415,7 @@ export default {
       this.$router.go(0)
     },
 
-    update_image_is_main: async function(image_id, is_main) {
+    update_image_is_main: async function (image_id, is_main) {
       let payload = {
         is_main: !is_main
       }
@@ -486,7 +448,7 @@ export default {
       this.preview_list = [];
     },
 
-    toggleLoading: function() {
+    toggleLoading: function () {
       this.loading = !this.loading
     }
   },

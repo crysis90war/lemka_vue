@@ -39,9 +39,18 @@ export default class TypeServiceModel {
         }
     }
 
+    static get tableFields() {
+        return [
+            {key: 'id', label: '#'},
+            {key: 'type_service', label: 'Service', sortable: true},
+            {key: 'duree_minute', label: 'Durée en minutes', sortable: true},
+            {key: 'actions', label: 'Actions'}
+        ]
+    }
+
     static async fetchTypeServices() {
         let typeService = []
-        await ApiService.TypeServiceService.getTypeServiceList().then(response => {
+        await ApiService.TypeServiceService.getTypeServices().then(response => {
             typeService = response.data
         })
         return typeService
@@ -49,7 +58,7 @@ export default class TypeServiceModel {
 
     static async getTypeService(typeServiceId) {
         let typeService = {}
-        await ApiService.TypeServiceService.getTypeServiceDetail(typeServiceId).then(response => {
+        await ApiService.TypeServiceService.getTypeService(typeServiceId).then(response => {
             typeService = response.data
         })
         return typeService

@@ -6,20 +6,20 @@ const ROUTE = LemkaEnums.Endpoints.MERCERIE_ENDPOINT;
 
 class MercerieService {
 
-    getMercerieList() {
+    getMerceries() {
         return axios
             .get(ROUTE, {headers: authHeader()})
-    }
-
-    getMercerieDetail(mercerieId) {
-        let endpoint = `${ROUTE}${mercerieId}/`;
-        return axios
-            .get(endpoint, {headers: authHeader()})
     }
 
     postMercerie(payload) {
         return axios
             .post(ROUTE, payload, {headers: authHeader()})
+    }
+
+    getMercerie(mercerieId) {
+        let endpoint = `${ROUTE}${mercerieId}/`;
+        return axios
+            .get(endpoint, {headers: authHeader()})
     }
 
     updateMercerie(mercerieId, payload) {

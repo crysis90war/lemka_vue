@@ -34,7 +34,7 @@ const ApiService = {
     SectionService,
     TagService,
     TypeProduitService,
-    TypeServiceService,
+    'TypeService': TypeServiceService,
     UserMensurationsService,
     UtilisateurService,
     VilleService

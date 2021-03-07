@@ -5,6 +5,8 @@ import { mensurationModule } from "@/store/mensuration.module";
 import { typeServiceModule } from "@/store/type_service.module";
 import { genreModule } from "@/store/genre.module";
 import { utilisateurModule } from "@/store/utilisateur.module";
+import { mercerieModule } from "@/store/mercerie.module";
+import { categorieModule } from "@/store/categorie.module";
 
 Vue.use(Vuex)
 
@@ -15,5 +17,7 @@ export default new Vuex.Store({
     'TypeServices': typeServiceModule,
     'Genres': genreModule,
     'Utilisateurs': utilisateurModule,
+    'Merceries': mercerieModule,
+    'Categories': categorieModule,
   }
 });

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="administration">
     <nav class="navbar navbar-expand-lg navbar-light bg-light my-0">
       <div class="container-fluid">
         <button type="button" id="sidebarCollapse" @click="sidebarCollapse" class="btn">

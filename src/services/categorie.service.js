@@ -6,37 +6,32 @@ const ROUTE = LemkaEnums.Endpoints.CATEGORIES_ENDPOINT;
 
 class CategorieService {
 
-    getCategorieList() {
+    getCategories() {
         return axios.get(ROUTE, {headers: authHeader()})
     }
 
     getCategorieDetail(categorieId) {
         let endpoint = `${ROUTE}${categorieId}/`;
-        return axios
-            .get(endpoint, {headers: authHeader()})
+        return axios.get(endpoint, {headers: authHeader()})
     }
 
     postCategorie(payload) {
-        return axios
-            .post(ROUTE, payload, {headers: authHeader()})
+        return axios.post(ROUTE, payload, {headers: authHeader()})
     }
 
-    putCategorie(categorieId, payload) {
-        let endpoint = `${ROUTE}${categorieId}/`;
-        return axios
-            .put(endpoint, payload, {headers: authHeader()})
+    putCategorie(payload) {
+        let endpoint = `${ROUTE}${payload.id}/`;
+        return axios.put(endpoint, payload, {headers: authHeader()})
     }
 
     patchCategorie(categorieId, payload) {
         let endpoint = `${ROUTE}${categorieId}/`;
-        return axios
-            .patch(endpoint, payload, {headers: authHeader()})
+        return axios.patch(endpoint, payload, {headers: authHeader()})
     }
 
-    deleteCategorie(categorieId) {
-        let endpoint = `${ROUTE}${categorieId}/`;
-        return axios
-            .delete(endpoint, {headers: authHeader()})
+    deleteCategorie(categorie_id) {
+        let endpoint = `${ROUTE}${categorie_id}/`;
+        return axios.delete(endpoint, {headers: authHeader()})
     }
 }
 

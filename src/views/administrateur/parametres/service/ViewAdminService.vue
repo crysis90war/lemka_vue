@@ -6,9 +6,8 @@
     </b-button>
 
     <b-table :items="typeServices" :fields="fields" :busy="busy"
-             stacked="md" small show-empty
-             hover bordered fixed
-             class="text-center mt-3">
+             small show-empty hover bordered fixed
+             stacked="md" class="text-center mt-3">
 
       <template #table-busy>
         <div class="text-center text-secondary">
@@ -44,30 +43,25 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
+import TypeServiceModel from "@/models/type_service.model";
 
 export default {
   name: "ViewAdminService",
   data() {
     return {
-      fields: [
-        {key: 'id', label: '#'},
-        {key: 'type_service', label: 'Service', sortable: true},
-        {key: 'duree_minute', label: 'Durée en minutes', sortable: true},
-        {key: 'actions', label: 'Actions'}
-      ],
+      fields: TypeServiceModel.tableFields,
       routes: LemkaHelpers.Routes
     }
   },
   computed: {
-    ...mapGetters({typeServices: 'TypeServices/typeServices'}),
-    ...mapGetters({busy: 'TypeServices/loadingStatus'}),
+    ...mapGetters({typeServices: 'TypeServices/typeServices', busy: 'TypeServices/loadingStatus'})
   },
   methods: {
     ...mapActions({deleteTypeService: 'TypeServices/deleteTypeService'})
   },
   created() {
     if (this.typeServices.length === 0) {
-      this.$store.dispatch('TypeService/loadTypeService')
+      this.$store.dispatch('TypeServices/loadTypeService')
     }
   }
 }
