@@ -1,8 +1,8 @@
 import axios from "axios";
 import authHeader from "@/configs/auth-header";
-import {LemkaEnums} from "@/helpers/enums.helper";
+import LemkaHelpers from "@/helpers";
 
-const ROUTE = LemkaEnums.Endpoints.CATEGORIES_ENDPOINT;
+const ROUTE = LemkaHelpers.Endpoints.CATEGORIES_ENDPOINT;
 
 class CategorieService {
 

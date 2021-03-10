@@ -1,7 +1,11 @@
-export let validationMessageMixin = {
+export const validationMessageMixin = {
     methods: {
         minLength: function (min) {
             return `Ce champ doit contenir au moins ${min} caractères !`
+        },
+
+        decimal: function() {
+            return 'Ce champ doit être un montant en décimale !'
         },
 
         maxLength: function(max) {
@@ -34,6 +38,10 @@ export let validationMessageMixin = {
 
         url: function() {
             return 'Ce champ doit être un lien Web valide !'
-        }
+        },
+
+        minValue: function (min) {
+            return `Ce champ doit avoir une valeur minimal de ${min} !`
+        },
     }
 }

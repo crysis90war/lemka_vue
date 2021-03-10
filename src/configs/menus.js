@@ -1,13 +1,14 @@
 /**
- * Created by denishuang on 2018/4/1.
- */
-
-/*
-
- {exam:'paper,score',
- school:['clazz','student']
- course:null
- }
+ * Générer le menus ç partir des apps
+ *  {
+ *      exam: 'paper,score',
+ *      school: ['clazz','student']
+ *      course: null
+ *  }
+ * @param apps
+ * @param menus
+ * @param modelPermissions
+ * @returns {{}}
  */
 export function genMenusFromApps(apps, menus, modelPermissions) {
     if (!menus) {
@@ -35,7 +36,7 @@ export function genMenusFromApps(apps, menus, modelPermissions) {
                 let mn = `${a}.${m}`
                 let hidden = model.hidden
                 if (hidden === undefined && modelPermissions) {
-                    hidden = (mn in modelPermissions) ? false : true
+                    hidden = (!(mn in modelPermissions))
                 }
                 menu = {name: model.verbose_name, icon: model.icon || 'file', url: `/${a}/${m}/`, hidden}
             }
@@ -50,7 +51,7 @@ export function genMenusFromApps(apps, menus, modelPermissions) {
         let hidden = !subItems.find(a => !a.hidden) || app.hidden
         menuItems[name]={name , items: subItems, icon: app.icon || 'file', hidden}
     })
-    for(var k in others) {
+    for(const k in others) {
         menuItems[k]={name:k, items: others[k]}
     }
     return menuItems

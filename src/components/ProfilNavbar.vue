@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import LemkaHelpers from "@/helpers";
 
 export default {
@@ -21,13 +20,13 @@ export default {
     return {
       menu: [
         {
-          href: {name: LemkaEnums.Routes.INFORMATIONS.name},
-          title: LemkaEnums.Routes.INFORMATIONS.value,
+          href: {name: LemkaHelpers.Routes.INFORMATIONS.name},
+          title: LemkaHelpers.Routes.INFORMATIONS.value,
           icon: LemkaHelpers.FontAwesomeIcons.USER
         },
         {
-          href: {name: LemkaEnums.Routes.MENSURATIONS.name},
-          title: LemkaEnums.Routes.MENSURATIONS.value,
+          href: {name: LemkaHelpers.Routes.MENSURATIONS.name},
+          title: LemkaHelpers.Routes.MENSURATIONS.value,
           icon: LemkaHelpers.FontAwesomeIcons.MESURE
         },
       ],

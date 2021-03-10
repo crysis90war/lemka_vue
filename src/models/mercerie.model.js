@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import CategorieModel from "@/models/categorie.model";
-import ApiService from "@/services";
+import {maxLength, minLength, required} from "vuelidate/lib/validators";
 
 export default class MercerieModel {
     constructor(mercerie = {}) {
@@ -8,10 +8,10 @@ export default class MercerieModel {
         this.nom = R.is(String, mercerie.nom) ? mercerie.nom : ""
         this.est_publie = R.is(Boolean, mercerie.est_publie) ? mercerie.est_publie : false
         this.categorie = R.is(String, mercerie.categorie) ? mercerie.categorie : ""
-        this.ref_categorie = R.is(Object, mercerie.ref_categorie) ? new CategorieModel(mercerie.ref_categorie) : null
+        this.ref_categorie = R.is(Object, mercerie.ref_categorie) ? new CategorieModel(mercerie.ref_categorie) : new CategorieModel()
     }
 
-    toCreatePaypload() {
+    toCreatePayload() {
         return {
             nom: this.nom,
             est_publie: this.est_publie,
@@ -21,7 +21,7 @@ export default class MercerieModel {
 
     toUpdatePayload() {
         return {
-            ...this.toCreatePaypload(),
+            ...this.toCreatePayload(),
             id: this.id
         }
     }
@@ -29,27 +29,23 @@ export default class MercerieModel {
     static get validations(){
         return {
             nom: {
-
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(255)
             },
             ref_categorie: {
-
+                required
             }
         }
     }
 
-    static async fetchMerceries() {
-        let merceries = []
-        await ApiService.MercerieService.getMerceries().then(res => {
-            merceries = res.data
-        })
-        return merceries
-    }
-
-    static async fetchMercerie(mercerie_id) {
-        let mercerie = null
-        await ApiService.MercerieService.getMercerie(mercerie_id).then(res => {
-            mercerie = res.data
-        })
-        return mercerie
+    static get tableFields() {
+        return [
+            {key: 'id', label: '#'},
+            {key: 'categorie', label: 'Catégorie', sortable: true},
+            {key: 'nom', label: 'Nom', sortable: true},
+            {key: 'est_publie', label: 'Publication', sortable: true},
+            {key: 'actions', label: 'Actions'},
+        ]
     }
 }

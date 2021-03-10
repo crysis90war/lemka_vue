@@ -1,39 +1,42 @@
 <template>
-  <div v-if="$route.name === links.entreprise">
+  <div v-if="$route.name === routes.PARAMETRES_ENTREPRISE.name">
 
     <div v-if="entLength === 0">
-      <b-button :to="{name:links.addEntreprise}" variant="outline-success">Ajouter informations</b-button>
+      <b-button :to="{name: routes.PARAMETRES_ENTREPRISE_ADD.name}" variant="outline-success">
+        Ajouter informations
+      </b-button>
       <p>Aucune information pour le moment, veuillez en ajouter</p>
     </div>
 
     <div v-if="entLength === 1">
-      <b-button variant="outline-primary" :to="{name: links.updateEntreprise}" class="mb-3">Modifier</b-button>
+      <b-button variant="outline-primary" :to="{name: routes.PARAMETRES_ENTREPRISE_UPDATE.name}" class="mb-3">Modifier
+      </b-button>
       <div>
-          <h3>{{entreprise.nom_societe}}</h3>
-          <h5>{{entreprise.numero_tva}}</h5>
-          <hr>
-          <div>
-            <span class="mr-2"><i :class="icons.EMAIL"></i></span>
-            <span>{{ entreprise.mail_contact }}</span>
-          </div>
-          <div>
-            <span class="mr-2"><i :class="icons.PHONE"></i></span>
-            <span>{{ entreprise.numero_tel }}</span>
-          </div>
-          <div>
-            <span class="mr-2"><i :class="icons.GLOBE"></i></span>
-            <span>{{ entreprise.site_web }}</span>
-          </div>
-          <hr>
-          <div>
-            <span><i :class="icons.HOME" class="mr-2"></i></span>
-          </div>
+        <h3>{{ entreprise.nom_societe }}</h3>
+        <h5>{{ entreprise.numero_tva }}</h5>
+        <hr>
+        <div>
+          <span class="mr-2"><i :class="icons.EMAIL"></i></span>
+          <span>{{ entreprise.mail_contact }}</span>
+        </div>
+        <div>
+          <span class="mr-2"><i :class="icons.PHONE"></i></span>
+          <span>{{ entreprise.numero_tel }}</span>
+        </div>
+        <div>
+          <span class="mr-2"><i :class="icons.GLOBE"></i></span>
+          <span>{{ entreprise.site_web }}</span>
+        </div>
+        <hr>
+        <div>
+          <span><i :class="icons.HOME" class="mr-2"></i></span>
+        </div>
 
-          <div v-if="entreprise.ref_ville !== null">
-            <span>{{ entreprise.rue }}, {{ entreprise.numero }}</span><br>
-            <span>{{ entreprise.ref_ville.code_postale }} - {{ entreprise.ref_ville.ville }}</span><br>
-            <span>{{ entreprise.ref_ville.ref_pays.pays }}</span>
-          </div>
+        <div v-if="entreprise.ref_ville !== null">
+          <span>{{ entreprise.rue }}, {{ entreprise.numero }}</span><br>
+          <span>{{ entreprise.ref_ville.code_postale }} - {{ entreprise.ref_ville.ville }}</span><br>
+          <span>{{ entreprise.ref_ville.ref_pays.pays }}</span>
+        </div>
       </div>
     </div>
     <div v-if="entreprise < 0 && entLength > 1">
@@ -44,7 +47,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import EntrepriseModel from "@/models/entreprise.model";
 import VilleModel from "@/models/ville.model";
 import PaysModel from "@/models/pays.model";
@@ -57,11 +59,7 @@ export default {
       entLength: null,
       entreprise: new EntrepriseModel(),
       BSClass: LemkaHelpers.BSClass,
-      links: {
-        entreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name,
-        addEntreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.name,
-        updateEntreprise: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_UPDATE.name,
-      },
+      routes: LemkaHelpers.Routes,
       icons: LemkaHelpers.FontAwesomeIcons,
     }
   },

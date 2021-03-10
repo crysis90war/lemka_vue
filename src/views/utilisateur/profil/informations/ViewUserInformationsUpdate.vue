@@ -88,7 +88,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import GenreModel from "@/models/genre.model";
@@ -104,7 +103,7 @@ export default {
 
   data() {
     return {
-      link: LemkaEnums.Routes.INFORMATIONS.name,
+      link: LemkaHelpers.Routes.INFORMATIONS.name,
       BSClass: LemkaHelpers.BSClass,
       profil: new ProfilModel(),
       genre: null,

@@ -1,39 +1,31 @@
 <template>
-  <div v-if="$route.name === routes.ARTICLES.name">
+  <div v-if="$route.name === routes.ARTICLES.name" class="articles">
     <b-row>
       <b-col lg="6">
-        <b-form-group label="Filtrer" label-size="sm"
-                      label-cols-sm="2" label-align-sm="right"
+        <b-form-group label="Filtrer" label-size="sm" label-cols-sm="2" label-align-sm="right"
                       description="Veuillez encoder pour chercher">
           <b-input-group size="sm">
-            <b-form-input v-model="filter"
-                          type="search" placeholder="Chercher ...">
-            </b-form-input>
+            <b-form-input v-model="filter" type="search" placeholder="Chercher ..."></b-form-input>
 
             <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">
-                Supprimer
-              </b-button>
+              <b-button :disabled="!filter" @click="filter = ''">Supprimer</b-button>
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
       </b-col>
 
       <b-col lg="6">
-        <b-form-group label="Trier par" label-size="sm"
-                      label-cols-sm="2" label-align-sm="right"
+        <b-form-group label="Trier par" label-size="sm" label-cols-sm="2" label-align-sm="right"
                       description="Veuillez faire votre choix de tri"
                       v-slot="{ ariaDescribedby }">
           <b-input-group size="sm">
-            <b-form-select v-model="sortBy" :options="sortOptions"
-                           :aria-describedby="ariaDescribedby" class="w-75">
+            <b-form-select v-model="sortBy" :options="sortOptions" :aria-describedby="ariaDescribedby" class="w-75">
               <template #first>
                 <option value="">-- vide --</option>
               </template>
             </b-form-select>
 
-            <b-form-select v-model="sortDesc" :disabled="!sortBy"
-                           :aria-describedby="ariaDescribedby" size="sm">
+            <b-form-select v-model="sortDesc" :disabled="!sortBy" :aria-describedby="ariaDescribedby" size="sm">
               <option :value="false">Asc</option>
               <option :value="true">Desc</option>
             </b-form-select>
@@ -45,8 +37,8 @@
     <b-row>
       <b-col lg="6">
         <b-form-group v-model="sortDirection"
-                      label="Filtrer sur" label-size="sm" label-cols-sm="2"
-                      label-align-sm="right" description="Laissez tout décoché pour filtrer sur toutes les données"
+                      label="Filtrer sur" label-size="sm" label-cols-sm="2" label-align-sm="right"
+                      description="Laissez tout décoché pour filtrer sur toutes les données"
                       v-slot="{ ariaDescribedby }">
           <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby">
             <b-form-checkbox value="created_at">Date création</b-form-checkbox>
@@ -66,9 +58,14 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
-        <b-button variant="outline-success" size="sm" :to="{name: routes.ARTICLES_ADD_OR_UPDATE.name}">
-          Créer un nouveau article
-        </b-button>
+        <b-button-group>
+          <b-button variant="outline-success" size="sm" :to="{name: routes.ARTICLES_ADD_OR_UPDATE.name}">
+            Créer un nouveau article
+          </b-button>
+          <b-button variant="outline-primary" size="sm" @click="loadOrRefresh">
+            <i class="fas fa-sync-alt"></i>
+          </b-button>
+        </b-button-group>
       </b-col>
 
       <b-col lg="7" class="my-1">
@@ -78,20 +75,21 @@
       </b-col>
     </b-row>
 
-    <b-table :items="items" :fields="fields" :current-page="currentPage"
-             :per-page="perPage" :filter="filter" :busy="isBusy"
-             :filter-included-fields="filterOn" :sort-by.sync="sortBy"
-             :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-             hover show-empty small stacked="md" @filtered="onFiltered">
+    <b-table :items="articles" :fields="fields" :busy="busy"
+             :per-page="perPage" :current-page="currentPage"
+             :filter="filter" :filter-included-fields="filterOn"
+             :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
+             hover show-empty small stacked="md" @filtered="onFiltered" class="text-center">
+
       <template #table-busy>
-        <div class="text-center text-secondary mt-3">
-          <b-spinner class="align-middle mr-2"></b-spinner>
+        <div class="text-center text-secondary">
+          <b-spinner small class="align-middle mr-2"></b-spinner>
           <strong class="align-middle">Chargement...</strong>
         </div>
       </template>
 
       <template #empty>
-        <div class="text-center my-2">
+        <div class="text-center">
           <p>Il n'y a aucun enregistrement à afficher</p>
         </div>
       </template>
@@ -113,17 +111,15 @@
       </template>
 
       <template #cell(actions)="data">
-        <b-button size="sm"
-                  class="mr-1"
-                  :variant="data.item.est_active === true ? 'outline-danger' : 'outline-success'"
+        <b-button :variant="data.item.est_active === true ? 'outline-danger' : 'outline-success'"
+                  size="sm" class="mr-1"
                   @click="activerDesactiverArticle(data.item.slug, data.item)">
           {{ data.item.est_active === true ? 'Désactiver' : 'Activer' }}
         </b-button>
       </template>
     </b-table>
-    <b-jumbotron>
-      <pre>{{ items }}</pre>
-    </b-jumbotron>
+
+    <pre>{{articles}}</pre>
   </div>
 
   <router-view v-else></router-view>
@@ -131,10 +127,11 @@
 </template>
 
 <script>
-import ApiService from "@/services";
 import ArticleModel from "@/models/article.model";
-import {tableViewMixin} from "@/mixins/table_view.mixin";
+import ApiService from "@/services";
 import LemkaHelpers from "@/helpers";
+import {tableViewMixin} from "@/mixins/table_view.mixin";
+import {mapGetters} from "vuex";
 
 export default {
   name: "ViewAdminArticles",
@@ -145,35 +142,30 @@ export default {
       routes: LemkaHelpers.Routes
     }
   },
-
+  computed: {
+    ...mapGetters({articles: 'Articles/articles', busy: 'Articles/loadingStatus'})
+  },
   methods: {
-    loadArticles: async function () {
-      try {
-        this.toggleBusy()
-        this.items = await ArticleModel.fetch_articles()
-      } catch (error) {
-        console.log(error)
-      } finally {
-        this.toggleBusy()
-      }
+    loadOrRefresh: function() {
+      this.$store.dispatch('Articles/loadArticles')
     },
-
     activerDesactiverArticle: async function (articleSlug, article) {
       try {
         let data = {
           "est_active": !article.est_active
         }
-        await ApiService.ArticleService.patchArticle(articleSlug, data)
+        await ApiService.Articles.patchArticle(articleSlug, data)
       } catch (error) {
         console.log(error)
       } finally {
         await this.loadArticles()
       }
-    },
+    }
   },
-
-  mounted() {
-    this.loadArticles()
+  created() {
+    if (this.articles.length === 0) {
+      this.loadOrRefresh()
+    }
   }
 }
 </script>

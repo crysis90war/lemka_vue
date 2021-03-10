@@ -27,17 +27,17 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewAdminParametres",
   data() {
     return {
       routes: {
-        entreprise: {name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name, value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.value},
-        genre: {name: LemkaEnums.Routes.PARAMETRES_GENRE.name, value: LemkaEnums.Routes.PARAMETRES_GENRE.value},
-        mensuration: {name: LemkaEnums.Routes.PARAMETRES_MENSURATION.name, value: LemkaEnums.Routes.PARAMETRES_MENSURATION.value},
-        service: {name: LemkaEnums.Routes.PARAMETRES_SERVICE.name, value: LemkaEnums.Routes.PARAMETRES_SERVICE.value}
+        entreprise: {name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name, value: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.value},
+        genre: {name: LemkaHelpers.Routes.PARAMETRES_GENRE.name, value: LemkaHelpers.Routes.PARAMETRES_GENRE.value},
+        mensuration: {name: LemkaHelpers.Routes.PARAMETRES_MENSURATION.name, value: LemkaHelpers.Routes.PARAMETRES_MENSURATION.value},
+        service: {name: LemkaHelpers.Routes.PARAMETRES_SERVICE.name, value: LemkaHelpers.Routes.PARAMETRES_SERVICE.value}
       },
     }
   },
@@ -49,15 +49,15 @@ export default {
   },
 
   created() {
-    if (this.$route.name === LemkaEnums.Routes.PARAMETRES.name) {
-      this.$router.push({name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name})
+    if (this.$route.name === LemkaHelpers.Routes.PARAMETRES.name) {
+      this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
     }
   },
 
   watch: {
     thisRoute: function () {
-      if (this.thisRoute === LemkaEnums.Routes.PARAMETRES.name) {
-        this.$router.push({name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name})
+      if (this.thisRoute === LemkaHelpers.Routes.PARAMETRES.name) {
+        this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
       }
     }
   },

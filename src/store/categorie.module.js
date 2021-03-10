@@ -4,6 +4,7 @@ import ApiService from "@/services";
 export const categorieModule = {
     namespaced: true,
     state: {
+        fetchCategorie: null,
         categories: [],
         loadingStatus: false
     },
@@ -20,6 +21,12 @@ export const categorieModule = {
         },
         LOAD_CATEGORIES_FAILURE(state) {
             state.categories = []
+        },
+        LOAD_CATEGORIE_SUCCESS(state, categorie) {
+            state.fetchCategorie = categorie
+        },
+        LOAD_CATEGORIE_FAILURE(state) {
+            state.fetchCategorie = null
         },
         LOADING_STATUS(state, newLoadingStatus) {
             state.loadingStatus = newLoadingStatus
@@ -41,7 +48,7 @@ export const categorieModule = {
         },
     },
     actions: {
-        loadCategories: async function ({commit}) {
+        loadCategories: function ({commit}) {
             return new Promise(((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.Categories.getCategories().then(res => {
@@ -56,10 +63,10 @@ export const categorieModule = {
             }))
         },
 
-        createCategorie: async function ({commit}, payload) {
+        createCategorie: function ({commit}, payload) {
             return new Promise(((resolve, reject) => {
                 ApiService.Categories.postCategorie(payload).then(res => {
-                    commit('ADD_CATEGORIE', Object.assign(new CategorieModel(),res.data))
+                    commit('ADD_CATEGORIE', Object.assign(new CategorieModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)
@@ -67,10 +74,22 @@ export const categorieModule = {
             }))
         },
 
-        updateCategorie: async function ({commit}, payload) {
+        fetchCategorie: function ({commit}, categorie_id) {
+          return new Promise(((resolve, reject) => {
+              ApiService.Categories.getCategorieDetail(categorie_id).then(res => {
+                  commit('LOAD_CATEGORIE_SUCCESS', Object.assign(new CategorieModel(), res.data))
+                  resolve(res)
+              }, error => {
+                  commit('LOAD_CATEGORIE_FAILURE')
+                  reject(error)
+              })
+          }))
+        },
+
+        updateCategorie: function ({commit}, payload) {
             return new Promise(((resolve, reject) => {
                 ApiService.Categories.putCategorie(payload).then(res => {
-                    commit('UPDATE_CATEGORIE', Object.assign(new CategorieModel(),res.data))
+                    commit('UPDATE_CATEGORIE', Object.assign(new CategorieModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)
@@ -78,7 +97,7 @@ export const categorieModule = {
             }))
         },
 
-        deleteCategorie: async function ({commit}, categorie) {
+        deleteCategorie: function ({commit}, categorie) {
             return new Promise(((resolve, reject) => {
                 ApiService.Categories.deleteCategorie(categorie.id).then(res => {
                     commit('DELETE_CATEGORIE', categorie)

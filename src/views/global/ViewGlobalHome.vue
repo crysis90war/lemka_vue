@@ -11,7 +11,6 @@
 <script>
 
 import Carousel from '@/components/Carousel'
-import Outils from '@/mixins/outils.mixin'
 import LemkaSeparateur from "@/components/LemkaSeparateur";
 import GoogleMap from "@/components/GoogleMap";
 
@@ -23,7 +22,9 @@ export default {
     'lemka-carousel': Carousel,
     'lemka-map': GoogleMap
   },
-
+  title () {
+    return this.$route.meta.value
+  },
   data() {
     return {
       separateurs: [
@@ -32,11 +33,7 @@ export default {
         { titre: 'PRODUITS POPULAIRES', sousTitre: 'LOREM IPSUM DOLOR SITE CONSECTETUER' },
       ]
     }
-  },
-
-  title () {
-    return Outils.htmlTitle()
-  },
+  }
 }
 </script>
 

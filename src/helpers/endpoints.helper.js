@@ -2,7 +2,7 @@ const DOMAIN = 'https://lemka-api.herokuapp.com/api';
 // const DOMAIN = 'http://127.0.0.1:8000/api';
 const PROFIL = DOMAIN + '/profil';
 
-const Endpoints = {
+export const Endpoints = {
     DOMAIN: DOMAIN,
     PROFIL: DOMAIN + '/profil',
     // region Global endpoints
@@ -38,9 +38,4 @@ const Endpoints = {
     DASHBOARD_ENDPOINT: DOMAIN + '/admin-dashboard/',
     CHECK_USER_EXISTS_ENDPOINT: DOMAIN + '/check/',
     // endregion
-
-}
-
-export const LemkaEnums = {
-    Endpoints,
 }

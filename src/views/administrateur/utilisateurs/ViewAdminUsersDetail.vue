@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import ApiService from "@/services";
 import AdresseModel from "@/models/adresse.model";
 import GenreModel from "@/models/genre.model";
@@ -90,10 +89,10 @@ export default {
       adresse: new AdresseModel(),
       loading: false,
       links: {
-        thisRouteLink: LemkaEnums.Routes.INFORMATIONS.name,
-        updateInformationsLink: LemkaEnums.Routes.INFORMATIONS_UPDATE.name,
-        ajouterAdresseLink: LemkaEnums.Routes.ADRESSE_ADD.name,
-        modifierAdresseLink: LemkaEnums.Routes.ADRESSE_UPDATE.name
+        thisRouteLink: LemkaHelpers.Routes.INFORMATIONS.name,
+        updateInformationsLink: LemkaHelpers.Routes.INFORMATIONS_UPDATE.name,
+        ajouterAdresseLink: LemkaHelpers.Routes.ADRESSE_ADD.name,
+        modifierAdresseLink: LemkaHelpers.Routes.ADRESSE_UPDATE.name
       },
       BSClass: LemkaHelpers.BSClass,
       icons: LemkaHelpers.FontAwesomeIcons,
@@ -134,7 +133,7 @@ export default {
     }
 
     if (!await isValid(to.params.username)) {
-      next({ name: LemkaEnums.Routes.PAGE_NOT_FOUND_ROUTE.name });
+      next({ name: LemkaHelpers.Routes.PAGE_NOT_FOUND_ROUTE.name });
     } else {
       next();
     }

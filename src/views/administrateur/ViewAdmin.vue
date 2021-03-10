@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import LemkaHelpers from "@/helpers";
 
 export default {
@@ -46,53 +45,53 @@ export default {
     return {
       menu: [
         {
-          href: {name: LemkaEnums.Routes.DASHBOARD.name},
-          title: LemkaEnums.Routes.DASHBOARD.value,
+          href: {name: LemkaHelpers.Routes.DASHBOARD.name},
+          title: LemkaHelpers.Routes.DASHBOARD.value,
           icon: LemkaHelpers.FontAwesomeIcons.TACHOMETRE
         },
         {
-          href: {name: LemkaEnums.Routes.UTILISATEURS.name},
-          title: LemkaEnums.Routes.UTILISATEURS.value,
+          href: {name: LemkaHelpers.Routes.UTILISATEURS.name},
+          title: LemkaHelpers.Routes.UTILISATEURS.value,
           icon: LemkaHelpers.FontAwesomeIcons.USERS
         },
         {
-          href: {name: LemkaEnums.Routes.ARTICLES.name},
-          title: LemkaEnums.Routes.ARTICLES.value,
+          href: {name: LemkaHelpers.Routes.ARTICLES.name},
+          title: LemkaHelpers.Routes.ARTICLES.value,
           icon: LemkaHelpers.FontAwesomeIcons.STORE
         },
         {
-          href: {name: LemkaEnums.Routes.MERCERIES.name},
-          title: LemkaEnums.Routes.MERCERIES.value,
+          href: {name: LemkaHelpers.Routes.MERCERIES.name},
+          title: LemkaHelpers.Routes.MERCERIES.value,
           icon: LemkaHelpers.FontAwesomeIcons.PLATEAU
         },
         {
-          href: {name: LemkaEnums.Routes.DEMANDE_DE_DEVIS.name},
-          title: LemkaEnums.Routes.DEMANDE_DE_DEVIS.value,
+          href: {name: LemkaHelpers.Routes.DEMANDE_DE_DEVIS.name},
+          title: LemkaHelpers.Routes.DEMANDE_DE_DEVIS.value,
           icon: LemkaHelpers.FontAwesomeIcons.FOLDER_OPEN
         },
         {
-          href: {name: LemkaEnums.Routes.DEVIS.name},
-          title: LemkaEnums.Routes.DEVIS.value,
+          href: {name: LemkaHelpers.Routes.DEVIS.name},
+          title: LemkaHelpers.Routes.DEVIS.value,
           icon: LemkaHelpers.FontAwesomeIcons.FOLDER
         },
         {
-          href: {name: LemkaEnums.Routes.BONS_DE_COMMANDE.name},
-          title: LemkaEnums.Routes.BONS_DE_COMMANDE.value,
+          href: {name: LemkaHelpers.Routes.BONS_DE_COMMANDE.name},
+          title: LemkaHelpers.Routes.BONS_DE_COMMANDE.value,
           icon: LemkaHelpers.FontAwesomeIcons.SHOPPING_CART
         },
         {
-          href: {name: LemkaEnums.Routes.FACTURE.name},
-          title: LemkaEnums.Routes.FACTURE.value,
+          href: {name: LemkaHelpers.Routes.FACTURE.name},
+          title: LemkaHelpers.Routes.FACTURE.value,
           icon: LemkaHelpers.FontAwesomeIcons.MONEY
         },
         {
-          href: {name: LemkaEnums.Routes.RENDEZ_VOUS.name},
-          title: LemkaEnums.Routes.RENDEZ_VOUS.value,
+          href: {name: LemkaHelpers.Routes.RENDEZ_VOUS.name},
+          title: LemkaHelpers.Routes.RENDEZ_VOUS.value,
           icon: LemkaHelpers.FontAwesomeIcons.CALENDAR
         },
         {
-          href: {name: LemkaEnums.Routes.PARAMETRES.name},
-          title: LemkaEnums.Routes.PARAMETRES.value,
+          href: {name: LemkaHelpers.Routes.PARAMETRES.name},
+          title: LemkaHelpers.Routes.PARAMETRES.value,
           icon: LemkaHelpers.FontAwesomeIcons.PARAMETRES
         },
       ],
@@ -125,10 +124,10 @@ export default {
 
   created() {
     if (!this.currentUser) {
-      this.$router.push({name: LemkaEnums.Routes.LOGIN_ROUTE.name})
+      this.$router.push({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
     } else {
-      if (this.$route.name === LemkaEnums.Routes.ADMIN_ROUTE.name) {
-        this.$router.push({name: LemkaEnums.Routes.DASHBOARD.name})
+      if (this.$route.name === LemkaHelpers.Routes.ADMIN_ROUTE.name) {
+        this.$router.push({name: LemkaHelpers.Routes.DASHBOARD.name})
       }
     }
   },
@@ -136,12 +135,12 @@ export default {
   watch: {
     currentUser() {
       if (!this.currentUser) {
-        this.$router.push({name: LemkaEnums.Routes.LOGIN_ROUTE.name})
+        this.$router.push({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
       }
     },
     thisRoute: function () {
-      if (this.thisRoute === LemkaEnums.Routes.ADMIN_ROUTE.name) {
-        this.$router.push({name: LemkaEnums.Routes.DASHBOARD.name})
+      if (this.thisRoute === LemkaHelpers.Routes.ADMIN_ROUTE.name) {
+        this.$router.push({name: LemkaHelpers.Routes.DASHBOARD.name})
       }
     }
   },
@@ -151,7 +150,7 @@ export default {
     if (currentUser.is_staff === true) {
       next();
     } else {
-      next({name: LemkaEnums.Routes.LOGIN_ROUTE.name})
+      next({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
     }
   }
 }

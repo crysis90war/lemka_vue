@@ -19,7 +19,7 @@
 <script>
 import Outils from "@/mixins/outils.mixin";
 import Social from "@/components/Social";
-import {LemkaEnums} from "@/helpers/enums.helper";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewGlobalNotFound",
@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      home: LemkaEnums.Routes.HOME_ROUTE.name,
+      home: LemkaHelpers.Routes.HOME_ROUTE.name,
       message: "Erreur 404 - Page Non Trouvée"
     }
   }

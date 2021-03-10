@@ -199,7 +199,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import EntrepriseModel from "@/models/entreprise.model";
 import VilleModel from "@/models/ville.model";
 import {validationMixin} from "vuelidate";
@@ -218,7 +217,7 @@ export default {
       villeOptions: [],
       submitStatus: null,
 
-      link: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name,
+      link: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name,
       BSClass: LemkaHelpers.BSClass,
     }
   },
@@ -243,7 +242,7 @@ export default {
         await EntrepriseModel.createEntreprise(this.entreprise.toCreatePayload())
         setTimeout(() => {
           this.submitStatus = 'OK'
-          this.$router.push({name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name})
+          this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
         }, 500)
       }
     },
@@ -268,7 +267,7 @@ export default {
 
       next();
     } else {
-      next({name: LemkaEnums.Routes.PARAMETRES.name})
+      next({name: LemkaHelpers.Routes.PARAMETRES.name})
     }
   }
 }

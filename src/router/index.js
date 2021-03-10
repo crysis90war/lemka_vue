@@ -1,30 +1,30 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {LemkaEnums} from "@/helpers/enums.helper";
 import LemkaHelpers from "@/helpers";
 
 Vue.use(VueRouter)
 
 const PROFIL = '/profil';
 const ADMIN = '/admin/';
+const ROUTES = LemkaHelpers.Routes;
 
 const adminRoutes = [
   {
     path: ADMIN + 'dashboard',
-    name: LemkaEnums.Routes.DASHBOARD.name,
-    meta: {value: LemkaEnums.Routes.DASHBOARD.value},
+    name: ROUTES.DASHBOARD.name,
+    meta: {value: ROUTES.DASHBOARD.value},
     component: () => import('../views/administrateur/dashboard/ViewAdminDashboard')
   },
   {
     path: ADMIN + 'utilisateurs',
-    name: LemkaEnums.Routes.UTILISATEURS.name,
-    meta: {value: LemkaEnums.Routes.UTILISATEURS.value},
+    name: ROUTES.UTILISATEURS.name,
+    meta: {value: ROUTES.UTILISATEURS.value},
     component: () => import('../views/administrateur/utilisateurs/ViewAdminUsers'),
     children: [
       {
         path: ADMIN + 'utilisateurs/:username/detail',
-        name: LemkaEnums.Routes.UTILISATEURS_DETAIL.name,
-        meta: {value: LemkaEnums.Routes.UTILISATEURS_DETAIL.value},
+        name: ROUTES.UTILISATEURS_DETAIL.name,
+        meta: {value: ROUTES.UTILISATEURS_DETAIL.value},
         component: () => import('../views/administrateur/utilisateurs/ViewAdminUsersDetail'),
         props: true,
       }
@@ -32,21 +32,21 @@ const adminRoutes = [
   },
   {
     path: ADMIN + 'articles',
-    name: LemkaEnums.Routes.ARTICLES.name,
-    meta: {value: LemkaEnums.Routes.ARTICLES.value},
+    name: ROUTES.ARTICLES.name,
+    meta: {value: ROUTES.ARTICLES.value},
     component: () => import('../views/administrateur/articles/ViewAdminArticles'),
     children: [
       {
         path: ADMIN + 'article/:slug?',
-        name: LemkaEnums.Routes.ARTICLES_ADD_OR_UPDATE.name,
-        meta: {value: LemkaEnums.Routes.ARTICLES_ADD_OR_UPDATE.value},
+        name: ROUTES.ARTICLES_ADD_OR_UPDATE.name,
+        meta: {value: ROUTES.ARTICLES_ADD_OR_UPDATE.value},
         component: () => import('@/views/administrateur/articles/ViewAdminArticleAddOrUpdate'),
         props: true
       },
       {
         path: ADMIN + 'articles/:slug/detail',
-        name: LemkaEnums.Routes.ARTICLES_DETAIL.name,
-        meta: {value: LemkaEnums.Routes.ARTICLES_DETAIL.value},
+        name: ROUTES.ARTICLES_DETAIL.name,
+        meta: {value: ROUTES.ARTICLES_DETAIL.value},
         component: () => import('../views/administrateur/articles/ViewAdminArticlesDetail'),
         props: true
       }
@@ -54,76 +54,99 @@ const adminRoutes = [
   },
   {
     path: ADMIN + 'merceries',
-    name: LemkaEnums.Routes.MERCERIES.name,
-    meta: {value: LemkaEnums.Routes.MERCERIES.value},
-    component: () => import('../views/administrateur/merceries/ViewAdminMerceries')
+    name: ROUTES.MERCERIES.name,
+    meta: {value: ROUTES.MERCERIES.value},
+    component: () => import('../views/administrateur/merceries/ViewAdminMerceries'),
+    children: [
+      {
+        path: ADMIN + 'mercerie/:id?',
+        name: ROUTES.MERCERIES_ADD_OR_UPDATE.name,
+        meta: {value: ROUTES.MERCERIES_ADD_OR_UPDATE.value},
+        component: () => import('@/views/administrateur/merceries/ViewAdminMercerieAddOrUpdate'),
+        props: true
+      },
+      {
+        path: ADMIN + 'merceries/:id/options/',
+        name: ROUTES.MERCERIE_OPTIONS.name,
+        meta: {value: ROUTES.MERCERIE_OPTIONS.value},
+        component: () => import('@/views/administrateur/merceries/ViewAdminMercerieOptions'),
+        props: true
+      },
+      {
+        path: ADMIN + 'merceries/:mercerie_id/options/:id?',
+        name: ROUTES.MERCERIE_OPTIONS_ADD_OR_UPDATE.name,
+        meta: {value: ROUTES.MERCERIE_OPTIONS_ADD_OR_UPDATE.value},
+        component: () => import('@/views/administrateur/merceries/ViewAdminMercerieOptionAddOrUpdate'),
+        props: true
+      }
+    ]
   },
   {
     path: ADMIN + 'demande-de-devis',
-    name: LemkaEnums.Routes.DEMANDE_DE_DEVIS.name,
-    meta: {value: LemkaEnums.Routes.DEMANDE_DE_DEVIS.value},
+    name: ROUTES.DEMANDE_DE_DEVIS.name,
+    meta: {value: ROUTES.DEMANDE_DE_DEVIS.value},
     component: () => import('../views/administrateur/demande de devis/view.admin.demandeDeDevis')
   },
   {
     path: ADMIN + 'devis',
-    name: LemkaEnums.Routes.DEVIS.name,
-    meta: {value: LemkaEnums.Routes.DEVIS.value},
+    name: ROUTES.DEVIS.name,
+    meta: {value: ROUTES.DEVIS.value},
     component: () => import('../views/administrateur/devis/view.admin.devis')
   },
   {
     path: ADMIN + 'bons-de-commande',
-    name: LemkaEnums.Routes.BONS_DE_COMMANDE.name,
-    meta: {value: LemkaEnums.Routes.BONS_DE_COMMANDE.value},
+    name: ROUTES.BONS_DE_COMMANDE.name,
+    meta: {value: ROUTES.BONS_DE_COMMANDE.value},
     component: () => import('../views/administrateur/bon de commande/view.admin.bonDeCommande')
   },
   {
     path: ADMIN + 'facture',
-    name: LemkaEnums.Routes.FACTURE.name,
-    meta: {value: LemkaEnums.Routes.FACTURE.value},
+    name: ROUTES.FACTURE.name,
+    meta: {value: ROUTES.FACTURE.value},
     component: () => import('../views/administrateur/factures/view.facture')
   },
   {
     path: ADMIN + 'rendez-vous',
-    name: LemkaEnums.Routes.RENDEZ_VOUS.name,
-    meta: {value: LemkaEnums.Routes.RENDEZ_VOUS.value},
+    name: ROUTES.RENDEZ_VOUS.name,
+    meta: {value: ROUTES.RENDEZ_VOUS.value},
     component: () => import('../views/administrateur/rendez-vous/view.rendezVous')
   },
   {
     path: ADMIN + 'parametres',
-    name: LemkaEnums.Routes.PARAMETRES.name,
-    meta: {value: LemkaEnums.Routes.PARAMETRES.value},
+    name: ROUTES.PARAMETRES.name,
+    meta: {value: ROUTES.PARAMETRES.value},
     component: () => import('../views/administrateur/parametres/ViewAdminParametres'),
     children: [
       {
         path: ADMIN + 'parametres/entreprise',
-        name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name,
-        meta: {value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.value},
+        name: ROUTES.PARAMETRES_ENTREPRISE.name,
+        meta: {value: ROUTES.PARAMETRES_ENTREPRISE.value},
         component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntreprise'),
         children: [
           {
             path: ADMIN + 'parametres/entreprise/ajouter',
-            name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.name,
-            meta: {value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_ADD.value},
+            name: ROUTES.PARAMETRES_ENTREPRISE_ADD.name,
+            meta: {value: ROUTES.PARAMETRES_ENTREPRISE_ADD.value},
             component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntrepriseAdd')
           },
           {
             path: ADMIN + 'parametres/entreprise/update',
-            name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_UPDATE.name,
-            meta: {value: LemkaEnums.Routes.PARAMETRES_ENTREPRISE_UPDATE.value},
+            name: ROUTES.PARAMETRES_ENTREPRISE_UPDATE.name,
+            meta: {value: ROUTES.PARAMETRES_ENTREPRISE_UPDATE.value},
             component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntrepriseUpdate')
           }
         ]
       },
       {
         path: ADMIN + 'parametres/genres',
-        name: LemkaEnums.Routes.PARAMETRES_GENRE.name,
-        meta: {value: LemkaEnums.Routes.PARAMETRES_GENRE.value},
+        name: ROUTES.PARAMETRES_GENRE.name,
+        meta: {value: ROUTES.PARAMETRES_GENRE.value},
         component: () => import('../views/administrateur/parametres/genre/ViewAdminGenre'),
         children: [
           {
             path: ADMIN + 'parametres/genre/:id?',
-            name: LemkaHelpers.Routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name,
-            meta: {value: LemkaHelpers.Routes.PARAMETRES_GENRE_ADD_OR_UPDATE.value},
+            name: ROUTES.PARAMETRES_GENRE_ADD_OR_UPDATE.name,
+            meta: {value: ROUTES.PARAMETRES_GENRE_ADD_OR_UPDATE.value},
             component: () => import('../views/administrateur/parametres/genre/ViewAdminGenreAddOrUpdate'),
             props: true
           },
@@ -131,14 +154,14 @@ const adminRoutes = [
       },
       {
         path: '/admin/parametres/mensurations',
-        name: LemkaEnums.Routes.PARAMETRES_MENSURATION.name,
-        meta: {value: LemkaEnums.Routes.PARAMETRES_MENSURATION.value},
+        name: ROUTES.PARAMETRES_MENSURATION.name,
+        meta: {value: ROUTES.PARAMETRES_MENSURATION.value},
         component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensuration'),
         children: [
           {
             path: '/admin/parametres/mensuration/:id?',
-            name: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD_OR_UPDATE.name,
-            meta: {value: LemkaEnums.Routes.PARAMETRES_MENSURATION_ADD_OR_UPDATE.value},
+            name: ROUTES.PARAMETRES_MENSURATION_ADD_OR_UPDATE.name,
+            meta: {value: ROUTES.PARAMETRES_MENSURATION_ADD_OR_UPDATE.value},
             component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensurationAddOrUpdate'),
             props: true
           }
@@ -146,14 +169,14 @@ const adminRoutes = [
       },
       {
         path: '/admin/parametres/services',
-        name: LemkaEnums.Routes.PARAMETRES_SERVICE.name,
-        meta: {value: LemkaEnums.Routes.PARAMETRES_SERVICE.value},
+        name: ROUTES.PARAMETRES_SERVICE.name,
+        meta: {value: ROUTES.PARAMETRES_SERVICE.value},
         component: () => import('../views/administrateur/parametres/service/ViewAdminService'),
         children: [
           {
             path: '/admin/parametres/service/:id?',
-            name: LemkaHelpers.Routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name,
-            meta: {value: LemkaHelpers.Routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.value},
+            name: ROUTES.PARAMETRES_SERVICE_ADD_OR_UPDATE.name,
+            meta: {value: ROUTES.PARAMETRES_SERVICE_ADD_OR_UPDATE.value},
             component: () => import('../views/administrateur/parametres/service/ViewAdminServiceAddOrUpdate'),
             props: true
           }
@@ -166,26 +189,26 @@ const adminRoutes = [
 const profilRoutes = [
   {
     path: PROFIL + '/informations',
-    name: LemkaEnums.Routes.INFORMATIONS.name,
-    meta: {value: LemkaEnums.Routes.INFORMATIONS.value},
+    name: ROUTES.INFORMATIONS.name,
+    meta: {value: ROUTES.INFORMATIONS.value},
     component: () => import('../views/utilisateur/profil/informations/ViewUserInformations'),
   },
   {
     path: PROFIL + '/informations/update',
-    name: LemkaEnums.Routes.INFORMATIONS_UPDATE.name,
-    meta: {value: LemkaEnums.Routes.INFORMATIONS_UPDATE.value},
+    name: ROUTES.INFORMATIONS_UPDATE.name,
+    meta: {value: ROUTES.INFORMATIONS_UPDATE.value},
     component: () => import('../views/utilisateur/profil/informations/ViewUserInformationsUpdate')
   },
   {
     path: PROFIL + '/adresse',
-    name: LemkaEnums.Routes.ADRESSE_ADD.name,
-    meta: {value: LemkaEnums.Routes.ADRESSE_ADD.value},
+    name: ROUTES.ADRESSE_ADD.name,
+    meta: {value: ROUTES.ADRESSE_ADD.value},
     component: () => import('../views/utilisateur/profil/informations/ViewUserAdresseAdd')
   },
   {
     path: PROFIL + '/adresse/update',
-    name: LemkaEnums.Routes.ADRESSE_UPDATE.name,
-    meta: {value: LemkaEnums.Routes.ADRESSE_UPDATE.value},
+    name: ROUTES.ADRESSE_UPDATE.name,
+    meta: {value: ROUTES.ADRESSE_UPDATE.value},
     component: () => import('../views/utilisateur/profil/informations/ViewUserAdresseUpdate')
   },
   {
@@ -196,15 +219,15 @@ const profilRoutes = [
   },
   {
     path: PROFIL + '/mensurations/:id/detail',
-    name: LemkaEnums.Routes.MENSURATION_DETAIL.name,
-    meta: {value: LemkaEnums.Routes.MENSURATION_DETAIL.value},
+    name: ROUTES.MENSURATION_DETAIL.name,
+    meta: {value: ROUTES.MENSURATION_DETAIL.value},
     component: () => import('../views/utilisateur/profil/mensurations/ViewUserMensurationsDetail'),
     props: true
   },
   {
     path: PROFIL + '/mensuration/:id?',
-    name: LemkaEnums.Routes.MENSURATION_ADD_OR_UPDATE.name,
-    meta: {value: LemkaEnums.Routes.MENSURATION_ADD_OR_UPDATE.value},
+    name: ROUTES.MENSURATION_ADD_OR_UPDATE.name,
+    meta: {value: ROUTES.MENSURATION_ADD_OR_UPDATE.value},
     component: () => import('../views/utilisateur/profil/mensurations/ViewUserUserMensurationAddOrUpdate'),
     props: true
   },
@@ -216,58 +239,58 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      name: LemkaEnums.Routes.HOME_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.HOME_ROUTE.value},
+      name: ROUTES.HOME_ROUTE.name,
+      meta: {value: ROUTES.HOME_ROUTE.value},
       component: () => import('../views/global/ViewGlobalHome')
     },
     {
       path: '/login',
-      name: LemkaEnums.Routes.LOGIN_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.LOGIN_ROUTE.value},
+      name: ROUTES.LOGIN_ROUTE.name,
+      meta: {value: ROUTES.LOGIN_ROUTE.value},
       component: () => import('../views/global/ViewGlobalLogin')
     },
     {
       path: '/register',
-      name: LemkaEnums.Routes.REGISTER_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.REGISTER_ROUTE.value},
+      name: ROUTES.REGISTER_ROUTE.name,
+      meta: {value: ROUTES.REGISTER_ROUTE.value},
       component: () => import('../views/global/ViewGlobalRegister')
     },
     {
       path: '/about',
-      name: LemkaEnums.Routes.ABOUT_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.ABOUT_ROUTE.value},
+      name: ROUTES.ABOUT_ROUTE.name,
+      meta: {value: ROUTES.ABOUT_ROUTE.value},
       component: () => import('../views/global/ViewGlobalAbout')
     },
     {
       path: '/horaire',
-      name: LemkaEnums.Routes.HORAIRE_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.HORAIRE_ROUTE.value},
+      name: ROUTES.HORAIRE_ROUTE.name,
+      meta: {value: ROUTES.HORAIRE_ROUTE.value},
       component: () => import('../views/global/ViewGlobalHoraire')
     },
     {
       path: '/contact',
-      name: LemkaEnums.Routes.CONTACT_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.CONTACT_ROUTE.value},
+      name: ROUTES.CONTACT_ROUTE.name,
+      meta: {value: ROUTES.CONTACT_ROUTE.value},
       component: () => import('../views/global/ViewGlobalContact')
     },
     {
       path: PROFIL,
-      name: LemkaEnums.Routes.PROFIL_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.PROFIL_ROUTE.value, requiresAuth: true},
+      name: ROUTES.PROFIL_ROUTE.name,
+      meta: {value: ROUTES.PROFIL_ROUTE.value, requiresAuth: true},
       component: () => import('../views/utilisateur/profil/ViewUserProfil'),
       children: profilRoutes
     },
     {
       path: ADMIN,
-      name: LemkaEnums.Routes.ADMIN_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.ADMIN_ROUTE.value, requiresAuth: true},
+      name: ROUTES.ADMIN_ROUTE.name,
+      meta: {value: ROUTES.ADMIN_ROUTE.value, requiresAuth: true},
       component: () => import('../views/administrateur/ViewAdmin'),
       children: adminRoutes
     },
     {
       path: '/404',
-      name: LemkaEnums.Routes.PAGE_NOT_FOUND_ROUTE.name,
-      meta: {value: LemkaEnums.Routes.PAGE_NOT_FOUND_ROUTE.value},
+      name: ROUTES.PAGE_NOT_FOUND_ROUTE.name,
+      meta: {value: ROUTES.PAGE_NOT_FOUND_ROUTE.value},
       component: () => import('../views/global/ViewGlobalNotFound')
     },
     {
@@ -282,7 +305,7 @@ router.beforeEach((to, from, next) => {
   const loggedIn = sessionStorage.getItem('user');
 
   if (authRequired && !loggedIn) {
-    next({name: LemkaEnums.Routes.LOGIN_ROUTE.name});
+    next({name: ROUTES.LOGIN_ROUTE.name});
   } else {
     next();
   }

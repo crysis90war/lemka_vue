@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import ArticleModel from "@/models/article.model";
 import ApiService from "@/services";
 import LemkaHelpers from "@/helpers";
@@ -69,7 +68,7 @@ export default {
       articleObject: new ArticleModel(),
       error: null,
       links: {
-        articlesLink: LemkaEnums.Routes.ARTICLES.name,
+        articlesLink: LemkaHelpers.Routes.ARTICLES.name,
         articleUpdateLink: LemkaHelpers.Routes.ARTICLES_ADD_OR_UPDATE.name
       },
       BSClass: LemkaHelpers.BSClass,

@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import GenreModel from "@/models/genre.model";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
@@ -77,7 +76,7 @@ export default {
 
         setTimeout(() => {
           this.submitStatus = 'OK'
-          this.$router.push({name: LemkaEnums.Routes.PARAMETRES_GENRE.name})
+          this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_GENRE.name})
         }, 500)
       }
     },

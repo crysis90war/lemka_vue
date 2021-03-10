@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import MensurationUserMensurationModel from "@/models/mensurationUserMensuration.model";
 import {validationMixin} from "vuelidate";
 import UserMensurationModel from "@/models/userMensuration.model";
@@ -70,7 +69,7 @@ export default {
       mensurationUserMensurations: [],
       submitStatus: null,
       links: {
-        mensurations: LemkaEnums.Routes.MENSURATIONS.name
+        mensurations: LemkaHelpers.Routes.MENSURATIONS.name
       },
       icons: {
         leftArrow: LemkaHelpers.FontAwesomeIcons.LONG_LEFT_ARROW

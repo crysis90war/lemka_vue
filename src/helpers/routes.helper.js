@@ -44,7 +44,10 @@ export const Routes = {
 
     DEVIS: {name: AdminView + 'Devis', value: 'Devis', icon: 'far fa-folder'},
 
-    MERCERIES: {name: AdminView + 'Mercerie', value: 'Merceries', icon: 'fas fa-dolly-flatbed'},
+    MERCERIES: {name: AdminView + 'Merceries', value: 'Merceries', icon: 'fas fa-dolly-flatbed'},
+    MERCERIES_ADD_OR_UPDATE: {name: AdminView + 'MercerieAddOrUpdate', value: 'Mercerie'},
+    MERCERIE_OPTIONS: {name: AdminView + 'MercerieOptions', value: 'Options'},
+    MERCERIE_OPTIONS_ADD_OR_UPDATE: {name: AdminView + 'MercerieOptionsAddOrUpdate', value: 'Ajouter/Modifier'},
 
     BONS_DE_COMMANDE: {name: AdminView + 'BonDeCommande', value: 'Bons de commande'},
 
@@ -55,7 +58,10 @@ export const Routes = {
     PARAMETRES: {name: AdminView + 'Parametres', value: 'Parametres'},
     PARAMETRES_ENTREPRISE: {name: AdminView + 'Entreprise', value: 'Entreprise'},
     PARAMETRES_ENTREPRISE_ADD: {name: AdminView + 'EntrepriseAdd', value: 'Ajout des informations de l\'entreprise'},
-    PARAMETRES_ENTREPRISE_UPDATE: {name: AdminView + 'EntrepriseUpdate', value: 'Modifier information de l\'entreprise'},
+    PARAMETRES_ENTREPRISE_UPDATE: {
+        name: AdminView + 'EntrepriseUpdate',
+        value: 'Modifier information de l\'entreprise'
+    },
     PARAMETRES_GENRE: {name: AdminView + 'Genre', value: 'Genres'},
     PARAMETRES_GENRE_DETAIL: {name: AdminView + 'GenreDetail', value: 'Détail'},
     PARAMETRES_GENRE_ADD_OR_UPDATE: {name: AdminView + 'GenreAddOrUpdate', value: 'Ajouter - Modifier genre'},

@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import AdresseModel from "@/models/adresse.model";
 import {validationMixin} from "vuelidate";
 import VilleModel from "@/models/ville.model";
@@ -109,7 +108,7 @@ export default {
       submitStatus: null,
 
       BSClass: LemkaHelpers.BSClass,
-      link: LemkaEnums.Routes.INFORMATIONS.name,
+      link: LemkaHelpers.Routes.INFORMATIONS.name,
     }
   },
   methods: {

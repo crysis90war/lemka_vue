@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewGlobalLogin",
@@ -64,7 +64,7 @@ export default {
       if (this.user.email && this.user.password) {
         this.loading = true;
         this.$store.dispatch('auth/login', this.user).then(() => {
-              this.$router.push({name: LemkaEnums.Routes.PROFIL_ROUTE.name});
+              this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
             }, error => {
           this.loading = false
               console.log(error)
@@ -77,7 +77,7 @@ export default {
 
   created() {
     if (this.loggedIn) {
-      this.$router.push({name: LemkaEnums.Routes.PROFIL_ROUTE.name});
+      this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
     }
   },
 }

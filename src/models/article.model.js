@@ -17,6 +17,7 @@ export default class ArticleModel {
         this.ref_tag = R.is(Array, article.ref_tag) ? [new TagModel(article.ref_tag)] : []
 
         this.created_at = article.created_at && isValid(article.created_at) ? format(article.created_at, "DD-MM-YYYY") : null
+        this.updated_at = article.updated_at && isValid(article.updated_at) ? format(article.updated_at, "DD-MM-YYYY") : null
         this.slug = R.is(String, article.slug) ? article.slug : ""
         this.images_count = R.is(Number, article.images_count) ? article.images_count : null
         this.likes_count = R.is(Number, article.likes_count) ? article.likes_count : null
@@ -87,7 +88,7 @@ export default class ArticleModel {
 
     static async fetch_articles() {
         let articles = []
-        await ApiService.ArticleService.getArticleList().then(response => {
+        await ApiService.Articles.getArticles().then(response => {
             articles = response.data
         })
         return articles
@@ -96,7 +97,7 @@ export default class ArticleModel {
     static async fetch_article_by_slug(articleSlug) {
         let article = null
         let typeService = null
-        await ApiService.ArticleService.getArticleDetail(articleSlug).then(response => {
+        await ApiService.Articles.getArticle(articleSlug).then(response => {
             article = response.data
         }, error => {
             article = error.response.status
@@ -124,41 +125,41 @@ export default class ArticleModel {
 
     static async create_article(payload) {
         let response = null
-        await ApiService.ArticleService.postArticle(payload).then(res => {
+        await ApiService.Articles.postArticle(payload).then(res => {
             response = res
         })
         return response
     }
 
     static async update_article(payload) {
-        await ApiService.ArticleService.putArticle(payload.slug, payload)
+        await ApiService.Articles.putArticle(payload.slug, payload)
     }
 
     static async delete_article(articleSlug) {
-        await ApiService.ArticleService.deleteArticle(articleSlug)
+        await ApiService.Articles.deleteArticle(articleSlug)
     }
 
     static async fetch_article_images(articleSlug) {
         let article_images = []
-        await ApiService.ArticleService.getArticleImagesList(articleSlug).then(res => {
+        await ApiService.Articles.getArticleImagesList(articleSlug).then(res => {
             article_images = res.data
         })
         return article_images
     }
 
     static async create_article_image(article_slug, payload) {
-        await ApiService.ArticleService.postArticleImage(article_slug, payload)
+        await ApiService.Articles.postArticleImage(article_slug, payload)
     }
 
     static async update_article_image_by_id(article_slug, image_id, payload) {
-        await ApiService.ArticleService.putArticleImage(article_slug, image_id, payload)
+        await ApiService.Articles.putArticleImage(article_slug, image_id, payload)
     }
 
     static async patch_article_image(article_slug, image_id, payload) {
-        await ApiService.ArticleService.patchArticleImage(article_slug, image_id, payload)
+        await ApiService.Articles.patchArticleImage(article_slug, image_id, payload)
     }
 
     static async delete_article_image_by_id(article_slug, image_id) {
-        await ApiService.ArticleService.deleteArticleImage(article_slug, image_id)
+        await ApiService.Articles.deleteArticleImage(article_slug, image_id)
     }
 }

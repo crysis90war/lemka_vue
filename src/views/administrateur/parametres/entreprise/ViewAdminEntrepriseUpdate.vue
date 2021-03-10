@@ -231,7 +231,6 @@
 <script>
 import {validationMixin} from "vuelidate";
 import EntrepriseModel from "@/models/entreprise.model";
-import {LemkaEnums} from "@/helpers/enums.helper";
 import VilleModel from "@/models/ville.model";
 import PaysModel from "@/models/pays.model";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
@@ -306,7 +305,7 @@ export default {
         await EntrepriseModel.updateEntreprise(this.entreprise.toUpdatePayload())
         setTimeout(() => {
           this.submitStatus = 'OK'
-          this.$router.push({name: LemkaEnums.Routes.PARAMETRES_ENTREPRISE.name})
+          this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
         }, 500)
       }
     },
@@ -332,7 +331,7 @@ export default {
 
       next();
     } else {
-      next({name: LemkaEnums.Routes.PARAMETRES.name})
+      next({name: LemkaHelpers.Routes.PARAMETRES.name})
     }
   }
 }

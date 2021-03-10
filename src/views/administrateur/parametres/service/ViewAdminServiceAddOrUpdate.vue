@@ -62,7 +62,7 @@ import InvalidFeedback from "@/components/InvalidFeedback";
 import {mapActions} from "vuex";
 
 export default {
-  name: "ViewAdminServiceAdd",
+  name: "ViewAdminServiceAddOrUpdate",
   components: {InvalidFeedback},
   mixins: [validationMixin, validationMessageMixin],
   validations: {

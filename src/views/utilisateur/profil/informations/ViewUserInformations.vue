@@ -26,10 +26,10 @@
           <hr>
           <div>
             <span><i :class="icons.HOME" class="mr-2"></i></span>
-            <b-link v-if="adresse === null" :to="{name: links.ajouterAdresseLink}" class="">
+            <b-link v-if="adresse === null" :to="{name: routes.ADRESSE_ADD.name}" class="">
               <ins>Ajouter une adresse</ins>
             </b-link>
-            <b-link v-if="adresse !== null" :to="{name: links.modifierAdresseLink}" class="">
+            <b-link v-if="adresse !== null" :to="{name: routes.ADRESSE_UPDATE.name}" class="">
               <ins>Modifier l'adresse</ins>
             </b-link>
           </div>
@@ -40,7 +40,7 @@
             <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
           </div>
           <hr>
-          <b-button :to="{name: links.updateInformationsLink}"
+          <b-button :to="{name: routes.INFORMATIONS_UPDATE.name}"
                     variant="outline-primary my-3">
             Modifier profil
           </b-button>
@@ -76,7 +76,6 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import UploadModal from "@/components/UploadModal";
 import GenreModel from "@/models/genre.model";
 import ProfilModel from "@/models/profil.model";
@@ -95,12 +94,7 @@ export default {
       profil: new ProfilModel(),
       adresse: new AdresseModel(),
       loading: false,
-      links: {
-        thisRouteLink: LemkaEnums.Routes.INFORMATIONS.name,
-        updateInformationsLink: LemkaEnums.Routes.INFORMATIONS_UPDATE.name,
-        ajouterAdresseLink: LemkaEnums.Routes.ADRESSE_ADD.name,
-        modifierAdresseLink: LemkaEnums.Routes.ADRESSE_UPDATE.name
-      },
+      routes: LemkaHelpers.Routes,
       BSClass: LemkaHelpers.BSClass,
       icons: LemkaHelpers.FontAwesomeIcons,
     }

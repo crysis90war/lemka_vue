@@ -3,7 +3,7 @@
 <!--    <lemka-header></lemka-header>-->
     <lemka-navbar></lemka-navbar>
     <b-breadcrumb v-if="checkRoute() === true" class="mb-0">
-      <b-breadcrumb-item :to="{name: homeLink}"><i class="fas fa-home"></i></b-breadcrumb-item>
+      <b-breadcrumb-item :to="{name: routes.HOME_ROUTE.name}"><i class="fas fa-home"></i></b-breadcrumb-item>
       <b-breadcrumb-item v-for="item in items" :key="item.path" :to="item.path" :active="$route.name === item.name">
         {{ item.meta.value }}
       </b-breadcrumb-item>
@@ -15,10 +15,9 @@
 
 <script>
 import axios from "axios";
-import {LemkaEnums} from "@/helpers/enums.helper";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-// import Header from "@/components/Header";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: 'Home',
@@ -29,7 +28,7 @@ export default {
   },
   data() {
     return {
-      homeLink: LemkaEnums.Routes.HOME_ROUTE.name,
+      routes: LemkaHelpers.Routes,
       items: [],
     }
   },
@@ -47,9 +46,9 @@ export default {
       let route = this.$route.name;
 
       return (
-          (route !== LemkaEnums.Routes.HOME_ROUTE.name) &&
-          (route !== LemkaEnums.Routes.LOGIN_ROUTE.name) &&
-          (route !== LemkaEnums.Routes.REGISTER_ROUTE.name)
+          (route !== LemkaHelpers.Routes.HOME_ROUTE.name) &&
+          (route !== LemkaHelpers.Routes.LOGIN_ROUTE.name) &&
+          (route !== LemkaHelpers.Routes.REGISTER_ROUTE.name)
       );
     }
   },

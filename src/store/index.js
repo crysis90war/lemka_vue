@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { auth } from "@/store/auth.module";
-import { mensurationModule } from "@/store/mensuration.module";
-import { typeServiceModule } from "@/store/type_service.module";
-import { genreModule } from "@/store/genre.module";
-import { utilisateurModule } from "@/store/utilisateur.module";
-import { mercerieModule } from "@/store/mercerie.module";
-import { categorieModule } from "@/store/categorie.module";
-import { articleModule } from "@/store/article.module";
+import {auth} from "@/store/auth.module";
+import {mensurationModule} from "@/store/mensuration.module";
+import {typeServiceModule} from "@/store/type_service.module";
+import {genreModule} from "@/store/genre.module";
+import {utilisateurModule} from "@/store/utilisateur.module";
+import {mercerieModule} from "@/store/mercerie.module";
+import {categorieModule} from "@/store/categorie.module";
+import {articleModule} from "@/store/article.module";
+import {mercerieOptionModule} from "@/store/mercerie_option.module";
+import {couleurModule} from "@/store/couleur.module";
 
 Vue.use(Vuex)
 
@@ -20,6 +22,8 @@ export default new Vuex.Store({
     'Genres': genreModule,
     'Utilisateurs': utilisateurModule,
     'Merceries': mercerieModule,
+    'Options': mercerieOptionModule,
     'Categories': categorieModule,
+    'Couleurs': couleurModule
   }
 });

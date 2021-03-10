@@ -1,4 +1,5 @@
 import MercerieModel from "@/models/mercerie.model";
+import ApiService from "@/services";
 
 export const mercerieModule = {
     namespaced: true,
@@ -33,7 +34,7 @@ export const mercerieModule = {
             }
         },
         DELETE_MERCERIE(state, mercerie) {
-            const index = state.merceries.findIndex(item => item.id === mercerie.id)
+            const index = state.merceries.map(item => item.id).indexOf(mercerie.id)
             if (index !== -1) {
                 state.merceries.splice(index, 1)
             }
@@ -41,17 +42,47 @@ export const mercerieModule = {
     },
     actions: {
         loadMerceries: async function({commit}){
-            try {
+            return new Promise(((resolve, reject) => {
                 commit('LOADING_STATUS', true)
-                let merceries = await MercerieModel.fetchMerceries()
-                commit('LOAD_MERCERIES_SUCCESS', merceries)
-                commit('LOADING_STATUS', false)
-                return Promise.resolve()
-            } catch (e) {
-                commit('LOAD_MERCERIES_FAILURE')
-                commit('LOADING_STATUS', false)
-                return Promise.reject(e)
-            }
+                ApiService.Merceries.getMerceries().then(res => {
+                    commit('LOAD_MERCERIES_SUCCESS', res.data)
+                    commit('LOADING_STATUS', false)
+                }, error => {
+                    commit('LOAD_MERCERIES_FAILURE')
+                    commit('LOADING_STATUS', false)
+                    reject(error)
+                })
+            }))
+        },
+        createMercerie: function({commit}, payload) {
+            return new Promise(((resolve, reject) => {
+                ApiService.Merceries.postMercerie(payload).then(res => {
+                    commit('ADD_MERCERIE', Object.assign(new MercerieModel(), res.data))
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
+        },
+        updateMercerie: function({commit}, payload) {
+            return new Promise(((resolve, reject) => {
+                ApiService.Merceries.putMercerie(payload).then(res => {
+                    commit('UPDATE_MERCERIE', Object.assign(new MercerieModel(), res.data))
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
+        },
+        deleteMercerie: function ({commit}, mercerie) {
+            return new Promise(((resolve, reject) => {
+                ApiService.Merceries.deleteMercerie(mercerie.id).then(res => {
+                    commit('DELETE_MERCERIE', mercerie)
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
         }
     }
 }

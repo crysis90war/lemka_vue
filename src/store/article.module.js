@@ -1,4 +1,5 @@
 import ApiService from "@/services";
+import ArticleModel from "@/models/article.model";
 
 export const articleModule = {
     namespaced: true,
@@ -11,7 +12,7 @@ export const articleModule = {
             return state.articles.find(article => article.id === id)
         },
         articles: state => state.articles,
-        loadingStatus: state => state.loadCategories
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
         LOAD_ARTICLE_SUCCESS(state, articles) {
@@ -40,7 +41,7 @@ export const articleModule = {
         }
     },
     actions: {
-        loadArticles: function({commit}) {
+        loadArticles: function ({commit}) {
             return new Promise(((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.Articles.getArticles().then(res => {
@@ -53,6 +54,24 @@ export const articleModule = {
                     reject(error)
                 })
             }))
-        }
+        },
+        createArticle: function ({commit}, payload) {
+            return new Promise(((resolve, reject) => {
+                ApiService.Articles.postArticle(payload).then(res => {
+                    commit('ADD_ARTICLE', Object.assign(new ArticleModel(), res.data))
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            }))
+        },
+        // activerDesactiverArticle: function ({commit}, payload) {
+        //     return new Promise(((resolve, reject) => {
+        //         let data = {est_active: !payload.est_active}
+        //         ApiService.Articles.patchArticle(payload.slug, data).then(res => {
+        //
+        //         })
+        //     }))
+        // }
     }
 }

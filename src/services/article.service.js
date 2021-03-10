@@ -9,17 +9,12 @@ const IMAGES = '/images/';
 class ArticleService {
 
     getArticles() {
-        try {
-            return axios.get(ARTICLES, {headers: authHeader()})
-        } catch (error) {
-            return error
-        }
+        return axios.get(ARTICLES, {headers: authHeader()})
     }
 
-    getArticleDetail(articleSlug) {
+    getArticle(articleSlug) {
         let endpoint = `${ARTICLES}${articleSlug}/`;
         return axios.get(endpoint, {headers: authHeader()})
-
     }
 
     postArticle(payload) {
@@ -27,8 +22,8 @@ class ArticleService {
         return axios.post(endpoint, payload, {headers: authHeader()})
     }
 
-    putArticle(articleSlug, payload) {
-        let endpoint = `${ARTICLES}${articleSlug}/`;
+    putArticle(payload) {
+        let endpoint = `${ARTICLES}${payload.slug}/`;
         return axios.put(endpoint, payload, {headers: authHeader()})
     }
 

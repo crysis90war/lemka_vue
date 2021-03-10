@@ -59,7 +59,6 @@
 
 <script>
 import UserMensurationModel from "@/models/userMensuration.model";
-import {LemkaEnums} from "@/helpers/enums.helper";
 import LemkaHelpers from "@/helpers";
 
 export default {
@@ -74,8 +73,8 @@ export default {
       ],
       isBusy: false,
       links: {
-        addOrUpdate: LemkaEnums.Routes.MENSURATION_ADD_OR_UPDATE.name,
-        detail: LemkaEnums.Routes.MENSURATION_DETAIL.name,
+        addOrUpdate: LemkaHelpers.Routes.MENSURATION_ADD_OR_UPDATE.name,
+        detail: LemkaHelpers.Routes.MENSURATION_DETAIL.name,
       },
       icons: LemkaHelpers.FontAwesomeIcons,
       BSClass: LemkaHelpers.BSClass,

@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "RendezVous",
   data() {
     return {
-      rendez_vous: LemkaEnums.Routes.RENDEZ_VOUS.value,
+      rendez_vous: LemkaHelpers.Routes.RENDEZ_VOUS.value,
     }
   },
 }

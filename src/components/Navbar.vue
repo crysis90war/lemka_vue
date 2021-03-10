@@ -101,7 +101,7 @@
 
 <script>
 import SearchModal from "@/components/SearchModal";
-import {LemkaEnums} from "@/helpers/enums.helper";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "Navbar",
@@ -120,14 +120,14 @@ export default {
   data() {
     return {
       routes: {
-        home: {name: LemkaEnums.Routes.HOME_ROUTE.name, value: LemkaEnums.Routes.HOME_ROUTE.value},
-        horaire: {name: LemkaEnums.Routes.HORAIRE_ROUTE.name, value: LemkaEnums.Routes.HORAIRE_ROUTE.value},
-        about: {name: LemkaEnums.Routes.ABOUT_ROUTE.name, value: LemkaEnums.Routes.ABOUT_ROUTE.value},
-        contact: {name: LemkaEnums.Routes.CONTACT_ROUTE.name, value: LemkaEnums.Routes.CONTACT_ROUTE.value},
-        login: {name: LemkaEnums.Routes.LOGIN_ROUTE.name, value: LemkaEnums.Routes.LOGIN_ROUTE.value},
-        register: {name: LemkaEnums.Routes.REGISTER_ROUTE.name, value: LemkaEnums.Routes.REGISTER_ROUTE.value},
-        profil: {name: LemkaEnums.Routes.PROFIL_ROUTE.name, value: LemkaEnums.Routes.PROFIL_ROUTE.value},
-        admin: {name: LemkaEnums.Routes.ADMIN_ROUTE.name, value: LemkaEnums.Routes.ADMIN_ROUTE.value}
+        home: {name: LemkaHelpers.Routes.HOME_ROUTE.name, value: LemkaHelpers.Routes.HOME_ROUTE.value},
+        horaire: {name: LemkaHelpers.Routes.HORAIRE_ROUTE.name, value: LemkaHelpers.Routes.HORAIRE_ROUTE.value},
+        about: {name: LemkaHelpers.Routes.ABOUT_ROUTE.name, value: LemkaHelpers.Routes.ABOUT_ROUTE.value},
+        contact: {name: LemkaHelpers.Routes.CONTACT_ROUTE.name, value: LemkaHelpers.Routes.CONTACT_ROUTE.value},
+        login: {name: LemkaHelpers.Routes.LOGIN_ROUTE.name, value: LemkaHelpers.Routes.LOGIN_ROUTE.value},
+        register: {name: LemkaHelpers.Routes.REGISTER_ROUTE.name, value: LemkaHelpers.Routes.REGISTER_ROUTE.value},
+        profil: {name: LemkaHelpers.Routes.PROFIL_ROUTE.name, value: LemkaHelpers.Routes.PROFIL_ROUTE.value},
+        admin: {name: LemkaHelpers.Routes.ADMIN_ROUTE.name, value: LemkaHelpers.Routes.ADMIN_ROUTE.value}
       },
       show: false,
       brandVisible: false,

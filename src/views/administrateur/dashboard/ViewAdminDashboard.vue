@@ -3,69 +3,69 @@
     <b-card-group deck class="my-2">
       <!-- UTILISATEUR -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.USERS"
-                     :route_value="LemkaEnums.Routes.UTILISATEURS.value"
+                     :route_value="routes.UTILISATEURS.value"
                      :count="dashboard.user_count"
-                     :route_link="LemkaEnums.Routes.UTILISATEURS.name"
-                     :message="`${LemkaEnums.Routes.UTILISATEURS.value} actifs`"></DashboardCard>
+                     :route_link="routes.UTILISATEURS.name"
+                     :message="`${routes.UTILISATEURS.value} actifs`"></DashboardCard>
 
       <!-- ARTICLE -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.STORE"
-                     :route_value="LemkaEnums.Routes.ARTICLES.value"
+                     :route_value="routes.ARTICLES.value"
                      :count="dashboard.articles_count"
-                     :route_link="LemkaEnums.Routes.ARTICLES.name"
-                     :message="`${LemkaEnums.Routes.ARTICLES.value} actifs`"></DashboardCard>
+                     :route_link="routes.ARTICLES.name"
+                     :message="`${routes.ARTICLES.value} actifs`"></DashboardCard>
 
       <!-- MERCERIE -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.MERCERIES"
-                     :route_value="LemkaEnums.Routes.MERCERIES.value"
+                     :route_value="routes.MERCERIES.value"
                      :count="dashboard.merceries_count"
-                     :route_link="LemkaEnums.Routes.MERCERIES.name"
-                     :message="`${LemkaEnums.Routes.MERCERIES.value} actifs`"></DashboardCard>
+                     :route_link="routes.MERCERIES.name"
+                     :message="`${routes.MERCERIES.value} actifs`"></DashboardCard>
     </b-card-group>
 
     <b-card-group deck class="my-2">
       <!-- DEMANDE DE DEVIS -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.FOLDER_OPEN"
-                     :route_value="LemkaEnums.Routes.DEMANDE_DE_DEVIS.value"
+                     :route_value="routes.DEMANDE_DE_DEVIS.value"
                      :count="dashboard.demandes_de_devis_count"
-                     :route_link="LemkaEnums.Routes.DEMANDE_DE_DEVIS.name"
-                     :message="`${LemkaEnums.Routes.DEMANDE_DE_DEVIS.value} actifs`"></DashboardCard>
+                     :route_link="routes.DEMANDE_DE_DEVIS.name"
+                     :message="`${routes.DEMANDE_DE_DEVIS.value} actifs`"></DashboardCard>
 
       <!-- DEVIS -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.FOLDER"
-                     :route_value="LemkaEnums.Routes.DEVIS.value"
+                     :route_value="routes.DEVIS.value"
                      :count="dashboard.devis_count"
-                     :route_link="LemkaEnums.Routes.DEVIS.name"
-                     :message="`${LemkaEnums.Routes.DEVIS.value} actifs`"></DashboardCard>
+                     :route_link="routes.DEVIS.name"
+                     :message="`${routes.DEVIS.value} actifs`"></DashboardCard>
 
       <!-- BON DE COMMANDE -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.PLATEAU"
-                     :route_value="LemkaEnums.Routes.BONS_DE_COMMANDE.value"
+                     :route_value="routes.BONS_DE_COMMANDE.value"
                      :count="dashboard.bons_de_commande_count"
-                     :route_link="LemkaEnums.Routes.BONS_DE_COMMANDE.name"
-                     :message="`${LemkaEnums.Routes.BONS_DE_COMMANDE.value} actifs`"></DashboardCard>
+                     :route_link="routes.BONS_DE_COMMANDE.name"
+                     :message="`${routes.BONS_DE_COMMANDE.value} actifs`"></DashboardCard>
 
       <!-- FACTURE -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.MONEY"
-                     :route_value="LemkaEnums.Routes.FACTURE.value"
+                     :route_value="routes.FACTURE.value"
                      :count="dashboard.factures_count"
-                     :route_link="LemkaEnums.Routes.FACTURE.name"
-                     :message="`${LemkaEnums.Routes.FACTURE.value} actifs`"></DashboardCard>
+                     :route_link="routes.FACTURE.name"
+                     :message="`${routes.FACTURE.value} actifs`"></DashboardCard>
     </b-card-group>
 
     <b-card-group deck>
       <!-- RENDEZ-VOUS -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.CALENDAR"
-                     :route_value="LemkaEnums.Routes.RENDEZ_VOUS.value"
+                     :route_value="routes.RENDEZ_VOUS.value"
                      :count="dashboard.rendez_vous_count"
-                     :route_link="LemkaEnums.Routes.RENDEZ_VOUS.name"
-                     :message="`${LemkaEnums.Routes.RENDEZ_VOUS.value} actifs`"></DashboardCard>
+                     :route_link="routes.RENDEZ_VOUS.name"
+                     :message="`${routes.RENDEZ_VOUS.value} actifs`"></DashboardCard>
 
       <!-- PARAMETRE -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.PARAMETRES"
-                     :route_value="LemkaEnums.Routes.PARAMETRES.value"
-                     :route_link="LemkaEnums.Routes.PARAMETRES.name"
-                     :message="`${LemkaEnums.Routes.PARAMETRES.value} actifs`"></DashboardCard>
+                     :route_value="routes.PARAMETRES.value"
+                     :route_link="routes.PARAMETRES.name"
+                     :message="`${routes.PARAMETRES.value} actifs`"></DashboardCard>
     </b-card-group>
   </div>
 </template>
@@ -84,8 +84,8 @@ export default {
   },
   data() {
     return {
-      LemkaEnums,
       LemkaHelpers,
+      routes: LemkaHelpers.Routes,
       dashboard: {
         articles_count: 0,
         bons_de_commande_count: 0,

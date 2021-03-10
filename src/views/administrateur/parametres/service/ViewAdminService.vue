@@ -1,13 +1,16 @@
 <template>
   <div v-if="$route.name === routes.PARAMETRES_SERVICE.name">
-    <b-button variant="outline-success" size="sm"
-              :to="{name: routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name}">
-      {{ routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.value }}
-    </b-button>
+    <b-button-group>
+      <b-button variant="outline-success" size="sm" :to="{name: routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name}">
+        {{ routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.value }}
+      </b-button>
+      <b-button variant="outline-primary" size="sm" @click="loadOrRefresh">
+        <i class="fas fa-sync-alt"></i>
+      </b-button>
+    </b-button-group>
 
     <b-table :items="typeServices" :fields="fields" :busy="busy"
-             small show-empty hover bordered fixed
-             stacked="md" class="text-center mt-3">
+             small show-empty hover bordered fixed stacked="md" class="text-center mt-3">
 
       <template #table-busy>
         <div class="text-center text-secondary">
@@ -29,8 +32,7 @@
       </template>
 
       <template #cell(actions)="data">
-        <b-button variant="outline-danger" size="sm" class="mr-1"
-                  @click="deleteTypeService(data.item)">
+        <b-button variant="outline-danger" size="sm" class="mr-1" @click="deleteTypeService(data.item)">
           Suprrimer
         </b-button>
       </template>
@@ -57,11 +59,14 @@ export default {
     ...mapGetters({typeServices: 'TypeServices/typeServices', busy: 'TypeServices/loadingStatus'})
   },
   methods: {
-    ...mapActions({deleteTypeService: 'TypeServices/deleteTypeService'})
+    ...mapActions({deleteTypeService: 'TypeServices/deleteTypeService'}),
+    loadOrRefresh: function() {
+      this.$store.dispatch('TypeServices/loadTypeServices')
+    },
   },
   created() {
     if (this.typeServices.length === 0) {
-      this.$store.dispatch('TypeServices/loadTypeServices')
+      this.loadOrRefresh()
     }
   }
 }

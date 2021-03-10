@@ -46,7 +46,6 @@
 <script>
 import {validationMixin} from "vuelidate";
 import UserMensurationModel from "@/models/userMensuration.model";
-import {LemkaEnums} from "@/helpers/enums.helper";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/InvalidFeedback";
 import LemkaHelpers from "@/helpers";
@@ -68,7 +67,7 @@ export default {
       userMensuration: new UserMensurationModel(),
       submitStatus: null,
       links: {
-        mensurationLink: LemkaEnums.Routes.MENSURATIONS.name
+        mensurationLink: LemkaHelpers.Routes.MENSURATIONS.name
       },
       BSClass: LemkaHelpers.BSClass,
     }
