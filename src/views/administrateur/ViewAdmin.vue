@@ -1,14 +1,5 @@
 <template>
   <div class="administration">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light my-0">
-      <div class="container-fluid">
-        <button type="button" id="sidebarCollapse" @click="sidebarCollapse" class="btn">
-          <i class="fas fa-align-left"></i>
-        </button>
-        <p class="nav navbar-nav ml-auto">{{ $route.meta.value }}</p>
-      </div>
-    </nav>
-
     <div class="wrapper">
       <!-- Sidebar  -->
       <nav id="sidebar" class="bg-light">
@@ -27,12 +18,23 @@
       </nav>
 
       <!-- Page Content  -->
-      <div id="content" class="p-4">
+      <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light my-0">
+          <div class="container-fluid">
+            <button type="button" id="sidebarCollapse" @click="sidebarCollapse" class="btn">
+              <i class="fas fa-align-left"></i>
+            </button>
+            <p class="nav navbar-nav ml-auto">{{ $route.meta.value }}</p>
+          </div>
+        </nav>
+
         <b-card :class="BSClass.CARD_BORDERLESS_SHADOW">
           <router-view></router-view>
         </b-card>
       </div>
+
     </div>
+
   </div>
 </template>
 

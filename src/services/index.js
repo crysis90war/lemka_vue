@@ -15,7 +15,7 @@ import SectionService from '@/services/section.service';
 import TagService from '@/services/tag.service';
 import TypeProduitService from '@/services/typeProduit.service';
 import TypeServiceService from '@/services/type_service.service';
-import UserMensurationsService from '@/services/userMensuration.service';
+import UserMensurationsService from '@/services/user_mensuration.service';
 import UtilisateurService from '@/services/utilisateur.service';
 import VilleService from '@/services/ville.service';
 import MercerieOptionservice from '@/services/mercerie_option.service'
@@ -39,7 +39,7 @@ const ApiService = {
     TagService,
     TypeProduitService,
     'TypeService': TypeServiceService,
-    UserMensurationsService,
+    'UserMensurations': UserMensurationsService,
     UtilisateurService,
     VilleService,
 }

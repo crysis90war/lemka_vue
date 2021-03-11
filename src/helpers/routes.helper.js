@@ -19,11 +19,11 @@ export const Routes = {
     INFORMATIONS_UPDATE: {name: UserView + 'InformationsUpdate', value: 'Modifier'},
     ADRESSE_ADD: {name: UserView + 'AdresseAdd', value: 'Ajouter une adresse'},
     ADRESSE_UPDATE: {name: UserView + 'AdresseUpdate', value: 'Modifier l\'adresse'},
-    MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
-    MENSURATION_ADD_OR_UPDATE: {name: UserView + 'UserMensurationAddOrUpdate', value: 'Ajout-Modifier du mensuration'},
+    USER_MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
+    USER_MENSURATION_ADD_OR_UPDATE: {name: UserView + 'UserMensurationAddOrUpdate', value: 'Ajout-Modifier du mensuration'},
     // MENSURATION_ADD: {name: UserView + 'MensurationAdd', value: 'Ajouter Mensuration'},
     // MENSURATION_UPDATE: {name: UserView + 'MensurationUpdate', value: 'Modification'},
-    MENSURATION_DETAIL: {name: UserView + 'MensurationDetail', value: 'Détail'},
+    USER_MENSURATION_DETAIL: {name: UserView + 'MensurationDetail', value: 'Détail'},
     // endregion
 
     // region Admin routes

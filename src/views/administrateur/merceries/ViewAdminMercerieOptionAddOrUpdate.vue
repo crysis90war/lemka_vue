@@ -105,13 +105,67 @@
           Supprimer
         </b-button>
       </b-button-group>
-    </b-container>
 
-    <b-container class="my-3">
-      <b-jumbotron header="JSON">
-        <pre>{{ mercerie_option }}</pre>
-        <pre>{{ couleurs }}</pre>
-      </b-jumbotron>
+      <div v-if="id" class="mt-4">
+        <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
+          Ajouter des images
+        </b-button>
+
+        <b-modal id="image-modal" ref="image-modal" hide-footer title="Modifier image du profil" size="xl">
+          <b-form @submit.prevent="createImage">
+            <b-form-group id="input-group-image" label-for="input-image" description="Formats autorisés .jpg et .png">
+              <b-form-file v-model="image" id="input-image" ref="image" name="input-image" required
+                           accept="image/jpeg, image/png, .jpg, .png," @change="previewImage"></b-form-file>
+            </b-form-group>
+
+            <div class="d-flex">
+              <cropper :src="preview" :stencil-size="{width: 800,height: 800}"
+                       :stencil-props="{handlers: {}, movable: true, scalable: true, resizable: true}"
+                       class="cropper" style="max-width: 720px; max-height: 576px" @change="change"/>
+              <b-img v-if="destination !== null" :src="destination" height="360" width="360"></b-img>
+            </div>
+
+            <b-button-group class="d-flex">
+              <b-button variant="outline-success" type="submit">Créer</b-button>
+              <b-button variant="outline-danger" @click="hideModal('image-modal')">Annuler</b-button>
+            </b-button-group>
+          </b-form>
+        </b-modal>
+
+        <b-table :items="article_images" :fields="articles_images_fields" class="mt-2" stacked="md" small show-empty>
+          <template #empty>
+            <div class="text-center">
+              Cet article n'a pas d'images
+            </div>
+          </template>
+
+          <template #cell(image)="data">
+            <b-link :href="data.item.image" target="_blank">
+              <b-img :src="data.item.image" width="50" height="50"></b-img>
+            </b-link>
+          </template>
+
+          <template #cell(is_main)="data">
+            <b-badge :variant="data.item.is_main === true ? 'success' : 'primary'">
+              {{ data.item.is_main === true ? 'Principale' : 'Secondaire' }}
+            </b-badge>
+          </template>
+
+          <template #cell(define)="data">
+            <b-button v-if="data.item.is_main === false" size="sm" variant="outline-success"
+                      @click="update_image_is_main(data.item.id, data.item.is_main)">
+              Définir comme principale
+            </b-button>
+          </template>
+
+          <template #cell(actions)>
+            <b-button-group>
+              <b-button size="sm" variant="outline-primary">Modifier</b-button>
+              <b-button size="sm" variant="outline-danger">Supprimer</b-button>
+            </b-button-group>
+          </template>
+        </b-table>
+      </div>
     </b-container>
   </div>
 </template>
@@ -165,7 +219,7 @@ export default {
       if (this.id !== undefined) {
         Object.assign(this.mercerie_option, this.$store.getters["Options/mercerie_option"](id))
         if (this.couleurs.length !== 0 && this.mercerie_option.ref_couleur !== undefined) {
-          this.mercerie_option.ref_couleur = await this.$store.getters["Couleurs/couleur"](this.mercerie.ref_categorie)
+          this.mercerie_option.ref_couleur = this.$store.getters["Couleurs/couleur"](this.mercerie_option.ref_couleur)
         }
       }
     },

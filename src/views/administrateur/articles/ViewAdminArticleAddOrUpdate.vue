@@ -117,8 +117,8 @@
       </b-form>
 
       <div v-if="slug" class="mt-4">
-        <b-button variant="outline-success"
-                  size="sm" @click="showModal('image-modal')">Ajouter des images
+        <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
+          Ajouter des images
         </b-button>
 
         <b-modal id="image-modal" ref="image-modal" hide-footer title="Modifier image du profil" size="xl">

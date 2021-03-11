@@ -25,8 +25,8 @@ export default {
           icon: LemkaHelpers.FontAwesomeIcons.USER
         },
         {
-          href: {name: LemkaHelpers.Routes.MENSURATIONS.name},
-          title: LemkaHelpers.Routes.MENSURATIONS.value,
+          href: {name: LemkaHelpers.Routes.USER_MENSURATIONS.name},
+          title: LemkaHelpers.Routes.USER_MENSURATIONS.value,
           icon: LemkaHelpers.FontAwesomeIcons.MESURE
         },
       ],

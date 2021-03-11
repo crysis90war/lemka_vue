@@ -9,31 +9,26 @@
     <b-card-body>
 
 
-      <b-form @submit.prevent="submit">
-
+      <b-form>
         <div class="text-center">
           <b-button-group>
             <b-button variant="outline-primary"
-                      type="submit"
-                      :disabled="submitStatus === 'PENDING'">Enregistrer</b-button>
-            <b-button variant="outline-danger" @click="$router.go(-1)">Retour</b-button>
+                      :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
+              Enregistrer
+            </b-button>
+            <b-button variant="outline-danger"
+                      @click="$router.push({name: routes.USER_MENSURATIONS.name})">
+              Retour
+            </b-button>
           </b-button-group>
           <hr>
         </div>
 
-
-
-
         <b-form-group v-for="v in $v.mensurationUserMensurations.$each.$iter"
-                      :key="v.$model.id"
-                      :label="v.$model.ref_mensuration"
-                      :state="validateState(v.mesure)"
-                      :description="`Mesure : ${v.$model.mesure} cm`">
+                      :key="v.$model.id" :label="v.$model.ref_mensuration"
+                      :state="validateState(v.mesure)" :description="`Mesure : ${v.$model.mesure} cm`">
           <b-form-input v-model.trim="v.mesure.$model"
-                        type="range"
-                        min="0"
-                        max="250"
-                        step="0.5"></b-form-input>
+                        type="range" min="0" max="250" step="0.5"></b-form-input>
           <b-form-invalid-feedback>
             <span v-if="!v.mesure.numeric">La mesure doit être numérique.</span>
             <span v-if="!v.mesure.between">La mesure doit être comprise entre 0 et 250 cm</span>
@@ -47,7 +42,7 @@
 <script>
 import MensurationUserMensurationModel from "@/models/mensurationUserMensuration.model";
 import {validationMixin} from "vuelidate";
-import UserMensurationModel from "@/models/userMensuration.model";
+import UserMensurationModel from "@/models/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
 
 export default {
@@ -68,19 +63,14 @@ export default {
       userMensuration: new UserMensurationModel(),
       mensurationUserMensurations: [],
       submitStatus: null,
-      links: {
-        mensurations: LemkaHelpers.Routes.MENSURATIONS.name
-      },
-      icons: {
-        leftArrow: LemkaHelpers.FontAwesomeIcons.LONG_LEFT_ARROW
-      },
+      routes: LemkaHelpers.Routes,
       BSClass: LemkaHelpers.BSClass
     }
   },
 
   methods: {
     async chargerMensurationsUserMensurations() {
-      Object.assign(this.userMensuration, await UserMensurationModel.fetchUserMensuration(this.id))
+      Object.assign(this.userMensuration, await this.$store.getters["UserMensurations/user_mensuration"](this.id))
       let listMensurations = await MensurationUserMensurationModel.fetchMensurationUserMensurationList(this.userMensuration.id)
       for (const item of listMensurations) {
         let mensuration = new MensurationUserMensurationModel()
@@ -101,7 +91,7 @@ export default {
 
         setTimeout(() => {
           this.submitStatus = 'OK'
-          this.$router.push({name: this.links.mensurations})
+          this.$router.push({name: this.routes.USER_MENSURATIONS.name})
         }, 500)
       }
     },
@@ -114,7 +104,7 @@ export default {
 
   created() {
     if (this.id === null || this.id === undefined || isNaN(this.id)) {
-      this.$router.push({name: this.links.mensurations})
+      this.$router.push({name: this.routes.USER_MENSURATIONS.name})
     } else {
       this.chargerMensurationsUserMensurations()
     }

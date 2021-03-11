@@ -10,6 +10,7 @@ import {categorieModule} from "@/store/categorie.module";
 import {articleModule} from "@/store/article.module";
 import {mercerieOptionModule} from "@/store/mercerie_option.module";
 import {couleurModule} from "@/store/couleur.module";
+import {userMensurationModule} from "@/store/user_mensuration.module";
 
 Vue.use(Vuex)
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     'Merceries': mercerieModule,
     'Options': mercerieOptionModule,
     'Categories': categorieModule,
-    'Couleurs': couleurModule
+    'Couleurs': couleurModule,
+    'UserMensurations': userMensurationModule
   }
 });

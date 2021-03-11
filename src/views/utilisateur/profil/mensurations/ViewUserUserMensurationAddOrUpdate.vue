@@ -3,7 +3,7 @@
           class="my-4"
           :class="BSClass.CARD_BORDERLESS_SHADOW">
     <b-card-body>
-      <b-form @submit.prevent="submit">
+      <b-form>
         <b-form-group :label="userMensuration.is_main === true ? 'Principale' : 'Secondaire'"
                       description="Veuillez spécifier si la mensuration est principale ou secondaire">
           <b-form-checkbox v-model="userMensuration.is_main" switch></b-form-checkbox>
@@ -31,12 +31,14 @@
         </b-form-group>
 
         <b-button-group>
-          <b-button type="submit"
-                    :variant="id !== undefined ? 'outline-primary' : 'outline-success'"
-                    :disabled="submitStatus === 'PENDING'">
+          <b-button variant="outline-dark"
+                    @click="$router.push({name: routes.USER_MENSURATIONS.name})">
+            <i class="fas fa-arrow-left"></i>
+          </b-button>
+          <b-button :variant="id !== undefined ? 'outline-primary' : 'outline-success'"
+                    :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
             {{ id !== undefined ? 'Modifier' : 'Ajouter' }}
           </b-button>
-          <b-button variant="outline-danger" @click="$router.go(-1)">Retour</b-button>
         </b-button-group>
       </b-form>
     </b-card-body>
@@ -45,10 +47,11 @@
 
 <script>
 import {validationMixin} from "vuelidate";
-import UserMensurationModel from "@/models/userMensuration.model";
+import UserMensurationModel from "@/models/user_mensuration.model";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/InvalidFeedback";
 import LemkaHelpers from "@/helpers";
+import {mapActions} from "vuex";
 
 export default {
   name: "ViewUserUserMensurationAddOrUpdate",
@@ -66,19 +69,16 @@ export default {
     return {
       userMensuration: new UserMensurationModel(),
       submitStatus: null,
-      links: {
-        mensurationLink: LemkaHelpers.Routes.MENSURATIONS.name
-      },
+      routes: LemkaHelpers.Routes,
       BSClass: LemkaHelpers.BSClass,
     }
   },
   methods: {
-    chargerUserMensuration: async function() {
-      console.log('chargement')
-      Object.assign(this.userMensuration, await UserMensurationModel.fetchUserMensuration(this.id))
-    },
-
-    submit: async function() {
+    ...mapActions({
+      createUserMensuration: "UserMensurations/createUserMensuration",
+      updateUserMensuration: "UserMensurations/updateUserMensuration"
+    }),
+    submit: function () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
@@ -86,14 +86,14 @@ export default {
         this.submitStatus = 'PENDING'
 
         if (this.id !== undefined) {
-          await UserMensurationModel.updateUserMensuration(this.id, this.userMensuration.toUpdatePayload())
+          this.updateUserMensuration(this.userMensuration.toUpdatePayload())
         } else {
-          await UserMensurationModel.createUserMensuration(this.userMensuration.toCreatePayload())
+          this.createUserMensuration(this.userMensuration.toCreatePayload())
         }
 
         setTimeout(() => {
           this.submitStatus = 'OK'
-          this.$router.go(-1)
+          this.$router.push({name: this.routes.USER_MENSURATIONS.name})
         }, 500)
       }
     },
@@ -106,7 +106,7 @@ export default {
 
   created() {
     if (this.id !== undefined) {
-      this.chargerUserMensuration()
+      Object.assign(this.userMensuration, this.$store.getters["UserMensurations/user_mensuration"](this.id))
     }
   }
 }

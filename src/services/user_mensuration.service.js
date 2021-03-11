@@ -20,8 +20,8 @@ class UserMensurationService {
         return axios.post(ROUTE, payload, {headers: authHeader()})
     }
 
-    putUserMensurations(userMensurationId, payload) {
-        let endpoint = `${ROUTE}${userMensurationId}/`;
+    putUserMensuration(payload) {
+        let endpoint = `${ROUTE}${payload.id}/`;
 
         return axios.put(endpoint, payload, {headers: authHeader()})
     }

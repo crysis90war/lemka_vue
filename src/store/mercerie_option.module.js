@@ -1,4 +1,5 @@
 import ApiService from "@/services";
+import MercerieOptionModel from "@/models/mercerie_option.model";
 
 export const mercerieOptionModule = {
     namespaced: true,
@@ -33,7 +34,7 @@ export const mercerieOptionModule = {
             }
         },
         DELETE_MERCERIE_OPTION(state, mercerie_option) {
-            const index = state.mercerie_options.map(item => item).indexOf(mercerie_option.id)
+            const index = state.mercerie_options.map(item => item.id).indexOf(mercerie_option.id)
             if (index !== -1) {
                 state.mercerie_options.splice(index, 1)
             }
@@ -57,7 +58,7 @@ export const mercerieOptionModule = {
         createMercerieOption: function ({commit}, [merceried_id, payload]) {
             return new Promise(((resolve, reject) => {
                 ApiService.Options.postMercerieOption(merceried_id, payload).then(res => {
-                    commit('ADD_MERCERIE_OPTION', res.data)
+                    commit('ADD_MERCERIE_OPTION', Object.assign(new MercerieOptionModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)
@@ -67,7 +68,7 @@ export const mercerieOptionModule = {
         updateMercerieOption: function({commit}, [mercerie_id, payload]) {
             return new Promise(((resolve, reject) => {
                 ApiService.Options.putMercerieOption(mercerie_id, payload).then(res => {
-                    commit('UPDATE_MERCERIE_OPTION', res.data)
+                    commit('UPDATE_MERCERIE_OPTION', Object.assign(new MercerieOptionModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)

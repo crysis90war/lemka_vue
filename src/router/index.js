@@ -219,15 +219,15 @@ const profilRoutes = [
   },
   {
     path: PROFIL + '/mensurations/:id/detail',
-    name: ROUTES.MENSURATION_DETAIL.name,
-    meta: {value: ROUTES.MENSURATION_DETAIL.value},
+    name: ROUTES.USER_MENSURATION_DETAIL.name,
+    meta: {value: ROUTES.USER_MENSURATION_DETAIL.value},
     component: () => import('../views/utilisateur/profil/mensurations/ViewUserMensurationsDetail'),
     props: true
   },
   {
     path: PROFIL + '/mensuration/:id?',
-    name: ROUTES.MENSURATION_ADD_OR_UPDATE.name,
-    meta: {value: ROUTES.MENSURATION_ADD_OR_UPDATE.value},
+    name: ROUTES.USER_MENSURATION_ADD_OR_UPDATE.name,
+    meta: {value: ROUTES.USER_MENSURATION_ADD_OR_UPDATE.value},
     component: () => import('../views/utilisateur/profil/mensurations/ViewUserUserMensurationAddOrUpdate'),
     props: true
   },
