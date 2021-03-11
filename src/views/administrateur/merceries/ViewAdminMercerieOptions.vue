@@ -1,8 +1,9 @@
 <template>
   <div class="options">
-    <h2>{{ mercerie.nom }}</h2>
+    <h3>{{ mercerie.nom }}</h3>
     <div class="mt-5">
-      <b-button-group class="my-2">
+
+      <b-button-group class="my-2" size="sm">
         <b-button variant="outline-dark" @click="$router.push({name: routes.MERCERIES.name})">
           <i class="fas fa-arrow-left"></i>
         </b-button>
@@ -10,12 +11,14 @@
                   :to="{name: routes.MERCERIE_OPTIONS_ADD_OR_UPDATE.name, params: {mercerie_id: id}}">
           Ajouter option
         </b-button>
-        <b-button variant="outline-primary" size="sm" @click="loadOrRefresh">
+        <b-button variant="outline-primary" @click="loadOrRefresh">
           <i class="fas fa-sync-alt"></i>
         </b-button>
       </b-button-group>
+
       <b-table :items="mercerie_options" :fields="fields" :busy="busy"
                hover show-empty small stacked="md" class="text-center">
+
         <template #table-busy>
           <TableBusy/>
         </template>
@@ -36,16 +39,18 @@
 
         <template #cell(actions)="data">
           <b-button-group>
-            <b-button variant="outline-primary"
+            <b-button variant="outline-primary" size="sm"
                       :to="{name: routes.MERCERIE_OPTIONS_ADD_OR_UPDATE.name, params: {mercerie_id: id, id: data.item.id}}">
               <i class="fas fa-edit"></i>
             </b-button>
-            <b-button variant="outline-danger">
+            <b-button variant="outline-danger" size="sm"
+                      @click="deleteMercerieOption([id, data.item])">
               <i class="fas fa-trash-alt"></i>
             </b-button>
           </b-button-group>
         </template>
       </b-table>
+
     </div>
   </div>
 </template>
@@ -88,7 +93,11 @@ export default {
     }),
   },
   methods: {
-    ...mapActions({loadMercerieOptions: 'Options/loadMercerieOptions', loadCouleurs: 'Couleurs/loadCouleurs'}),
+    ...mapActions({
+      loadMercerieOptions: 'Options/loadMercerieOptions',
+      deleteMercerieOption: "Options/deleteMercerieOption",
+      loadCouleurs: 'Couleurs/loadCouleurs'
+    }),
     loadOrRefresh: async function () {
       await this.loadMercerieOptions(this.id)
     },

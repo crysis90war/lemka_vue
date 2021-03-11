@@ -1,6 +1,5 @@
 import * as R from 'ramda'
 import {maxLength, minLength, required} from "vuelidate/lib/validators";
-import ApiService from "@/services";
 
 export default class MensurationModel {
     constructor(mensuration = {}) {
@@ -31,34 +30,11 @@ export default class MensurationModel {
         }
     }
 
-    static async fetchMensurations() {
-        let mensurations = []
-        await ApiService.MensurationService.getMensurationList().then(response => {
-            response.data.forEach(item => {
-                Object.assign(new MensurationModel(), item)
-                mensurations.push(item)
-            })
-        })
-        return mensurations
-    }
-
-    static async createMensuration(payload) {
-        let mensuration = null
-        await ApiService.MensurationService.postMensuration(payload).then(res => {
-            mensuration = res.data
-        })
-        return mensuration
-    }
-
-    static async fetchMensuration(mensurationId) {
-        let mensuration = {}
-        await ApiService.MensurationService.getMensurationDetail(mensurationId).then(response => {
-            mensuration = response.data
-        })
-        return mensuration
-    }
-
-    static async deleteMensuration(mensuration_id) {
-        await ApiService.MensurationService.deleteMensuration(mensuration_id)
+    static get tableFields() {
+        return [
+            {key: 'id', label: '#'},
+            {key: 'nom', label: 'Nom', sortable: true},
+            {key: 'actions', label: 'Actions'}
+        ]
     }
 }

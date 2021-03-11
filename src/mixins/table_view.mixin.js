@@ -3,7 +3,7 @@ import {localTimeStr} from "@/utils/filters";
 export const tableViewMixin = {
     data() {
         return {
-            items: [],
+            // items: [],
             totalRows: 1,
             currentPage: 1,
             perPage: 10,
@@ -52,5 +52,9 @@ export const tableViewMixin = {
             value = localTimeStr(value)
             return value
         }
+    },
+    mounted() {
+        // Set the initial number of items
+        this.totalRows = this.items.length
     },
 }

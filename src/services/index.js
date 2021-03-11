@@ -27,7 +27,7 @@ const ApiService = {
     EntrepriseService,
     GenreService,
     MensurationUserMensurationService,
-    MensurationService,
+    'Mensurations': MensurationService,
     'Categories': CategorieService,
     'Couleurs': CouleurService,
     'Merceries': MercerieService,

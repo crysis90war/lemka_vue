@@ -6,7 +6,7 @@ const ROUTE = LemkaEnums.Endpoints.MENSURATION_ENDPOINT;
 
 class MensurationService {
 
-    getMensurationList() {
+    getMensurations() {
         return axios.get(ROUTE, {headers: authHeader()})
     }
 
@@ -19,8 +19,8 @@ class MensurationService {
         return axios.post(ROUTE, payload, {headers: authHeader()})
     }
 
-    putMensuration(mensurationId, payload) {
-        let endpoint = `${ROUTE}${mensurationId}/`;
+    putMensuration(payload) {
+        let endpoint = `${ROUTE}${payload.id}/`;
         return axios.put(endpoint, payload, {headers: authHeader()})
     }
 

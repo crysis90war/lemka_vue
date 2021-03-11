@@ -54,7 +54,7 @@
     </b-row>
 
     <b-row class="mt-3 mb-2">
-      <b-col lg="5" class="my-1">
+      <b-col lg="5">
         <b-button-group>
           <b-button variant="outline-success" size="sm" :to="{name: routes.MERCERIES_ADD_OR_UPDATE.name}">
             Créer un nouveau
@@ -65,7 +65,7 @@
         </b-button-group>
       </b-col>
 
-      <b-col lg="7" class="my-1">
+      <b-col lg="7">
         <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
                       align="fill" size="sm" class="my-0">
         </b-pagination>

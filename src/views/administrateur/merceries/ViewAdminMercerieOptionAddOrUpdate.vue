@@ -2,7 +2,7 @@
   <div>
     <b-container>
       <div v-if="id" class="mb-5">
-        <h2 >{{ mercerie_option.name }}</h2>
+        <h2>{{ mercerie_option.name }}</h2>
       </div>
 
       <b-input-group class="my-1">
@@ -94,14 +94,14 @@
       </b-row>
 
       <b-button-group>
-        <b-button variant="outline-dark"
+        <b-button variant="outline-dark" size="sm"
                   @click="$router.push({name: routes.MERCERIE_OPTIONS.name, params: {id: mercerie_id}})">
           <i class="fas fa-arrow-left"></i>
         </b-button>
-        <b-button :variant="id !== undefined ? 'outline-primary' : 'outline-success'" @click.prevent="submit">
+        <b-button :variant="id !== undefined ? 'outline-primary' : 'outline-success'" size="sm" @click.prevent="submit">
           {{ id !== undefined ? 'Modifier' : 'Créer' }}
         </b-button>
-        <b-button v-if="id !== undefined" variant="outline-danger">
+        <b-button v-if="id !== undefined" variant="outline-danger" size="sm">
           Supprimer
         </b-button>
       </b-button-group>
@@ -178,10 +178,11 @@ import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin"
 import InvalidFeedback from "@/components/InvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
+import {Cropper} from "vue-advanced-cropper";
 
 export default {
   name: "ViewAdminMercerieOptionAddOrUpdate",
-  components: {InvalidFeedback},
+  components: {InvalidFeedback, Cropper},
   props: {
     mercerie_id: {
       required: true
@@ -263,8 +264,5 @@ export default {
 </script>
 
 <style scoped>
-.invalid {
-  border: solid red 1px;
-  border-radius: 5px;
-}
+
 </style>

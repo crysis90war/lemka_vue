@@ -147,8 +147,5 @@ export default {
 </script>
 
 <style scoped>
-.invalid {
-  border: solid red 1px;
-  border-radius: 5px;
-}
+
 </style>
