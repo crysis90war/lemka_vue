@@ -93,19 +93,6 @@
         </b-col>
       </b-row>
 
-      <b-button-group>
-        <b-button variant="outline-dark" size="sm"
-                  @click="$router.push({name: routes.MERCERIE_OPTIONS.name, params: {id: mercerie_id}})">
-          <i class="fas fa-arrow-left"></i>
-        </b-button>
-        <b-button :variant="id !== undefined ? 'outline-primary' : 'outline-success'" size="sm" @click.prevent="submit">
-          {{ id !== undefined ? 'Modifier' : 'Créer' }}
-        </b-button>
-        <b-button v-if="id !== undefined" variant="outline-danger" size="sm">
-          Supprimer
-        </b-button>
-      </b-button-group>
-
       <div v-if="id" class="mt-4">
         <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
           Ajouter des images
@@ -166,6 +153,19 @@
           </template>
         </b-table>
       </div>
+
+      <b-button-group class="mt-3">
+        <b-button variant="outline-dark"
+                  @click="$router.push({name: routes.MERCERIE_OPTIONS.name, params: {id: mercerie_id}})">
+          <i class="fas fa-arrow-left"></i>
+        </b-button>
+        <b-button :variant="id !== undefined ? 'outline-primary' : 'outline-success'" @click.prevent="submit">
+          {{ id !== undefined ? 'Modifier' : 'Créer' }}
+        </b-button>
+        <b-button v-if="id !== undefined" variant="outline-danger">
+          Supprimer
+        </b-button>
+      </b-button-group>
     </b-container>
   </div>
 </template>

@@ -68,11 +68,15 @@ export function b64toBlob(b64Data, contentType, sliceSize) {
  * @param mimeType
  * @returns {Promise<File>}
  */
-export function urltoFile(url, filename, mimeType){
-    mimeType = mimeType || (url.match(/^data:([^;]+);/)||'')[1];
+export function urltoFile(url, filename, mimeType) {
+    mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1];
     return (fetch(url)
-            .then(function(res){return res.arrayBuffer();})
-            .then(function(buf){return new File([buf], filename, {type:mimeType});})
+            .then(function (res) {
+                return res.arrayBuffer();
+            })
+            .then(function (buf) {
+                return new File([buf], filename, {type: mimeType});
+            })
     );
 }
 
@@ -88,9 +92,10 @@ export function urltoFile(url, filename, mimeType){
  * @returns {File}
  */
 export function dataURLtoFile(dataurl, filename) {
-    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--){
+    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length,
+        u8arr = new Uint8Array(n);
+    while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
     }
-    return new File([u8arr], filename, {type:mime});
+    return new File([u8arr], filename, {type: mime});
 }
