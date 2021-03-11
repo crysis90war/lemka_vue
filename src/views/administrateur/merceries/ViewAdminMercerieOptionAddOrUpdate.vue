@@ -93,6 +93,28 @@
         </b-col>
       </b-row>
 
+      <!-- region Caractéristiques -->
+      <div v-if="id" class="mt-4">
+        <b-button-group size="sm">
+          <b-button variant="outline-success">
+            Ajouter des dimensions
+          </b-button>
+        </b-button-group>
+
+        <b-table :fields="MeOptFields"
+                 hover show-empty small stacked="md" class="text-center my-3">
+          <template #table-busy>
+            <TableBusy/>
+          </template>
+
+          <template #empty>
+            <TableEmpty/>
+          </template>
+        </b-table>
+      </div>
+      <!-- endregion -->
+
+      <!-- region Images -->
       <div v-if="id" class="mt-4">
         <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
           Ajouter des images
@@ -120,10 +142,12 @@
         </b-modal>
 
         <b-table :items="article_images" :fields="articles_images_fields" class="mt-2" stacked="md" small show-empty>
+          <template #table-busy>
+            <TableBusy/>
+          </template>
+
           <template #empty>
-            <div class="text-center">
-              Cet article n'a pas d'images
-            </div>
+            <TableEmpty/>
           </template>
 
           <template #cell(image)="data">
@@ -153,6 +177,7 @@
           </template>
         </b-table>
       </div>
+      <!-- endregion -->
 
       <b-button-group class="mt-3">
         <b-button variant="outline-dark"
@@ -179,23 +204,28 @@ import InvalidFeedback from "@/components/InvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {Cropper} from "vue-advanced-cropper";
+import {fonctions} from "@/mixins/functions.mixin";
+import TableEmpty from "@/components/TableEmpty";
+import TableBusy from "@/components/TableBusy";
+import MercerieOptionCatacteristiqueModel from "@/models/mercerie_option_catacteristique.model";
 
 export default {
   name: "ViewAdminMercerieOptionAddOrUpdate",
-  components: {InvalidFeedback, Cropper},
+  components: {InvalidFeedback, Cropper, TableEmpty, TableBusy},
   props: {
     mercerie_id: {
       required: true
     },
     id: {}
   },
-  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin],
+  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin, fonctions],
   validations: {
     mercerie_option: MercerieOptionModel.validations
   },
   data() {
     return {
       mercerie_option: new MercerieOptionModel(),
+      MeOptFields: MercerieOptionCatacteristiqueModel.tableFields,
       submitStatus: null,
       routes: LemkaHelpers.Routes
     }

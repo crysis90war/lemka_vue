@@ -18,7 +18,8 @@ import TypeServiceService from '@/services/type_service.service';
 import UserMensurationsService from '@/services/user_mensuration.service';
 import UtilisateurService from '@/services/utilisateur.service';
 import VilleService from '@/services/ville.service';
-import MercerieOptionservice from '@/services/mercerie_option.service'
+import MercerieOptionservice from '@/services/mercerie_option.service';
+import CaracteristiqueService from '@/services/caracteristique.service';
 
 const ApiService = {
     AdresseService,
@@ -32,6 +33,7 @@ const ApiService = {
     'Couleurs': CouleurService,
     'Merceries': MercerieService,
     'Options': MercerieOptionservice,
+    'Catacteristiques': CaracteristiqueService,
     PaysService,
     ProfilService,
     RayonService,

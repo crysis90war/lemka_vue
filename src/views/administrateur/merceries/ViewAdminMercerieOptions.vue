@@ -32,7 +32,7 @@
         </template>
 
         <template #cell(est_publie)="data">
-          <b-button :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'">
+          <b-button :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'" size="sm">
             {{ data.item.est_publie === true ? 'Désactiver' : 'Publier' }}
           </b-button>
         </template>

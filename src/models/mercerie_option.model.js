@@ -6,6 +6,7 @@ export default class MercerieOptionModel {
     constructor(mercerie_option = {}) {
         this.id = R.is(Number, mercerie_option.id) ? mercerie_option.id : null
         this.name = R.is(String, mercerie_option.name) ? mercerie_option.name : ""
+        this.images_count = R.is(Number, mercerie_option.images_count) ? mercerie_option.images_count : 0
         this.est_publie = R.is(Boolean, mercerie_option.est_publie) ? mercerie_option.est_publie : false
         this.reference = R.is(String, mercerie_option.reference) ? mercerie_option.reference : ""
         this.description = R.is(String, mercerie_option.description) ? mercerie_option.description : ""
@@ -62,6 +63,7 @@ export default class MercerieOptionModel {
             {key: 'reference', label: 'Référence', sortable: true},
             {key: 'name', label: 'Nom', sortable: true},
             {key: 'prix_u_ht', label: 'Prix U HT', sortable: true},
+            {key: 'images_count', label: 'Images', sortable: true},
             {key: 'stock', label: 'Stock', sortable: true},
             {
                 key: 'est_publie', label: 'Publication',

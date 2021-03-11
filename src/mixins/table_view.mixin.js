@@ -44,6 +44,9 @@ export const tableViewMixin = {
         },
         toggleBusy: function() {
             this.isBusy = !this.isBusy
+        },
+        itemsLength(items) {
+            return items.length
         }
     },
 
@@ -53,8 +56,8 @@ export const tableViewMixin = {
             return value
         }
     },
-    mounted() {
-        // Set the initial number of items
-        this.totalRows = this.items.length
-    },
+    // mounted() {
+    //     // Set the initial number of items
+    //     this.totalRows = this.itemsLength
+    // },
 }

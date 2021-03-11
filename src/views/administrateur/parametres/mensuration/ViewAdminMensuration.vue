@@ -73,7 +73,7 @@
       </b-col>
     </b-row>
 
-    <b-table :items="items" :fields="fields" :busy="busy" :per-page="perPage" :filter="filter"
+    <b-table :items="mensurations" :fields="fields" :busy="busy" :per-page="perPage" :filter="filter"
              :current-page="currentPage" :filter-included-fields="filterOn" :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
              hover show-empty small stacked="md" class="text-center" @filtered="onFiltered">
@@ -129,7 +129,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({busy: 'Mensurations/loadingStatus', items: 'Mensurations/mensurations'}),
+    ...mapGetters({busy: 'Mensurations/loadingStatus', mensurations: 'Mensurations/mensurations'}),
   },
   methods: {
     ...mapActions({
@@ -141,9 +141,12 @@ export default {
     }
   },
   created() {
-    if (this.items.length === 0) {
+    if (this.mensurations.length === 0) {
       this.loadOrRefresh()
     }
+  },
+  mounted() {
+    this.totalRows = this.itemsLength(this.mensurations)
   }
 }
 </script>
