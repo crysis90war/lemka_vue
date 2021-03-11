@@ -42,7 +42,7 @@ export const mercerieModule = {
     },
     actions: {
         loadMerceries: async function({commit}){
-            return new Promise(((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.Merceries.getMerceries().then(res => {
                     commit('LOAD_MERCERIES_SUCCESS', res.data)
@@ -52,37 +52,37 @@ export const mercerieModule = {
                     commit('LOADING_STATUS', false)
                     reject(error)
                 })
-            }))
+            })
         },
         createMercerie: function({commit}, payload) {
-            return new Promise(((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.Merceries.postMercerie(payload).then(res => {
                     commit('ADD_MERCERIE', Object.assign(new MercerieModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
         updateMercerie: function({commit}, payload) {
-            return new Promise(((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.Merceries.putMercerie(payload).then(res => {
                     commit('UPDATE_MERCERIE', Object.assign(new MercerieModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
         deleteMercerie: function ({commit}, mercerie) {
-            return new Promise(((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.Merceries.deleteMercerie(mercerie.id).then(res => {
                     commit('DELETE_MERCERIE', mercerie)
                     resolve(res)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         }
     }
 }

@@ -42,7 +42,7 @@ export const mercerieOptionModule = {
     },
     actions: {
         loadMercerieOptions: function ({commit}, mercerie_id) {
-            return new Promise(((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.Options.getMercerieOptions(mercerie_id).then(res => {
                     commit('LOAD_MERCERIE_OPTIONS_SUCCESS', res.data)
@@ -53,37 +53,37 @@ export const mercerieOptionModule = {
                     commit('LOADING_STATUS', false)
                     reject(error)
                 })
-            }))
+            })
         },
         createMercerieOption: function ({commit}, [merceried_id, payload]) {
-            return new Promise(((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.Options.postMercerieOption(merceried_id, payload).then(res => {
                     commit('ADD_MERCERIE_OPTION', Object.assign(new MercerieOptionModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
         updateMercerieOption: function({commit}, [mercerie_id, payload]) {
-            return new Promise(((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.Options.putMercerieOption(mercerie_id, payload).then(res => {
                     commit('UPDATE_MERCERIE_OPTION', Object.assign(new MercerieOptionModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
         deleteMercerieOption: function({commit}, [mercerie_id, mercerie_option]) {
-            return new Promise(((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.Options.deleteMercerieOption(mercerie_id, mercerie_option.id).then(res => {
                     commit('DELETE_MERCERIE_OPTION', mercerie_option)
                     resolve(res)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         }
     }
 }

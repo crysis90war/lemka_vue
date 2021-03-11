@@ -7,7 +7,7 @@ import EntrepriseService from '@/services/entreprise.service';
 import GenreService from '@/services/genre.service';
 import MensurationUserMensurationService from '@/services/mensurationUserMensuration.service';
 import MensurationService from '@/services/mensuration.service';
-import MercerieService from '@/services/mercerie.service';
+import MercerieService from '@/services/merceries/mercerie.service';
 import PaysService from '@/services/pays.service';
 import ProfilService from '@/services/profil.service';
 import RayonService from '@/services/rayon.service';
@@ -18,8 +18,9 @@ import TypeServiceService from '@/services/type_service.service';
 import UserMensurationsService from '@/services/user_mensuration.service';
 import UtilisateurService from '@/services/utilisateur.service';
 import VilleService from '@/services/ville.service';
-import MercerieOptionservice from '@/services/mercerie_option.service';
-import CaracteristiqueService from '@/services/caracteristique.service';
+import MercerieOptionservice from '@/services/merceries/mercerie_option.service';
+import CharacteristicService from '@/services/characteristic.service';
+import MercerieOptionChatacteristicService from '@/services/merceries/mercerie_option_chatacteristic.service'
 
 const ApiService = {
     AdresseService,
@@ -33,7 +34,8 @@ const ApiService = {
     'Couleurs': CouleurService,
     'Merceries': MercerieService,
     'Options': MercerieOptionservice,
-    'Catacteristiques': CaracteristiqueService,
+    'Characteristics': CharacteristicService,
+    'OptionCharacteristics': MercerieOptionChatacteristicService,
     PaysService,
     ProfilService,
     RayonService,

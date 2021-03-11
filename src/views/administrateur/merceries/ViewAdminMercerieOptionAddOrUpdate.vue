@@ -207,7 +207,7 @@ import {Cropper} from "vue-advanced-cropper";
 import {fonctions} from "@/mixins/functions.mixin";
 import TableEmpty from "@/components/TableEmpty";
 import TableBusy from "@/components/TableBusy";
-import MercerieOptionCatacteristiqueModel from "@/models/mercerie_option_catacteristique.model";
+import MercerieOptionChatacteristicModel from "@/models/mercerie_option_chatacteristic.model";
 
 export default {
   name: "ViewAdminMercerieOptionAddOrUpdate",
@@ -225,7 +225,7 @@ export default {
   data() {
     return {
       mercerie_option: new MercerieOptionModel(),
-      MeOptFields: MercerieOptionCatacteristiqueModel.tableFields,
+      MeOptFields: MercerieOptionChatacteristicModel.tableFields,
       submitStatus: null,
       routes: LemkaHelpers.Routes
     }

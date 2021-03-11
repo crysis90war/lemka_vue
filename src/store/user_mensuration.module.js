@@ -1,7 +1,7 @@
 import ApiService from "@/services";
 import UserMensurationModel from "@/models/user_mensuration.model";
 
-export const userMensurationModule = {
+export const UserMensurationModule = {
     namespaced: true,
     state: {
         user_mensurations: [],
