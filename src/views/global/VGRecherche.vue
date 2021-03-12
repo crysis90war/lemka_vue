@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "ViewGlobalRecherche"
+  name: "VGRecherche"
 }
 </script>
 

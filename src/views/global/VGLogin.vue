@@ -40,7 +40,7 @@
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewGlobalLogin",
+  name: "VGLogin",
 
   data() {
     return {

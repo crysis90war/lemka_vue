@@ -47,7 +47,8 @@ export const Routes = {
     MERCERIES: {name: AdminView + 'Merceries', value: 'Merceries', icon: 'fas fa-dolly-flatbed'},
     MERCERIES_ADD_OR_UPDATE: {name: AdminView + 'MercerieAddOrUpdate', value: 'Mercerie'},
     MERCERIE_OPTIONS: {name: AdminView + 'MercerieOptions', value: 'Options'},
-    MERCERIE_OPTIONS_ADD_OR_UPDATE: {name: AdminView + 'MercerieOptionsAddOrUpdate', value: 'Ajouter/Modifier'},
+    MO_ADD_OR_UPDATE: {name: AdminView + 'MOAddOrUpdate', value: 'Ajouter/Modifier'},
+    MOCAddOrUpdate: {name: AdminView + 'MOCAddOrUpdate' , value: 'Ajouter/Modifier'},
 
     BONS_DE_COMMANDE: {name: AdminView + 'BonDeCommande', value: 'Bons de commande'},
 

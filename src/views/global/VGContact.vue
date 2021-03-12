@@ -8,7 +8,7 @@
 
 import ImageCropper from "@/components/ImageCropper";
 export default {
-  name: "ViewGlobalContact",
+  name: "VGContact",
   components: {ImageCropper},
 }
 </script>

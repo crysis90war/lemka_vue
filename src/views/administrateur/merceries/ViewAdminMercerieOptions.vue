@@ -8,7 +8,7 @@
           <i class="fas fa-arrow-left"></i>
         </b-button>
         <b-button variant="outline-success"
-                  :to="{name: routes.MERCERIE_OPTIONS_ADD_OR_UPDATE.name, params: {mercerie_id: id}}">
+                  :to="{name: routes.MO_ADD_OR_UPDATE.name, params: {mercerie_id: id}}">
           Ajouter option
         </b-button>
         <b-button variant="outline-primary" @click="loadOrRefresh">
@@ -40,7 +40,7 @@
         <template #cell(actions)="data">
           <b-button-group>
             <b-button variant="outline-primary" size="sm"
-                      :to="{name: routes.MERCERIE_OPTIONS_ADD_OR_UPDATE.name, params: {mercerie_id: id, id: data.item.id}}">
+                      :to="{name: routes.MO_ADD_OR_UPDATE.name, params: {mercerie_id: id, id: data.item.id}}">
               <i class="fas fa-edit"></i>
             </b-button>
             <b-button variant="outline-danger" size="sm"

@@ -96,7 +96,8 @@
       <!-- region Caractéristiques -->
       <div v-if="id" class="mt-4">
         <b-button-group size="sm">
-          <b-button variant="outline-success">
+          <b-button variant="outline-success"
+                    @click="$router.push({name: routes.MOCAddOrUpdate.name, params: {mercerie_id: mercerie_id, option_id: mercerie_option.id}})">
             Ajouter des dimensions
           </b-button>
           <b-button variant="outline-primary" @click="chargerCaracteristiques(mercerie_option.id)">

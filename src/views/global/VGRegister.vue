@@ -48,7 +48,7 @@
 <script>
 
 export default {
-  name: "ViewGlobalRegister",
+  name: "VGRegister",
   data() {
     return {
       user: {

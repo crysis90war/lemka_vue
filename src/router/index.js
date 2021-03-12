@@ -1,6 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LemkaHelpers from "@/helpers";
+import VAMOCAddOrUpdate from "@/views/administrateur/merceries/VAMOCAddOrUpdate";
+import VADashboard from "@/views/administrateur/dashboard/VADashboard";
+import ViewAdminUsers from "@/views/administrateur/utilisateurs/ViewAdminUsers";
+import VGHome from "@/views/global/VGHome";
+import VGLogin from "@/views/global/VGLogin";
+import VGRegister from "@/views/global/VGRegister";
+import VGAbout from "@/views/global/VGAbout";
+import VGHoraire from "@/views/global/VGHoraire";
+import VGContact from "@/views/global/VGContact";
+import VGNotFound from "@/views/global/VGNotFound";
 
 Vue.use(VueRouter)
 
@@ -13,13 +23,13 @@ const adminRoutes = [
     path: ADMIN + 'dashboard',
     name: ROUTES.DASHBOARD.name,
     meta: {value: ROUTES.DASHBOARD.value},
-    component: () => import('../views/administrateur/dashboard/ViewAdminDashboard')
+    component: VADashboard
   },
   {
     path: ADMIN + 'utilisateurs',
     name: ROUTES.UTILISATEURS.name,
     meta: {value: ROUTES.UTILISATEURS.value},
-    component: () => import('../views/administrateur/utilisateurs/ViewAdminUsers'),
+    component: () => ViewAdminUsers,
     children: [
       {
         path: ADMIN + 'utilisateurs/:username/detail',
@@ -74,9 +84,16 @@ const adminRoutes = [
       },
       {
         path: ADMIN + 'merceries/:mercerie_id/options/:id?',
-        name: ROUTES.MERCERIE_OPTIONS_ADD_OR_UPDATE.name,
-        meta: {value: ROUTES.MERCERIE_OPTIONS_ADD_OR_UPDATE.value},
+        name: ROUTES.MO_ADD_OR_UPDATE.name,
+        meta: {value: ROUTES.MO_ADD_OR_UPDATE.value},
         component: () => import('@/views/administrateur/merceries/ViewAdminMercerieOptionAddOrUpdate'),
+        props: true
+      },
+      {
+        path: ADMIN + 'mercerie_options/:mercerie_id/caracteristiques/:id?/',
+        name: ROUTES.MOCAddOrUpdate.name,
+        meta: {value: ROUTES.MOCAddOrUpdate.value},
+        component: VAMOCAddOrUpdate,
         props: true
       }
     ]
@@ -121,7 +138,7 @@ const adminRoutes = [
         path: ADMIN + 'parametres/entreprise',
         name: ROUTES.PARAMETRES_ENTREPRISE.name,
         meta: {value: ROUTES.PARAMETRES_ENTREPRISE.value},
-        component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntreprise'),
+        component: () => import('@/views/administrateur/parametres/entreprise/ViewAdminEntreprise'),
         children: [
           {
             path: ADMIN + 'parametres/entreprise/ajouter',
@@ -241,37 +258,37 @@ const router = new VueRouter({
       path: '/',
       name: ROUTES.HOME_ROUTE.name,
       meta: {value: ROUTES.HOME_ROUTE.value},
-      component: () => import('../views/global/ViewGlobalHome')
+      component: VGHome
     },
     {
       path: '/login',
       name: ROUTES.LOGIN_ROUTE.name,
       meta: {value: ROUTES.LOGIN_ROUTE.value},
-      component: () => import('../views/global/ViewGlobalLogin')
+      component: VGLogin
     },
     {
       path: '/register',
       name: ROUTES.REGISTER_ROUTE.name,
       meta: {value: ROUTES.REGISTER_ROUTE.value},
-      component: () => import('../views/global/ViewGlobalRegister')
+      component: VGRegister
     },
     {
       path: '/about',
       name: ROUTES.ABOUT_ROUTE.name,
       meta: {value: ROUTES.ABOUT_ROUTE.value},
-      component: () => import('../views/global/ViewGlobalAbout')
+      component: VGAbout
     },
     {
       path: '/horaire',
       name: ROUTES.HORAIRE_ROUTE.name,
       meta: {value: ROUTES.HORAIRE_ROUTE.value},
-      component: () => import('../views/global/ViewGlobalHoraire')
+      component: VGHoraire
     },
     {
       path: '/contact',
       name: ROUTES.CONTACT_ROUTE.name,
       meta: {value: ROUTES.CONTACT_ROUTE.value},
-      component: () => import('../views/global/ViewGlobalContact')
+      component: VGContact
     },
     {
       path: PROFIL,
@@ -291,7 +308,7 @@ const router = new VueRouter({
       path: '/404',
       name: ROUTES.PAGE_NOT_FOUND_ROUTE.name,
       meta: {value: ROUTES.PAGE_NOT_FOUND_ROUTE.value},
-      component: () => import('../views/global/ViewGlobalNotFound')
+      component: VGNotFound
     },
     {
       path: '*',

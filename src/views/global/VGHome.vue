@@ -15,7 +15,7 @@ import LemkaSeparateur from "@/components/LemkaSeparateur";
 import GoogleMap from "@/components/GoogleMap";
 
 export default {
-  name: 'ViewGlobalHome',
+  name: 'VGHome',
 
   components: {
     LemkaSeparateur,

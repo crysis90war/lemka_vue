@@ -78,7 +78,7 @@ import DashboardCard from "@/components/DashboardCard"
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewAdminDashboard",
+  name: "VADashboard",
   components: {
     DashboardCard
   },

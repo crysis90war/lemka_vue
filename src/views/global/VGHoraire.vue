@@ -28,7 +28,7 @@
 import Outils from "@/mixins/outils.mixin";
 
 export default {
-  name: "ViewGlobalHoraire",
+  name: "VGHoraire",
 
   data() {
     return {
