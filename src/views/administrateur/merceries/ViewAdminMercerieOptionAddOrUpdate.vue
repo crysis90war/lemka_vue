@@ -99,9 +99,12 @@
           <b-button variant="outline-success">
             Ajouter des dimensions
           </b-button>
+          <b-button variant="outline-primary" @click="chargerCaracteristiques(mercerie_option.id)">
+            <i class="fas fa-sync-alt"></i>
+          </b-button>
         </b-button-group>
 
-        <b-table :fields="MeOptFields"
+        <b-table :items="option_characteristics" :fields="MeOptFields" :busy="caractsBusy"
                  hover show-empty small stacked="md" class="text-center my-3">
           <template #table-busy>
             <TableBusy/>
@@ -109,6 +112,18 @@
 
           <template #empty>
             <TableEmpty/>
+          </template>
+
+          <template #cell(actions)="data">
+            <b-button-group>
+              <b-button variant="outline-primary" size="sm">
+                <i class="fas fa-edit"></i>
+              </b-button>
+              <b-button variant="outline-danger" size="sm"
+                        @click="deleteMercerieOptionCaracteristique([mercerie_option.id, data.item])">
+                <i class="fas fa-trash-alt"></i>
+              </b-button>
+            </b-button-group>
           </template>
         </b-table>
       </div>
@@ -231,7 +246,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({couleurs: 'Couleurs/couleurs'}),
+    ...mapGetters({
+      couleurs: 'Couleurs/couleurs',
+      option_characteristics: "OptionCharacteristics/option_characteristics",
+      caractsBusy: "OptionCharacteristics/loadingStatus"
+    }),
     isInvalid() {
       return this.isTouched && this.mercerie_option.ref_couleur.id === null
     }
@@ -240,19 +259,23 @@ export default {
     ...mapActions({
       loadCouleurs: 'Couleurs/loadCouleurs',
       createMercerieOption: 'Options/createMercerieOption',
-      updateMercerieOption: 'Options/updateMercerieOption'
+      updateMercerieOption: 'Options/updateMercerieOption',
+      loadMercerieOptionCaracteristiques: "OptionCharacteristics/loadMercerieOptionCaracteristiques",
+      deleteMercerieOptionCaracteristique: "OptionCharacteristics/deleteMercerieOptionCaracteristique"
     }),
 
     initialisation: async function (id) {
       if (this.couleurs.length === 0) {
         await this.loadCouleurs()
       }
-      if (this.id !== undefined) {
-        Object.assign(this.mercerie_option, this.$store.getters["Options/mercerie_option"](id))
-        if (this.couleurs.length !== 0 && this.mercerie_option.ref_couleur !== undefined) {
-          this.mercerie_option.ref_couleur = this.$store.getters["Couleurs/couleur"](this.mercerie_option.ref_couleur)
-        }
+      Object.assign(this.mercerie_option, this.$store.getters["Options/mercerie_option"](id))
+      if (this.couleurs.length !== 0 && this.mercerie_option.ref_couleur !== undefined) {
+        this.mercerie_option.ref_couleur = this.$store.getters["Couleurs/couleur"](this.mercerie_option.ref_couleur)
       }
+    },
+
+    chargerCaracteristiques: async function (mercerie_option_id) {
+      await this.loadMercerieOptionCaracteristiques(mercerie_option_id)
     },
 
     submit: function () {
@@ -284,6 +307,7 @@ export default {
   created() {
     if (this.id !== undefined) {
       this.initialisation(this.id)
+      this.chargerCaracteristiques(this.mercerie_option.id)
     } else {
       if (this.couleurs.length === 0) {
         this.loadCouleurs()

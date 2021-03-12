@@ -32,7 +32,7 @@ export default class MercerieOptionChatacteristicModel {
     static get tableFields() {
         return [
             {key: 'id', label: '#'},
-            {key: 'caracteristique', label: 'CARAC', sortable: true},
+            {key: 'caracteristique', label: 'Nom', sortable: true},
             {key: 'valeur', label: 'Valeur', sortable: true},
             {key: 'actions', label: 'Actions'}
         ]
