@@ -97,10 +97,10 @@
       <div v-if="id" class="mt-4">
         <b-button-group size="sm">
           <b-button variant="outline-success"
-                    @click="$router.push({name: routes.MOCAddOrUpdate.name, params: {mercerie_id: mercerie_id, option_id: mercerie_option.id}})">
+                    @click="$router.push({name: routes.MOC_ADD_OR_UPDATE.name, params: {mercerie_id: mercerie_id, option_id: mercerie_option.id}})">
             Ajouter des dimensions
           </b-button>
-          <b-button variant="outline-primary" @click="chargerCaracteristiques(mercerie_option.id)">
+          <b-button variant="outline-primary" @click="loadOrRefreshCharacteristics(mercerie_option.id)">
             <i class="fas fa-sync-alt"></i>
           </b-button>
         </b-button-group>
@@ -131,6 +131,7 @@
       <!-- endregion -->
 
       <!-- region Images -->
+      <!--
       <div v-if="id" class="mt-4">
         <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
           Ajouter des images
@@ -193,6 +194,7 @@
           </template>
         </b-table>
       </div>
+      -->
       <!-- endregion -->
 
       <b-button-group class="mt-3">
@@ -219,7 +221,6 @@ import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin"
 import InvalidFeedback from "@/components/InvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import {Cropper} from "vue-advanced-cropper";
 import {fonctions} from "@/mixins/functions.mixin";
 import TableEmpty from "@/components/TableEmpty";
 import TableBusy from "@/components/TableBusy";
@@ -227,7 +228,7 @@ import MercerieOptionChatacteristicModel from "@/models/mercerie_option_chatacte
 
 export default {
   name: "ViewAdminMercerieOptionAddOrUpdate",
-  components: {InvalidFeedback, Cropper, TableEmpty, TableBusy},
+  components: {InvalidFeedback, TableEmpty, TableBusy},
   props: {
     mercerie_id: {
       required: true
@@ -265,18 +266,19 @@ export default {
       deleteMercerieOptionCaracteristique: "OptionCharacteristics/deleteMercerieOptionCaracteristique"
     }),
 
+    loadOrRefreshCharacteristics: function (mercerie_option_id) {
+      this.loadMercerieOptionCaracteristiques(mercerie_option_id)
+    },
+
     initialisation: async function (id) {
       if (this.couleurs.length === 0) {
         await this.loadCouleurs()
       }
-      Object.assign(this.mercerie_option, this.$store.getters["Options/mercerie_option"](id))
+      Object.assign(this.mercerie_option, await this.$store.getters["Options/mercerie_option"](id))
       if (this.couleurs.length !== 0 && this.mercerie_option.ref_couleur !== undefined) {
         this.mercerie_option.ref_couleur = this.$store.getters["Couleurs/couleur"](this.mercerie_option.ref_couleur)
       }
-    },
-
-    chargerCaracteristiques: async function (mercerie_option_id) {
-      await this.loadMercerieOptionCaracteristiques(mercerie_option_id)
+      await this.loadOrRefreshCharacteristics(this.mercerie_option.id)
     },
 
     submit: function () {
@@ -308,7 +310,6 @@ export default {
   created() {
     if (this.id !== undefined) {
       this.initialisation(this.id)
-      this.chargerCaracteristiques(this.mercerie_option.id)
     } else {
       if (this.couleurs.length === 0) {
         this.loadCouleurs()

@@ -48,7 +48,7 @@ export const Routes = {
     MERCERIES_ADD_OR_UPDATE: {name: AdminView + 'MercerieAddOrUpdate', value: 'Mercerie'},
     MERCERIE_OPTIONS: {name: AdminView + 'MercerieOptions', value: 'Options'},
     MO_ADD_OR_UPDATE: {name: AdminView + 'MOAddOrUpdate', value: 'Ajouter/Modifier'},
-    MOCAddOrUpdate: {name: AdminView + 'MOCAddOrUpdate' , value: 'Ajouter/Modifier'},
+    MOC_ADD_OR_UPDATE: {name: 'VAMOCAddOrUpdate' , value: 'Ajouter/Modifier'},
 
     BONS_DE_COMMANDE: {name: AdminView + 'BonDeCommande', value: 'Bons de commande'},
 

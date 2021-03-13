@@ -91,8 +91,8 @@ const adminRoutes = [
       },
       {
         path: ADMIN + 'mercerie_options/:mercerie_id/caracteristiques/:id?/',
-        name: ROUTES.MOCAddOrUpdate.name,
-        meta: {value: ROUTES.MOCAddOrUpdate.value},
+        name: ROUTES.MOC_ADD_OR_UPDATE.name,
+        meta: {value: ROUTES.MOC_ADD_OR_UPDATE.value},
         component: VAMOCAddOrUpdate,
         props: true
       }
