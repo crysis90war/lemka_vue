@@ -1,9 +1,29 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LemkaHelpers from "@/helpers";
-import VAMOCAddOrUpdate from "@/views/administrateur/merceries/VAMOCAddOrUpdate";
+
+// region Admin views
 import VADashboard from "@/views/administrateur/dashboard/VADashboard";
-import ViewAdminUsers from "@/views/administrateur/utilisateurs/ViewAdminUsers";
+import VAUsers from "@/views/administrateur/utilisateurs/VAUsers";
+import VAUserDetail from "@/views/administrateur/utilisateurs/VAUserDetail";
+import VAMOCAddOrUpdate from "@/views/administrateur/merceries/VAMOCAddOrUpdate";
+import VAParametres from "@/views/administrateur/parametres/VAParametres";
+import VAEntreprise from "@/views/administrateur/parametres/entreprise/VAEntreprise";
+import VAEntrepriseAdd from "@/views/administrateur/parametres/entreprise/VAEntrepriseAdd";
+import VAEntrepriseUpdate from "@/views/administrateur/parametres/entreprise/VAEntrepriseUpdate";
+import VAGenres from "@/views/administrateur/parametres/genre/VAGenres";
+import VAGenreAddOrUpdate from "@/views/administrateur/parametres/genre/VAGenreAddOrUpdate";
+import VAMensurations from "@/views/administrateur/parametres/mensuration/VAMensurations";
+import VAMensurationAddOrUpdate from "@/views/administrateur/parametres/mensuration/VAMensurationAddOrUpdate";
+import VAServices from "@/views/administrateur/parametres/service/VAServices";
+import VAServiceAddOrUpdate from "@/views/administrateur/parametres/service/VAServiceAddOrUpdate";
+// endregion
+
+// region User views
+
+// endregion
+
+// region Global Views
 import VGHome from "@/views/global/VGHome";
 import VGLogin from "@/views/global/VGLogin";
 import VGRegister from "@/views/global/VGRegister";
@@ -11,6 +31,7 @@ import VGAbout from "@/views/global/VGAbout";
 import VGHoraire from "@/views/global/VGHoraire";
 import VGContact from "@/views/global/VGContact";
 import VGNotFound from "@/views/global/VGNotFound";
+// endregion
 
 Vue.use(VueRouter)
 
@@ -29,13 +50,13 @@ const adminRoutes = [
     path: ADMIN + 'utilisateurs',
     name: ROUTES.UTILISATEURS.name,
     meta: {value: ROUTES.UTILISATEURS.value},
-    component: () => ViewAdminUsers,
+    component: VAUsers,
     children: [
       {
         path: ADMIN + 'utilisateurs/:username/detail',
         name: ROUTES.UTILISATEURS_DETAIL.name,
         meta: {value: ROUTES.UTILISATEURS_DETAIL.value},
-        component: () => import('../views/administrateur/utilisateurs/ViewAdminUsersDetail'),
+        component: VAUserDetail,
         props: true,
       }
     ]
@@ -102,19 +123,19 @@ const adminRoutes = [
     path: ADMIN + 'demande-de-devis',
     name: ROUTES.DEMANDE_DE_DEVIS.name,
     meta: {value: ROUTES.DEMANDE_DE_DEVIS.value},
-    component: () => import('../views/administrateur/demande de devis/view.admin.demandeDeDevis')
+    component: () => import('../views/administrateur/demande_de_devis/VADemandeDeDevis')
   },
   {
     path: ADMIN + 'devis',
     name: ROUTES.DEVIS.name,
     meta: {value: ROUTES.DEVIS.value},
-    component: () => import('../views/administrateur/devis/view.admin.devis')
+    component: () => import('../views/administrateur/devis/VADevis')
   },
   {
     path: ADMIN + 'bons-de-commande',
     name: ROUTES.BONS_DE_COMMANDE.name,
     meta: {value: ROUTES.BONS_DE_COMMANDE.value},
-    component: () => import('../views/administrateur/bon de commande/view.admin.bonDeCommande')
+    component: () => import('../views/administrateur/bon_de_commande/view.admin.bonDeCommande')
   },
   {
     path: ADMIN + 'facture',
@@ -126,31 +147,31 @@ const adminRoutes = [
     path: ADMIN + 'rendez-vous',
     name: ROUTES.RENDEZ_VOUS.name,
     meta: {value: ROUTES.RENDEZ_VOUS.value},
-    component: () => import('../views/administrateur/rendez-vous/view.rendezVous')
+    component: () => import('../views/administrateur/rendez_vous/view.rendezVous')
   },
   {
     path: ADMIN + 'parametres',
     name: ROUTES.PARAMETRES.name,
     meta: {value: ROUTES.PARAMETRES.value},
-    component: () => import('../views/administrateur/parametres/ViewAdminParametres'),
+    component: VAParametres,
     children: [
       {
         path: ADMIN + 'parametres/entreprise',
         name: ROUTES.PARAMETRES_ENTREPRISE.name,
         meta: {value: ROUTES.PARAMETRES_ENTREPRISE.value},
-        component: () => import('@/views/administrateur/parametres/entreprise/ViewAdminEntreprise'),
+        component: VAEntreprise,
         children: [
           {
             path: ADMIN + 'parametres/entreprise/ajouter',
             name: ROUTES.PARAMETRES_ENTREPRISE_ADD.name,
             meta: {value: ROUTES.PARAMETRES_ENTREPRISE_ADD.value},
-            component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntrepriseAdd')
+            component: VAEntrepriseAdd
           },
           {
             path: ADMIN + 'parametres/entreprise/update',
             name: ROUTES.PARAMETRES_ENTREPRISE_UPDATE.name,
             meta: {value: ROUTES.PARAMETRES_ENTREPRISE_UPDATE.value},
-            component: () => import('../views/administrateur/parametres/entreprise/ViewAdminEntrepriseUpdate')
+            component: VAEntrepriseUpdate
           }
         ]
       },
@@ -158,13 +179,13 @@ const adminRoutes = [
         path: ADMIN + 'parametres/genres',
         name: ROUTES.PARAMETRES_GENRE.name,
         meta: {value: ROUTES.PARAMETRES_GENRE.value},
-        component: () => import('../views/administrateur/parametres/genre/ViewAdminGenre'),
+        component: VAGenres,
         children: [
           {
             path: ADMIN + 'parametres/genre/:id?',
             name: ROUTES.PARAMETRES_GENRE_ADD_OR_UPDATE.name,
             meta: {value: ROUTES.PARAMETRES_GENRE_ADD_OR_UPDATE.value},
-            component: () => import('../views/administrateur/parametres/genre/ViewAdminGenreAddOrUpdate'),
+            component: VAGenreAddOrUpdate,
             props: true
           },
         ]
@@ -173,13 +194,13 @@ const adminRoutes = [
         path: '/admin/parametres/mensurations',
         name: ROUTES.PARAMETRES_MENSURATION.name,
         meta: {value: ROUTES.PARAMETRES_MENSURATION.value},
-        component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensuration'),
+        component: VAMensurations,
         children: [
           {
             path: '/admin/parametres/mensuration/:id?',
             name: ROUTES.PARAMETRES_MENSURATION_ADD_OR_UPDATE.name,
             meta: {value: ROUTES.PARAMETRES_MENSURATION_ADD_OR_UPDATE.value},
-            component: () => import('../views/administrateur/parametres/mensuration/ViewAdminMensurationAddOrUpdate'),
+            component: VAMensurationAddOrUpdate,
             props: true
           }
         ]
@@ -188,13 +209,13 @@ const adminRoutes = [
         path: '/admin/parametres/services',
         name: ROUTES.PARAMETRES_SERVICE.name,
         meta: {value: ROUTES.PARAMETRES_SERVICE.value},
-        component: () => import('../views/administrateur/parametres/service/ViewAdminService'),
+        component: VAServices,
         children: [
           {
             path: '/admin/parametres/service/:id?',
             name: ROUTES.PARAMETRES_SERVICE_ADD_OR_UPDATE.name,
             meta: {value: ROUTES.PARAMETRES_SERVICE_ADD_OR_UPDATE.value},
-            component: () => import('../views/administrateur/parametres/service/ViewAdminServiceAddOrUpdate'),
+            component: VAServiceAddOrUpdate,
             props: true
           }
         ]

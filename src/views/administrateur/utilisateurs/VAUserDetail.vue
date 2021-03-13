@@ -73,7 +73,7 @@ import UploadModal from "@/components/UploadModal";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewAdminUsers",
+  name: "VAUserDetail",
   components: {
     'lemka-upload-modal': UploadModal
   },

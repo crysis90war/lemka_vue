@@ -41,7 +41,7 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {mapActions} from "vuex";
 
 export default {
-  name: "ViewAdminGenreAddOrUpdate",
+  name: "VAGenreAddOrUpdate",
   components: {InvalidFeedback},
   mixins: [validationMixin, validationMessageMixin],
   props: {

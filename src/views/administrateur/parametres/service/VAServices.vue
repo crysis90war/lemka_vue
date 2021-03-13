@@ -48,7 +48,7 @@ import LemkaHelpers from "@/helpers";
 import TypeServiceModel from "@/models/type_service.model";
 
 export default {
-  name: "ViewAdminService",
+  name: "VAServices",
   data() {
     return {
       fields: TypeServiceModel.tableFields,

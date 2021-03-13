@@ -47,7 +47,7 @@ import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 
 export default {
-  name: "ViewAdminGenre",
+  name: "VAGenres",
   data() {
     return {
       fields: [

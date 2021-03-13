@@ -1,10 +1,10 @@
 <template>
-<div></div>
+  <div></div>
 </template>
 
 <script>
 export default {
-  name: "view.admin.demandeDeDevis.vue"
+  name: "VADemandeDeDevis"
 }
 </script>
 

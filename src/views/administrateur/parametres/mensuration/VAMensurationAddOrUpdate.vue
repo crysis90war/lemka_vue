@@ -42,7 +42,7 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewAdminMensurationAdd",
+  name: "VAMensurationAddOrUpdate",
   components: {InvalidFeedback},
   mixins: [validationMixin, validationMessageMixin],
   validations: {

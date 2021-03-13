@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "ViewAdminUsersUpdate",
+  name: "VAUserUpdate",
   props: {
     username: {
       type: String,

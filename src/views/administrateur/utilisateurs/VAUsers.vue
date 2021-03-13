@@ -130,7 +130,7 @@ import LemkaHelpers from "@/helpers";
 import {mapGetters} from "vuex";
 
 export default {
-  name: "ViewAdminUsers",
+  name: "VAUsers",
   mixins: [tableViewMixin],
   data() {
     return {

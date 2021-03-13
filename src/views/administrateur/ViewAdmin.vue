@@ -7,6 +7,7 @@
           <h3><img :src="imageLogo" alt="" style="max-width: 200px;"/></h3>
           <strong>LK</strong>
         </div>
+
         <ul class="list-unstyled components">
           <li>
             <b-nav-item v-for="(item, index) in menu" :key="index" :to="item.href">

@@ -1,10 +1,10 @@
 <template>
-<div>DEVIS</div>
+  <div>DEVIS</div>
 </template>
 
 <script>
 export default {
-name: "view.admin.devis"
+  name: "VADevis"
 }
 </script>
 

@@ -53,7 +53,7 @@ import PaysModel from "@/models/pays.model";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewAdminEntreprise",
+  name: "VAEntreprise",
   data() {
     return {
       entLength: null,

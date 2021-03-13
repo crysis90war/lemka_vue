@@ -119,7 +119,7 @@ import TableBusy from "@/components/TableBusy";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 
 export default {
-  name: "ViewAdminMensuration",
+  name: "VAMensurations",
   components: {TableEmptyFiltered, TableEmpty, TableBusy},
   mixins: [tableViewMixin],
   data() {

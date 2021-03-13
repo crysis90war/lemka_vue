@@ -205,7 +205,7 @@ import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "viewAdminEntrepriseAdd",
+  name: "VAEntrepriseAdd",
   mixins: validationMixin,
   validations: {
     entreprise: EntrepriseModel.validations

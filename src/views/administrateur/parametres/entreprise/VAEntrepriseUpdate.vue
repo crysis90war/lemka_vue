@@ -237,7 +237,7 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewAdminEntrepriseUpdate",
+  name: "VAEntrepriseUpdate",
   mixins: [validationMixin, validationMessageMixin],
   validations: {
     entreprise: EntrepriseModel.validations

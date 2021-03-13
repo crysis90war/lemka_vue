@@ -30,7 +30,7 @@
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewAdminParametres",
+  name: "VAParametres",
   data() {
     return {
       routes: {
