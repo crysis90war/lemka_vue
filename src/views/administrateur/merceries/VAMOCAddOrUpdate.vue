@@ -37,9 +37,9 @@
       </b-form>
 
       <b-jumbotron header="Opt Carac" class="mt-4">
-        {{ test }}
-        <pre>{{objet}}</pre>
+        <h1>{{test}}</h1>
         <pre>{{ characteristics }}</pre>
+        <pre>{{ characteristic }}</pre>
       </b-jumbotron>
     </b-container>
 
@@ -52,11 +52,12 @@ import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
 import MercerieOptionChatacteristicModel from "@/models/mercerie_option_chatacteristic.model";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "VAMOCAddOrUpdate",
 
-  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin],
+  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin, ],
 
   props: {
     mercerie_id: {
@@ -66,10 +67,11 @@ export default {
     id: {}
   },
 
-  data() {
+  data: () => {
     return {
       test: "Bonjour",
-      objet: new MercerieOptionChatacteristicModel()
+      routes: LemkaHelpers.Routes,
+      characteristic: new MercerieOptionChatacteristicModel()
     }
   },
 

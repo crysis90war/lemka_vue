@@ -2,7 +2,7 @@ import * as R from 'ramda'
 import {maxLength, minLength, required} from "vuelidate/lib/validators";
 
 export default class CharacteristicModel {
-    constructor(characteristic) {
+    constructor(characteristic = {}) {
         this.id = R.is(Number, characteristic.id) ? characteristic.id : null
         this.nom = R.is(String, characteristic.nom) ? characteristic.nom : ""
     }

@@ -2,9 +2,9 @@ import axios from "axios";
 import authHeader from "@/configs/auth-header";
 import LemkaHelpers from "@/helpers";
 
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN
-const ROUTES = DOMAIN + '/mercerie_options/'
-const CHARAC = '/caracteristiques/'
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+const ROUTES = DOMAIN + '/mercerie_options/';
+const CHARAC = '/caracteristiques/';
 
 class MercerieOptionChatacteristicService {
     getMercerieOptionCharacteristics(mercerie_option_id) {
