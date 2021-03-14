@@ -8,7 +8,6 @@ const Endpoints = {
     // region Global endpoints
     LOGIN_ENDPOINT: DOMAIN + '/login/',
     REGISTER_ENDPOINT: DOMAIN + '/register/',
-    REFRESH_ENDPOINT: DOMAIN + '/token/refresh/',
     VILLE_ENDPOINT: DOMAIN + '/villes/',
     // endregion
 

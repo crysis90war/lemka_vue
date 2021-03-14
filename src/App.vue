@@ -18,6 +18,7 @@ import axios from "axios";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LemkaHelpers from "@/helpers";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'Home',
@@ -33,9 +34,7 @@ export default {
     }
   },
   computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
+    ...mapGetters({loggedIn: "Auth/loggedIn"})
   },
   methods: {
     getRoute() {
@@ -53,13 +52,12 @@ export default {
     }
   },
   created() {
-    // this.chargerVilles();
     this.getRoute();
     axios.interceptors.response.use(response => {
       return response;
     }, error => {
       if (error.response.status === 401) {
-        this.$store.dispatch('auth/logout')
+        this.$store.dispatch('Auth/logout')
       }
       return Promise.reject(error);
     })
@@ -72,7 +70,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 
 @import './assets/styles/main.css';
 

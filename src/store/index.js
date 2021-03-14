@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {auth} from "@/store/auth.module";
 import {mensurationModule} from "@/store/mensuration.module";
 import {typeServiceModule} from "@/store/type_service.module";
 import {genreModule} from "@/store/genre.module";
@@ -13,12 +12,13 @@ import {couleurModule} from "@/store/couleur.module";
 import {UserMensurationModule} from "@/store/user_mensuration.module";
 import {CharacteristicModule} from "@/store/characteristic.module";
 import {MercerieOptionChatacteristicModule} from "@/store/merceries/mercerie_option_chatacteristic.module";
+import {AuthModule} from "@/store/auth.module"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    auth,
+    'Auth': AuthModule,
     'Articles': articleModule,
     'Mensurations': mensurationModule,
     'TypeServices': typeServiceModule,

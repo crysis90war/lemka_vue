@@ -1,13 +1,23 @@
-import AuthService from '../services/auth.service';
+import ApiService from "@/services";
 
 const user = JSON.parse(sessionStorage.getItem('user'));
-const initialState = user
-    ? {status: {loggedIn: true}, user}
-    : {status: {loggedIn: false}, user: null};
+// const initialState = user
+//     ? {status: {loggedIn: true}, user}
+//     : {status: {loggedIn: false}, user: null};
+// state: initialState,
 
-export const auth = {
+export const AuthModule = {
     namespaced: true,
-    state: initialState,
+    state: {
+        status: {
+            loggedIn: !!user
+        },
+        user: user ? user : null
+    },
+    getters: {
+        loggedIn: state => state.status.loggedIn,
+        user: state => state.user
+    },
     mutations: {
         LOGIN_SUCCESS(state, user) {
             state.status.loggedIn = true;
@@ -38,7 +48,7 @@ export const auth = {
     actions: {
         login: function({commit}, user) {
             return new Promise((resolve, reject) => {
-                AuthService.login(user).then(user => {
+                ApiService.Auth.login(user).then(user => {
                     commit('LOGIN_SUCCESS', user)
                     resolve(user)
                 }, error => {
@@ -46,40 +56,31 @@ export const auth = {
                     reject(error)
                 })
             })
-            // return AuthService.login(user).then(
-            //     user => {
-            //         commit('LOGIN_SUCCESS', user);
-            //         return Promise.resolve(user);
-            //     },
-            //     error => {
-            //         commit('LOGIN_FAILURE');
-            //         return Promise.reject(error);
-            //     }
-            // );
         },
         logout({commit}) {
-            AuthService.logout();
+            ApiService.Auth.logout();
             commit('LOGOUT');
         },
         register({commit}, user) {
-            return AuthService.register(user).then(
-                response => {
+            return new Promise((resolve, reject) => {
+                ApiService.Auth.register(user).then(res => {
                     commit('REGISTER_SUCCESS');
-                    return Promise.resolve(response.data);
-                },
-                error => {
-                    commit('REGISTER_FAILURE');
-                    return Promise.reject(error);
-                }
-            );
+                    resolve(res.data)
+                }, error => {
+                    commit('REGISTER_FAILURE')
+                    reject(error)
+                })
+            })
         },
         refreshToken({commit}, user) {
-            return AuthService.refreshToken(user).then(user => {
-                commit('REFRESH_SUCCESS', user);
-                return Promise.resolve(user)
-            }, error => {
-                commit('REFRESH_FAILURE');
-                return Promise.reject(error)
+            return new Promise((resolve, reject) => {
+                ApiService.Auth.refreshToken(user).then(user => {
+                    commit('REFRESH_SUCCESS', user);
+                    resolve(user)
+                }, error => {
+                    commit('REFRESH_FAILURE');
+                    reject(error)
+                })
             })
         }
     }

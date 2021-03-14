@@ -82,15 +82,13 @@
               {{ routes.profil.value }}
             </b-dropdown-item>
 
-            <b-dropdown-item @click="refreshToken">Refresh Token</b-dropdown-item>
-
             <b-dropdown-item v-if="currentUser.is_staff === true" :to="{ name: routes.admin.name}">
               {{ routes.admin.value }}
             </b-dropdown-item>
 
             <b-dropdown-item href="#">Prendre rendez-vous</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item @click.prevent="logOut">Se déconnecter</b-dropdown-item>
+            <b-dropdown-item @click.prevent="logout">Se déconnecter</b-dropdown-item>
           </b-nav-item-dropdown>
 
         </b-navbar-nav>
@@ -102,21 +100,17 @@
 <script>
 import SearchModal from "@/components/SearchModal";
 import LemkaHelpers from "@/helpers";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Navbar",
-
-  components: {
-    'lemka-search': SearchModal,
-  },
-
+  components: {'lemka-search': SearchModal,},
   props: {
     visibleoffset: {
       type: [String, Number],
       default: 350
     },
   },
-
   data() {
     return {
       routes: {
@@ -129,20 +123,29 @@ export default {
         profil: {name: LemkaHelpers.Routes.PROFIL_ROUTE.name, value: LemkaHelpers.Routes.PROFIL_ROUTE.value},
         admin: {name: LemkaHelpers.Routes.ADMIN_ROUTE.name, value: LemkaHelpers.Routes.ADMIN_ROUTE.value}
       },
-      show: false,
       brandVisible: false,
-      register_login_logo_size: '250px',
-      isConnected: false
     }
   },
 
   computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
-    currentUser() {
-      return this.$store.state.auth.user;
-    },
+    ...mapGetters({loggedIn: "Auth/loggedIn", currentUser: "Auth/user"})
+  },
+
+  methods: {
+    ...mapActions({logout: "Auth/logout"}),
+
+    catchScroll() {
+      let navbar = document.getElementById('navbar')
+      this.brandVisible = (window.pageYOffset > parseInt(this.visibleoffset))
+
+      if (this.brandVisible === true) {
+        navbar.classList.add("fixed-top")
+        navbar.classList.remove("colored")
+      } else {
+        navbar.classList.remove('fixed-top')
+        navbar.classList.add('colored')
+      }
+    }
   },
 
   created() {
@@ -158,31 +161,6 @@ export default {
 
   destroyed() {
     window.removeEventListener('scroll', this.catchScroll)
-  },
-
-  methods: {
-    refreshToken() {
-      this.$store.dispatch('auth/refreshToken', this.currentUser)
-      window.location.reload()
-    },
-
-    catchScroll() {
-      let navbar = document.getElementById('navbar')
-      this.brandVisible = (window.pageYOffset > parseInt(this.visibleoffset))
-
-      if (this.brandVisible === true) {
-        navbar.classList.add("fixed-top")
-        navbar.classList.remove("colored")
-      } else {
-        navbar.classList.remove('fixed-top')
-        navbar.classList.add('colored')
-      }
-    },
-
-    logOut() {
-      this.$store.dispatch('auth/logout');
-      this.$router.push('/login');
-    }
   },
 }
 

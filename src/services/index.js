@@ -21,13 +21,15 @@ import VilleService from '@/services/ville.service';
 import MercerieOptionservice from '@/services/merceries/mercerie_option.service';
 import CharacteristicService from '@/services/characteristic.service';
 import MercerieOptionChatacteristicService from '@/services/merceries/mercerie_option_chatacteristic.service'
+import AuthService from '@/services/auth.service'
 
 const ApiService = {
+    'Auth': AuthService,
     AdresseService,
     'Articles': ArticleService,
     CatalogueService,
     EntrepriseService,
-    GenreService,
+    'Genres': GenreService,
     MensurationUserMensurationService,
     'Mensurations': MensurationService,
     'Categories': CategorieService,

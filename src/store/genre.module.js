@@ -1,4 +1,5 @@
 import GenreModel from "@/models/genre.model";
+import ApiService from "@/services";
 
 export const genreModule = {
     namespaced: true,
@@ -33,7 +34,7 @@ export const genreModule = {
             }
         },
         DELETE_GENRE(state, genre) {
-            const index = state.genres.findIndex(g => g.id === genre.id)
+            const index = state.genres.map(item => item.id).indexOf(genre.id)
             if (index !== -1) {
                 state.genres.splice(index, 1)
             }
@@ -41,43 +42,48 @@ export const genreModule = {
     },
     actions: {
         loadGenres: async function ({commit}) {
-            try {
+            return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
-                let genres = await GenreModel.fetchGenres()
-                commit('LOAD_GENRES_SUCCESS', genres)
-                commit('LOADING_STATUS', false)
-                return Promise.resolve(genres)
-            } catch (e) {
-                commit('LOAD_GENRES_FAILURE')
-                commit('LOADING_STATUS', false)
-                return Promise.reject(e)
-            }
+                ApiService.Genres.getGenres().then(res => {
+                    commit('LOAD_GENRES_SUCCESS', res.data)
+                    commit('LOADING_STATUS', false)
+                    resolve(res.data)
+                }, error => {
+                    commit('LOAD_GENRES_FAILURE')
+                    commit('LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
         },
         createGenre: async function ({commit}, payload) {
-            try {
-                let genre = await GenreModel.createGenre(payload)
-                commit('ADD_GENRE', genre)
-                return Promise.resolve(genre)
-            } catch (e) {
-                return Promise.reject(e)
-            }
+            return new Promise((resolve, reject) => {
+                ApiService.Genres.postGenre(payload).then(res => {
+                    commit('ADD_GENRE', Object.assign(new GenreModel(), res.data))
+                    resolve(res.data)
+                }, error => {
+                    reject(error)
+                })
+            })
         },
         updateGenre: async function ({commit}, payload) {
-            try {
-                let genre = await GenreModel.updateGenre(payload)
-                commit('UPDATE_GENRE', Object.assign(new GenreModel(), genre))
-                return Promise.resolve(genre)
-            } catch (e) {
-                return Promise.reject(e)
-            }
+            return new Promise((resolve, reject) => {
+                ApiService.Genres.putGenre(payload).then(res => {
+                    commit('UPDATE_GENRE', Object.assign(new GenreModel(), res.data))
+                    resolve(res.data)
+                }, error => {
+                    reject(error)
+                })
+            })
         },
         deleteGenre: async function({commit}, genre) {
-            try {
-                await GenreModel.deleteGenre(genre.id)
-                commit('DELETE_GENRE', genre)
-            } catch (e) {
-                return Promise.reject(e)
-            }
+            return new Promise((resolve, reject) => {
+                ApiService.Genres.deleteGenre(genre.id).then(res => {
+                    commit('DELETE_GENRE', genre)
+                    resolve(res)
+                }, error => {
+                    reject(error)
+                })
+            })
         }
     }
 }

@@ -18,8 +18,8 @@ class GenreService {
         return axios.post(ROUTE, payload, {headers: authHeader()})
     }
 
-    putGenre(genreId, payload) {
-        let endpoint = `${ROUTE}${genreId}/`;
+    putGenre(payload) {
+        let endpoint = `${ROUTE}${payload.id}/`;
         return axios.put(endpoint, payload, {headers: authHeader()})
     }
 
