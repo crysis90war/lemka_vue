@@ -7,17 +7,6 @@
 
     <div v-else>
       <b-form @submit.prevent="submit">
-        <b-button-group class="float-right">
-          <b-button :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
-                    :disabled="submitStatus === 'PENDING'" type="submit">
-            {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
-          </b-button>
-          <b-button variant="outline-danger" @click="reset">
-            Reset
-          </b-button>
-          <b-button variant="outline-secondary" @click="$router.go(-1)">Retour</b-button>
-        </b-button-group>
-
         <b-input-group class="my-1">
           <b-form-checkbox v-model="article.est_active" name="check-button" switch>
             <p v-if="article.est_active">Publier</p>
@@ -114,9 +103,23 @@
 
           <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
         </b-form-group>
+
+        <b-button-group size="sm" class="my-3">
+          <b-button variant="outline-dark"
+                    @click="$router.go(-1)">
+            <i class="fas fa-arrow-left"></i>
+          </b-button>
+          <b-button :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
+                    :disabled="submitStatus === 'PENDING'" type="submit">
+            {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
+          </b-button>
+          <b-button variant="outline-danger" @click="reset">
+            Reset
+          </b-button>
+        </b-button-group>
       </b-form>
 
-      <div v-if="slug" class="mt-4">
+      <div v-if="slug" class="mt-3">
         <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
           Ajouter des images
         </b-button>

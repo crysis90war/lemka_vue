@@ -55,14 +55,10 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5">
-        <b-button-group>
-          <b-button variant="outline-success" size="sm" :to="{name: routes.MERCERIES_ADD_OR_UPDATE.name}">
-            Créer un nouveau
-          </b-button>
-          <b-button variant="outline-primary" size="sm" @click="loadOrRefresh">
-            <i class="fas fa-sync-alt"></i>
-          </b-button>
-        </b-button-group>
+        <create-refresh-button-group
+            :load-or-refresh="loadMerceries"
+            :route="routes.MERCERIES_ADD_OR_UPDATE.name"
+            create_message="Ajouter mercerie"/>
       </b-col>
 
       <b-col lg="7">
@@ -96,14 +92,18 @@
       </template>
 
       <template #cell(est_publie)="data">
-        <b-button :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'" size="sm">
+        <b-button
+            :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'" size="sm"
+            @click="activerDesactiver(data.item)">
+          <i class="fas fa-power-off"></i>
           {{ data.item.est_publie === true ? 'Désactiver' : 'Publier' }}
         </b-button>
       </template>
 
       <template #cell(actions)="data">
         <b-button-group>
-          <b-button size="sm" variant="outline-primary" :to="{name: routes.MERCERIES_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
+          <b-button size="sm" variant="outline-primary"
+                    :to="{name: routes.MERCERIES_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
             <i class="fas fa-edit"></i>
           </b-button>
 
@@ -127,10 +127,11 @@ import TableBusy from "@/components/TableBusy";
 import TableEmpty from "@/components/TableEmpty";
 import TableEmptyFiltered from "@/components/TableEmptyFiltered";
 import LemkaHelpers from "@/helpers";
+import CreateRefreshButtonGroup from "@/components/CreateRefreshButtonGroup";
 
 export default {
   name: "VAMerceries",
-  components: {TableEmptyFiltered, TableEmpty, TableBusy},
+  components: {TableEmptyFiltered, TableEmpty, TableBusy, CreateRefreshButtonGroup},
   mixins: [tableViewMixin, fonctions],
   title() {
     return this.$route.meta.value
@@ -146,15 +147,20 @@ export default {
     ...mapGetters({merceries: 'Merceries/merceries', busy: 'Merceries/loadingStatus'})
   },
   methods: {
-    ...mapActions({loadMerceries: 'Merceries/loadMerceries', deleteMercerie: 'Merceries/deleteMercerie'}),
-
-    loadOrRefresh: function () {
-      this.loadMerceries()
-    },
+    ...mapActions({
+      loadMerceries: 'Merceries/loadMerceries',
+      updateMercerie: "Merceries/updateMercerie",
+      deleteMercerie: 'Merceries/deleteMercerie'
+    }),
+    activerDesactiver: function (item) {
+      let payload = item
+      payload.est_publie = !payload.est_publie
+      this.updateMercerie(payload)
+    }
   },
   created() {
     if (this.merceries.length === 0) {
-      this.loadOrRefresh()
+      this.loadMerceries()
     }
   }
 }

@@ -5,7 +5,7 @@ import CategorieService from '@/services/categorie.service';
 import CouleurService from '@/services/couleur.service'
 import EntrepriseService from '@/services/entreprise.service';
 import GenreService from '@/services/genre.service';
-import MensurationUserMensurationService from '@/services/mensurationUserMensuration.service';
+import MensurationUserMensurationService from '@/services/mensuration_user_mensuration.service';
 import MensurationService from '@/services/mensuration.service';
 import MercerieService from '@/services/merceries/mercerie.service';
 import PaysService from '@/services/pays.service';
@@ -13,7 +13,7 @@ import ProfilService from '@/services/profil.service';
 import RayonService from '@/services/rayon.service';
 import SectionService from '@/services/section.service';
 import TagService from '@/services/tag.service';
-import TypeProduitService from '@/services/typeProduit.service';
+import TypeProduitService from '@/services/type_produit.service';
 import TypeServiceService from '@/services/type_service.service';
 import UserMensurationsService from '@/services/user_mensuration.service';
 import UtilisateurService from '@/services/utilisateur.service';

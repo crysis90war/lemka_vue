@@ -12,7 +12,6 @@ class MercerieOptionService {
 
     postMercerieOption(mercerie_id, payload) {
         let endpoint = `${DOMAIN}/merceries/${mercerie_id}/options/`;
-        console.log(payload)
         return axios.post(endpoint, payload, {headers: authHeader()})
     }
 

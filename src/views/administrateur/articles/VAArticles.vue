@@ -58,14 +58,8 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
-        <b-button-group>
-          <b-button variant="outline-success" size="sm" :to="{name: routes.ARTICLES_ADD_OR_UPDATE.name}">
-            Créer un nouveau article
-          </b-button>
-          <b-button variant="outline-primary" size="sm" @click="loadOrRefresh">
-            <i class="fas fa-sync-alt"></i>
-          </b-button>
-        </b-button-group>
+        <create-refresh-button-group :load-or-refresh="loadArticles" :routes="routes.ARTICLES_ADD_OR_UPDATE.name"
+                                     create_message="Ajouter un nouveau article"/>
       </b-col>
 
       <b-col lg="7" class="my-1">
@@ -82,22 +76,15 @@
              hover show-empty small stacked="md" @filtered="onFiltered" class="text-center">
 
       <template #table-busy>
-        <div class="text-center text-secondary">
-          <b-spinner small class="align-middle mr-2"></b-spinner>
-          <strong class="align-middle">Chargement...</strong>
-        </div>
+        <TableBusy/>
       </template>
 
       <template #empty>
-        <div class="text-center">
-          <p>Il n'y a aucun enregistrement à afficher</p>
-        </div>
+        <TableEmpty/>
       </template>
 
       <template #emptyfiltered>
-        <div class="text-center my-2">
-          <p>Il n'y a aucun enregistrement correspondant à votre demande</p>
-        </div>
+        <TableEmptyFiltered/>
       </template>
 
       <template #cell(created_at)="data">
@@ -113,7 +100,7 @@
       <template #cell(actions)="data">
         <b-button :variant="data.item.est_active === true ? 'outline-danger' : 'outline-success'"
                   size="sm" class="mr-1"
-                  @click="activerDesactiverArticle(data.item.slug, data.item)">
+                  @click.prevent="activerDesactiver(data.item)">
           {{ data.item.est_active === true ? 'Désactiver' : 'Activer' }}
         </b-button>
       </template>
@@ -127,14 +114,18 @@
 </template>
 
 <script>
-import ArticleModel from "@/models/article.model";
-import ApiService from "@/services";
+import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
+import ArticleModel from "@/models/article.model";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
-import {mapGetters} from "vuex";
+import CreateRefreshButtonGroup from "@/components/CreateRefreshButtonGroup";
+import TableEmptyFiltered from "@/components/TableEmptyFiltered";
+import TableEmpty from "@/components/TableEmpty";
+import TableBusy from "@/components/TableBusy";
 
 export default {
   name: "VAArticles",
+  components: {TableEmptyFiltered, TableEmpty, TableBusy, CreateRefreshButtonGroup},
   mixins: [tableViewMixin],
   data() {
     return {
@@ -146,30 +137,17 @@ export default {
     ...mapGetters({articles: 'Articles/articles', busy: 'Articles/loadingStatus'})
   },
   methods: {
-    loadOrRefresh: function() {
-      this.$store.dispatch('Articles/loadArticles')
-    },
-    activerDesactiverArticle: async function (articleSlug, article) {
-      try {
-        let data = {
-          "est_active": !article.est_active
-        }
-        await ApiService.Articles.patchArticle(articleSlug, data)
-      } catch (error) {
-        console.log(error)
-      } finally {
-        await this.loadArticles()
-      }
+    ...mapActions({loadArticles: "Articles/loadArticles", updateArticle: "Articles/updateArticle"}),
+    activerDesactiver: function (item) {
+      let payload = item
+      payload.est_active = !payload.est_active
+      this.updateArticle(payload)
     }
   },
   created() {
     if (this.articles.length === 0) {
-      this.loadOrRefresh()
+      this.loadArticles()
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

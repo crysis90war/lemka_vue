@@ -68,7 +68,7 @@ export const mercerieModule = {
             return new Promise((resolve, reject) => {
                 ApiService.Merceries.putMercerie(payload).then(res => {
                     commit('UPDATE_MERCERIE', Object.assign(new MercerieModel(), res.data))
-                    resolve(res)
+                    resolve(res.data)
                 }, error => {
                     reject(error)
                 })

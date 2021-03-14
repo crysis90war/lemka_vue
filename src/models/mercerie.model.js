@@ -41,7 +41,6 @@ export default class MercerieModel {
 
     static get tableFields() {
         return [
-            {key: 'id', label: '#'},
             {key: 'categorie', label: 'Catégorie', sortable: true},
             {key: 'nom', label: 'Nom', sortable: true},
             {key: 'est_publie', label: 'Publication', sortable: true},

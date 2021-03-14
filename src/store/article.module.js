@@ -65,6 +65,16 @@ export const articleModule = {
                 })
             }))
         },
+        updateArticle: function({commit}, payload) {
+            return new Promise((resolve, reject) => {
+                ApiService.Articles.putArticle(payload).then(res => {
+                    commit('UPDATE_ARTICLE', res.data)
+                    resolve(res.data)
+                }, error => {
+                    reject(error)
+                })
+            })
+        }
         // activerDesactiverArticle: function ({commit}, payload) {
         //     return new Promise(((resolve, reject) => {
         //         let data = {est_active: !payload.est_active}

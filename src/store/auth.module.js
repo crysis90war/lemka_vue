@@ -36,17 +36,26 @@ export const auth = {
         }
     },
     actions: {
-        login({commit}, user) {
-            return AuthService.login(user).then(
-                user => {
-                    commit('LOGIN_SUCCESS', user);
-                    return Promise.resolve(user);
-                },
-                error => {
-                    commit('LOGIN_FAILURE');
-                    return Promise.reject(error);
-                }
-            );
+        login: function({commit}, user) {
+            return new Promise((resolve, reject) => {
+                AuthService.login(user).then(user => {
+                    commit('LOGIN_SUCCESS', user)
+                    resolve(user)
+                }, error => {
+                    commit('LOGIN_FAILURE')
+                    reject(error)
+                })
+            })
+            // return AuthService.login(user).then(
+            //     user => {
+            //         commit('LOGIN_SUCCESS', user);
+            //         return Promise.resolve(user);
+            //     },
+            //     error => {
+            //         commit('LOGIN_FAILURE');
+            //         return Promise.reject(error);
+            //     }
+            // );
         },
         logout({commit}) {
             AuthService.logout();

@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import RayonModel from "@/models/rayon.model";
 import SectionModel from "@/models/section.model";
-import TypeProduitModel from "@/models/typeProduit.model";
+import TypeProduitModel from "@/models/type_produit.model";
 import ApiService from "@/services";
 
 export default class CatalogueModel {

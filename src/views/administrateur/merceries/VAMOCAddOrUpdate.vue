@@ -3,7 +3,7 @@
     <b-container>
       <b-form>
         <b-form-group label="Caractéristique" description="Veuillez choisir la caractéristique">
-          <multiselect :options="characteristics" :allow-empty="false"
+          <multiselect v-model="characteristic.ref_caracteristique" :options="characteristics" :allow-empty="false"
                        label="nom" track-by="nom" placeholder="Veuillez selectionner la caractéristique"
                        selectLabel="Appuyez sur enter pour selectionner" :class="{ 'invalid': isInvalid }"
                        deselectLabel="Appuyez sur enter pour retirer" @close="onTouch">
@@ -19,7 +19,14 @@
         </b-form-group>
 
         <b-form-group label="Valeur" description="Veuillez encoder la valeur">
-          <b-form-input></b-form-input>
+          <b-form-input v-model="$v.characteristic.valeur.$model" type="number" step="0.01" min="0.00"
+                        :state="validateState('valeur')"></b-form-input>
+          <b-form-invalid-feedback>
+            <invalid-feedback :condition="!$v.characteristic.valeur.required" :error-message="required()">
+            </invalid-feedback>
+            <invalid-feedback :condition="!$v.characteristic.valeur.numeric" :error-message="decimal()">
+            </invalid-feedback>
+          </b-form-invalid-feedback>
         </b-form-group>
 
         <b-button-group class="my-1">
@@ -37,12 +44,13 @@
       </b-form>
 
       <b-jumbotron header="Opt Carac" class="mt-4">
-        <h1>{{test}}</h1>
         <pre>{{ characteristics }}</pre>
         <pre>{{ characteristic }}</pre>
+        {{ mercerie_id }}
+        {{ option_id }}
+        {{ id }}
       </b-jumbotron>
     </b-container>
-
   </div>
 </template>
 
@@ -53,12 +61,15 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
 import MercerieOptionChatacteristicModel from "@/models/mercerie_option_chatacteristic.model";
 import LemkaHelpers from "@/helpers";
+import InvalidFeedback from "@/components/InvalidFeedback";
 
 export default {
   name: "VAMOCAddOrUpdate",
-
-  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin, ],
-
+  components: {InvalidFeedback},
+  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin,],
+  validations: {
+    characteristic: MercerieOptionChatacteristicModel.validations
+  },
   props: {
     mercerie_id: {
       required: true
@@ -69,9 +80,9 @@ export default {
 
   data: () => {
     return {
-      test: "Bonjour",
       routes: LemkaHelpers.Routes,
-      characteristic: new MercerieOptionChatacteristicModel()
+      characteristic: new MercerieOptionChatacteristicModel(),
+      submitStatus: null,
     }
   },
 
@@ -83,7 +94,11 @@ export default {
   },
 
   methods: {
-    ...mapActions({loadCharacteristics: "Characteristics/loadCharacteristics"}),
+    ...mapActions({
+      loadCharacteristics: "Characteristics/loadCharacteristics",
+      createMOC: "OptionCharacteristics/createMercerieOptionCaracteristique",
+      updateMOC: "OptionCharacteristics/updateMercerieOptionCaracteristique"
+    }),
     retour: function () {
       this.$router.push({
         name: this.routes.MO_ADD_OR_UPDATE.name,
@@ -94,7 +109,28 @@ export default {
       })
     },
     submit: function () {
+      this.$v.$touch()
+      if (this.$v.$invalid || (this.isTouched === false && this.isInvalid === true)) {
+        this.isTouched = true
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
 
+        if (this.id !== undefined) {
+          this.updateMOC([this.option_id, this.characteristic.toUpdatePayload()])
+        } else {
+          this.createMOC([this.option_id, this.characteristic.toCreatePayload()])
+        }
+
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          this.retour()
+        }, 500)
+      }
+    },
+    validateState: function (name) {
+      const {$dirty, $error} = this.$v.characteristic[name];
+      return $dirty ? !$error : null;
     }
   },
 

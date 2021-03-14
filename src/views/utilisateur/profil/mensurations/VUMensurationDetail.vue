@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import MensurationUserMensurationModel from "@/models/mensurationUserMensuration.model";
+import MensurationUserMensurationModel from "@/models/mensuration_user_mensuration.model";
 import {validationMixin} from "vuelidate";
 import UserMensurationModel from "@/models/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
