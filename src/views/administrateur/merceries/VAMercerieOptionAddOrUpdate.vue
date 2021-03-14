@@ -227,7 +227,7 @@ import TableBusy from "@/components/TableBusy";
 import MercerieOptionChatacteristicModel from "@/models/mercerie_option_chatacteristic.model";
 
 export default {
-  name: "ViewAdminMercerieOptionAddOrUpdate",
+  name: "VAMercerieOptionAddOrUpdate",
   components: {InvalidFeedback, TableEmpty, TableBusy},
   props: {
     mercerie_id: {

@@ -95,7 +95,7 @@ import ProfilModel from "@/models/profil.model";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewUserInformationsUpdate",
+  name: "VUInformationsUpdate",
   mixins: [validationMixin, validationMessageMixin],
   validations: {
     profil: ProfilModel.validations

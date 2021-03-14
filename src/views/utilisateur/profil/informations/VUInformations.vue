@@ -84,7 +84,7 @@ import {localTimeStr} from "@/utils/filters";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewUserInformations",
+  name: "VUInformations",
   components: {
     'lemka-upload-modal': UploadModal
   },

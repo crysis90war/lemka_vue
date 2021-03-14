@@ -66,7 +66,7 @@ import TableBusy from "@/components/TableBusy";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewMercerieOptions",
+  name: "VAMercerieOptions",
   components: {TableEmptyFiltered, TableEmpty, TableBusy},
   title() {
     return this.mercerie.nom

@@ -46,7 +46,7 @@ import UserMensurationModel from "@/models/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewUserMensurationsDetail",
+  name: "VUMensurationDetail",
   props: {
     id: {
       required: true

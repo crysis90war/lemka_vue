@@ -53,7 +53,7 @@ import LemkaHelpers from "@/helpers";
 import {localTimeStr} from "@/utils/filters";
 
 export default {
-  name: "ViewAdminArticlesDetail",
+  name: "VAArticleDetail",
   props: {
     slug: {
       type: String,

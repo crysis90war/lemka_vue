@@ -134,7 +134,7 @@ import {tableViewMixin} from "@/mixins/table_view.mixin";
 import {mapGetters} from "vuex";
 
 export default {
-  name: "ViewAdminArticles",
+  name: "VAArticles",
   mixins: [tableViewMixin],
   data() {
     return {

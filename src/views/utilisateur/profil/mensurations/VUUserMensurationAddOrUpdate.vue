@@ -54,7 +54,7 @@ import LemkaHelpers from "@/helpers";
 import {mapActions} from "vuex";
 
 export default {
-  name: "ViewUserUserMensurationAddOrUpdate",
+  name: "VUUserMensurationAddOrUpdate",
   components: {InvalidFeedback},
   props: {
     id: {

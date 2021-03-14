@@ -14,7 +14,7 @@ import ProfilNavbar from "@/components/ProfilNavbar";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewUserProfil",
+  name: "ViewUser",
 
   components: {
     'profil-navbar': ProfilNavbar

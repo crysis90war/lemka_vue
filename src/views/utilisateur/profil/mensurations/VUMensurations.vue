@@ -60,7 +60,7 @@ import TableBusy from "@/components/TableBusy";
 import {mapActions, mapGetters} from "vuex";
 
 export default {
-  name: "ViewUserMensurations",
+  name: "VUMensurations",
   components: {TableEmpty, TableBusy},
   data() {
     return {

@@ -1,10 +1,12 @@
 <template>
-<div>Bons de commande</div>
+  <div class="factures">
+
+  </div>
 </template>
 
 <script>
 export default {
-  name: "view.admin.bonDeCommande"
+  name: "VAFactures"
 }
 </script>
 

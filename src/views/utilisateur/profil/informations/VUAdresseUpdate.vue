@@ -90,7 +90,7 @@ import VilleModel from "@/models/ville.model";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewUserAdresseUpdate",
+  name: "VUAdresseUpdate",
   mixins: [validationMixin],
   validations: {
     adresse: AdresseModel.validations

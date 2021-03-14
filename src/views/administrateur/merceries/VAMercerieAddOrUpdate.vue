@@ -63,7 +63,7 @@ import InvalidFeedback from "@/components/InvalidFeedback";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
 
 export default {
-  name: "ViewAdminMercerieAddOrUpdate",
+  name: "VAMercerieAddOrUpdate",
   components: {InvalidFeedback},
   props: {
     id: {}

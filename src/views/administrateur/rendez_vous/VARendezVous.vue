@@ -1,12 +1,15 @@
 <template>
-  <div class="demande_de_devis">
+  <div class="rendez_vous">
 
   </div>
 </template>
 
 <script>
 export default {
-  name: "VADemandeDeDevis"
+  name: "VARendezVous",
+  data() {
+    return {}
+  },
 }
 </script>
 

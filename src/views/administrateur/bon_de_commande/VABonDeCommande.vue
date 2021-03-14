@@ -1,12 +1,12 @@
 <template>
-  <div class="demande_de_devis">
-
+  <div class="bon_de_commande">
+    Bons de commande
   </div>
 </template>
 
 <script>
 export default {
-  name: "VADemandeDeDevis"
+  name: "VABonDeCommande"
 }
 </script>
 

@@ -194,7 +194,7 @@ import LemkaHelpers from "@/helpers";
 import {mapGetters} from "vuex";
 
 export default {
-  name: "ViewAdminArticlesAddOrUpdate",
+  name: "VAArticleAddOrUpdate",
   components: {InvalidFeedback, Cropper},
   mixins: [validationMixin, validationMessageMixin],
   validations: {

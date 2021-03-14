@@ -129,7 +129,7 @@ import TableEmptyFiltered from "@/components/TableEmptyFiltered";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "ViewAdminMerceries",
+  name: "VAMerceries",
   components: {TableEmptyFiltered, TableEmpty, TableBusy},
   mixins: [tableViewMixin, fonctions],
   title() {
