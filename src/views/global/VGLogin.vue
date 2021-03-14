@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <div class="login">
     <div class="form-container sign-in-container my-4">
       <b-form>
         <img src="../../assets/logo.png" alt="" style="max-width: 250px"/>
@@ -34,7 +34,7 @@
         </b-button>
       </b-form>
     </div>
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -113,5 +113,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "login";
+@import "src/assets/styles/login";
 </style>

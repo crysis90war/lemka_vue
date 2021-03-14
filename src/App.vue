@@ -70,13 +70,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 
-@import './assets/styles/main.css';
-
-.breadcrumb {
-  margin-top: 0;
-  margin-bottom: 0;
-}
+@import 'assets/styles/main.scss';
 
 </style>

@@ -1,0 +1,145 @@
+:root {
+  --silver_tree: #65BE9B;
+  --cork: #472E20;
+  --supernova: #FFCA08;
+  --hot_cinnamon: #DC6218;
+  --carrot_orange: #EF901E;
+  --java: #11BBBB;
+  --genoa: #127475;
+  --cowboy: #562C2C;
+  --flamingo: #F2542D;
+  --wheat: #F5DFBB;
+  --black: #000000;
+  --black-opacity19: #00000019;
+  --black-opacity23: #00000023;
+  --black_opacity90: #00000090;
+  --gray: #808080;
+  --white: #FFFFFF;
+  --concrete: #F3F3F3;
+  --white_opacity10: #FFFFFF10;
+  --excel: #217345;
+  --shopify: #96BF47;
+  --jumbotron-padding-y: 3rem;
+  --facebook: #4267B2;
+  --twitter: #1da1f2;
+  --linkedin: #2867b2;
+  --instagram: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+html {
+  height: 100%;
+  font-family: "Playfair Display", serif;
+}
+
+body {
+  height: 100%;
+  font-family: "Playfair Display", serif;
+}
+
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bouton {
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 1.5rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.bouton-lemka {
+  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 50%, #834d9b 100%);
+  background-size: 200% auto;
+  color: white;
+  border-color: #dc14ff20;
+
+  &:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+  }
+
+}
+
+.bouton-sm {
+  max-height: 40px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 1.2rem;
+}
+
+.bouton-md {
+  max-height: 40px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 1.2rem;
+}
+
+.bouton-lg {
+  max-height: 40px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 1.2rem;
+}
+
+.invalid {
+  border: solid red 1px;
+  border-radius: 5px;
+}
+
+.fa-facebook-square {
+  color: var(--facebook);
+
+  &:hover {
+    opacity: 80%;
+  }
+}
+
+.fa-twitter-square {
+  color: var(--twitter);
+
+  &:hover {
+    opacity: 80%;
+  }
+}
+
+.fa-linkedin {
+  color: var(--linkedin);
+
+  &:hover {
+    opacity: 80%;
+  }
+}
+
+.fa-instagram-square {
+  text-transform: uppercase;
+  background: var(--instagram);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  &:hover {
+    opacity: 80%;
+  }
+}
+
+.breadcrumb {
+  margin-top: 0;
+  margin-bottom: 0;
+}

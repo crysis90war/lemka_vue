@@ -41,6 +41,7 @@
 
 <script>
 import LemkaHelpers from "@/helpers";
+import {mapGetters} from "vuex";
 
 export default {
   name: "ViewAdmin",
@@ -105,9 +106,7 @@ export default {
   },
 
   computed: {
-    currentUser() {
-      return this.$store.state.auth.user;
-    },
+    ...mapGetters({currentUser: "Auth/user"}),
     thisRoute() {
       return this.$route.name
     }
@@ -441,6 +440,5 @@ a.article:hover {
   #sidebarCollapse span {
     display: none;
   }
-
 }
 </style>

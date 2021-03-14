@@ -166,7 +166,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .slide-fade-enter-active {
   transition: all .3s ease;
@@ -176,7 +176,12 @@ export default {
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
-.slide-fade-enter, .slide-fade-leave-to {
+.slide-fade-enter {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
   transform: translateX(10px);
   opacity: 0;
 }
@@ -201,26 +206,19 @@ export default {
 }
 
 .navbar.colored {
-  background: #F1F1F1; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #B4A8BF, #F1F1F1); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #B4A8BF, #F1F1F1); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  /*background: linear-gradient(to bottom, #99bf54 0%, #FFFFFF 100%);*/
-  /*font-size: 16px;*/
-  /*font-weight: bold;*/
-  /*background: #56ab2f;  !* fallback for old browsers *!*/
-  /*background: -webkit-linear-gradient(to right, #a8e063, #56ab2f);  !* Chrome 10-25, Safari 5.1-6 *!*/
-  /*background: linear-gradient(to right, #a8e063, #56ab2f); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
+  background: #F1F1F1;
+  background: -webkit-linear-gradient(to right, #B4A8BF, #F1F1F1);
+  background: linear-gradient(to right, #B4A8BF, #F1F1F1);
 }
 
-.nav-link:hover {
-  color: purple !important;
+.nav-link {
+  &:hover {
+    color: purple !important;
+  }
 }
 
 .active {
   color: #79648F !important;
-  /*background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%);*/
-  /*-webkit-background-clip: text;*/
-  /*-webkit-text-fill-color: transparent;*/
 }
 
 </style>
