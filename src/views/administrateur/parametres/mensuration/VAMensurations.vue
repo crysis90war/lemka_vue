@@ -136,17 +136,15 @@ export default {
       deleteMensuration: 'Mensurations/deleteMensuration',
       loadMensurations: "Mensurations/loadMensurations"
     }),
-    loadOrRefresh: function() {
-      this.loadMensurations()
+    loadOrRefresh: async function() {
+      await this.loadMensurations()
+      this.totalRows = this.itemsLength(this.mensurations)
     }
   },
   created() {
     if (this.mensurations.length === 0) {
       this.loadOrRefresh()
     }
-  },
-  mounted() {
-    this.totalRows = this.itemsLength(this.mensurations)
   }
 }
 </script>
