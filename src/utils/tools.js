@@ -1,7 +1,4 @@
-/**
- * La classe outils qui permet de faire qqch
- */
-class Outils {
+class Tools {
     htmlTitle(titre = null) {
         if (this.isNullOrWhiteSpace(titre)) {
             return 'LEMKA - Atelier de couture'
@@ -52,4 +49,4 @@ class Outils {
     }
 }
 
-export default new Outils();
+export default new Tools();

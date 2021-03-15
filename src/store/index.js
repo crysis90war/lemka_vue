@@ -12,7 +12,8 @@ import {couleurModule} from "@/store/couleur.module";
 import {UserMensurationModule} from "@/store/user_mensuration.module";
 import {CharacteristicModule} from "@/store/characteristic.module";
 import {MercerieOptionChatacteristicModule} from "@/store/merceries/mercerie_option_chatacteristic.module";
-import {AuthModule} from "@/store/auth.module"
+import {AuthModule} from "@/store/auth.module";
+import {HoraireModule} from "@/store/horaire.module";
 
 Vue.use(Vuex)
 
@@ -30,6 +31,7 @@ export default new Vuex.Store({
     'Couleurs': couleurModule,
     'UserMensurations': UserMensurationModule,
     'Characteristics': CharacteristicModule,
-    'OptionCharacteristics': MercerieOptionChatacteristicModule
+    'OptionCharacteristics': MercerieOptionChatacteristicModule,
+    'Horaires': HoraireModule
   }
 });

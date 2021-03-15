@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Outils from "@/mixins/outils.mixin";
+import Outils from "@/utils/tools";
 import Social from "@/components/Social";
 import LemkaHelpers from "@/helpers";
 

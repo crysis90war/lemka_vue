@@ -4,7 +4,7 @@
       <b-card-body>
 
         <b-button-group>
-          <b-button v-if="userMensurations.length < 5" :to="{name: routes.USER_MENSURATION_ADD_OR_UPDATE}"
+          <b-button v-if="userMensurations.length < 5" :to="{name: routes.USER_MENSURATION_ADD_OR_UPDATE.name}"
                     variant="outline-success" size="sm">
             Ajouter mensuration
           </b-button>
@@ -58,10 +58,14 @@ import LemkaHelpers from "@/helpers";
 import TableEmpty from "@/components/TableEmpty";
 import TableBusy from "@/components/TableBusy";
 import {mapActions, mapGetters} from "vuex";
+import Tools from "@/utils/tools"
 
 export default {
   name: "VUMensurations",
   components: {TableEmpty, TableBusy},
+  title() {
+    return Tools.htmlTitle('Mensurations')
+  },
   data() {
     return {
       fields: UserMensurationModel.tableFields,

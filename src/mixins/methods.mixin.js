@@ -1,4 +1,4 @@
-import Outils from "@/mixins/outils.mixin";
+import Outils from "@/utils/tools";
 
 const METHODS = {
     methods: {

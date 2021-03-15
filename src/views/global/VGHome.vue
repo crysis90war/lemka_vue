@@ -13,6 +13,7 @@
 import Carousel from '@/components/Carousel'
 import LemkaSeparateur from "@/components/LemkaSeparateur";
 import GoogleMap from "@/components/GoogleMap";
+import Tools from "@/utils/tools"
 
 export default {
   name: 'VGHome',
@@ -23,7 +24,7 @@ export default {
     'lemka-map': GoogleMap
   },
   title () {
-    return this.$route.meta.value
+    return Tools.htmlTitle()
   },
   data() {
     return {

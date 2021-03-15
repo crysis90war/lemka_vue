@@ -22,6 +22,7 @@ import MercerieOptionservice from '@/services/merceries/mercerie_option.service'
 import CharacteristicService from '@/services/characteristic.service';
 import MercerieOptionChatacteristicService from '@/services/merceries/mercerie_option_chatacteristic.service'
 import AuthService from '@/services/auth.service'
+import HoraireService from '@/services/horaire.service'
 
 const ApiService = {
     'Auth': AuthService,
@@ -38,6 +39,7 @@ const ApiService = {
     'Options': MercerieOptionservice,
     'Characteristics': CharacteristicService,
     'OptionCharacteristics': MercerieOptionChatacteristicService,
+    'Horaires': HoraireService,
     PaysService,
     ProfilService,
     RayonService,

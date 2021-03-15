@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import Outils from "@/mixins/outils.mixin";
+import Outils from "@/utils/tools";
 
 export default {
   name: 'VGAbout',

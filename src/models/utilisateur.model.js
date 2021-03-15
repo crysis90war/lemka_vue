@@ -25,7 +25,6 @@ export default class UtilisateurModel {
         this.created_at = utilisateur.created_at && isValid(utilisateur.created_at) ? format(utilisateur.created_at, "DD-MM-YYYY") : null
         this.updated_at = utilisateur.updated_at && isValid(utilisateur.updated_at) ? format(utilisateur.updated_at, "DD-MM-YYYY") : null
         this.last_login = utilisateur.last_login && isValid(utilisateur.last_login) ? format(utilisateur.last_login, "DD-MM-YYYY") : null
-
     }
 
     toUpdatePayload() {
@@ -42,9 +41,7 @@ export default class UtilisateurModel {
     }
 
     static get validations() {
-        return {
-
-        }
+        return {}
     }
 
     static async fetchUtilisateurs() {

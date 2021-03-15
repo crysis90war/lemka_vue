@@ -1,7 +1,7 @@
 <template>
   <b-container>
 
-    <table class="table table-striped">
+    <table class="table table-striped text-center">
       <thead>
       <tr>
         <th scope="col" colspan="4">Nous sommes ouverts</th>
@@ -25,36 +25,40 @@
 </template>
 
 <script>
-import Outils from "@/mixins/outils.mixin";
+import Tools from "@/utils/tools";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "VGHoraire",
-
+  title () {
+    return Tools.htmlTitle('Horaire')
+  },
   data() {
     return {
-      title: 'Horaire',
-      horaires: {
-        jour: String,
-        heure_ouverture: String,
-        pause_debut: String,
-        pause_fin: String,
-        heure_fermeture: String,
-        sur_rdv: Boolean,
-        est_ferme: Boolean
-      }
+      // horaires: {
+      //   jour: String,
+      //   heure_ouverture: String,
+      //   pause_debut: String,
+      //   pause_fin: String,
+      //   heure_fermeture: String,
+      //   sur_rdv: Boolean,
+      //   est_ferme: Boolean
+      // }
     }
   },
-
-  title () {
-    return Outils.htmlTitle(this.title)
-  },
-
-  created() {
+  computed: {
+    ...mapGetters({horaires: "Horaires/horaires", loading: "Horaires/loadingStatus"})
   },
 
   methods: {
+    ...mapActions({loadHoraires: "Horaires/loadHoraires"}),
     heure(time) {
-      return Outils.format(time)
+      return Tools.format(time)
+    }
+  },
+  created() {
+    if (this.horaires.length === 0) {
+      this.loadHoraires()
     }
   }
 }
