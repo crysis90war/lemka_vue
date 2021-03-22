@@ -41,6 +41,8 @@ import VUAdresseUpdate from "@/views/utilisateur/profil/informations/VUAdresseUp
 import VUMensurations from "@/views/utilisateur/profil/mensurations/VUMensurations";
 import VUUserMensurationAddOrUpdate from "@/views/utilisateur/profil/mensurations/VUUserMensurationAddOrUpdate";
 import VUMensurationDetail from "@/views/utilisateur/profil/mensurations/VUMensurationDetail";
+import VUDemandeDevis from "@/views/utilisateur/profil/demande_de_devis/VUDemandeDevis";
+import VUDemandeDevisAddOrUpdate from "@/views/utilisateur/profil/demande_de_devis/VUDemandeDevisAddOrUpdate";
 // endregion
 
 // region Global Views
@@ -289,6 +291,21 @@ const profilRoutes = [
     component: VUUserMensurationAddOrUpdate,
     props: true
   },
+  {
+    path: PROFIL + '/demandes_devis/',
+    name: ROUTES.DEMANDE_DE_DEVIS.name,
+    meta: {value: ROUTES.DEMANDE_DE_DEVIS.value},
+    component: VUDemandeDevis,
+    children: [
+      {
+        path: PROFIL + '/demande_devis/:id?',
+        name: ROUTES.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name,
+        meta: {value: ROUTES.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.value},
+        component: VUDemandeDevisAddOrUpdate,
+        props: true
+      }
+    ]
+  }
 ]
 
 const router = new VueRouter({

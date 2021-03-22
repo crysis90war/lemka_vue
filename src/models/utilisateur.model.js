@@ -1,4 +1,3 @@
-import ApiService from "@/services";
 import * as R from 'ramda'
 import {format, isValid} from "date-fns";
 import GenreModel from "@/models/genre.model";
@@ -20,7 +19,7 @@ export default class UtilisateurModel {
         this.is_verified = R.is(Boolean, utilisateur.is_verified) ? utilisateur.is_verified : false
 
 
-        this.ref_genre = R.is(Object, utilisateur.ref_genre) ? new GenreModel(utilisateur.ref_genre) : null
+        this.ref_genre = R.is(Object, utilisateur.ref_genre) ? new GenreModel(utilisateur.ref_genre) : new GenreModel()
 
         this.created_at = utilisateur.created_at && isValid(utilisateur.created_at) ? format(utilisateur.created_at, "DD-MM-YYYY") : null
         this.updated_at = utilisateur.updated_at && isValid(utilisateur.updated_at) ? format(utilisateur.updated_at, "DD-MM-YYYY") : null
@@ -44,27 +43,7 @@ export default class UtilisateurModel {
         return {}
     }
 
-    static async fetchUtilisateurs() {
-        let utilisateur = []
-        await ApiService.UtilisateurService.getUtilisateurList().then(response => {
-            utilisateur = response.data
-        })
-        return utilisateur
-    }
-
-    static async getUtilisateurDetail(username) {
-        let utilisateur = {}
-        await ApiService.UtilisateurService.getUtilisateurDetail(username).then(response => {
-            utilisateur = response.data
-        })
-        return utilisateur
-    }
-
-    static async getUtilisateurAdresse(username) {
-        let adresse = {}
-        await ApiService.UtilisateurService.getUtilisateurAdresse(username).then(response => {
-            adresse = response.data
-        })
-        return adresse
+    static get tableFields() {
+        return []
     }
 }

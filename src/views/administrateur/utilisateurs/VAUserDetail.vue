@@ -23,31 +23,31 @@
           <span>{{ utilisateur.ref_genre.genre }}</span>
         </div>
         <hr>
-        <div>
-          <span><i :class="icons.HOME" class="mr-2"></i></span>
-          <b-link v-if="Object.entries(adresse).length === 0" :to="{name: links.ajouterAdresseLink}" class="">
-            <ins>Ajouter une adresse</ins>
-          </b-link>
-          <b-link v-if="Object.entries(adresse).length !== 0" :to="{name: links.modifierAdresseLink}" class="">
-            <ins>Modifier l'adresse</ins>
-          </b-link>
-        </div>
 
-        <div v-if="Object.entries(adresse).length !== 0" class="mt-2">
-          <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
-          <span>{{ adresse.ref_ville.code_postale }} - {{ adresse.ref_ville.ville }}</span><br>
-          <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
-        </div>
-        <hr>
-        <b-button :to="{name: links.updateInformationsLink}" variant="outline-primary my-3">Modifier profil</b-button>
+<!--        <div>-->
+<!--          <span><i :class="icons.HOME" class="mr-2"></i></span>-->
+<!--          <b-link v-if="adresse === null" :to="{name: routes.ADRESSE_ADD.name}" class="">-->
+<!--            <ins>Ajouter une adresse</ins>-->
+<!--          </b-link>-->
+<!--          <b-link v-if="adresse !== null" :to="{name: routes.ADRESSE_UPDATE.name}" class="">-->
+<!--            <ins>Modifier l'adresse</ins>-->
+<!--          </b-link>-->
+<!--        </div>-->
+
+<!--        <div v-if="loading === false" class="mt-2">-->
+<!--          <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>-->
+<!--          <span>{{ adresse.ref_ville.code_postale }} - {{ adresse.ref_ville.ville }}</span><br>-->
+<!--          <span>{{ adresse.ref_ville.ref_pays.pays }}</span>-->
+<!--        </div>-->
+
       </b-col>
 
       <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center">
         <b-img thumbnail rounded="" :src="utilisateur.image" class="h-100"></b-img>
-        <b-button id="toggle-btn" variant="light" class="position-absolute bottom-0 start-0" @click="showModal">
+        <b-button id="toggle-btn" variant="light" class="position-absolute bottom-0 start-0" @click="showModal('image-modal')">
           Modifier photo
         </b-button>
-        <lemka-upload-modal :user="utilisateur" :multiple="true"></lemka-upload-modal>
+        <l-upload-modal :user="utilisateur" :multiple="true"></l-upload-modal>
       </b-col>
     </b-row>
 
@@ -65,28 +65,21 @@
 </template>
 
 <script>
-import ApiService from "@/services";
-import AdresseModel from "@/models/adresse.model";
-import GenreModel from "@/models/genre.model";
 import UtilisateurModel from "@/models/utilisateur.model";
-import UploadModal from "@/components/UploadModal";
 import LemkaHelpers from "@/helpers";
+import {fonctions} from "@/mixins/functions.mixin";
 
 export default {
   name: "VAUserDetail",
-  components: {
-    'lemka-upload-modal': UploadModal
-  },
   props: {
     username: {
-      type: String,
       required: true
     },
   },
+  mixins: [fonctions],
   data() {
     return {
       utilisateur: new UtilisateurModel(),
-      adresse: new AdresseModel(),
       loading: false,
       links: {
         thisRouteLink: LemkaHelpers.Routes.INFORMATIONS.name,
@@ -100,43 +93,44 @@ export default {
   },
 
   methods: {
-    async chargerUtilisateur() {
-      let utilisateur = {}
-      let genre = {}
-      utilisateur = await UtilisateurModel.getUtilisateurDetail(this.username)
-      if (utilisateur.ref_genre !== null && utilisateur.ref_genre !== undefined) {
-        genre = await GenreModel.fetchGenreById(utilisateur.ref_genre)
-        utilisateur.ref_genre = genre
-      }
-      if (utilisateur) {
-        Object.assign(this.adresse, await AdresseModel.getAdresseByUsername(this.username))
-      }
+    initialisation: async function() {
+      this.toggleLoading()
+      await this.$store.dispatch("Genres/loadGenres")
+      let utilisateur = this.$store.getters["Utilisateurs/utilisateur"](this.username)
+      utilisateur.ref_genre = this.$store.getters["Genres/genre"](utilisateur.ref_genre)
       Object.assign(this.utilisateur, utilisateur)
-    },
-
-    showModal() {
-      this.$bvModal.show('image-modal')
-    },
+      this.toggleLoading()
+    }
   },
 
   created() {
-    this.chargerUtilisateur(this.username)
+    this.initialisation()
   },
 
-  async beforeRouteEnter(to, from, next) {
-    async function isValid (param) {
-      if (param !== undefined) {
-        return await ApiService.UtilisateurService.checkUser(param)
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      const index = vm.$store.getters["Utilisateurs/utilisateurs"].findIndex(item => item.username === to.params.username)
+      if (index !== -1) {
+        next();
       } else {
-        return false
+        next({name: LemkaHelpers.Routes.UTILISATEURS.name});
       }
-    }
+    })
 
-    if (!await isValid(to.params.username)) {
-      next({ name: LemkaHelpers.Routes.PAGE_NOT_FOUND_ROUTE.name });
-    } else {
-      next();
-    }
+    // if (!await isValid(to.params.username)) {
+    //   next({name: LemkaHelpers.Routes.PAGE_NOT_FOUND_ROUTE.name});
+    // } else {
+    //   next();
+    // }
+    //
+    // function isValid(param) {
+    //   if (param !== undefined) {
+    //     const index = this.$store.getters["Utilisateurs/utilisateurs"].findIndex(item => item.username === param)
+    //     return index !== -1;
+    //   } else {
+    //     return false
+    //   }
+    // }
   },
 }
 </script>

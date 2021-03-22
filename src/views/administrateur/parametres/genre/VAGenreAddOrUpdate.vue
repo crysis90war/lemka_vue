@@ -36,7 +36,7 @@
 import GenreModel from "@/models/genre.model";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
-import InvalidFeedback from "@/components/InvalidFeedback";
+import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {mapActions} from "vuex";
 

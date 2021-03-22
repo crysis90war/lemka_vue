@@ -1,7 +1,10 @@
 import CategorieModel from "@/models/categorie.model";
-import ApiService from "@/services";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
 
-export const categorieModule = {
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
+export const CategorieModule = {
     namespaced: true,
     state: {
         fetchCategorie: null,
@@ -49,63 +52,64 @@ export const categorieModule = {
     },
     actions: {
         loadCategories: function ({commit}) {
-            return new Promise(((resolve, reject) => {
+            let endpoint = `${DOMAIN}/categories/`;
+            return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
-                ApiService.Categories.getCategories().then(res => {
-                    commit('LOAD_CATEGORIES_SUCCESS', res.data)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_CATEGORIES_SUCCESS', r.data)
                     commit('LOADING_STATUS', false)
-                    resolve(res)
+                    resolve(r.data)
                 }, error => {
                     commit('LOAD_CATEGORIES_FAILURE')
                     commit('LOADING_STATUS', false)
                     reject(error)
                 })
-            }))
+            })
         },
-
         createCategorie: function ({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Categories.postCategorie(payload).then(res => {
-                    commit('ADD_CATEGORIE', Object.assign(new CategorieModel(), res.data))
-                    resolve(res)
+            let endpoint = `${DOMAIN}/categories/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_CATEGORIE', Object.assign(new CategorieModel(), r.data))
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
-
-        fetchCategorie: function ({commit}, categorie_id) {
-          return new Promise(((resolve, reject) => {
-              ApiService.Categories.getCategorieDetail(categorie_id).then(res => {
-                  commit('LOAD_CATEGORIE_SUCCESS', Object.assign(new CategorieModel(), res.data))
-                  resolve(res)
-              }, error => {
-                  commit('LOAD_CATEGORIE_FAILURE')
-                  reject(error)
-              })
-          }))
+        loadCategorie: function ({commit}, categorie_id) {
+            let endpoint = `${DOMAIN}/categories/${categorie_id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.GETData(endpoint).then(r => {
+                    commit('LOAD_CATEGORIE_SUCCESS', Object.assign(new CategorieModel(), r.data))
+                    resolve(r.data)
+                }, error => {
+                    commit('LOAD_CATEGORIE_FAILURE')
+                    reject(error)
+                })
+            })
         },
-
         updateCategorie: function ({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Categories.putCategorie(payload).then(res => {
-                    commit('UPDATE_CATEGORIE', Object.assign(new CategorieModel(), res.data))
-                    resolve(res)
+            let endpoint = `${DOMAIN}/categories/${payload.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.PUTData(endpoint).then(r => {
+                    commit('UPDATE_CATEGORIE', Object.assign(new CategorieModel(), r.data))
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
-
         deleteCategorie: function ({commit}, categorie) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Categories.deleteCategorie(categorie.id).then(res => {
+            let endpoint = `${DOMAIN}/categories/${categorie.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_CATEGORIE', categorie)
-                    resolve(res)
+                    resolve(r)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         }
     },
 }

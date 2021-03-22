@@ -30,8 +30,7 @@
         </b-form-group>
 
         <b-button-group class="my-1">
-          <b-button variant="outline-dark"
-                    @click="retour">
+          <b-button variant="outline-dark" @click="retour">
             <i class="fas fa-arrow-left"></i>
           </b-button>
           <b-button :variant="id !== undefined ? 'outline-primary' : 'outline-success'" @click.prevent="submit">
@@ -59,9 +58,9 @@ import {mapActions, mapGetters} from "vuex";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
-import MercerieOptionChatacteristicModel from "@/models/mercerie_option_chatacteristic.model";
+import MercerieOptionChatacteristicModel from "@/models/mercerie/mercerie_option_chatacteristic.model";
 import LemkaHelpers from "@/helpers";
-import InvalidFeedback from "@/components/InvalidFeedback";
+import InvalidFeedback from "@/components/LInvalidFeedback";
 
 export default {
   name: "VAMOCAddOrUpdate",
@@ -87,7 +86,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({characteristics: 'Characteristics/characteristics'}),
+    ...mapGetters({characteristics: 'Characteristics/caracteristiques'}),
     isInvalid() {
       return this.isTouched && this.characteristic.ref_caracteristique.id === null
     }
@@ -95,9 +94,9 @@ export default {
 
   methods: {
     ...mapActions({
-      loadCharacteristics: "Characteristics/loadCharacteristics",
-      createMOC: "OptionCharacteristics/createMercerieOptionCaracteristique",
-      updateMOC: "OptionCharacteristics/updateMercerieOptionCaracteristique"
+      loadCharacteristics: "Characteristics/loadCaracteristiques",
+      createMOC: "Merceries/createCaracteristique",
+      updateMOC: "Merceries/updateCaracteristique"
     }),
     retour: function () {
       this.$router.push({

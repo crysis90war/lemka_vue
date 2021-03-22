@@ -36,7 +36,7 @@
 <script>
 import MensurationModel from "@/models/mensuration.model";
 import {mapActions} from "vuex";
-import InvalidFeedback from "@/components/InvalidFeedback";
+import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LemkaHelpers from "@/helpers";

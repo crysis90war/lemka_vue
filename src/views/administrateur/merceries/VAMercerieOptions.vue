@@ -58,8 +58,8 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import {fonctions} from "@/mixins/functions.mixin";
-import MercerieOptionModel from "@/models/mercerie_option.model";
-import MercerieModel from "@/models/mercerie.model";
+import MercerieOptionModel from "@/models/mercerie/mercerie_option.model";
+import MercerieModel from "@/models/mercerie/mercerie.model";
 import TableEmptyFiltered from "@/components/TableEmptyFiltered";
 import TableEmpty from "@/components/TableEmpty";
 import TableBusy from "@/components/TableBusy";
@@ -86,16 +86,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      mercerie_options: 'Options/mercerie_options',
-      busy: 'Options/loadingStatus',
+      mercerie_options: 'Merceries/options',
+      busy: 'Merceries/optionsLoadingStatus',
       merceries: 'Merceries/merceries',
       couleurs: 'Couleurs/couleurs'
     }),
   },
   methods: {
     ...mapActions({
-      loadMercerieOptions: 'Options/loadMercerieOptions',
-      deleteMercerieOption: "Options/deleteMercerieOption",
+      loadMercerieOptions: 'Merceries/loadOptions',
+      deleteMercerieOption: "Merceries/deleteOption",
       loadCouleurs: 'Couleurs/loadCouleurs'
     }),
     loadOrRefresh: async function () {

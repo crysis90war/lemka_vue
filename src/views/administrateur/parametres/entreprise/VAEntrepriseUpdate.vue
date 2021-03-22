@@ -185,23 +185,13 @@
                       label="Ville"
                       description="Veuillez selectionner la ville ou se trouve votre entreprise">
           <multiselect v-model="$v.entreprise.ref_ville.$model"
-                       :options="villeOptions"
-                       :loading="isLoading"
-                       :multiple="false"
-                       :searchable="true"
-                       :internal-search="false"
-                       :clear-on-select="false"
-                       :close-on-select="true"
-                       :options-limit="20"
-                       :max-height="600"
-                       :show-no-results="true"
-                       :hide-selected="true"
-                       label="ville"
-                       track-by="ville"
-                       placeholder="Veuillez encoder pour lancer la recherche..."
+                       :options="villeOptions" :loading="isLoading"
+                       :multiple="false" :searchable="true" :internal-search="false"
+                       :clear-on-select="false" :close-on-select="true" :options-limit="20"
+                       :max-height="600" :show-no-results="true" :hide-selected="true"
+                       label="ville" track-by="ville" placeholder="Veuillez encoder pour lancer la recherche..."
                        open-direction="bottom"
-                       @input="$v.entreprise.ref_ville.$touch()"
-                       @search-change="updateSelect">
+                       @input="$v.entreprise.ref_ville.$touch()" @search-change="updateSelect">
             <template slot="singleLabel" slot-scope="{ option }">
               <span>{{ option.code_postale }} - {{ option.ville }}</span>
             </template>
@@ -231,8 +221,8 @@
 <script>
 import {validationMixin} from "vuelidate";
 import EntrepriseModel from "@/models/entreprise.model";
-import VilleModel from "@/models/ville.model";
-import PaysModel from "@/models/pays.model";
+import VilleModel from "@/models/pays/ville.model";
+import PaysModel from "@/models/pays/pays.model";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LemkaHelpers from "@/helpers";
 

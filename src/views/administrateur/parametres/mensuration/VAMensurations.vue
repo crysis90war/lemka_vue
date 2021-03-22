@@ -129,7 +129,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({busy: 'Mensurations/loadingStatus', mensurations: 'Mensurations/mensurations'}),
+    ...mapGetters({busy: 'Mensurations/mensurationLoadingStatus', mensurations: 'Mensurations/mensurations'}),
   },
   methods: {
     ...mapActions({

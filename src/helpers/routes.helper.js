@@ -21,8 +21,6 @@ export const Routes = {
     ADRESSE_UPDATE: {name: UserView + 'AdresseUpdate', value: 'Modifier l\'adresse'},
     USER_MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
     USER_MENSURATION_ADD_OR_UPDATE: {name: UserView + 'UserMensurationAddOrUpdate', value: 'Ajout-Modifier du mensuration'},
-    // MENSURATION_ADD: {name: UserView + 'MensurationAdd', value: 'Ajouter Mensuration'},
-    // MENSURATION_UPDATE: {name: UserView + 'MensurationUpdate', value: 'Modification'},
     USER_MENSURATION_DETAIL: {name: UserView + 'MensurationDetail', value: 'Détail'},
     // endregion
 
@@ -41,6 +39,7 @@ export const Routes = {
     ARTICLES_DETAIL: {name: AdminView + 'ArticleDetail', value: 'Detail de l\'article',},
 
     DEMANDE_DE_DEVIS: {name: AdminView + 'DemandeDeDevis', value: 'Demande de devis'},
+    DEMANDE_DE_DEVIS_ADD_OR_UPDATE: {name: AdminView + 'DemandeDeDevisAddOrUpdate', value: 'Ajouter/Modifier'},
 
     DEVIS: {name: AdminView + 'Devis', value: 'Devis', icon: 'far fa-folder'},
 
@@ -48,7 +47,7 @@ export const Routes = {
     MERCERIES_ADD_OR_UPDATE: {name: AdminView + 'MercerieAddOrUpdate', value: 'Mercerie'},
     MERCERIE_OPTIONS: {name: AdminView + 'MercerieOptions', value: 'Options'},
     MO_ADD_OR_UPDATE: {name: AdminView + 'MOAddOrUpdate', value: 'Ajouter/Modifier'},
-    MOC_ADD_OR_UPDATE: {name: 'VAMOCAddOrUpdate' , value: 'Ajouter/Modifier'},
+    MOC_ADD_OR_UPDATE: {name: 'VAMOCAddOrUpdate', value: 'Ajouter/Modifier'},
 
     BONS_DE_COMMANDE: {name: AdminView + 'BonDeCommande', value: 'Bons de commande'},
 
@@ -59,10 +58,7 @@ export const Routes = {
     PARAMETRES: {name: AdminView + 'Parametres', value: 'Parametres'},
     PARAMETRES_ENTREPRISE: {name: AdminView + 'Entreprise', value: 'Entreprise'},
     PARAMETRES_ENTREPRISE_ADD: {name: AdminView + 'EntrepriseAdd', value: 'Ajout des informations de l\'entreprise'},
-    PARAMETRES_ENTREPRISE_UPDATE: {
-        name: AdminView + 'EntrepriseUpdate',
-        value: 'Modifier information de l\'entreprise'
-    },
+    PARAMETRES_ENTREPRISE_UPDATE: {name: AdminView + 'EntrepriseUpdate', value: "Modifier information de l'entreprise"},
     PARAMETRES_GENRE: {name: AdminView + 'Genre', value: 'Genres'},
     PARAMETRES_GENRE_DETAIL: {name: AdminView + 'GenreDetail', value: 'Détail'},
     PARAMETRES_GENRE_ADD_OR_UPDATE: {name: AdminView + 'GenreAddOrUpdate', value: 'Ajouter - Modifier genre'},

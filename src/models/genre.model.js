@@ -1,5 +1,4 @@
 import * as R from "ramda";
-import ApiService from "@/services";
 import {maxLength, minLength, required} from "vuelidate/lib/validators";
 
 export default class GenreModel {
@@ -29,45 +28,5 @@ export default class GenreModel {
                 maxLength: maxLength(20)
             }
         }
-    }
-
-    static async fetchGenres() {
-        let genres = []
-        await ApiService.Genres.getGenres().then(response => {
-            genres = response.data
-        })
-        return genres
-    }
-
-    static async createGenre(payload) {
-        let genre = null
-        await ApiService.Genres.postGenre(payload).then(response => {
-            genre = response.data
-        })
-        return genre
-    }
-
-    static async fetchGenreById(genreId) {
-        let genre = {}
-        await ApiService.Genres.getGenre(genreId).then(response => {
-            genre = response.data
-        })
-        return genre
-    }
-
-    static async updateGenre(payload) {
-        let genre = null
-        await ApiService.Genres.putGenre(payload.id, payload).then(res => {
-            genre = res.data
-        })
-        return genre
-    }
-
-    static async deleteGenre(genreId) {
-        let message = null
-        await ApiService.Genres.deleteGenre(genreId).then(response => {
-            message = response
-        })
-        return message
     }
 }

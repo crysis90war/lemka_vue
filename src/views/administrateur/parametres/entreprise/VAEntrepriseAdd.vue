@@ -200,7 +200,7 @@
 
 <script>
 import EntrepriseModel from "@/models/entreprise.model";
-import VilleModel from "@/models/ville.model";
+import VilleModel from "@/models/pays/ville.model";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 

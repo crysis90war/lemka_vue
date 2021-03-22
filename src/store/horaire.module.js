@@ -1,17 +1,20 @@
-import ApiService from "@/services";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
+
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const HoraireModule = {
     namespaced: true,
     state: {
         horaires: [],
-        loadingStatus: false
+        horaireLoadingStatus: false
     },
     getters: {
         horaire: state => id => {
             return state.horaires.find(item => item.id === id)
         },
         horaires: state => state.horaires,
-        loadingStatus: state => state.loadingStatus
+        horaireLoadingStatus: state => state.horaireLoadingStatus
     },
     mutations: {
         LOAD_HORAIRES_SUCCESS(state, horaires) {
@@ -20,8 +23,8 @@ export const HoraireModule = {
         LOAD_HORAIRES_FAILURE(state) {
             state.horaires = []
         },
-        LOADING_STATUS(state, newLoadingStatus){
-            state.loadingStatus = newLoadingStatus
+        HORAIRE_LOADING_STATUS(state, horaireLoadingStatus){
+            state.horaireLoadingStatus = horaireLoadingStatus
         },
         ADD_HORAIRE(state, horaire) {
             state.horaires.push(horaire)
@@ -41,15 +44,16 @@ export const HoraireModule = {
     },
     actions: {
         loadHoraires({commit}){
+            let endpoint = `${DOMAIN}/horaire/`;
             return new Promise((resolve, reject) => {
-                commit('LOADING_STATUS', true)
-                ApiService.Horaires.getHoraires().then(res => {
-                    commit('LOAD_HORAIRES_SUCCESS', res.data)
-                    commit('LOADING_STATUS', false)
-                    resolve(res.data)
+                commit('HORAIRE_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_HORAIRES_SUCCESS', r.data)
+                    commit('HORAIRE_LOADING_STATUS', false)
+                    resolve(r.data)
                 }, error => {
                     commit('LOAD_HORAIRES_FAILURE')
-                    commit('LOADING_STATUS', false)
+                    commit('HORAIRE_LOADING_STATUS', false)
                     reject(error)
                 })
             })

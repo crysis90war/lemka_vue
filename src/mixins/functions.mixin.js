@@ -9,6 +9,9 @@ export const fonctions = {
 
         hideModal: function (mondal_id) {
             this.$bvModal.hide(mondal_id)
-        }
+        },
+        toggleLoading: function() {
+            this.loading = !this.loading
+        },
     }
 }

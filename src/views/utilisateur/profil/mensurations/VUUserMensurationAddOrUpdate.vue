@@ -47,9 +47,9 @@
 
 <script>
 import {validationMixin} from "vuelidate";
-import UserMensurationModel from "@/models/user_mensuration.model";
+import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import InvalidFeedback from "@/components/InvalidFeedback";
+import InvalidFeedback from "@/components/LInvalidFeedback";
 import LemkaHelpers from "@/helpers";
 import {mapActions} from "vuex";
 
@@ -106,7 +106,7 @@ export default {
 
   created() {
     if (this.id !== undefined) {
-      Object.assign(this.userMensuration, this.$store.getters["UserMensurations/user_mensuration"](this.id))
+      Object.assign(this.userMensuration, this.$store.getters["UserMensurations/userMensuration"](this.id))
     }
   }
 }

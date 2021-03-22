@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import {required, email, maxLength, minLength, sameAs} from 'vuelidate/lib/validators'
 
 class TokenModel {
     constructor(tokens = {}) {
@@ -14,7 +15,7 @@ export default class AuthModel {
         this.is_staff = R.is(Boolean, auth.is_staff) ? auth.is_staff : false
         this.password = R.is(String, auth.password) ? auth.password : ""
         this.password2 = R.is(String, auth.password2) ? auth.password2 : ""
-        this.tokens = R.is(Object, auth.tokens) ? new TokenModel(this.tokens) : null
+        this.tokens = R.is(Object, auth.tokens) ? new TokenModel(this.tokens) : new TokenModel()
     }
 
     toRegisterPayload() {
@@ -30,6 +31,41 @@ export default class AuthModel {
         return {
             email: this.email,
             password: this.password
+        }
+    }
+
+    static get loginValidations() {
+        return {
+            email: {
+                required,
+                email
+            },
+            password: {
+                required,
+                minLength: minLength(5)
+            }
+        }
+    }
+
+    static get registerValidations() {
+        return {
+            email: {
+                required,
+                email
+            },
+            username: {
+                required,
+                minLength: minLength(3),
+                maxLength: maxLength(50)
+            },
+            password: {
+                required,
+                minLength: minLength(5)
+            },
+            password2: {
+                required,
+                sameAsPassword: sameAs('password')
+            }
         }
     }
 }

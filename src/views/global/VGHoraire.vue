@@ -35,19 +35,10 @@ export default {
   },
   data() {
     return {
-      // horaires: {
-      //   jour: String,
-      //   heure_ouverture: String,
-      //   pause_debut: String,
-      //   pause_fin: String,
-      //   heure_fermeture: String,
-      //   sur_rdv: Boolean,
-      //   est_ferme: Boolean
-      // }
     }
   },
   computed: {
-    ...mapGetters({horaires: "Horaires/horaires", loading: "Horaires/loadingStatus"})
+    ...mapGetters({horaires: "Horaires/horaires", loading: "Horaires/horaireLoadingStatus"})
   },
 
   methods: {

@@ -1,6 +1,5 @@
 import * as R from 'ramda'
 import {maxLength, minLength, required} from "vuelidate/lib/validators";
-import ApiService from "@/services";
 
 export default class TagModel {
     constructor(tag = {}) {
@@ -31,27 +30,7 @@ export default class TagModel {
         }
     }
 
-    static async getTagList(searchParam = '') {
-        let tags = []
-        await ApiService.TagService.getTagList(searchParam).then(response => {
-            tags = response.data.results
-        })
-        return tags
-    }
-
-    static async getTagDetail(tagId) {
-        let tag = {}
-        await ApiService.TagService.getTagDetail(tagId).then(response => {
-            tag = response.data
-        })
-        return tag
-    }
-
-    static async createTag(payload) {
-        let response = null
-        await ApiService.TagService.postTag(payload).then(res => {
-            response = res
-        })
-        return response
+    static get tableFields() {
+        return []
     }
 }

@@ -1,18 +1,21 @@
 import MensurationModel from "@/models/mensuration.model";
-import ApiService from "@/services";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
 
-export const mensurationModule = {
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
+export const MensurationModule = {
     namespaced: true,
     state: {
         mensurations: [],
-        loadingStatus: false
+        mensurationLoadingStatus: false
     },
     getters: {
+        mensurations: state => state.mensurations,
         mensuration: state => id => {
             return state.mensurations.find(mensuration => mensuration.id === id)
         },
-        mensurations: state => state.mensurations,
-        loadingStatus: state => state.loadingStatus,
+        mensurationLoadingStatus: state => state.mensurationLoadingStatus,
     },
     mutations: {
         LOAD_MENSURATIONS_SUCCESS(state, mensurations) {
@@ -21,8 +24,8 @@ export const mensurationModule = {
         LOAD_MENSURATIONS_FAILURE(state) {
             state.mensurations = []
         },
-        LOADING_STATUS(state, newLoadingStatus) {
-            state.loadingStatus = newLoadingStatus
+        MENSURATIONS_LOADING_STATUS(state, mensurationLoadingStatus) {
+            state.mensurationLoadingStatus = mensurationLoadingStatus
         },
         ADD_MENSURATION(state, newMensuration) {
             state.mensurations.push(newMensuration)
@@ -42,48 +45,52 @@ export const mensurationModule = {
     },
     actions: {
         loadMensurations: function ({commit}) {
-            return new Promise(((resolve, reject) => {
-                commit('LOADING_STATUS', true)
-                ApiService.Mensurations.getMensurations().then(res => {
-                    commit('LOAD_MENSURATIONS_SUCCESS', res.data)
-                    commit('LOADING_STATUS', false)
-                    resolve(res)
+            let endpoint = `${DOMAIN}/mensurations/`;
+            return new Promise((resolve, reject) => {
+                commit('MENSURATIONS_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_MENSURATIONS_SUCCESS', r.data)
+                    commit('MENSURATIONS_LOADING_STATUS', false)
+                    resolve(r.data)
                 }, error => {
                     commit('LOAD_MENSURATIONS_FAILURE')
-                    commit('LOADING_STATUS', false)
+                    commit('MENSURATIONS_LOADING_STATUS', false)
                     reject(error)
                 })
-            }))
+            })
         },
         createMensuration: function ({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Mensurations.postMensuration(payload).then(res => {
-                    commit('ADD_MENSURATION', Object.assign(new MensurationModel(), res.data))
-                    resolve(res)
+            let endpoint = `${DOMAIN}/mensurations/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_MENSURATION', Object.assign(new MensurationModel(), r.data))
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
         updateMensuration: function({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Mensurations.putMensuration(payload).then(res => {
-                    commit('UPDATE_MENSURATION', Object.assign(new MensurationModel(), res.data))
-                    resolve(res)
+            let endpoint = `${DOMAIN}/mensurations/${payload.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_MENSURATION', Object.assign(new MensurationModel(), r.data))
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
         deleteMensuration: function({commit}, mensuration) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Mensurations.deleteMensuration(mensuration.id).then(res => {
+            let endpoint = `${DOMAIN}/mensurations/${mensuration.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_MENSURATION', mensuration)
-                    resolve(res)
+                    resolve(r)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         }
     }
 }

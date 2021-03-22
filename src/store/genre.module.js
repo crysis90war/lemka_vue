@@ -1,18 +1,21 @@
 import GenreModel from "@/models/genre.model";
-import ApiService from "@/services";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
 
-export const genreModule = {
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
+export const GenreModule = {
     namespaced: true,
     state: {
         genres: [],
-        loadingStatus: false
+        genresLoadingStatus: false
     },
     getters: {
+        genres: state => state.genres,
         genre: state => id => {
             return state.genres.find(genre => genre.id === id)
         },
-        genres: state => state.genres,
-        loadingStatus: state => state.loadingStatus
+        genresLoadingStatus: state => state.genresLoadingStatus
     },
     mutations: {
         LOAD_GENRES_SUCCESS(state, genres) {
@@ -21,8 +24,8 @@ export const genreModule = {
         LOAD_GENRES_FAILURE(state) {
             state.genres = []
         },
-        LOADING_STATUS(state, newLoadingStatus) {
-            state.loadingStatus = newLoadingStatus
+        GENRES_LOADING_STATUS(state, genresLoadingStatus) {
+            state.genresLoadingStatus = genresLoadingStatus
         },
         ADD_GENRE(state, newGenre) {
             state.genres.push(newGenre)
@@ -42,44 +45,48 @@ export const genreModule = {
     },
     actions: {
         loadGenres: async function ({commit}) {
+            let endpoint = `${DOMAIN}/genres/`;
             return new Promise((resolve, reject) => {
-                commit('LOADING_STATUS', true)
-                ApiService.Genres.getGenres().then(res => {
-                    commit('LOAD_GENRES_SUCCESS', res.data)
-                    commit('LOADING_STATUS', false)
-                    resolve(res.data)
+                commit('GENRES_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_GENRES_SUCCESS', r.data)
+                    commit('GENRES_LOADING_STATUS', false)
+                    resolve(r.data)
                 }, error => {
                     commit('LOAD_GENRES_FAILURE')
-                    commit('LOADING_STATUS', false)
+                    commit('GENRES_LOADING_STATUS', false)
                     reject(error)
                 })
             })
         },
         createGenre: async function ({commit}, payload) {
+            let endpoint = `${DOMAIN}/genres/`;
             return new Promise((resolve, reject) => {
-                ApiService.Genres.postGenre(payload).then(res => {
-                    commit('ADD_GENRE', Object.assign(new GenreModel(), res.data))
-                    resolve(res.data)
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_GENRE', Object.assign(new GenreModel(), r.data))
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
             })
         },
         updateGenre: async function ({commit}, payload) {
+            let endpoint = `${DOMAIN}/genres/${payload.id}/`;
             return new Promise((resolve, reject) => {
-                ApiService.Genres.putGenre(payload).then(res => {
-                    commit('UPDATE_GENRE', Object.assign(new GenreModel(), res.data))
-                    resolve(res.data)
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_GENRE', Object.assign(new GenreModel(), r.data))
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
             })
         },
         deleteGenre: async function({commit}, genre) {
+            let endpoint = `${DOMAIN}/genres/${genre.id}/`;
             return new Promise((resolve, reject) => {
-                ApiService.Genres.deleteGenre(genre.id).then(res => {
+                ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_GENRE', genre)
-                    resolve(res)
+                    resolve(r)
                 }, error => {
                     reject(error)
                 })

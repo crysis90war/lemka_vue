@@ -1,28 +1,42 @@
-import ApiService from "@/services";
-import ArticleModel from "@/models/article.model";
+import ArticleModel from "@/models/article/article.model";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
 
-export const articleModule = {
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
+export const ArticleModule = {
     namespaced: true,
     state: {
         articles: [],
-        loadingStatus: false
+        articlesLoadingStatus: false,
+
+        images: [],
+        imagesLoadingStatus: false
     },
     getters: {
-        article: state => id => {
-            return state.articles.find(article => article.id === id)
-        },
         articles: state => state.articles,
-        loadingStatus: state => state.loadingStatus
+        article: state => slug => {
+            return state.articles.find(item => item.slug === slug)
+        },
+        articlesLoadingStatus: state => state.articlesLoadingStatus,
+
+        images: state => state.images,
+        image: state => id => {
+            return state.images.find(item => item.id === id)
+        },
+        imagesLoadingStatus: state => state.imagesLoadingStatus
     },
     mutations: {
-        LOAD_ARTICLE_SUCCESS(state, articles) {
+        // region Articles
+
+        LOAD_ARTICLES_SUCCESS(state, articles) {
             state.articles = articles
         },
-        LOAD_ARTICLE_FAILURE(state) {
+        LOAD_ARTICLES_FAILURE(state) {
             state.articles = []
         },
-        LOADING_STATUS(state, newLoadingStatus) {
-            state.loadingStatus = newLoadingStatus
+        ARTICLES_LOADING_STATUS(state, articlesLoadingStatus) {
+            state.articlesLoadingStatus = articlesLoadingStatus
         },
         ADD_ARTICLE(state, article) {
             state.articles.push(article)
@@ -38,50 +52,145 @@ export const articleModule = {
             if (index !== -1) {
                 state.articles.splice(index, 1);
             }
+        },
+
+        // endregion
+        // region Images
+
+        LOAD_IMAGES_SUCCES(state, articleImages) {
+            state.images = articleImages
+        },
+        LOAD_IMAGES_FAILURE(state) {
+            state.images = []
+        },
+        IMAGES_LOADING_STATUS(state, imagesLoadingStatus) {
+            state.imagesLoadingStatus = imagesLoadingStatus
+        },
+        ADD_IMAGE(state, image) {
+            state.images.push(image)
+        },
+        UPDATE_IMAGE(state, image) {
+            const index = state.images.findIndex(item => item.id === image.id)
+            if (index !== -1) {
+                state.images.splice(index, 1, image)
+            }
+        },
+        DELETE_IMAGE(state, image) {
+            const index = state.images.map(item => item.id).indexOf(image.id);
+            if (index !== -1) {
+                state.images.splice(index, 1)
+            }
         }
+
+        // endregion
     },
     actions: {
+        // region Articles
+
         loadArticles: function ({commit}) {
-            return new Promise(((resolve, reject) => {
-                commit('LOADING_STATUS', true)
-                ApiService.Articles.getArticles().then(res => {
-                    commit('LOAD_ARTICLE_SUCCESS', res.data)
-                    commit('LOADING_STATUS', false)
-                    resolve(res)
+            let endpoint = `${DOMAIN}/articles/`;
+            return new Promise((resolve, reject) => {
+                commit('ARTICLES_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_ARTICLES_SUCCESS', r.data)
+                    commit('ARTICLES_LOADING_STATUS', false)
+                    resolve(r.data)
                 }, error => {
-                    commit('LOAD_ARTICLE_FAILURE')
-                    commit('LOADING_STATUS', false)
+                    commit('LOAD_ARTICLES_FAILURE')
+                    commit('ARTICLES_LOADING_STATUS', false)
                     reject(error)
                 })
-            }))
+            })
         },
         createArticle: function ({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Articles.postArticle(payload).then(res => {
-                    commit('ADD_ARTICLE', Object.assign(new ArticleModel(), res.data))
-                    resolve(res)
+            let endpoint = `${DOMAIN}/articles/`;
+
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_ARTICLE', Object.assign(new ArticleModel(), r.data))
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
-        updateArticle: function({commit}, payload) {
+        updateArticle: function ({commit}, payload) {
+            let endpoint = `${DOMAIN}/articles/${payload.slug}`;
+
             return new Promise((resolve, reject) => {
-                ApiService.Articles.putArticle(payload).then(res => {
-                    commit('UPDATE_ARTICLE', res.data)
-                    resolve(res.data)
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_ARTICLE', r.data)
+                    resolve(r.data)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+        deleteArticle: function ({commit}, article) {
+            let endpoint = `${DOMAIN}/articles/${article.slug}`;
+
+            return new Promise((resolve, reject) => {
+                ApiService.DELETEData(endpoint).then(r => {
+                    commit('DELETE_ARTICLE', article)
+                    resolve(r)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+
+        // endregion
+        // region Images
+
+        loadImages: function ({commit}, article_slug) {
+            let endpoint = `${DOMAIN}/articles/${article_slug}/images/`;
+            return new Promise((resolve, reject) => {
+                commit('IMAGES_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_IMAGES_SUCCES', r.data)
+                    commit('IMAGES_LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('LOAD_IMAGES_FAILURE')
+                    commit('IMAGES_LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
+        },
+        createImage: function({commit}, [article_slug, payload]) {
+            let endpoint = `${DOMAIN}/articles/${article_slug}/images/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_IMAGE', r.data)
+                    resolve(r.data)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+        updateImage: function({commit}, [article_slug, payload]){
+            let endpoint = `${DOMAIN}/articles/${article_slug}/images/${payload.id}`;
+            return new Promise((resolve, reject) => {
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_IMAGE', r.data)
+                    resolve(r.data)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+        deleteImage: function ({commit}, [article_slug, article]) {
+            let endpoint = `${DOMAIN}/articles/${article_slug}/images/${article.id}`;
+            return new Promise((resolve, reject) => {
+                ApiService.DELETEData(endpoint).then(r => {
+                    commit('DELETE_IMAGE', article)
+                    resolve(r)
                 }, error => {
                     reject(error)
                 })
             })
         }
-        // activerDesactiverArticle: function ({commit}, payload) {
-        //     return new Promise(((resolve, reject) => {
-        //         let data = {est_active: !payload.est_active}
-        //         ApiService.Articles.patchArticle(payload.slug, data).then(res => {
-        //
-        //         })
-        //     }))
-        // }
+
+        // endregion
     }
 }

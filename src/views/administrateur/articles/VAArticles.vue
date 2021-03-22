@@ -58,8 +58,8 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
-        <create-refresh-button-group :load-or-refresh="loadArticles" :routes="routes.ARTICLES_ADD_OR_UPDATE.name"
-                                     create_message="Ajouter un nouveau article"/>
+        <create-refresh-button-group :load-or-refresh="loadArticles" :route="routes.ARTICLES_ADD_OR_UPDATE.name"
+                                     create_message="Ajouter un nouveau article" />
       </b-col>
 
       <b-col lg="7" class="my-1">
@@ -116,9 +116,9 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
-import ArticleModel from "@/models/article.model";
+import ArticleModel from "@/models/article/article.model";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
-import CreateRefreshButtonGroup from "@/components/CreateRefreshButtonGroup";
+import CreateRefreshButtonGroup from "@/components/LCreateRefreshButtonGroup";
 import TableEmptyFiltered from "@/components/TableEmptyFiltered";
 import TableEmpty from "@/components/TableEmpty";
 import TableBusy from "@/components/TableBusy";
@@ -134,7 +134,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({articles: 'Articles/articles', busy: 'Articles/loadingStatus'})
+    ...mapGetters({articles: 'Articles/articles', busy: 'Articles/articlesLoadingStatus'})
   },
   methods: {
     ...mapActions({loadArticles: "Articles/loadArticles", updateArticle: "Articles/updateArticle"}),

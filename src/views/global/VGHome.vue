@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <lemka-carousel></lemka-carousel>
-    <lemka-separateur :titre="separateurs[0].titre" :sous-titre="separateurs[0].sousTitre"/>
-    <lemka-separateur :titre="separateurs[1].titre" :sous-titre="separateurs[1].sousTitre"/>
-    <lemka-separateur :titre="separateurs[2].titre" :sous-titre="separateurs[2].sousTitre"/>
+    <l-separateur :titre="separateurs[0].titre" :sous-titre="separateurs[0].sousTitre"/>
+    <l-separateur :titre="separateurs[1].titre" :sous-titre="separateurs[1].sousTitre"/>
+    <l-separateur :titre="separateurs[2].titre" :sous-titre="separateurs[2].sousTitre"/>
     <lemka-map></lemka-map>
   </div>
 </template>
@@ -11,7 +11,6 @@
 <script>
 
 import Carousel from '@/components/Carousel'
-import LemkaSeparateur from "@/components/LemkaSeparateur";
 import GoogleMap from "@/components/GoogleMap";
 import Tools from "@/utils/tools"
 
@@ -19,7 +18,6 @@ export default {
   name: 'VGHome',
 
   components: {
-    LemkaSeparateur,
     'lemka-carousel': Carousel,
     'lemka-map': GoogleMap
   },

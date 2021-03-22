@@ -56,7 +56,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({typeServices: 'TypeServices/typeServices', busy: 'TypeServices/loadingStatus'})
+    ...mapGetters({typeServices: 'TypeServices/typeServices', busy: 'TypeServices/typeServiceLoadingStatus'})
   },
   methods: {
     ...mapActions({deleteTypeService: 'TypeServices/deleteTypeService'}),

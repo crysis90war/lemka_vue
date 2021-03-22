@@ -1,18 +1,21 @@
 import TypeServiceModel from "@/models/type_service.model";
-import ApiService from "@/services";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
 
-export const typeServiceModule = {
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
+export const TypeServiceModule = {
     namespaced: true,
     state: {
         typeServices: [],
-        loadingStatus: false
+        typeServiceLoadingStatus: false
     },
     getters: {
+        typeServices: state => state.typeServices,
         typeService: state => id => {
             return state.typeServices.find(typeService => typeService.id === id)
         },
-        typeServices: state => state.typeServices,
-        loadingStatus: state => state.loadingStatus
+        typeServiceLoadingStatus: state => state.typeServiceLoadingStatus
     },
     mutations: {
         LOAD_TYPE_SERVICES_SUCCESS(state, typeServices) {
@@ -21,8 +24,8 @@ export const typeServiceModule = {
         LOAD_TYPE_SERVICES_FAILURE(state) {
             state.typeServices = []
         },
-        LOADING_STATUS(state, newLoadingStatus) {
-            state.loadingStatus = newLoadingStatus
+        TYPE_SERVICE_LOADING_STATUS(state, typeServiceLoadingStatus) {
+            state.typeServiceLoadingStatus = typeServiceLoadingStatus
         },
         ADD_TYPE_SERVICE(state, newTypeService) {
             state.typeServices.push(newTypeService)
@@ -42,48 +45,52 @@ export const typeServiceModule = {
     },
     actions: {
         loadTypeServices: function ({commit}) {
-            return new Promise(((resolve, reject) => {
-                commit('LOADING_STATUS', true)
-                ApiService.TypeService.getTypeServices().then(res => {
-                    commit('LOAD_TYPE_SERVICES_SUCCESS', res.data)
-                    commit('LOADING_STATUS', false)
-                    resolve(res)
+            let endpoint = `${DOMAIN}/types_services/`;
+            return new Promise((resolve, reject) => {
+                commit('TYPE_SERVICE_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_TYPE_SERVICES_SUCCESS', r.data)
+                    commit('TYPE_SERVICE_LOADING_STATUS', false)
+                    resolve(r.data)
                 }, error => {
                     commit('LOAD_TYPE_SERVICES_FAILURE')
-                    commit('LOADING_STATUS', false)
+                    commit('TYPE_SERVICE_LOADING_STATUS', false)
                     reject(error)
                 })
-            }))
+            })
         },
         createTypeService: function ({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.TypeService.postTypeService(payload).then(res => {
-                    commit('ADD_TYPE_SERVICE', Object.assign(new TypeServiceModel(), res.data))
-                    resolve(res)
+            let endpoint = `${DOMAIN}/types_services/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_TYPE_SERVICE', Object.assign(new TypeServiceModel(), r.data))
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
         updateTypeService: function ({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.TypeService.putTypeService(payload).then(res => {
+            let endpoint = `${DOMAIN}/types_services/${payload.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.PUTData(endpoint, payload).then(res => {
                     commit('UPDATE_TYPE_SERVICE', Object.assign(new TypeServiceModel(), res.data))
                     resolve(res)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
         deleteTypeService: function ({commit}, typeService) {
-            return new Promise(((resolve, reject) => {
-                ApiService.TypeService.deleteTypeService(typeService.id).then(res => {
+            let endpoint = `${DOMAIN}/types_services/${typeService.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_TYPE_SERVICE', typeService)
-                    resolve(res)
+                    resolve(r)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         }
     }
 }

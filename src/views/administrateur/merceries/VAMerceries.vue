@@ -121,13 +121,13 @@
 <script>
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import {mapActions, mapGetters} from "vuex";
-import MercerieModel from "@/models/mercerie.model";
+import MercerieModel from "@/models/mercerie/mercerie.model";
 import {fonctions} from "@/mixins/functions.mixin";
 import TableBusy from "@/components/TableBusy";
 import TableEmpty from "@/components/TableEmpty";
 import TableEmptyFiltered from "@/components/TableEmptyFiltered";
 import LemkaHelpers from "@/helpers";
-import CreateRefreshButtonGroup from "@/components/CreateRefreshButtonGroup";
+import CreateRefreshButtonGroup from "@/components/LCreateRefreshButtonGroup";
 
 export default {
   name: "VAMerceries",
@@ -144,7 +144,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({merceries: 'Merceries/merceries', busy: 'Merceries/loadingStatus'})
+    ...mapGetters({merceries: 'Merceries/merceries', busy: 'Merceries/merceriesLoadingStatus'})
   },
   methods: {
     ...mapActions({

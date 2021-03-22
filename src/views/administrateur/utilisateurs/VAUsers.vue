@@ -157,7 +157,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({utilisateurs: 'Utilisateurs/utilisateurs', busy: 'Utilisateurs/loadingStatus'})
+    ...mapGetters({utilisateurs: 'Utilisateurs/utilisateurs', busy: 'Utilisateurs/utilisateursLoadingStatus'})
   },
   methods: {
     alert(item) {

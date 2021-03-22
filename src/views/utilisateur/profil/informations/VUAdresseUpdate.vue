@@ -1,162 +1,132 @@
 <template>
-  <b-card title="Modifier l'adresse" :class="BSClass.CARD_BORDERLESS_SHADOW" class="my-2">
-    <b-card-body>
-      <b-form @submit.prevent="submit">
+  <div class="update_adresse">
 
-        <b-form-group label="Ville"
-                      description="Selectionn selectionner votre ville">
-          <multiselect v-model="adresse.ref_ville"
-                       label="ville"
-                       track-by="ville"
-                       placeholder="Veuillez encoder pour lancer la recherche..."
-                       open-direction="bottom"
-                       :options="villeOptions"
-                       :multiple="false"
-                       :searchable="true"
-                       :loading="isLoading"
-                       :internal-search="false"
-                       :clear-on-select="false"
-                       :close-on-select="true"
-                       :options-limit="20"
-                       :max-height="600"
-                       :show-no-results="false"
-                       :hide-selected="true"
-                       @search-change="updateSelect">
-            <template slot="singleLabel" slot-scope="{ option }">
-              <span>{{ option.code_postale }} - {{ option.ville }}</span>
-            </template>
-            <template slot="option" slot-scope="{ option }">
-              <span>{{ option.code_postale }} - {{ option.ville }}</span>
-            </template>
-            <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-          </multiselect>
-        </b-form-group>
+    <b-card v-if="loading === false" title="Modifier l'adresse" class="my-4" :class="BSClass.CARD_BORDERLESS_SHADOW">
+      <b-card-body>
+        <b-form @submit.prevent="submit">
 
-        <b-form-group id="input-groupe-rue"
-                      label="Rue"
-                      description="Veuillez encoder votre rue"
-                      label-for="input-rue">
-          <b-form-input v-model="$v.adresse.rue.$model"
-                        name="input-rue"
-                        :state="validateState('rue')"
-                        placeholder="Rue :"></b-form-input>
-          <b-form-invalid-feedback>
-          </b-form-invalid-feedback>
-        </b-form-group>
+          <b-form-group label="Ville" description="Selectionn selectionner votre ville">
+            <multiselect v-model="adresse.ref_ville"
+                         :options="villes" :loading="villesLoadingStatus"
+                         track-by="ville" placeholder="Veuillez encoder pour lancer la recherche..."
+                         :multiple="false" :searchable="true" :internal-search="false"
+                         :clear-on-select="false" :close-on-select="true" :options-limit="20"
+                         :max-height="600" :show-no-results="false" :hide-selected="true"
+                         @search-change="updateSelect">
+              <template slot="singleLabel" slot-scope="{ option }">
+                <span>{{ option.code_postale }} - {{ option.ville }}</span>
+              </template>
+              <template slot="option" slot-scope="{ option }">
+                <span>{{ option.code_postale }} - {{ option.ville }}</span>
+              </template>
+              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+            </multiselect>
+          </b-form-group>
 
-        <b-row>
-          <b-col lg="6">
-            <b-form-group id="input-groupe-numero"
-                          label="Numero"
-                          description="Veuillez encoder votre numero"
-                          label-for="input-numero">
-              <b-form-input v-model="$v.adresse.numero.$model"
-                            name="input-numero"
-                            :state="validateState('numero')"
-                            placeholder="Numéro :"></b-form-input>
-              <b-form-invalid-feedback>
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-          <b-col lg="6">
-            <b-form-group id="input-groupe-boite"
-                          label="Boite"
-                          description="Veuillez encoder votre boite"
-                          label-for="input-boite">
-              <b-form-input v-model="$v.adresse.boite.$model"
-                            name="input-boite"
-                            :state="validateState('boite')"
-                            placeholder="Boite :"></b-form-input>
-              <b-form-invalid-feedback>
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-button-group class="float-right">
-          <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
-          </b-button>
-          <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
-        </b-button-group>
-      </b-form>
-    </b-card-body>
-  </b-card>
+          <b-form-group label="Rue" description="Veuillez encoder votre rue">
+            <b-form-input v-model="$v.adresse.rue.$model"
+                          placeholder="Rue :" :state="validateState('rue')"></b-form-input>
+            <b-form-invalid-feedback>
+              <l-invalid-feedback :condition="!$v.adresse.rue.required" :error-message="required()"/>
+              <l-invalid-feedback :condition="!$v.adresse.rue.minLength"
+                                  :error-message="minLength($v.adresse.rue.$params.minLength.min)"/>
+            </b-form-invalid-feedback>
+          </b-form-group>
+
+          <b-row>
+            <b-col lg="6">
+              <b-form-group label="Numero" description="Veuillez encoder votre numero">
+                <b-form-input v-model="$v.adresse.numero.$model"
+                              placeholder="Numéro :" :state="validateState('numero')"></b-form-input>
+                <b-form-invalid-feedback>
+                </b-form-invalid-feedback>
+              </b-form-group>
+            </b-col>
+
+            <b-col lg="6">
+              <b-form-group label="Boite" description="Veuillez encoder votre boite">
+                <b-form-input v-model="$v.adresse.boite.$model"
+                              placeholder="Boite :" :state="validateState('boite')"></b-form-input>
+                <b-form-invalid-feedback>
+                </b-form-invalid-feedback>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
+          <b-button-group>
+            <b-button variant="outline-dark" :to="{name: link}">
+              <i class="fas fa-arrow-left"></i>
+            </b-button>
+            <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
+            </b-button>
+          </b-button-group>
+        </b-form>
+      </b-card-body>
+    </b-card>
+
+    <l-spinner v-else/>
+  </div>
 </template>
 
 <script>
 import {validationMixin} from "vuelidate";
 import AdresseModel from "@/models/adresse.model";
-import PaysModel from "@/models/pays.model";
-import VilleModel from "@/models/ville.model";
 import LemkaHelpers from "@/helpers";
+import {mapActions, mapGetters} from "vuex";
+import {fonctions} from "@/mixins/functions.mixin";
+import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 
 export default {
   name: "VUAdresseUpdate",
-  mixins: [validationMixin],
+  mixins: [validationMixin, validationMessageMixin, fonctions],
   validations: {
     adresse: AdresseModel.validations
   },
-
   data() {
     return {
       adresse: new AdresseModel(),
-
-      pays: null,
-      paysOptions: [],
-
-      villeOptions: [],
-
-      isLoading: false,
-
+      loading: false,
       submitStatus: null,
-
       BSClass: LemkaHelpers.BSClass,
       link: LemkaHelpers.Routes.INFORMATIONS.name,
     }
   },
-
+  computed: {
+    ...mapGetters({
+      villes: "Villes/villes",
+      villesLoadingStatus: "Villes/villesLoadingStatus"
+    })
+  },
   methods: {
-    async chargerAdresses() {
-      let adresse = {}
-      adresse = await AdresseModel.getAdresseDetail()
-
-      Object.assign(this.adresse, adresse)
-    },
-
-    async chargerPays() {
-      this.villeOptions = []
-      let listPays = await PaysModel.fetchPaysList()
-      if (listPays.length > 0) {
-        listPays.forEach(item => {
-          let pays = new PaysModel()
-          Object.assign(pays, item)
-          let optionPays = {
-            value: pays.id,
-            text: `${pays.code} - ${pays.pays}`
-          }
-          this.paysOptions.push(optionPays)
-        })
+    ...mapActions({
+      loadVilles: "Villes/loadVilles",
+      loadCity: "Villes/loadCity",
+      updateAdresse: "Profil/updateAdresse",
+    }),
+    initialisation: async function () {
+      this.toggleLoading()
+      await this.loadVilles()
+      await this.$store.dispatch("Profil/loadAdresse")
+      Object.assign(this.adresse, await this.$store.getters["Profil/adresse"])
+      if (this.adresse !== null) {
+        await this.loadCity(this.adresse.ref_ville)
+        this.adresse.ref_ville = await this.$store.getters["Villes/city"]
       }
-      this.pays = this.adresse.ref_ville.ref_pays.id
+      this.toggleLoading()
     },
 
-    async chargerVilles() {
-      this.villeOptions = await VilleModel.fetchVilles()
+    updateSelect: async function (query) {
+      await this.loadVilles(query)
     },
 
-    async updateSelect(query) {
-      this.isLoading = true
-      this.villeOptions = await VilleModel.fetchVilles(query)
-      this.isLoading = false
-    },
-
-    async submit() {
+    submit: function() {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
 
-        await AdresseModel.updateAdresse(this.adresse.toUpdatePayload())
+        this.updateAdresse(this.adresse.toUpdatePayload())
 
         setTimeout(() => {
           this.submitStatus = 'OK'
@@ -169,16 +139,10 @@ export default {
       const {$dirty, $error} = this.$v.adresse[name];
       return $dirty ? !$error : null;
     },
-
-    async loadData() {
-      await this.chargerAdresses()
-      await this.chargerPays()
-      await this.chargerVilles()
-    }
   },
 
   created() {
-    this.loadData()
+    this.initialisation()
   }
 }
 </script>

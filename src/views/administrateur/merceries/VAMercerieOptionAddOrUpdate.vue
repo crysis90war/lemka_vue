@@ -214,17 +214,17 @@
 </template>
 
 <script>
-import MercerieOptionModel from "@/models/mercerie_option.model";
+import MercerieOptionModel from "@/models/mercerie/mercerie_option.model";
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
-import InvalidFeedback from "@/components/InvalidFeedback";
+import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {fonctions} from "@/mixins/functions.mixin";
 import TableEmpty from "@/components/TableEmpty";
 import TableBusy from "@/components/TableBusy";
-import MercerieOptionChatacteristicModel from "@/models/mercerie_option_chatacteristic.model";
+import MercerieOptionChatacteristicModel from "@/models/mercerie/mercerie_option_chatacteristic.model";
 
 export default {
   name: "VAMercerieOptionAddOrUpdate",
@@ -250,8 +250,8 @@ export default {
   computed: {
     ...mapGetters({
       couleurs: 'Couleurs/couleurs',
-      option_characteristics: "OptionCharacteristics/option_characteristics",
-      caractsBusy: "OptionCharacteristics/loadingStatus"
+      option_characteristics: "Merceries/caracteristiques",
+      caractsBusy: "Merceries/caracteristiquesLoadingStatus"
     }),
     isInvalid() {
       return this.isTouched && this.mercerie_option.ref_couleur.id === null
@@ -260,10 +260,10 @@ export default {
   methods: {
     ...mapActions({
       loadCouleurs: 'Couleurs/loadCouleurs',
-      createMercerieOption: 'Options/createMercerieOption',
-      updateMercerieOption: 'Options/updateMercerieOption',
-      loadMercerieOptionCaracteristiques: "OptionCharacteristics/loadMercerieOptionCaracteristiques",
-      deleteMercerieOptionCaracteristique: "OptionCharacteristics/deleteMercerieOptionCaracteristique"
+      createMercerieOption: 'Merceries/createOption',
+      updateMercerieOption: 'Merceries/updateOption',
+      loadMercerieOptionCaracteristiques: "Merceries/loadCaracteristiques",
+      deleteMercerieOptionCaracteristique: "Merceries/deleteCaracteristique"
     }),
 
     loadOrRefreshCharacteristics: function (mercerie_option_id) {
@@ -274,7 +274,7 @@ export default {
       if (this.couleurs.length === 0) {
         await this.loadCouleurs()
       }
-      Object.assign(this.mercerie_option, await this.$store.getters["Options/mercerie_option"](id))
+      Object.assign(this.mercerie_option, await this.$store.getters["Merceries/option"](id))
       if (this.couleurs.length !== 0 && this.mercerie_option.ref_couleur !== undefined) {
         this.mercerie_option.ref_couleur = this.$store.getters["Couleurs/couleur"](this.mercerie_option.ref_couleur)
       }

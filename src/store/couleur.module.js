@@ -1,17 +1,20 @@
-import ApiService from "@/services";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
 
-export const couleurModule = {
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
+export const CouleurModule = {
     namespaced: true,
     state: {
         couleurs: [],
-        loadingStatus: false
+        couleursLoadingStatus: false
     },
     getters: {
+        couleurs: state => state.couleurs,
         couleur: state => id => {
             return state.couleurs.find(couleur => couleur.id === id)
         },
-        couleurs: state => state.couleurs,
-        loadingStatus: state => state.loadingStatus
+        couleursLoadingStatus: state => state.couleursLoadingStatus
     },
     mutations: {
         LOAD_COULEURS_SUCCESS(state, couleurs) {
@@ -20,8 +23,8 @@ export const couleurModule = {
         LOAD_COULEURS_FAILURE(state) {
             state.couleurs = []
         },
-        LOADING_STATUS(state, newLoadingStatus) {
-            state.loadingStatus = newLoadingStatus
+        COULEURS_LOADING_STATUS(state, newLoadingStatus) {
+            state.couleursLoadingStatus = newLoadingStatus
         },
         ADD_COULEUR(state, couleur) {
             state.couleurs.push(couleur)
@@ -41,51 +44,52 @@ export const couleurModule = {
     },
     actions: {
         loadCouleurs: function({commit}) {
-            return new Promise(((resolve, reject) => {
-                commit('LOADING_STATUS', true)
-                ApiService.Couleurs.getCouleurs().then(res => {
-                    commit('LOAD_COULEURS_SUCCESS', res.data)
-                    commit('LOADING_STATUS', false)
-                    resolve(res)
+            let endpoint = `${DOMAIN}/couleurs/`;
+            return new Promise((resolve, reject) => {
+                commit('COULEURS_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_COULEURS_SUCCESS', r.data)
+                    commit('COULEURS_LOADING_STATUS', false)
+                    resolve(r.data)
                 }, error => {
                     commit('LOAD_COULEURS_FAILURE')
-                    commit('LOADING_STATUS', false)
+                    commit('COULEURS_LOADING_STATUS', false)
                     reject(error)
                 })
-            }))
+            })
         },
-
         createCouleur: function ({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Couleurs.postCouleur(payload).then(res => {
-                    commit('ADD_COULEUR', res.data)
-                    resolve(res)
+            let endpoint = `${DOMAIN}/couleurs/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_COULEUR', r.data)
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
-
         updateCouleur: function({commit}, payload) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Couleurs.putCouleur(payload).then(res => {
-                    commit('UPDATE_COULEUR', res.data)
-                    resolve(res)
+            let endpoint = `${DOMAIN}/couleurs/${payload.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_COULEUR', r.data)
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         },
-
         deleteCouleur: function({commit}, couleur) {
-            return new Promise(((resolve, reject) => {
-                ApiService.Couleurs.deleteCouleur(couleur.id).then(res => {
+            let endpoint = `${DOMAIN}/couleurs/${couleur.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_COULEUR', couleur)
-                    resolve(res)
+                    resolve(r)
                 }, error => {
                     reject(error)
                 })
-            }))
+            })
         }
     }
 }

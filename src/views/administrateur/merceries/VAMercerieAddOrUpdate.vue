@@ -55,11 +55,11 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import MercerieModel from "@/models/mercerie.model";
+import MercerieModel from "@/models/mercerie/mercerie.model";
 import LemkaHelpers from "@/helpers";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import InvalidFeedback from "@/components/InvalidFeedback";
+import InvalidFeedback from "@/components/LInvalidFeedback";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
 
 export default {

@@ -1,17 +1,22 @@
-import UtilisateurModel from "@/models/utilisateur.model";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
 
-export const utilisateurModule = {
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
+export const UtilisateurModule = {
     namespaced: true,
     state: {
         utilisateurs: [],
-        loadingStatus: false
+        utilisateursLoadingStatus: false,
+
+        adresse: null
     },
     getters: {
-        utilisateur: state => id => {
-            return state.utilisateurs.find(utilisateur => utilisateur.id === id)
+        utilisateur: state => username => {
+            return state.utilisateurs.find(utilisateur => utilisateur.username === username)
         },
         utilisateurs: state => state.utilisateurs,
-        loadingStatus: state => state.loadingStatus
+        utilisateursLoadingStatus: state => state.utilisateursLoadingStatus
     },
     mutations: {
         LOAD_UTILISATEURS_SUCCESS(state, utilisateurs) {
@@ -20,37 +25,50 @@ export const utilisateurModule = {
         LOAD_UTILISATEURS_FAILURE(state) {
             state.utilisateurs = []
         },
-        LOADING_STATUS(state, newLoadingStatus) {
-            state.loadingStatus = newLoadingStatus
+        UTILISATEURS_LOADING_STATUS(state, utilisateursLoadingStatus) {
+            state.utilisateursLoadingStatus = utilisateursLoadingStatus
         },
         UPDATE_UTILISATEUR(state, utilisateur) {
             const index = state.utilisateurs.findIndex(u => u.id === utilisateur.id)
             if (index !== -1) {
                 state.utilisateurs.splice(index, 1, utilisateur)
             }
+        },
+        LOAD_UTILISATEUR_ADRESSE_SUCCES(state, adresse) {
+            state.adresse = adresse
+        },
+        LOAD_UTILISATEUR_ADRESSE_FAILURE(state) {
+            state.adresse = null
         }
     },
     actions: {
-        loadUtilisateurs: async function({commit}) {
-            try {
-                commit('LOADING_STATUS', true)
-                let utilisateurs = await UtilisateurModel.fetchUtilisateurs()
-                commit('LOAD_UTILISATEURS_SUCCESS', utilisateurs)
-                commit('LOADING_STATUS', false)
-                return Promise.resolve()
-            } catch (e) {
-                commit('LOAD_UTILISATEURS_FAILURE')
-                commit('LOADING_STATUS', false)
-                return Promise.reject(e)
-            }
+        loadUtilisateurs: function({commit}) {
+            let endpoint = `${DOMAIN}/utilisateurs/`;
+            return new Promise((resolve, reject) => {
+                commit('UTILISATEURS_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('LOAD_UTILISATEURS_SUCCESS', r.data)
+                    commit('UTILISATEURS_LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('LOAD_UTILISATEURS_FAILURE')
+                    commit('UTILISATEURS_LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
         },
-        // eslint-disable-next-line no-unused-vars
-        updateUtilisateur: async function({commit}, payload) {
-            // try {
-            //     let user = await UtilisateurModel.
-            // } catch (e) {
-            //     return Promise.reject(e)
-            // }
+
+        loadAdresseByUsername: function({commit}, username) {
+            let endpoint = `${DOMAIN}/utilisateurs/${username}/adresses/`;
+            return new Promise((resolve, reject) => {
+                ApiService.GETData(endpoint).then(r => {
+                    commit('LOAD_UTILISATEURS_SUCCESS', r.data)
+                    resolve(r.data)
+                }, error => {
+                    commit('LOAD_UTILISATEURS_FAILURE')
+                    reject(error)
+                })
+            })
         }
     }
 }

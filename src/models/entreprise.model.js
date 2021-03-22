@@ -1,6 +1,5 @@
 import * as R from 'ramda'
-import VilleModel from "@/models/ville.model";
-import ApiService from "@/services";
+import VilleModel from "@/models/pays/ville.model";
 import {minLength, required, alphaNum, maxLength, email, numeric, url} from "vuelidate/lib/validators";
 
 export default class EntrepriseModel {
@@ -71,34 +70,7 @@ export default class EntrepriseModel {
             numero: {
                 required,
                 alphaNum
-            },
-            ref_ville: {
-                required
             }
         }
-    }
-
-    static async getEntrepriseList() {
-        let entreprise = []
-        await ApiService.EntrepriseService.getEntrepriseList().then(response => {
-            entreprise = response.data
-        })
-        return entreprise
-    }
-
-    static async getEntrepriseDetail(entrepriseId) {
-        let entreprise = {}
-        await ApiService.EntrepriseService.getEntrepriseDetail(entrepriseId).then(response => {
-            entreprise = response.data
-        })
-        return entreprise
-    }
-
-    static async createEntreprise(payload) {
-        await ApiService.EntrepriseService.postEntreprise(payload)
-    }
-
-    static async updateEntreprise(payload) {
-        await ApiService.EntrepriseService.updateEntreprise(payload.id, payload)
     }
 }

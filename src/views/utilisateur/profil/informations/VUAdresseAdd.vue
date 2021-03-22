@@ -5,21 +5,12 @@
         <b-form-group label="Ville"
                       description="Selectionn selectionner votre ville">
           <multiselect v-model="adresse.ref_ville"
-                       label="ville"
-                       track-by="ville"
+                       :options="villes" :loading="loading"
+                       label="ville" track-by="ville"
                        placeholder="Veuillez encoder pour lancer la recherche..."
-                       open-direction="bottom"
-                       :options="villeOptions"
-                       :multiple="false"
-                       :searchable="true"
-                       :loading="isLoading"
-                       :internal-search="false"
-                       :clear-on-select="false"
-                       :close-on-select="true"
-                       :options-limit="20"
-                       :max-height="600"
-                       :show-no-results="false"
-                       :hide-selected="true"
+                       :multiple="false" :searchable="true" :internal-search="false"
+                       :clear-on-select="false" :close-on-select="true" :options-limit="20" :max-height="600"
+                       :show-no-results="false" :hide-selected="true"
                        @search-change="updateSelect">
             <template slot="singleLabel" slot-scope="{ option }">
               <span>{{ option.code_postale }} - {{ option.ville }}</span>
@@ -31,41 +22,27 @@
           </multiselect>
         </b-form-group>
 
-        <b-form-group id="input-groupe-rue"
-                      label="Rue"
-                      description="Veuillez encoder votre rue"
-                      label-for="input-rue">
+        <b-form-group label="Rue" description="Veuillez encoder votre rue">
           <b-form-input v-model="$v.adresse.rue.$model"
-                        name="input-rue"
-                        :state="validateState('rue')"
-                        placeholder="Rue :"></b-form-input>
+                        placeholder="Rue :" :state="validateState('rue')"/>
           <b-form-invalid-feedback>
           </b-form-invalid-feedback>
         </b-form-group>
 
         <b-row>
           <b-col lg="6">
-            <b-form-group id="input-groupe-numero"
-                          label="Numero"
-                          description="Veuillez encoder votre numero"
-                          label-for="input-numero">
+            <b-form-group label="Numero" description="Veuillez encoder votre numero">
               <b-form-input v-model="$v.adresse.numero.$model"
-                            name="input-numero"
-                            :state="validateState('numero')"
-                            placeholder="Numéro :"></b-form-input>
+                            placeholder="Numéro :" :state="validateState('numero')"/>
               <b-form-invalid-feedback>
               </b-form-invalid-feedback>
             </b-form-group>
           </b-col>
+
           <b-col lg="6">
-            <b-form-group id="input-groupe-boite"
-                          label="Boite"
-                          description="Veuillez encoder votre boite"
-                          label-for="input-boite">
+            <b-form-group label="Boite" description="Veuillez encoder votre boite">
               <b-form-input v-model="$v.adresse.boite.$model"
-                            name="input-boite"
-                            :state="validateState('boite')"
-                            placeholder="Boite :"></b-form-input>
+                            placeholder="Boite :" :state="validateState('boite')"/>
               <b-form-invalid-feedback>
               </b-form-invalid-feedback>
             </b-form-group>
@@ -73,9 +50,12 @@
         </b-row>
 
         <b-button-group>
-          <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
+          <b-button variant="outline-success" type="submit" :disabled="submitStatus === 'PENDING'">
+            Sauvegarder
           </b-button>
-          <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
+          <b-button variant="outline-danger" :to="{name: link}">
+            Retour
+          </b-button>
         </b-button-group>
       </b-form>
     </b-card-body>
@@ -85,51 +65,39 @@
 <script>
 import AdresseModel from "@/models/adresse.model";
 import {validationMixin} from "vuelidate";
-import VilleModel from "@/models/ville.model";
 import LemkaHelpers from "@/helpers";
+import {mapActions, mapGetters} from "vuex";
+import {fonctions} from "@/mixins/functions.mixin";
 
 export default {
   name: "VUAdresseAdd",
-  mixins: [validationMixin],
+  mixins: [validationMixin, fonctions],
   validations: {
     adresse: AdresseModel.validations
   },
   data() {
     return {
       adresse: new AdresseModel(),
-
-      pays: null,
-      paysOptions: [],
-
-      villeOptions: [],
-
-      isLoading: false,
-
+      loading: false,
       submitStatus: null,
-
       BSClass: LemkaHelpers.BSClass,
       link: LemkaHelpers.Routes.INFORMATIONS.name,
     }
   },
+  computed: {
+    ...mapGetters({villes: "Villes/villes"})
+  },
   methods: {
-    async chargerVilles() {
-      this.villeOptions = await VilleModel.fetchVilles()
-    },
+    ...mapActions({loadVilles: "Villes/loadVilles", createAdresse: "Profil/createAdresse"}),
 
-    async updateSelect(query) {
-      this.isLoading = true
-      this.villeOptions = await VilleModel.fetchVilles(query)
-      this.isLoading = false
-    },
-
-    async submit() {
+    submit: function() {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
 
-        await AdresseModel.createAdresse(this.adresse.toCreatePayload())
+        this.createAdresse(this.adresse.toCreatePayload())
 
         setTimeout(() => {
           this.submitStatus = 'OK'
@@ -138,13 +106,19 @@ export default {
       }
     },
 
+    updateSelect: async function(query) {
+      this.toggleLoading()
+      await this.loadVilles(query)
+      this.toggleLoading()
+    },
+
     validateState(name) {
       const {$dirty, $error} = this.$v.adresse[name];
       return $dirty ? !$error : null;
     },
   },
   created() {
-    this.chargerVilles()
+    this.loadVilles()
   }
 }
 </script>

@@ -2,7 +2,6 @@ import * as R from "ramda";
 import {format, isValid} from "date-fns";
 import GenreModel from "@/models/genre.model";
 import {alphaNum, minLength, numeric, required} from "vuelidate/lib/validators";
-import ApiService from "@/services";
 
 export default class ProfilModel {
     constructor(profil = {}) {
@@ -51,20 +50,7 @@ export default class ProfilModel {
         }
     }
 
-    static async getProfil() {
-        let profil = {}
-        await ApiService.ProfilService.getProfilDetail().then(response => {
-            profil = response.data
-            profil.is_staff = profil.is_staff === 'True';
-        })
-        return profil
-    }
-
-    static async updateProfil(payload) {
-        await ApiService.ProfilService.putProfil(payload)
-    }
-
-    static async updateProfilImage(payload) {
-        await ApiService.ProfilService.updateProfilImage(payload)
-    }
+    // static async updateProfilImage(payload) {
+    //     await ApiService.ProfilService.updateProfilImage(payload)
+    // }
 }

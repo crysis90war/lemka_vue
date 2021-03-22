@@ -1,6 +1,5 @@
 import * as R from 'ramda'
 import {maxLength, minLength, alpha, required, numeric, between} from "vuelidate/lib/validators";
-import ApiService from "@/services";
 
 export default class TypeServiceModel {
     constructor(typeService = {}) {
@@ -46,13 +45,5 @@ export default class TypeServiceModel {
             {key: 'duree_minute', label: 'Durée en minutes', sortable: true},
             {key: 'actions', label: 'Actions'}
         ]
-    }
-
-    static async getTypeService(typeServiceId) {
-        let typeService = {}
-        await ApiService.TypeService.getTypeService(typeServiceId).then(response => {
-            typeService = response.data
-        })
-        return typeService
     }
 }

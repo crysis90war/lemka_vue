@@ -1,21 +1,13 @@
 <template>
   <div>
-    <b-form-group id="input-group-image"
-                  label-for="input-image"
-                  description="Formats autorisés .jpg et .png">
-      <b-form-file id="input-image"
-                   ref="image"
-                   name="input-image"
-                   accept="image/jpeg, image/png, .jpg, .png,"
-                   v-model="image"
-                   @change="previewImage"
-                   required></b-form-file>
+    <b-form-group description="Formats autorisés .jpg et .png">
+      <b-form-file v-model="image" required
+                   ref="image" accept="image/jpeg, image/png, .jpg, .png,"
+                   @change="previewImage"></b-form-file>
     </b-form-group>
 
     <div class="d-flex justify-content-between">
-      <cropper class="cropper"
-               style="max-width: 720px; max-height: 576px"
-               :src="preview"
+      <cropper class="cropper" style="max-width: 720px; max-height: 576px" :src="preview"
                :stencil-props="{
                  handlers: {},
                  movable: true,
@@ -38,7 +30,7 @@ import { Cropper } from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 
 export default {
-  name: "ImageCropper",
+  name: "L-imageCropper",
   components: {
     Cropper,
   },

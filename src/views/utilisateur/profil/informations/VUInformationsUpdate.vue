@@ -1,143 +1,125 @@
 <template>
-  <b-card title="Update" :class="BSClass.CARD_BORDERLESS_SHADOW">
-    <b-card-body>
-      <b-form @submit.prevent="submit">
-        <b-form-group id="input-groupe-username"
-                      label="Username"
-                      description="Veuillez encoder votre nom d'utilisateur"
-                      label-for="input-username">
-          <b-form-input id="input-username"
-                        name="input-username"
-                        placeholder="Username ..."
-                        type="text"
-                        v-model="$v.profil.username.$model"
-                        :state="validateState('username')"></b-form-input>
-          <b-form-invalid-feedback>
-            <span v-if="!$v.profil.username.required">Ce champ est obligatoire !</span><br>
-            <span v-if="!$v.profil.username.minLength">Ce champ doit contenir au moins 4 caractères.</span><br>
-            <span v-if="!$v.profil.username.alphaNum">Ce champ doit être alphanumérique.</span>
-          </b-form-invalid-feedback>
-        </b-form-group>
+  <div class="update_informations">
 
-        <b-row>
-          <b-col>
-            <b-form-group id="input-groupe-last-name"
-                          label="Nom"
-                          description="Veuillez encoder votre nom"
-                          label-for="input-last-name">
-              <b-form-input id="input-last-name"
-                            name="input-last-name"
-                            placeholder="Nom ..."
-                            type="text"
-                            v-model="$v.profil.last_name.$model"
-                            :state="validateState('last_name')"></b-form-input>
-              <b-form-invalid-feedback>
-                <span v-if="!$v.profil.last_name.minLength">Ce champ doit contenir au moins 2 caractères.</span><br>
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-          <b-col>
-            <b-form-group id="input-groupe-first-name"
-                          label="Prénom"
-                          description="Veuillez encoder votre prénom"
-                          label-for="input-first-name">
-              <b-form-input id="input-first-name"
-                            name="input-first-name"
-                            placeholder="Prénom ..."
-                            type="text"
-                            v-model="$v.profil.first_name.$model"
-                            :state="validateState('first_name')"></b-form-input>
-              <b-form-invalid-feedback>
-                <span v-if="!$v.profil.first_name.minLength">Ce champ doit contenir au moins 2 caractères.</span><br>
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-        </b-row>
+    <b-card v-if="loading === false" title="Update" :class="BSClass.CARD_BORDERLESS_SHADOW">
+      <b-card-body>
+        <b-form @submit.prevent="submit">
+          <b-form-group label="Username" description="Veuillez encoder votre nom d'utilisateur">
+            <b-form-input v-model="$v.profil.username.$model"
+                          placeholder="Username ..." type="text"
+                          :state="validateState('username')"></b-form-input>
+            <b-form-invalid-feedback>
+              <span v-if="!$v.profil.username.required">Ce champ est obligatoire !</span><br>
+              <span v-if="!$v.profil.username.minLength">Ce champ doit contenir au moins 4 caractères.</span><br>
+              <span v-if="!$v.profil.username.alphaNum">Ce champ doit être alphanumérique.</span>
+            </b-form-invalid-feedback>
+          </b-form-group>
 
-        <b-form-group id="input-groupe-numero-tel"
-                      label="Numéro téléphone"
-                      description="Veuillez encoder votre numéro de téléphone"
-                      label-for="input-numero-tel">
-          <b-form-input id="input-numero-tel"
-                        name="input-numero-tel"
-                        placeholder="Numero téléphone ..."
-                        type="text"
-                        v-model="$v.profil.numero_tel.$model"
-                        :state="validateState('numero_tel')"></b-form-input>
-          <b-form-invalid-feedback>
-            <span v-if="!$v.profil.numero_tel.minLength">Ce champ doit contenir au moins 6 caractères.</span><br>
-            <span v-if="!$v.profil.numero_tel.alphaNum">Ce champ doit être numérique.</span>
-          </b-form-invalid-feedback>
-        </b-form-group>
+          <b-row>
+            <b-col>
+              <b-form-group label="Nom" description="Veuillez encoder votre nom">
+                <b-form-input v-model="$v.profil.last_name.$model"
+                              placeholder="Nom ..." type="text"
+                              :state="validateState('last_name')"></b-form-input>
+                <b-form-invalid-feedback>
+                  <span v-if="!$v.profil.last_name.minLength">Ce champ doit contenir au moins 2 caractères.</span><br>
+                </b-form-invalid-feedback>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Prénom" description="Veuillez encoder votre prénom">
+                <b-form-input v-model="$v.profil.first_name.$model"
+                              placeholder="Prénom ..." type="text"
+                              :state="validateState('first_name')"></b-form-input>
+                <b-form-invalid-feedback>
+                  <span v-if="!$v.profil.first_name.minLength">Ce champ doit contenir au moins 2 caractères.</span><br>
+                </b-form-invalid-feedback>
+              </b-form-group>
+            </b-col>
+          </b-row>
 
-        <b-form-group label="Sexe" description="Veuillez spécifier votre sexe" label-for="select-genre">
-          <b-form-select id="select-genre" name="select-genre" v-model="genre" :options="genres">
-            <template #first>
-              <b-form-select-option :value="null" disabled>-- Veuillez selectionner votre sexe --</b-form-select-option>
-            </template>
-          </b-form-select>
-        </b-form-group>
+          <b-form-group label="Numéro téléphone" description="Veuillez encoder votre numéro de téléphone">
+            <b-form-input v-model="$v.profil.numero_tel.$model"
+                          placeholder="Numero téléphone ..." type="text"
+                          :state="validateState('numero_tel')"></b-form-input>
+            <b-form-invalid-feedback>
+              <span v-if="!$v.profil.numero_tel.minLength">Ce champ doit contenir au moins 6 caractères.</span><br>
+              <span v-if="!$v.profil.numero_tel.alphaNum">Ce champ doit être numérique.</span>
+            </b-form-invalid-feedback>
+          </b-form-group>
 
-        <b-button-group class="float-right">
-          <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder</b-button>
-          <b-button variant="outline-danger" :to="{name: link}">Retour</b-button>
-        </b-button-group>
-      </b-form>
-    </b-card-body>
-  </b-card>
+          <b-form-group label="Sexe" description="Veuillez selectionner votre sexe">
+            <multiselect v-model="profil.ref_genre"
+                         :options="genres" :loading="loading"
+                         :multiple="false" :searchable="true" :internal-search="false"
+                         :clear-on-select="false" :close-on-select="true" :options-limit="20"
+                         :max-height="600" :show-no-results="true"
+                         label="Genre" track-by="genre" placeholder="Veuillez encoder pour lancer la recherche..."
+                         open-direction="bottom">
+              <template slot="singleLabel" slot-scope="{ option }">
+                <span>{{ option.genre }}</span>
+              </template>
+              <template slot="option" slot-scope="{ option }">
+                <span>{{ option.genre }}</span>
+              </template>
+              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+            </multiselect>
+          </b-form-group>
+
+          <b-button-group>
+            <b-button variant="outline-dark" :to="{name: link}">
+              <i class="fas fa-arrow-left"></i>
+            </b-button>
+            <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
+            </b-button>
+          </b-button-group>
+        </b-form>
+      </b-card-body>
+    </b-card>
+
+    <l-spinner v-else></l-spinner>
+  </div>
 </template>
 
 <script>
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import GenreModel from "@/models/genre.model";
 import ProfilModel from "@/models/profil.model";
 import LemkaHelpers from "@/helpers";
+import {mapActions, mapGetters} from "vuex";
+import {fonctions} from "@/mixins/functions.mixin";
 
 export default {
   name: "VUInformationsUpdate",
-  mixins: [validationMixin, validationMessageMixin],
+  mixins: [validationMixin, validationMessageMixin, fonctions],
   validations: {
     profil: ProfilModel.validations
   },
-
   data() {
     return {
+      profil: new ProfilModel(),
       link: LemkaHelpers.Routes.INFORMATIONS.name,
       BSClass: LemkaHelpers.BSClass,
-      profil: new ProfilModel(),
+      // profil: new ProfilModel(),
       genre: null,
-      genres: [],
-      submitStatus: null
+      // genres: [],
+      submitStatus: null,
+      loading: false
     }
   },
-
+  computed: {
+    ...mapGetters({genres: "Genres/genres"})
+  },
   methods: {
-    async chargerProfil() {
-      let profil = {}
-      let genre = {}
-      profil = await ProfilModel.getProfil()
-      if (profil.ref_genre !== null && profil.ref_genre !== undefined) {
-        genre = await GenreModel.fetchGenreById(profil.ref_genre)
-        profil.ref_genre = genre
-      }
-      Object.assign(this.profil, profil)
-      this.genre = this.profil.ref_genre.id
-    },
+    ...mapActions({updateProfil: "Profil/updateProfil"}),
+    initialisation: async function () {
+      this.toggleLoading()
+      await this.$store.dispatch("Profil/loadProfil")
+      Object.assign(this.profil, await this.$store.getters["Profil/profil"])
+      await this.$store.dispatch("Genres/loadGenres")
+      this.profil.ref_genre = this.$store.getters["Genres/genre"](this.profil.ref_genre)
 
-    async chargerGenres() {
-      let genres = await GenreModel.fetchGenres()
-      genres.forEach(item => {
-        let genre = new GenreModel()
-        Object.assign(genre, item)
-        let object = {
-          value: genre.id,
-          text: genre.genre
-        }
-        if (object.value !== null && object.value !== undefined) {
-          this.genres.push(object)
-        }
-      })
+      this.toggleLoading()
     },
 
     async submit() {
@@ -146,11 +128,9 @@ export default {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
-        let object = new GenreModel()
-        object = await GenreModel.fetchGenreById(this.genre)
-        let payload = this.profil
-        payload.ref_genre = object
-        await ProfilModel.updateProfil(this.profil.toUpdatePayload())
+
+        await this.updateProfil(this.profil.toUpdatePayload())
+
         setTimeout(() => {
           this.submitStatus = 'OK'
           this.$router.push({name: this.link})
@@ -166,8 +146,8 @@ export default {
   },
 
   created() {
-    this.chargerProfil()
-    this.chargerGenres()
+    this.$store.dispatch("Genres/loadGenres")
+    this.initialisation()
   },
 }
 </script>

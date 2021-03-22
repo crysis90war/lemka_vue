@@ -15,11 +15,9 @@ import LemkaHelpers from "@/helpers";
 
 export default {
   name: "ViewUser",
-
   components: {
     'profil-navbar': ProfilNavbar
   },
-
   computed: {
     currentUser() {
       return this.$store.state.Auth.user;

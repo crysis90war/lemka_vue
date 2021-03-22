@@ -12,18 +12,16 @@
           <b-input v-model="$v.user.email.$model" type="email" placeholder="Email ..."
                    :state="validateState('email')"></b-input>
           <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.user.email.required" :error-message="required()">
-            </invalid-feedback>
-            <invalid-feedback :condition="!$v.user.email.email" :error-message="email()">
-            </invalid-feedback>
+            <invalid-feedback :condition="!$v.user.email.required" :error-message="required()"/>
+            <invalid-feedback :condition="!$v.user.email.email" :error-message="email()"/>
           </b-form-invalid-feedback>
         </b-form-group>
         <b-form-group description="Veuillez encoder votre mot de passe">
           <b-input v-model="$v.user.password.$model" type="password" placeholder="Mot de passe ..."
                    :state="validateState('password')"/>
           <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.user.password.required" :error-message="required()">
-            </invalid-feedback>
+            <invalid-feedback :condition="!$v.user.password.required" :error-message="required()"/>
+            <invalid-feedback :condition="!$v.user.password.minLength" :error-message="minLength($v.user.password.$params.minLength.min)"/>
           </b-form-invalid-feedback>
         </b-form-group>
         <a href="#">Mot de passe oublié ?</a>
@@ -40,33 +38,21 @@
 <script>
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import {required, email} from "vuelidate/lib/validators"
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import InvalidFeedback from "@/components/InvalidFeedback";
+import InvalidFeedback from "@/components/LInvalidFeedback";
+import AuthModel from "@/models/auth.model";
 
 export default {
   name: "VGLogin",
   components: {InvalidFeedback},
   mixins: [validationMixin, validationMessageMixin,],
   validations: {
-    user: {
-      email: {
-        required,
-        email
-      },
-      password: {
-        required
-      }
-    }
+    user: AuthModel.loginValidations
   },
   data() {
     return {
-      user: {
-        email: null,
-        password: null
-      },
-      loading: false,
+      user: new AuthModel(),
       submitStatus: null,
       message: ''
     }
@@ -83,7 +69,7 @@ export default {
       } else {
         this.submitStatus = 'PENDING'
 
-        this.login(this.user).then(() => {
+        this.login(this.user.toLoginPayload()).then(() => {
           console.log('Connecting ...')
           setTimeout(() => {
             this.submitStatus = 'OK'
@@ -95,7 +81,7 @@ export default {
           setTimeout(() => {
             this.submitStatus = null
             this.message = ""
-          }, 10000)
+          }, 5000)
         })
       }
     },

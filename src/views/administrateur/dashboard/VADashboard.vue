@@ -71,9 +71,8 @@
 </template>
 
 <script>
-import {LemkaEnums} from "@/helpers/enums.helper";
 import axios from "axios";
-import authHeader from "@/configs/auth-header";
+import authHeader from "@/services/auth-header";
 import DashboardCard from "@/components/DashboardCard"
 import LemkaHelpers from "@/helpers";
 
@@ -103,7 +102,7 @@ export default {
   },
   methods: {
     async loadDashboard() {
-      await axios.get(LemkaEnums.Endpoints.DASHBOARD_ENDPOINT, {headers: authHeader()}).then(response => {
+      await axios.get(LemkaHelpers.Endpoints.DASHBOARD_ENDPOINT, {headers: authHeader()}).then(response => {
         this.dashboard = response.data
       })
     }

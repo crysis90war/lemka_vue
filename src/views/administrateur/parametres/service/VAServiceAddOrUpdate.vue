@@ -58,7 +58,7 @@ import TypeServiceModel from "@/models/type_service.model";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LemkaHelpers from "@/helpers";
-import InvalidFeedback from "@/components/InvalidFeedback";
+import InvalidFeedback from "@/components/LInvalidFeedback";
 import {mapActions} from "vuex";
 
 export default {

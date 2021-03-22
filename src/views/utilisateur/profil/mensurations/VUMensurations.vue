@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import UserMensurationModel from "@/models/user_mensuration.model";
+import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
 import TableEmpty from "@/components/TableEmpty";
 import TableBusy from "@/components/TableBusy";
@@ -75,7 +75,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({userMensurations: "UserMensurations/user_mensurations", busy: "UserMensurations/loadingStatus"})
+    ...mapGetters({userMensurations: "UserMensurations/userMensurations", busy: "UserMensurations/userMensurationsLoadingStatus"})
   },
   methods: {
     ...mapActions({

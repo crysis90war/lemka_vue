@@ -1,5 +1,7 @@
-import ApiService from "@/services";
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
 
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 const user = JSON.parse(sessionStorage.getItem('user'));
 // const initialState = user
 //     ? {status: {loggedIn: true}, user}
@@ -33,24 +35,21 @@ export const AuthModule = {
         },
         REGISTER_SUCCESS(state) {
             state.status.loggedIn = false;
+            state.user = null;
         },
         REGISTER_FAILURE(state) {
             state.status.loggedIn = false;
-        },
-        REFRESH_SUCCESS(state, user) {
-            state.status.loggedIn = true;
-            state.user = user
-        },
-        REFRESH_FAILURE(state) {
-            state.status.loggedIn = false
+            state.user = null;
         }
     },
     actions: {
-        login: function({commit}, user) {
+        login: function({commit}, payload) {
+            let endpoint = `${DOMAIN}/login/`;
             return new Promise((resolve, reject) => {
-                ApiService.Auth.login(user).then(user => {
-                    commit('LOGIN_SUCCESS', user)
-                    resolve(user)
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('LOGIN_SUCCESS', r.data)
+                    sessionStorage.setItem('user', JSON.stringify(r.data));
+                    resolve(r.data)
                 }, error => {
                     commit('LOGIN_FAILURE')
                     reject(error)
@@ -58,27 +57,17 @@ export const AuthModule = {
             })
         },
         logout({commit}) {
-            ApiService.Auth.logout();
+            ApiService.DESTROYSession()
             commit('LOGOUT');
         },
-        register({commit}, user) {
+        register({commit}, payload) {
+            let endpoint = `${DOMAIN}/register/`;
             return new Promise((resolve, reject) => {
-                ApiService.Auth.register(user).then(res => {
-                    commit('REGISTER_SUCCESS');
-                    resolve(res.data)
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('REGISTER_SUCCESS')
+                    resolve(r.data)
                 }, error => {
                     commit('REGISTER_FAILURE')
-                    reject(error)
-                })
-            })
-        },
-        refreshToken({commit}, user) {
-            return new Promise((resolve, reject) => {
-                ApiService.Auth.refreshToken(user).then(user => {
-                    commit('REFRESH_SUCCESS', user);
-                    resolve(user)
-                }, error => {
-                    commit('REFRESH_FAILURE');
                     reject(error)
                 })
             })

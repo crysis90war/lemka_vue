@@ -43,5 +43,9 @@ export const validationMessageMixin = {
         minValue: function (min) {
             return `Ce champ doit avoir une valeur minimal de ${min} !`
         },
+
+        sameAs: function() {
+            return 'Votre mot de passe doit être identique !'
+        }
     }
 }
