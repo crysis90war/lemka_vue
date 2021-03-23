@@ -1,10 +1,10 @@
 <template>
   <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="border-0 nav-shadow colored">
     <b-container>
-      <b-navbar-brand :to="{name: routes.home.name}" v-if="brandVisible">
+      <b-navbar-brand :to="{name: routes.HOME_ROUTE.name}" v-if="brandVisible">
         <img src="../assets/logo.png" alt="" style="max-width: 100px;">
       </b-navbar-brand>
-      <b-navbar-brand :to="{name: routes.home.name}" v-else>
+      <b-navbar-brand :to="{name: routes.HOME_ROUTE.name}" v-else>
         <img src="../assets/logo.png" alt="" style="max-width: 150px;">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -12,12 +12,12 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
 
-          <b-nav-item :to="{ name: routes.home.name }" :active="$route.name === routes.home.name">
-            {{ routes.home.value }}
+          <b-nav-item :to="{ name: routes.HOME_ROUTE.name }" :active="$route.name === routes.HOME_ROUTE.name">
+            {{ routes.HOME_ROUTE.value }}
           </b-nav-item>
 
-          <b-nav-item :to="{ name: routes.horaire.name }" :active="$route.name === routes.horaire.name">
-            {{ routes.horaire.value }}
+          <b-nav-item :to="{ name: routes.HORAIRE_ROUTE.name }" :active="$route.name === routes.HORAIRE_ROUTE.name">
+            {{ routes.HORAIRE_ROUTE.value }}
           </b-nav-item>
 
           <b-nav-item-dropdown text="Galérie" right>
@@ -26,13 +26,12 @@
             <b-dropdown-item>Réparation</b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item :to="{ name: routes.about.name }"
-                      :active="$route.name === routes.about.name">
-            {{ routes.about.value }}
+          <b-nav-item :to="{ name: routes.ABOUT_ROUTE.name }" :active="$route.name === routes.ABOUT_ROUTE.name">
+            {{ routes.ABOUT_ROUTE.value }}
           </b-nav-item>
 
-          <b-nav-item :to="{ name: routes.contact.name }" :active="$route.name === routes.contact.name">
-            {{ routes.contact.value }}
+          <b-nav-item :to="{ name: routes.CONTACT_ROUTE.name }" :active="$route.name === routes.CONTACT_ROUTE.name">
+            {{ routes.CONTACT_ROUTE.value }}
           </b-nav-item>
         </b-navbar-nav>
 
@@ -65,12 +64,12 @@
               <i class="far fa-user"></i>
             </template>
 
-            <b-dropdown-item :to="{ name: routes.login.name }">
-              {{ routes.login.value }}
+            <b-dropdown-item :to="{ name: routes.LOGIN_ROUTE.name }">
+              {{ routes.LOGIN_ROUTE.value }}
             </b-dropdown-item>
 
-            <b-dropdown-item :to="{ name: routes.register.name }">
-              {{ routes.register.value }}
+            <b-dropdown-item :to="{ name: routes.REGISTER_ROUTE.name }">
+              {{ routes.REGISTER_ROUTE.value }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
@@ -78,15 +77,20 @@
             <template v-slot:button-content>
               {{ currentUser.username }}
             </template>
-            <b-dropdown-item :to="{ name: routes.profil.name }">
-              {{ routes.profil.value }}
+            <b-dropdown-item :to="{ name: routes.PROFIL_ROUTE.name }">
+              {{ routes.PROFIL_ROUTE.value }}
+            </b-dropdown-item>
+            <b-dropdown-item href="#">
+              Prendre rendez-vous
+            </b-dropdown-item>
+            <b-dropdown-item :to="{name: routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name}">
+              Demander un devis
             </b-dropdown-item>
 
-            <b-dropdown-item v-if="currentUser.is_staff === true" :to="{ name: routes.admin.name}">
-              {{ routes.admin.value }}
+            <b-dropdown-item v-if="currentUser.is_staff === true" :to="{ name: routes.ADMIN_ROUTE.name}">
+              {{ routes.ADMIN_ROUTE.value }}
             </b-dropdown-item>
 
-            <b-dropdown-item href="#">Prendre rendez-vous</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item @click.prevent="logout">Se déconnecter</b-dropdown-item>
           </b-nav-item-dropdown>
@@ -113,16 +117,7 @@ export default {
   },
   data() {
     return {
-      routes: {
-        home: {name: LemkaHelpers.Routes.HOME_ROUTE.name, value: LemkaHelpers.Routes.HOME_ROUTE.value},
-        horaire: {name: LemkaHelpers.Routes.HORAIRE_ROUTE.name, value: LemkaHelpers.Routes.HORAIRE_ROUTE.value},
-        about: {name: LemkaHelpers.Routes.ABOUT_ROUTE.name, value: LemkaHelpers.Routes.ABOUT_ROUTE.value},
-        contact: {name: LemkaHelpers.Routes.CONTACT_ROUTE.name, value: LemkaHelpers.Routes.CONTACT_ROUTE.value},
-        login: {name: LemkaHelpers.Routes.LOGIN_ROUTE.name, value: LemkaHelpers.Routes.LOGIN_ROUTE.value},
-        register: {name: LemkaHelpers.Routes.REGISTER_ROUTE.name, value: LemkaHelpers.Routes.REGISTER_ROUTE.value},
-        profil: {name: LemkaHelpers.Routes.PROFIL_ROUTE.name, value: LemkaHelpers.Routes.PROFIL_ROUTE.value},
-        admin: {name: LemkaHelpers.Routes.ADMIN_ROUTE.name, value: LemkaHelpers.Routes.ADMIN_ROUTE.value}
-      },
+      routes: LemkaHelpers.Routes,
       brandVisible: false,
     }
   },

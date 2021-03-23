@@ -1,5 +1,5 @@
 <template>
-  <b-card class="rounded-card shadow p-3 bg-white my-4 border-0">
+  <b-card class="rounded-card shadow p-2 bg-white my-4 border-0">
     <b-row>
       <b-col lg="6">
         <b-avatar size="3em" class="mr-4"></b-avatar>
@@ -10,7 +10,7 @@
       </b-col>
     </b-row>
     <b-card-body>
-      <b-card-text>
+      <b-card-text class="text-justify">
         <p>{{ message }}</p>
       </b-card-text>
     </b-card-body>

@@ -22,8 +22,8 @@
             <b-form-checkbox v-model="demande_devis.est_urgent" name="check-button" switch>
               <p>{{ demande_devis.est_urgent === true ? 'Urgent' : 'Pas urgent' }}</p>
               <span v-if="demande_devis.est_urgent === true" class="text-danger">
-              <small> (toute demande urgente engendre des frais supplémentaires)</small>
-            </span>
+                <small> (toute demande urgente engendre des frais supplémentaires)</small>
+              </span>
             </b-form-checkbox>
           </b-form-group>
 
@@ -36,7 +36,7 @@
           </b-form-group>
 
           <b-form-group label="Service *" description="Veuillez selectionner le service de l'article" class="my-1">
-            <multiselect v-model="demande_devis.ref_type_service" :options="typeServices" :allow-empty="false"
+            <multiselect v-model="demande_devis.ref_type_service" :options="typeServices" :allow-empty="false" :hide-selected="true"
                          label="type_service" track-by="type_service" placeholder="Veuillez selectionner le service"
                          selectLabel="Appuyez sur enter pour selectionner" deselectLabel="Appuyez sur enter pour retirer">
               <template slot="singleLabel" slot-scope="{ option }">
@@ -49,32 +49,61 @@
             </multiselect>
           </b-form-group>
 
-          <b-form-group label="Articles" class="my-1"
-                        description="Si un article particulier vous interesse, veuillez le selecetion, sinon laissez vide">
-            <multiselect v-model="demande_devis.ref_article" :options="articlesPublies"
-                         :option-height="104" :show-labels="false"
-                         placeholder="Articles optionnel ..." label="Articles" track-by="titre">
-              <template slot="singleLabel" slot-scope="props">
-                <img v-if="props.option.images.length > 0" :src="props.option.images.length > 0 ? props.option.images[0].image : ''"
-                     alt="" height="48" width="48">
-                <span> {{ props.option.titre }}</span>
-              </template>
+          <b-row>
+            <b-col lg="6">
+              <b-form-group label="Article" class="my-1"
+                            description="Si un article particulier vous interesse, veuillez le selecetion, sinon laissez vide">
+                <multiselect v-model="demande_devis.ref_article" :options="articlesPublies"
+                             :option-height="104" :show-labels="false" :hide-selected="true"
+                             placeholder="Articles optionnel ..." label="Articles" track-by="titre">
+                  <template slot="singleLabel" slot-scope="props">
+                    <img v-if="props.option.images.length > 0" :src="props.option.images.length > 0 ? props.option.images[0].image : ''"
+                         alt="" height="48" width="48">
+                    <span> {{ props.option.titre }}</span>
+                  </template>
 
-              <template slot="option" slot-scope="props">
-                <img :src="props.option.images.length > 0 ? props.option.images[0].image : require('@/assets/noimage.png')" alt="" height="64" width="64">
-                <span> {{ props.option.titre }}</span>
-              </template>
+                  <template slot="option" slot-scope="props">
+                    <img :src="props.option.images.length > 0 ? props.option.images[0].image : require('@/assets/noimage.png')" alt=""
+                         height="64" width="64">
+                    <span> {{ props.option.titre }}</span>
+                  </template>
 
-              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-            </multiselect>
-          </b-form-group>
+                  <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+                </multiselect>
+              </b-form-group>
+            </b-col>
+            <b-col lg="6">
+              <b-form-group label="Mensuration" class="my-1"
+                            description="Veuillez selectionner la mensuration pour cette demande, si vous en avez.">
+                <multiselect v-model="demande_devis.ref_mensuration" :options="userMensurations" :hide-selected="true"
+                             placeholder="Mensuration optionnel ..." label="mensuration" track-by="id">
+                  <template slot="singleLabel" slot-scope="props">
+                    <b-badge v-if="demande_devis.ref_mensuration.id !== null" pill
+                             :variant="props.option.is_main === true ? 'success': 'primary'">
+                      {{ props.option.is_main === true ? 'Principale' : 'Secondaire' }}
+                    </b-badge>
+                    <span> {{ props.option.titre }}</span>
+                  </template>
+
+                  <template slot="option" slot-scope="props">
+                    <b-badge pill :variant="props.option.is_main === true ? 'success': 'primary'">
+                      {{ props.option.is_main === true ? 'Principale' : 'Secondaire' }}
+                    </b-badge>
+                    <p>{{ props.option.titre }}</p>
+                  </template>
+
+                  <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+                </multiselect>
+              </b-form-group>
+            </b-col>
+          </b-row>
 
           <b-form-group>
             <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false"
                          :preserve-search="true" placeholder="Pick some" label="name" track-by="name" :preselect-first="true">
               <template slot="selection" slot-scope="{ values, search, isOpen }">
                 <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
-                  {{values.length }} options selected
+                  {{ values.length }} options selected
                 </span>
               </template>
             </multiselect>
@@ -103,7 +132,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({typeServices: "TypeServices/typeServices", articlesPublies: "Articles/articlesPublies"}),
+    ...mapGetters({
+      typeServices: "TypeServices/typeServices",
+      articlesPublies: "Articles/articlesPublies",
+      userMensurations: "UserMensurations/userMensurations"
+    }),
   },
   data() {
     return {
@@ -113,11 +146,21 @@ export default {
     }
   },
   methods: {
-    ...mapActions({loadTypeServices: "TypeServices/loadTypeServices", loadArticles: "Articles/loadArticles"}),
+    ...mapActions({
+      loadTypeServices: "TypeServices/loadTypeServices",
+      loadArticles: "Articles/loadArticles",
+      loadUserMensurations: "UserMensurations/loadUserMensurations"
+    }),
+    initialisation: async function () {
+      if (this.userMensurations.length === 0 || this.articlesPublies.length === 0 || this.typeServices.length === 0) {
+        await this.loadTypeServices()
+        await this.loadArticles()
+        await this.loadUserMensurations()
+      }
+    }
   },
   created() {
-    this.loadTypeServices()
-    this.loadArticles()
+    this.initialisation()
   }
 }
 </script>

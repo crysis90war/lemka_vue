@@ -53,6 +53,9 @@ import VGAbout from "@/views/global/VGAbout";
 import VGHoraire from "@/views/global/VGHoraire";
 import VGContact from "@/views/global/VGContact";
 import VGNotFound from "@/views/global/VGNotFound";
+import VGCGV from "@/views/global/VGCGV";
+import VGConfidentialite from "@/views/global/VGConfidentialite";
+import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
 // endregion
 
 Vue.use(VueRouter)
@@ -347,6 +350,24 @@ const router = new VueRouter({
       name: ROUTES.CONTACT_ROUTE.name,
       meta: {value: ROUTES.CONTACT_ROUTE.value},
       component: VGContact
+    },
+    {
+      path: '/cgv',
+      name: "VGCGV",
+      meta: {value: "Conditions générales"},
+      component: VGCGV
+    },
+    {
+      path: '/confidentialite',
+      name: "VGConfidentialite",
+      meta: {value: "Politique de confidentialité"},
+      component: VGConfidentialite
+    },
+    {
+      path: '/retour-remboursement',
+      name: "VGRetourRemboursement",
+      meta: {value: "Retour et remboursement"},
+      component: VGRetourRemboursement
     },
     {
       path: PROFIL,

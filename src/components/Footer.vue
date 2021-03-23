@@ -41,22 +41,37 @@
             <b-col lg="3">
               <h5>SERVICE CLIENTS</h5>
               <ul class="list-unstyled text-small liens-footer">
-                <li><b-link class="text-secondary" href="#">Accueil</b-link></li>
-                <li><b-link class="text-secondary" href="#">Politique de confidentialité</b-link></li>
-                <li><b-link class="text-secondary" href="#">Retours et remboursement</b-link></li>
-                <li><b-link class="text-secondary" href="#">Conditions générales</b-link></li>
+                <li>
+                  <b-link class="text-secondary" :to="{path: '/'}">Accueil</b-link>
+                </li>
+                <li>
+                  <b-link class="text-secondary" :to="{name: 'VGConfidentialite'}">Politique de confidentialité</b-link>
+                </li>
+                <li>
+                  <b-link class="text-secondary" :to="{name: 'VGRetourRemboursement'}">Retours et remboursement</b-link>
+                </li>
+                <li>
+                  <b-link class="text-secondary" :to="{name: 'VGCGV'}">Conditions générales</b-link>
+                </li>
               </ul>
             </b-col>
 
             <b-col lg="3">
               <h5>RESEAUX SOCIAUX</h5>
-              <p class="text-secondary">Suivez-nous sur les réseaux sociaux. Tenez-vous au courant de toutes les activités, nouvelles et plus</p>
+              <p class="text-secondary">Suivez-nous sur les réseaux sociaux. Tenez-vous au courant de toutes les activités, nouvelles et
+                plus</p>
               <!-- Social buttons -->
               <Social/>
             </b-col>
 
             <b-col lg="3">
               <h5>A PROPOS DE NOUS</h5>
+              <p class="text-secondary text-justify">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut odio sagittis, posuere diam eget, scelerisque lectus.
+              </p>
+              <p class="text-secondary text-justify">
+                Sed a metus viverra justo ultricies maximus ut eu dolor. Nam sollicitudin dui risus, vitae pharetra leo sagittis sit amet.
+              </p>
             </b-col>
           </b-row>
         </b-container>
@@ -86,7 +101,7 @@ import Social from "@/components/Social";
 
 export default {
   name: "Footer",
-  components:{
+  components: {
     Social,
     'back-to-top': BackToTop
   }
