@@ -92,9 +92,8 @@
       </template>
 
       <template #cell(est_publie)="data">
-        <b-button
-            :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'" size="sm"
-            @click="activerDesactiver(data.item)">
+        <b-button :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'" size="sm"
+                  @click="activerDesactiver(data.item)">
           <i class="fas fa-power-off"></i>
           {{ data.item.est_publie === true ? 'Désactiver' : 'Publier' }}
         </b-button>
@@ -123,11 +122,11 @@ import {tableViewMixin} from "@/mixins/table_view.mixin";
 import {mapActions, mapGetters} from "vuex";
 import MercerieModel from "@/models/mercerie/mercerie.model";
 import {fonctions} from "@/mixins/functions.mixin";
-import TableBusy from "@/components/TableBusy";
-import TableEmpty from "@/components/TableEmpty";
-import TableEmptyFiltered from "@/components/TableEmptyFiltered";
+import TableBusy from "@/components/Table/LTableBusy";
+import TableEmpty from "@/components/Table/LTableEmpty";
+import TableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
 import LemkaHelpers from "@/helpers";
-import CreateRefreshButtonGroup from "@/components/LCreateRefreshButtonGroup";
+import CreateRefreshButtonGroup from "@/components/Table/LCreateRefresh";
 
 export default {
   name: "VAMerceries",

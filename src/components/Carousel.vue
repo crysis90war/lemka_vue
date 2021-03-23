@@ -1,48 +1,28 @@
 <template>
-  <carousel3d
-      :controls-visible="true"
-      :clickable="true"
-      :border="0"
-      :space="680"
-      :width="680"
-      :height="480"
-      :perspective="25"
-      :inverseScaling="150"
-      :display="3"
-      :loop="true"
-      :autoplay="true"
-      :autoplayTimeout="5000"
-      :animationSpeed="2000">
-    <slide v-for="(slide, i) in slides" :key="i" :index="i">
-      <figure :style="`background-image: url(${slide}); background-repeat: no-repeat; background-size: cover;`"
-              class="h-100 w-100">
-        <b-container class="h-100">
-          <b-card
-              class="text-center"
-              title="Card Title"
-              tag="article"
-              style="max-width: 20rem; top: 25%; left: 25%; display: none;"
-          >
-            <b-card-text>
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </b-card-text>
-
-            <b-link href="#" class="text-secondary">Voir plus</b-link>
-          </b-card>
-        </b-container>
-      </figure>
-    </slide>
-  </carousel3d>
+  <div class="lemka_carousel">
+    <l-carousel :controls-visible="true" :clickable="true" :border="0" :space="680"
+                :width="680" :height="480" :perspective="25"
+                :inverseScaling="150" :display="3" :loop="true" :autoplay="true" :autoplayTimeout="5000" :animationSpeed="2000">
+      <l-slide v-for="(slide, i) in slides" :key="i" :index="i">
+        <figure :style="`background-image: url(${slide}); background-repeat: no-repeat; background-size: cover;`" class="h-100 w-100">
+          <b-container class="h-100">
+            <b-card class="text-center" title="Card Title" tag="article" style="max-width: 20rem; top: 25%; left: 25%; display: none;">
+              <b-card-text>
+                Some quick example text to build on the card title and make up the bulk of the card's content.
+              </b-card-text>
+              <b-link href="#" class="text-secondary">Voir plus</b-link>
+            </b-card>
+          </b-container>
+        </figure>
+      </l-slide>
+    </l-carousel>
+  </div>
 </template>
 
 <script>
-import {Carousel3d, Slide} from "vue-carousel-3d";
 
 export default {
   name: "Carousel",
-  components: {
-    Carousel3d, Slide
-  },
   data() {
     return {
       slides: [
@@ -57,9 +37,15 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
-.carousel-3d-slide.current>figure>.container>.card {
-  display: block!important;
+.carousel-3d-slide.current {
+  > figure {
+    > .container {
+      > .card {
+        display: block !important;
+      }
+    }
+  }
 }
 </style>

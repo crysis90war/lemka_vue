@@ -60,9 +60,9 @@ import {mapActions, mapGetters} from "vuex";
 import {fonctions} from "@/mixins/functions.mixin";
 import MercerieOptionModel from "@/models/mercerie/mercerie_option.model";
 import MercerieModel from "@/models/mercerie/mercerie.model";
-import TableEmptyFiltered from "@/components/TableEmptyFiltered";
-import TableEmpty from "@/components/TableEmpty";
-import TableBusy from "@/components/TableBusy";
+import TableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
+import TableEmpty from "@/components/Table/LTableEmpty";
+import TableBusy from "@/components/Table/LTableBusy";
 import LemkaHelpers from "@/helpers";
 
 export default {

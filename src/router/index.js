@@ -143,8 +143,8 @@ const adminRoutes = [
   },
   {
     path: ADMIN + 'demande-de-devis',
-    name: ROUTES.DEMANDE_DE_DEVIS.name,
-    meta: {value: ROUTES.DEMANDE_DE_DEVIS.value},
+    name: ROUTES.DEMANDE_DEVIS_ADMIN.name,
+    meta: {value: ROUTES.DEMANDE_DEVIS_ADMIN.value},
     component: VADemandeDeDevis
   },
   {
@@ -273,14 +273,14 @@ const profilRoutes = [
   },
   {
     path: PROFIL + '/mensurations',
-    name: 'ViewUserMensurations',
-    meta: {value: 'Mes mensurations'},
+    name: LemkaHelpers.Routes.USER_MENSURATIONS.name,
+    meta: {value: LemkaHelpers.Routes.USER_MENSURATIONS.value},
     component: VUMensurations
   },
   {
     path: PROFIL + '/mensurations/:id/detail',
-    name: ROUTES.USER_MENSURATION_DETAIL.name,
-    meta: {value: ROUTES.USER_MENSURATION_DETAIL.value},
+    name: ROUTES.USER_MESURES.name,
+    meta: {value: ROUTES.USER_MESURES.value},
     component: VUMensurationDetail,
     props: true
   },

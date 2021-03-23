@@ -113,9 +113,9 @@
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 import MensurationModel from "@/models/mensuration.model";
-import TableEmptyFiltered from "@/components/TableEmptyFiltered";
-import TableEmpty from "@/components/TableEmpty";
-import TableBusy from "@/components/TableBusy";
+import TableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
+import TableEmpty from "@/components/Table/LTableEmpty";
+import TableBusy from "@/components/Table/LTableBusy";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 
 export default {

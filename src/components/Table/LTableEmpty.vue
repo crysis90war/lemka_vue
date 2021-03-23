@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "TableEmpty"
+  name: "l-table-empty"
 }
 </script>
 

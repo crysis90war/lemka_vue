@@ -1,6 +1,6 @@
 <template>
   <b-button-group :size="size">
-    <b-button variant="outline-success" :to="{name: route}">
+    <b-button v-if="route" variant="outline-success" :to="{name: route}">
       {{ create_message }}
     </b-button>
     <b-button variant="outline-primary" @click="loadOrRefreshFunc">
@@ -10,13 +10,12 @@
 </template>
 <script>
 export default {
-  name: 'l-create-refresh-button-group',
+  name: 'l-create-refresh',
   props: {
     loadOrRefresh: {
       require: true
     },
     route: {
-      required: true
     },
     create_message: {
       type: String,

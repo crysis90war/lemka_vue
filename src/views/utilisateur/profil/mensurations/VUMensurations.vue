@@ -30,15 +30,15 @@
           </template>
 
           <template #cell(titre)="data">
-            <b-link :to="{name: routes.USER_MENSURATION_DETAIL.name, params: {id: data.item.id}}">
+            <b-link :to="{name: routes.USER_MESURES.name, params: {id: data.item.id}}">
               {{ data.item.titre }}
             </b-link>
           </template>
 
           <template #cell(actions)="data">
             <b-button-group>
-              <b-button variant="outline-primary" size="sm"
-                        :to="{name: routes.USER_MENSURATION_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
+              <b-button :to="{name: routes.USER_MENSURATION_ADD_OR_UPDATE.name, params: {id: data.item.id}}"
+                        variant="outline-primary" size="sm">
                 Modifier
               </b-button>
               <b-button variant="outline-danger" size="sm" @click.prevent="deleteUserMensuration(data.item)">
@@ -55,8 +55,8 @@
 <script>
 import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
-import TableEmpty from "@/components/TableEmpty";
-import TableBusy from "@/components/TableBusy";
+import TableEmpty from "@/components/Table/LTableEmpty";
+import TableBusy from "@/components/Table/LTableBusy";
 import {mapActions, mapGetters} from "vuex";
 import Tools from "@/utils/tools"
 

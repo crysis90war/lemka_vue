@@ -58,7 +58,7 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
-        <create-refresh-button-group :load-or-refresh="loadArticles" :route="routes.ARTICLES_ADD_OR_UPDATE.name"
+        <l-create-refresh :load-or-refresh="loadArticles" :route="routes.ARTICLES_ADD_OR_UPDATE.name"
                                      create_message="Ajouter un nouveau article" />
       </b-col>
 
@@ -73,18 +73,18 @@
              :per-page="perPage" :current-page="currentPage"
              :filter="filter" :filter-included-fields="filterOn"
              :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-             hover show-empty small stacked="md" @filtered="onFiltered" class="text-center">
+             hover show-empty small stacked="md" class="text-center" @filtered="onFiltered">
 
       <template #table-busy>
-        <TableBusy/>
+        <l-table-busy/>
       </template>
 
       <template #empty>
-        <TableEmpty/>
+        <l-table-empty/>
       </template>
 
       <template #emptyfiltered>
-        <TableEmptyFiltered/>
+        <l-table-empty-filtered/>
       </template>
 
       <template #cell(created_at)="data">
@@ -97,12 +97,16 @@
         </router-link>
       </template>
 
-      <template #cell(actions)="data">
-        <b-button :variant="data.item.est_active === true ? 'outline-danger' : 'outline-success'"
-                  size="sm" class="mr-1"
-                  @click.prevent="activerDesactiver(data.item)">
-          {{ data.item.est_active === true ? 'Désactiver' : 'Activer' }}
+      <template #cell(est_active)="data">
+        <b-button :variant="data.item.est_active === true ? 'outline-danger' : 'outline-success'" size="sm"
+                  @click="activerDesactiver(data.item)">
+          <i class="fas fa-power-off"></i>
+          {{ data.item.est_active === true ? 'Désactiver' : 'Publier' }}
         </b-button>
+      </template>
+
+      <template #cell(actions)>
+
       </template>
     </b-table>
 
@@ -118,14 +122,9 @@ import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 import ArticleModel from "@/models/article/article.model";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
-import CreateRefreshButtonGroup from "@/components/LCreateRefreshButtonGroup";
-import TableEmptyFiltered from "@/components/TableEmptyFiltered";
-import TableEmpty from "@/components/TableEmpty";
-import TableBusy from "@/components/TableBusy";
 
 export default {
   name: "VAArticles",
-  components: {TableEmptyFiltered, TableEmpty, TableBusy, CreateRefreshButtonGroup},
   mixins: [tableViewMixin],
   data() {
     return {

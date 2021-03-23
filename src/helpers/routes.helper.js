@@ -1,6 +1,6 @@
-const AdminView = 'ViewAdmin';
-const UserView = 'ViewUser';
-const GlobalView = 'ViewGlobal';
+const AdminView = 'VA';
+const UserView = 'VU';
+const GlobalView = 'VG';
 
 export const Routes = {
     // region Global routes
@@ -21,7 +21,9 @@ export const Routes = {
     ADRESSE_UPDATE: {name: UserView + 'AdresseUpdate', value: 'Modifier l\'adresse'},
     USER_MENSURATIONS: {name: UserView + 'Mensurations', value: 'Mensurations'},
     USER_MENSURATION_ADD_OR_UPDATE: {name: UserView + 'UserMensurationAddOrUpdate', value: 'Ajout-Modifier du mensuration'},
-    USER_MENSURATION_DETAIL: {name: UserView + 'MensurationDetail', value: 'Détail'},
+    USER_MESURES: {name: UserView + 'MensurationDetail', value: 'Détail'},
+    DEMANDE_DE_DEVIS: {name: UserView + 'DemandeDeDevis', value: 'Demande de devis'},
+    DEMANDE_DE_DEVIS_ADD_OR_UPDATE: {name: UserView + 'DemandeDeDevisAddOrUpdate', value: 'Ajouter/Modifier'},
     // endregion
 
     // region Admin routes
@@ -38,8 +40,7 @@ export const Routes = {
     ARTICLES_UPDATE: {name: AdminView + 'ArticleUpdate', value: 'Update',},
     ARTICLES_DETAIL: {name: AdminView + 'ArticleDetail', value: 'Detail de l\'article',},
 
-    DEMANDE_DE_DEVIS: {name: AdminView + 'DemandeDeDevis', value: 'Demande de devis'},
-    DEMANDE_DE_DEVIS_ADD_OR_UPDATE: {name: AdminView + 'DemandeDeDevisAddOrUpdate', value: 'Ajouter/Modifier'},
+    DEMANDE_DEVIS_ADMIN: {name: AdminView + "DemandeDevis", value: 'Demandes de devis'},
 
     DEVIS: {name: AdminView + 'Devis', value: 'Devis', icon: 'far fa-folder'},
 

@@ -3,178 +3,173 @@
     <l-spinner v-if="loading"/>
 
     <b-container v-else>
-      <div>
-        <b-form @submit.prevent="submit">
-          <b-input-group class="my-1">
-            <b-form-checkbox v-model="article.est_active" name="check-button" switch>
-              <p>{{ article.est_active === true ? 'Publié' : 'En attente' }}</p>
-            </b-form-checkbox>
-          </b-input-group>
+      <b-form>
+        <b-input-group class="my-1">
+          <b-form-checkbox v-model="article.est_active" name="check-button" switch>
+            <p>{{ article.est_active === true ? 'Publié' : 'En attente' }}</p>
+          </b-form-checkbox>
+        </b-input-group>
 
-          <b-form-group label="Titre" description="Encodez le titre de l'article" class="my-1">
-            <b-form-input v-model="$v.article.titre.$model"
-                          placeholder="Titre ..." type="text" :state="validateState('titre')"/>
-            <b-form-invalid-feedback>
-              <invalid-feedback :condition="!$v.article.titre.required"
-                                :returned-function="required()"/>
-              <invalid-feedback :condition="!$v.article.titre.minLength"
-                                :returned-function="minLength($v.article.titre.$params.minLength.min)"/>
-              <invalid-feedback :condition="!$v.article.titre.maxLength"
-                                :returned-function="maxLength($v.article.titre.$params.maxLength.max)"/>
-            </b-form-invalid-feedback>
-          </b-form-group>
+        <b-form-group label="Titre" description="Encodez le titre de l'article" class="my-1">
+          <b-form-input v-model="$v.article.titre.$model"
+                        placeholder="Titre ..." type="text" :state="validateState('titre')"/>
+          <b-form-invalid-feedback>
+            <l-invalid-feedback :condition="!$v.article.titre.required"
+                                :errorMessage="required()"/>
+            <l-invalid-feedback :condition="!$v.article.titre.minLength"
+                                :errorMessage="minLength($v.article.titre.$params.minLength.min)"/>
+            <l-invalid-feedback :condition="!$v.article.titre.maxLength"
+                                :errorMessage="maxLength($v.article.titre.$params.maxLength.max)"/>
+          </b-form-invalid-feedback>
+        </b-form-group>
 
-          <b-form-group label="Description" description="Veuillez encoder la description de l'article" class="my-1">
-            <b-form-textarea v-model="$v.article.description.$model"
-                             placeholder="Encodage de la description" :state="validateState('description')"/>
-            <b-form-invalid-feedback>
-              <invalid-feedback :condition="!$v.article.description.required"
-                                :returned-function="required()"/>
-              <invalid-feedback :condition="!$v.article.description.minLength"
-                                :returned-function="minLength($v.article.description.$params.minLength.min)"/>
-            </b-form-invalid-feedback>
-          </b-form-group>
+        <b-form-group label="Description" description="Veuillez encoder la description de l'article" class="my-1">
+          <b-form-textarea v-model="$v.article.description.$model"
+                           placeholder="Encodage de la description" :state="validateState('description')"/>
+          <b-form-invalid-feedback>
+            <l-invalid-feedback :condition="!$v.article.description.required"
+                                :errorMessage="required()"/>
+            <l-invalid-feedback :condition="!$v.article.description.minLength"
+                                :errorMessage="minLength($v.article.description.$params.minLength.min)"/>
+          </b-form-invalid-feedback>
+        </b-form-group>
 
-          <b-row>
-            <b-col lg="6">
-              <b-form-group label="Service" description="Veuillez selectionner le service de l'article" class="my-1">
-                <multiselect v-model="article.ref_type_service" :options="typeServices" :allow-empty="false"
-                             label="type_service" track-by="type_service" placeholder="Veuillez selectionner le service"
-                             selectLabel="Appuyez sur enter pour selectionner"
-                             deselectLabel="Appuyez sur enter pour retirer">
-                  <template slot="singleLabel" slot-scope="{ option }">
-                    <span>{{ option.type_service }}</span>
-                  </template>
-                  <template slot="option" slot-scope="{ option }">
-                    <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
-                  </template>
-                  <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-                </multiselect>
-              </b-form-group>
-            </b-col>
+        <b-row>
+          <b-col lg="6">
+            <b-form-group label="Service" description="Veuillez selectionner le service de l'article" class="my-1">
+              <multiselect v-model="article.ref_type_service" :options="typeServices" :allow-empty="false" :hide-selected="true"
+                           label="type_service" track-by="type_service" placeholder="Veuillez selectionner le service"
+                           selectLabel="Appuyez sur enter pour selectionner" deselectLabel="Appuyez sur enter pour retirer">
+                <template slot="singleLabel" slot-scope="{ option }">
+                  <span>{{ option.type_service }}</span>
+                </template>
+                <template slot="option" slot-scope="{ option }">
+                  <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
+                </template>
+                <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+              </multiselect>
+            </b-form-group>
+          </b-col>
 
-            <b-col lg="6">
-              <b-form-group label="Catalogue" description="Veuillez selectionner le catalogue de l'article"
-                            class="my-1">
-                <multiselect v-model="selectedCatalogue" :options="catalogues" :internal-search="false"
-                             :clear-on-select="false" :close-on-select="true" :options-limit="20"
-                             :show-no-results="false" open-direction="bottom" track-by="id"
-                             placeholder="Veuillez encoder pour lancer la recherche..."
-                             selectLabel="Appuyez sur enter pour selectionner."
-                             deselectLabel="Appuyez sur enter pour retirer">
+          <b-col lg="6">
+            <b-form-group label="Catalogue" description="Veuillez selectionner le catalogue de l'article" class="my-1">
+              <multiselect v-model="article.ref_catalogue" :options="catalogues" :loading="cataloguesLoadingStatus"
+                           :close-on-select="true" :hide-selected="true" :options-limit="20" :show-no-results="false"
+                           open-direction="bottom" track-by="id" :internal-search="false" :allow-empty="false"
+                           placeholder="Veuillez encoder pour lancer la recherche..."
+                           selectLabel="Appuyez sur enter pour selectionner." deselectLabel="Appuyez sur enter pour retirer"
+                           @search-change="updateSelectCatalogue">
 
-                  <template slot="singleLabel" slot-scope="{ option }">
-                    <span>{{ option.rayon }} - {{ option.section }} - {{ option.type_produit }}</span>
-                  </template>
+                <template slot="singleLabel" slot-scope="{ option }">
+                  <span>{{ option.rayon }} - {{ option.section }} - {{ option.type_produit }}</span>
+                </template>
 
-                  <template slot="option" slot-scope="{ option }">
-                    <span>{{ option.rayon }} - {{ option.section }} - {{ option.type_produit }}</span>
-                  </template>
+                <template slot="option" slot-scope="{ option }">
+                  <span>{{ option.rayon }} - {{ option.section }} - {{ option.type_produit }}</span>
+                </template>
 
-                  <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-                </multiselect>
-              </b-form-group>
-            </b-col>
-          </b-row>
+                <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+              </multiselect>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-          <b-form-group label="Tags" description="Veuillez chercher ou ajouter un tag" class="my-1">
-            <multiselect v-model="selected_tags" :options="tags" :loading="tagsLoadingStatus" :multiple="true"
-                         :hide-selected="true" :taggable="true" label="tag" track-by="tag"
-                         selectLabel="Appuyez sur enter pour selectionner."
-                         deselectLabel="Appuyez sur enter pour retirer"
-                         placeholder="Cherchez ou ajoutez un tag" tag-placeholder="Ajoutez ça comme nouveau tag"
-                         @tag="addTag" @search-change="updateSelect"></multiselect>
+        <b-form-group label="Tags" description="Veuillez chercher ou ajouter un tag" class="my-1">
+          <multiselect v-model="selected_tags" :options="tags" :loading="tagsLoadingStatus" :multiple="true"
+                       :hide-selected="true" :taggable="true" label="tag" track-by="tag"
+                       selectLabel="Appuyez sur enter pour selectionner." deselectLabel="Appuyez sur enter pour retirer"
+                       placeholder="Cherchez ou ajoutez un tag" tag-placeholder="Ajoutez ça comme nouveau tag"
+                       @tag="addTag" @search-change="updateSelectTag"></multiselect>
 
-            <template slot="singleLabel" slot-scope="{ option }">
-              <span>{{ option.tag }}</span>
-            </template>
+          <template slot="singleLabel" slot-scope="{ option }">
+            <span>{{ option.tag }}</span>
+          </template>
 
-            <template slot="option" slot-scope="{ option }">
-              <span>{{ option.tag }}</span>
-            </template>
+          <template slot="option" slot-scope="{ option }">
+            <span>{{ option.tag }}</span>
+          </template>
 
-            <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-          </b-form-group>
+          <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+        </b-form-group>
 
-          <b-button-group size="sm" class="my-3">
-            <b-button variant="outline-dark" @click="$router.push({name: articlesRoute})">
-              <i class="fas fa-arrow-left"></i>
-            </b-button>
-            <b-button :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
-                      :disabled="submitStatus === 'PENDING'" type="submit">
-              {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
-            </b-button>
-            <b-button variant="outline-danger" @click="reset">
-              Reset
-            </b-button>
-          </b-button-group>
-        </b-form>
-
-        <div v-if="slug" class="mt-3">
-          <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
-            Ajouter des images
+        <b-button-group size="sm" class="my-3">
+          <b-button variant="outline-dark" @click="$router.push({name: routes.ARTICLES.name})">
+            <i class="fas fa-arrow-left"></i>
           </b-button>
+          <b-button :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
+                    :disabled="submitStatus === 'PENDING'" @click="submit">
+            {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
+          </b-button>
+          <b-button variant="outline-danger" @click="reset">
+            Reset
+          </b-button>
+        </b-button-group>
+      </b-form>
 
-          <b-modal id="image-modal" ref="image-modal" hide-footer title="Modifier image du profil" size="xl">
-            <b-form @submit.prevent="createImage">
-              <b-form-group id="input-group-image" label-for="input-image" description="Formats autorisés .jpg et .png">
-                <b-form-file v-model="image" id="input-image" ref="image" name="input-image" required
-                             accept="image/jpeg, image/png, .jpg, .png," @change="previewImage"></b-form-file>
-              </b-form-group>
+      <div v-if="slug" class="mt-3">
+        <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
+          Ajouter des images
+        </b-button>
 
-              <div class="d-flex">
-                <cropper :src="preview" :stencil-size="{width: 800,height: 800}"
-                         :stencil-props="{handlers: {}, movable: true, scalable: true, resizable: true}"
-                         class="cropper" style="max-width: 720px; max-height: 576px" @change="change"/>
-                <b-img v-if="destination !== null" :src="destination" height="360" width="360"></b-img>
-              </div>
+        <b-modal id="image-modal" ref="image-modal" hide-footer title="Modifier image du profil" size="xl">
+          <b-form @submit.prevent="createImage">
+            <b-form-group id="input-group-image" label-for="input-image" description="Formats autorisés .jpg et .png">
+              <b-form-file v-model="image" id="input-image" ref="image" name="input-image" required
+                           accept="image/jpeg, image/png, .jpg, .png," @change="previewImage"></b-form-file>
+            </b-form-group>
 
-              <b-button-group class="d-flex">
-                <b-button variant="outline-success" type="submit">Créer</b-button>
-                <b-button variant="outline-danger" @click="hideModal('image-modal')">Annuler</b-button>
-              </b-button-group>
-            </b-form>
-          </b-modal>
+            <div class="d-flex">
+              <cropper :src="preview" :stencil-size="{width: 800,height: 800}"
+                       :stencil-props="{handlers: {}, movable: true, scalable: true, resizable: true}"
+                       class="cropper" style="max-width: 720px; max-height: 576px" @change="change"/>
+              <b-img v-if="destination !== null" :src="destination" height="360" width="360"></b-img>
+            </div>
 
-          <b-table :items="images" :fields="imagesFields" class="mt-2" stacked="md" small show-empty>
-            <template #empty>
-              <div class="text-center">
-                Cet article n'a pas d'images
-              </div>
-            </template>
+            <b-button-group class="d-flex">
+              <b-button variant="outline-success" type="submit">Créer</b-button>
+              <b-button variant="outline-danger" @click="hideModal('image-modal')">Annuler</b-button>
+            </b-button-group>
+          </b-form>
+        </b-modal>
 
-            <template #cell(image)="data">
-              <b-link :href="data.item.image" target="_blank">
-                <b-img :src="data.item.image" width="50" height="50"></b-img>
-              </b-link>
-            </template>
+        <b-table :items="images" :fields="imagesFields" class="mt-2" stacked="md" small show-empty>
+          <template #empty>
+            <div class="text-center">
+              Cet article n'a pas d'images
+            </div>
+          </template>
 
-            <template #cell(is_main)="data">
-              <b-badge :variant="data.item.is_main === true ? 'success' : 'primary'">
-                {{ data.item.is_main === true ? 'Principale' : 'Secondaire' }}
-              </b-badge>
-            </template>
+          <template #cell(image)="data">
+            <b-link :href="data.item.image" target="_blank">
+              <b-img :src="data.item.image" width="50" height="50"></b-img>
+            </b-link>
+          </template>
 
-            <template #cell(define)="data">
-              <b-button v-if="data.item.is_main === false" size="sm" variant="outline-success"
-                        @click="update_image_is_main(data.item.id, data.item.is_main)">
-                Définir comme principale
-              </b-button>
-            </template>
+          <template #cell(is_main)="data">
+            <b-badge :variant="data.item.is_main === true ? 'success' : 'primary'">
+              {{ data.item.is_main === true ? 'Principale' : 'Secondaire' }}
+            </b-badge>
+          </template>
 
-            <template #cell(actions)>
-              <b-button-group>
-                <b-button size="sm" variant="outline-primary">Modifier</b-button>
-                <b-button size="sm" variant="outline-danger">Supprimer</b-button>
-              </b-button-group>
-            </template>
-          </b-table>
-        </div>
+          <template #cell(define)="data">
+            <b-button v-if="data.item.is_main === false" size="sm" variant="outline-success"
+                      @click="update_image_is_main(data.item.id, data.item.is_main)">
+              Définir comme principale
+            </b-button>
+          </template>
+
+          <template #cell(actions)>
+            <b-button-group>
+              <b-button size="sm" variant="outline-primary">Modifier</b-button>
+              <b-button size="sm" variant="outline-danger">Supprimer</b-button>
+            </b-button-group>
+          </template>
+        </b-table>
       </div>
     </b-container>
 
-    <b-jumbotron>
-      <pre>{{ article }}</pre>
+    <b-jumbotron class="mt-5" v-if="loading === false">
+      <pre>{{ article.toUpdatePayload() }}</pre>
       <pre>{{ selected_tags }}</pre>
       <pre>{{ images }}</pre>
       <pre>{{ catalogues }}</pre>
@@ -190,7 +185,6 @@ import 'vue-advanced-cropper/dist/style.css';
 import {dataURLtoFile} from "@/helpers/functions.helper";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {validationMixin} from "vuelidate";
-import InvalidFeedback from "@/components/LInvalidFeedback";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import ArticleImageModel from "@/models/article/article_image.model";
@@ -200,7 +194,7 @@ import {fonctions} from "@/mixins/functions.mixin";
 
 export default {
   name: "VAArticleAddOrUpdate",
-  components: {InvalidFeedback, Cropper},
+  components: {Cropper},
   mixins: [validationMixin, validationMessageMixin, fonctions],
   validations: {
     article: ArticleModel.validations
@@ -211,11 +205,25 @@ export default {
       required: false
     }
   },
+
+  computed: {
+    ...mapGetters({
+      images: "Articles/images",
+      tags: "Tags/tags",
+      tagsLoadingStatus: "Tags/tagsLoadingStatus",
+      typeServices: 'TypeServices/typeServices',
+      typeServiceLoadingStatus: "TypeServices/typeServiceLoadingStatus",
+      catalogues: "Catalogues/catalogues",
+      articles: "Articles/articles",
+      cataloguesLoadingStatus: "Catalogues/cataloguesLoadingStatus"
+    })
+  },
+
   data() {
     return {
       icons: LemkaHelpers.FontAwesomeIcons,
       BSClass: LemkaHelpers.BSClass,
-      articlesRoute: LemkaHelpers.Routes.ARTICLES.name,
+      routes: LemkaHelpers.Routes,
       loading: false,
 
       article: new ArticleModel(),
@@ -223,7 +231,6 @@ export default {
       submitStatus: null,
 
       selected_tags: [],
-      selectedCatalogue: null,
 
       preview: null,
       image: null,
@@ -237,17 +244,7 @@ export default {
       dirty: false
     }
   },
-  computed: {
-    ...mapGetters({
-      images: "Articles/images",
-      tags: "Tags/tags",
-      tagsLoadingStatus: "Tags/tagsLoadingStatus",
-      typeServices: 'TypeServices/typeServices',
-      typeServiceLoadingStatus: "TypeServices/typeServiceLoadingStatus",
-      catalogues: "Catalogues/catalogues",
-      articles: "Articles/articles"
-    })
-  },
+
   methods: {
     ...mapActions({
       loadTags: "Tags/loadTags",
@@ -258,31 +255,33 @@ export default {
       updateArticle: "Articles/updateArticle",
       loadImages: "Articles/loadImages",
       createImage: "Articles/createImage",
-      updateImage: "Articles/updateImage"
+      updateImage: "Articles/updateImage",
+      createTag: "Tags/createTag"
     }),
 
-    initialisation: async function() {
+    initialisation: async function () {
       if (this.tags.length === 0 || this.catalogues.length === 0 || this.typeServices.length === 0 || this.articles.length === 0) {
         await this.loadArticles()
         await this.loadCatalogues()
         await this.loadTypeServices()
         await this.loadTags()
       }
+      await this.loadImages(this.slug)
     },
 
     chargerArticle: async function () {
       this.toggleLoading()
       await this.initialisation()
 
-      Object.assign(this.article, await this.$store.getters["Articles/article"](this.slug))
-      await this.loadImages(this.slug)
-
+      Object.assign(this.article, this.$store.getters["Articles/article"](this.slug))
       this.article.ref_type_service = Object.assign(
           new TypeServiceModel(),
-          await this.$store.getters["TypeServices/typeService"](this.article.ref_type_service)
+          this.$store.getters["TypeServices/typeService"](this.article.ref_type_service)
       )
-
-      this.selectedCatalogue = Object.assign(new CatalogueModel(), await this.$store.getters["Catalogues/catalogue"](this.article.ref_catalogue))
+      this.article.ref_catalogue = Object.assign(
+          new CatalogueModel(),
+          this.$store.getters["Catalogues/catalogue"](this.article.ref_catalogue)
+      )
 
       this.article.ref_tag.forEach(item => {
         this.selected_tags.push(Object.assign(new TagModel(), this.$store.getters["Tags/tag"](item)))
@@ -290,59 +289,18 @@ export default {
       this.toggleLoading()
     },
 
-    updateSelect: async function (query) {
+    updateSelectTag: async function (query) {
       await this.loadTags(query)
+    },
+
+    updateSelectCatalogue: async function (query) {
+      await this.loadCatalogues(query)
     },
 
     validateState: function (name) {
       const {$dirty, $error} = this.$v.article[name];
       return $dirty ? !$error : null;
     },
-
-    submit: async function () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        this.submitStatus = 'ERROR'
-        console.log(this.submitStatus)
-      } else {
-        this.submitStatus = 'PENDING'
-
-        let selectedTags = this.selected_tags, tagsToSubmit = []
-        let payload = this.slug !== undefined ? this.article.toUpdatePayload() : this.article.toCreatePayload()
-
-        if (selectedTags.length > 0) {
-          for (let i = 0; i < selectedTags.length; i++) {
-            let newTag = new TagModel()
-            if (selectedTags[i].id === null) {
-              Object.assign(newTag, selectedTags[i])
-              let response = await TagModel.createTag(newTag.toCreatePayload())
-              if (response.status === 201) {
-                newTag.id = response.data.id
-                tagsToSubmit.push(newTag)
-              }
-            } else {
-              newTag = selectedTags[i]
-              tagsToSubmit.push(newTag)
-            }
-          }
-          tagsToSubmit.forEach(tag => {
-            payload.ref_tag.push(tag.id)
-          })
-        }
-
-        if (this.slug === undefined) {
-          await this.createArticle(this.article.toCreatePayload())
-        } else {
-          await this.updateArticle(this.toUpdatePayload())
-        }
-
-        setTimeout(() => {
-          this.submitStatus = 'OK'
-          this.$router.go(0)
-        }, 500)
-      }
-    },
-
 
     addTag: function (newTag) {
       const tag = {
@@ -353,6 +311,52 @@ export default {
       this.selected_tags.push(tag)
     },
 
+    submit: async function () {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
+
+        let selectedTags = this.selected_tags
+        let tagsToSubmit = []
+        let payload = this.slug !== undefined ? this.article.toUpdatePayload() : this.article.toCreatePayload()
+
+        if (selectedTags.length > 0) {
+          for (let i = 0; i < selectedTags.length; i++) {
+            let newTag = new TagModel()
+
+            if (selectedTags[i].id === null) {
+              Object.assign(newTag, selectedTags[i])
+              await this.createTag(newTag.toCreatePayload()).then(tag => {
+                tagsToSubmit.push(tag)
+              })
+            } else {
+              newTag = selectedTags[i]
+              tagsToSubmit.push(newTag)
+            }
+          }
+
+          tagsToSubmit.forEach(tag => {
+            payload.ref_tag.push(tag.id)
+          })
+        }
+
+        if (this.slug === undefined) {
+          await this.createArticle(payload)
+        } else {
+          await this.updateArticle(payload)
+        }
+
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          this.$router.push({name: this.routes.ARTICLES.name})
+        }, 500)
+      }
+    },
+
+    // TODO - Corriger le traitement sur l'image
+    // region Traitement image
     previewImage: function (event) {
       let input = event.target;
       let formatImage = [
@@ -427,7 +431,8 @@ export default {
       this.preview = null;
       this.image_list = [];
       this.preview_list = [];
-    },
+    }
+    // endregion
   },
 
   created() {

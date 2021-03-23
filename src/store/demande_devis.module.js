@@ -7,7 +7,10 @@ export const DemandeDevisModule = {
     namespaced: true,
     state: {
         demandesDevis: [],
-        demandesDevisLoadingStatus: false
+        demandesDevisLoadingStatus: false,
+
+        adminDD: [],
+        adminDDLoadingStatus: false
     },
     getters: {
         demandeDevis: state => id => {
@@ -17,7 +20,10 @@ export const DemandeDevisModule = {
         demandesDevisEnCours: state => {
             return state.demandesDevis.filter(item => item.est_soumis === true)
         },
-        demandesDevisLoadingStatus: state => state.demandesDevisLoadingStatus
+        demandesDevisLoadingStatus: state => state.demandesDevisLoadingStatus,
+
+        adminDD: state => state.adminDD,
+        adminDDLoadingStatus: state => state.adminDDLoadingStatus
     },
     mutations: {
         LOAD_DEMANDES_DEVIS_SUCCESS(state, demandesDevis) {
@@ -43,6 +49,19 @@ export const DemandeDevisModule = {
             if (index !== -1) {
                 state.demandesDevis.splice(index, 1)
             }
+        },
+
+        SET_ADMINDD_SUCCESS(state, payload) {
+            state.adminDD = payload
+        },
+        SET_ADMINDD_FAILURE(state) {
+            state.adminDD = []
+        },
+        ADMINDD_LOADING_STATUS(state, loadingStatus) {
+            state.adminDDLoadingStatus = loadingStatus
+        },
+        ADD_ADMINDD(state, payload) {
+            state.adminDD.push(payload)
         }
     },
     actions: {
@@ -57,6 +76,22 @@ export const DemandeDevisModule = {
                 }, error => {
                     commit('LOAD_DEMANDES_DEVIS_FAILURE')
                     commit('DEMANDE_DEVIS_LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
+        },
+
+        loadAdminDD: async function({commit}) {
+            let endpoint = `${DOMAIN}/demandedevisadmin/`;
+            return new Promise((resolve, reject) => {
+                commit('ADMINDD_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('SET_ADMINDD_SUCCESS', r.data)
+                    commit('ADMINDD_LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('SET_ADMINDD_FAILURE')
+                    commit('ADMINDD_LOADING_STATUS', false)
                     reject(error)
                 })
             })

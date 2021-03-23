@@ -222,8 +222,8 @@ import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {fonctions} from "@/mixins/functions.mixin";
-import TableEmpty from "@/components/TableEmpty";
-import TableBusy from "@/components/TableBusy";
+import TableEmpty from "@/components/Table/LTableEmpty";
+import TableBusy from "@/components/Table/LTableBusy";
 import MercerieOptionChatacteristicModel from "@/models/mercerie/mercerie_option_chatacteristic.model";
 
 export default {

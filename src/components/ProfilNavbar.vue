@@ -42,7 +42,7 @@ export default {
           children: [
             LemkaHelpers.Routes.USER_MENSURATIONS.name,
             LemkaHelpers.Routes.USER_MENSURATION_ADD_OR_UPDATE.name,
-            LemkaHelpers.Routes.USER_MENSURATION_DETAIL.name
+            LemkaHelpers.Routes.USER_MESURES.name
           ]
         },
         {

@@ -7,7 +7,7 @@
 
 <script>
 export default {
-name: "TableBusy"
+name: "L-table-busy"
 }
 </script>
 

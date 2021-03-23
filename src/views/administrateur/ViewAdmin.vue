@@ -69,8 +69,8 @@ export default {
           icon: LemkaHelpers.FontAwesomeIcons.PLATEAU
         },
         {
-          href: {name: LemkaHelpers.Routes.DEMANDE_DE_DEVIS.name},
-          title: LemkaHelpers.Routes.DEMANDE_DE_DEVIS.value,
+          href: {name: LemkaHelpers.Routes.DEMANDE_DEVIS_ADMIN.name},
+          title: LemkaHelpers.Routes.DEMANDE_DEVIS_ADMIN.value,
           icon: LemkaHelpers.FontAwesomeIcons.FOLDER_OPEN
         },
         {
@@ -406,7 +406,6 @@ a.article {
     max-width: 80px;
     text-align: center;
     margin-left: -80px !important;
-    margin-left: 0;
 
     .sidebar-header {
       h3 {

@@ -19,6 +19,9 @@ export const ArticleModule = {
             return state.articles.find(item => item.slug === slug)
         },
         articlesLoadingStatus: state => state.articlesLoadingStatus,
+        articlesPublies: state => {
+            return state.articles.filter(item => item.est_active === true)
+        },
 
         images: state => state.images,
         image: state => id => {
@@ -29,10 +32,10 @@ export const ArticleModule = {
     mutations: {
         // region Articles
 
-        LOAD_ARTICLES_SUCCESS(state, articles) {
-            state.articles = articles
+        SET_ARTICLES_SUCCESS(state, payload) {
+            state.articles = payload
         },
-        LOAD_ARTICLES_FAILURE(state) {
+        SET_ARTICLES_FAILURE(state) {
             state.articles = []
         },
         ARTICLES_LOADING_STATUS(state, articlesLoadingStatus) {
@@ -87,25 +90,24 @@ export const ArticleModule = {
     actions: {
         // region Articles
 
-        loadArticles: function ({commit}) {
+        loadArticles: async function ({commit}) {
             let endpoint = `${DOMAIN}/articles/`;
-            return new Promise((resolve, reject) => {
+            return await new Promise((resolve, reject) => {
                 commit('ARTICLES_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_ARTICLES_SUCCESS', r.data)
+                    commit('SET_ARTICLES_SUCCESS', r.data)
                     commit('ARTICLES_LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('LOAD_ARTICLES_FAILURE')
+                    commit('SET_ARTICLES_FAILURE')
                     commit('ARTICLES_LOADING_STATUS', false)
                     reject(error)
                 })
             })
         },
-        createArticle: function ({commit}, payload) {
+        createArticle: async function ({commit}, payload) {
             let endpoint = `${DOMAIN}/articles/`;
-
-            return new Promise((resolve, reject) => {
+            return await new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_ARTICLE', Object.assign(new ArticleModel(), r.data))
                     resolve(r.data)
@@ -114,10 +116,10 @@ export const ArticleModule = {
                 })
             })
         },
-        updateArticle: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/articles/${payload.slug}`;
+        updateArticle: async function ({commit}, payload) {
+            let endpoint = `${DOMAIN}/articles/${payload.slug}/`;
 
-            return new Promise((resolve, reject) => {
+            return await new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_ARTICLE', r.data)
                     resolve(r.data)
@@ -126,10 +128,10 @@ export const ArticleModule = {
                 })
             })
         },
-        deleteArticle: function ({commit}, article) {
-            let endpoint = `${DOMAIN}/articles/${article.slug}`;
+        deleteArticle: async function ({commit}, article) {
+            let endpoint = `${DOMAIN}/articles/${article.slug}/`;
 
-            return new Promise((resolve, reject) => {
+            return await new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_ARTICLE', article)
                     resolve(r)
