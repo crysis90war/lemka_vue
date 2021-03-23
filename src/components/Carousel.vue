@@ -51,7 +51,7 @@ export default {
       background-color: #FFFFFF;
       opacity: 0.7;
       color: #000000;
-      top: 0;
+      top: 30%;
       padding: 10px;
       min-width: 100%;
       box-sizing: border-box;

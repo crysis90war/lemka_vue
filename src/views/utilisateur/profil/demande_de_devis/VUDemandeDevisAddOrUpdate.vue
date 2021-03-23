@@ -99,14 +99,15 @@
           </b-row>
 
           <b-form-group>
-            <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false"
+            <multiselect v-model="selectedMerceries" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false"
                          :preserve-search="true" placeholder="Pick some" label="name" track-by="name" :preselect-first="true">
               <template slot="selection" slot-scope="{ values, search, isOpen }">
-                <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
-                  {{ values.length }} options selected
-                </span>
-              </template>
+                <span class="multiselect__single"
+                      v-if="values.length &amp;&amp; !isOpen">{{
+                    values.length
+                  }} options selected</span></template>
             </multiselect>
+            <pre class="language-json"><code>{{ value  }}</code></pre>
           </b-form-group>
         </b-form>
       </b-container>
@@ -142,7 +143,8 @@ export default {
     return {
       shadow: LemkaHelpers.BSClass.CARD_BORDERLESS_SHADOW,
       demande_devis: new DemandeDevisModel(),
-      routes: LemkaHelpers.Routes
+      routes: LemkaHelpers.Routes,
+      selectedMerceries: []
     }
   },
   methods: {
