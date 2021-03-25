@@ -17,9 +17,16 @@ export const DemandeDevisModule = {
             return state.demandesDevis.find(item => item.id === id)
         },
         demandesDevis: state => state.demandesDevis,
-        demandesDevisEnCours: state => {
-            return state.demandesDevis.filter(item => item.est_soumis === true)
+        demandesDevisEnRedaction: state => {
+            return state.demandesDevis.filter(item => item.est_soumis === false && item.est_traite === false)
         },
+        demandeDevisSoumis: state => {
+            return state.demandesDevis.filter(item => item.est_soumis === true && item.est_traite === false)
+        },
+        demandeDevisTraite: state => {
+            return state.demandesDevis.filter(item => item.est_traite === true)
+        },
+
         demandesDevisLoadingStatus: state => state.demandesDevisLoadingStatus,
 
         adminDD: state => state.adminDD,
@@ -66,7 +73,7 @@ export const DemandeDevisModule = {
     },
     actions: {
         loadDemandeDevis({commit}) {
-            let endpoint = `${DOMAIN}/demandes_devis/`;
+            let endpoint = `${DOMAIN}/profil/demandes_devis/`;
             return new Promise((resolve, reject) => {
                 commit('DEMANDE_DEVIS_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -76,6 +83,28 @@ export const DemandeDevisModule = {
                 }, error => {
                     commit('LOAD_DEMANDES_DEVIS_FAILURE')
                     commit('DEMANDE_DEVIS_LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
+        },
+        createDemandeDevis({commit}, payload) {
+            let endpoint = `${DOMAIN}/profil/demandes_devis/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_DEMANDE_DEVIS', r.data)
+                    resolve(r.data)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+        updateDemandeDevis({commit}, payload) {
+            let endpoint = `${DOMAIN}/profil/demandes_devis/${payload.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_DEMANDE_DEVIS', r.data)
+                    resolve(r.data)
+                }, error => {
                     reject(error)
                 })
             })

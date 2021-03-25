@@ -32,7 +32,9 @@
         </template>
 
         <template #cell(est_publie)="data">
-          <b-button :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'" size="sm">
+          <b-button :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'" size="sm"
+                    @click="activerDesactiver(data.item)">
+            <i class="fas fa-power-off"></i>
             {{ data.item.est_publie === true ? 'Désactiver' : 'Publier' }}
           </b-button>
         </template>
@@ -96,6 +98,7 @@ export default {
     ...mapActions({
       loadMercerieOptions: 'Merceries/loadOptions',
       deleteMercerieOption: "Merceries/deleteOption",
+      updateMercerieOption: "Merceries/updateOption",
       loadCouleurs: 'Couleurs/loadCouleurs'
     }),
     loadOrRefresh: async function () {
@@ -105,6 +108,11 @@ export default {
       if (this.id !== undefined) {
         Object.assign(this.mercerie, this.$store.getters["Merceries/mercerie"](this.id))
       }
+    },
+    activerDesactiver: function (item) {
+      let payload = item
+      payload.est_publie = !payload.est_publie
+      this.updateMercerieOption([this.id, payload])
     }
   },
   created() {

@@ -39,7 +39,8 @@ export default class DemandeDevisModel {
             est_soumis: this.est_soumis,
             ref_type_service: this.ref_type_service.id,
             ref_article: this.ref_article.id,
-            ref_mensuration: this.ref_mensuration.id
+            ref_mensuration: this.ref_mensuration.id,
+            ref_mercerie_option: this.ref_mercerie_option
             // TODO - ref_mercerie_option
         }
     }
@@ -52,9 +53,35 @@ export default class DemandeDevisModel {
     }
 
     static get validation() {
-        return {
+        return {}
+    }
 
-        }
+    static get redactionTableFields() {
+        return [
+            {key: 'created_at', label: 'Date', sortable: true},
+            {key: 'numero_demande_devis', label: 'Numéro', sortable: true},
+            {key: 'titre', label: 'Titre', sortable: true},
+            {key: 'est_urgent', label: 'Urgent', sortable: true},
+            {key: 'actions', label: 'Actions'}
+        ]
+    }
+
+    static get soumisTableFields() {
+        return [
+            {key: 'created_at', label: 'Date', sortable: true},
+            {key: 'numero_demande_devis', label: 'Numéro', sortable: true},
+            {key: 'titre', label: 'Titre', sortable: true},
+            {key: 'est_urgent', label: 'Urgent', sortable: true},
+            {key: 'actions', label: 'Actions'}
+        ]
+    }
+
+    static get taiteTableFields() {
+        return [
+            {key: 'created_at', label: 'Date', sortable: true},
+            {key: 'numero_demande_devis', label: 'Numéro', sortable: true},
+            {key: 'titre', label: 'Titre', sortable: true},
+        ]
     }
 
     static get tableFields() {

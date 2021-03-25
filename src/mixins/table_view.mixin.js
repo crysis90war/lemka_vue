@@ -45,7 +45,7 @@ export const tableViewMixin = {
         toggleBusy: function() {
             this.isBusy = !this.isBusy
         },
-        itemsLength(items) {
+        itemsLength: function(items) {
             return items.length
         }
     },

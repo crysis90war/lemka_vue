@@ -8,21 +8,15 @@
     </b-button>
 
     <b-table :items="genres" :fields="fields" :busy="busy"
-             stacked="md" small show-empty
-             hover bordered fixed
+             stacked="md" small show-empty hover bordered fixed
              class="text-center mt-3">
 
       <template #table-busy>
-        <div class="text-center text-secondary">
-          <b-spinner small class="align-middle mr-2"></b-spinner>
-          <strong class="align-middle">Chargement...</strong>
-        </div>
+        <l-table-busy/>
       </template>
 
       <template #empty>
-        <div class="text-center">
-          <p>Il n'y a aucun enregistrement à afficher</p>
-        </div>
+        <l-table-empty/>
       </template>
 
       <template #cell(genre)="data">

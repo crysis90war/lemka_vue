@@ -91,7 +91,7 @@
       </template>
 
       <template #cell(nom)="data">
-        <b-link :to="{name: 'ViewAdminMensurationAddOrUpdate', params: {id: data.item.id}}">
+        <b-link :to="{name: routes.PARAMETRES_MENSURATION_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
           {{ data.item.nom }}
         </b-link>
       </template>
@@ -131,6 +131,11 @@ export default {
   computed: {
     ...mapGetters({busy: 'Mensurations/mensurationLoadingStatus', mensurations: 'Mensurations/mensurations'}),
   },
+  watch: {
+    totalRows() {
+      this.itemsLength(this.mensurations)
+    }
+  },
   methods: {
     ...mapActions({
       deleteMensuration: 'Mensurations/deleteMensuration',
@@ -138,7 +143,6 @@ export default {
     }),
     loadOrRefresh: async function() {
       await this.loadMensurations()
-      this.totalRows = this.itemsLength(this.mensurations)
     }
   },
   created() {

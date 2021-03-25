@@ -67,10 +67,8 @@
             <b-col lg="3">
               <h5>A PROPOS DE NOUS</h5>
               <p class="text-secondary text-justify">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut odio sagittis, posuere diam eget, scelerisque lectus.
-              </p>
-              <p class="text-secondary text-justify">
-                Sed a metus viverra justo ultricies maximus ut eu dolor. Nam sollicitudin dui risus, vitae pharetra leo sagittis sit amet.
+                Atelier de couture proposant la confection de vêtements sur mesure, la retouche, de même adapter le vêtement à la personne
+                désireuse et enfin la réparation sur une vaste gamme de tissus.
               </p>
             </b-col>
           </b-row>

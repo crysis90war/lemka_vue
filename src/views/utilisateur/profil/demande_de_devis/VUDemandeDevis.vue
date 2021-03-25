@@ -1,21 +1,81 @@
 <template>
   <div v-if="$route.name === routes.DEMANDE_DE_DEVIS.name" class="demande_devis">
     <div :class="BSClass.CARD_BORDERLESS_SHADOW" class="my-4">
-      <b-tabs pills card>
+      <l-create-refresh size="md" :route="routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name" :load-or-refresh="loadDemandeDevis"/>
+
+      <b-tabs pills card class="mt-2">
         <b-tab title="En rédaction">
           <b-card-text>
-            <l-create-refresh :load-or-refresh="loadDemandeDevis" :route="routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name"/>
-            <pre>{{ demandes_devis }}</pre>
+            <b-table :items="demandesDevisEnRedaction" :fields="redactionTableFields" :busy="busy"
+                     stacked="md" small show-empty hover class="text-center mt-3">
+              <template #table-busy>
+                <l-table-busy/>
+              </template>
+
+              <template #cell(created_at)="data">
+                {{ data.item.created_at | localTimeStr }}
+              </template>
+
+              <template #cell(est_urgent)="data">
+                <b-badge pill :variant="data.item.est_urgent === true ? 'success' : 'danger'">
+                  <i :class="`fas fa-${data.item.est_urgent  === true ? 'check' : 'times'}-circle`"></i>
+                </b-badge>
+              </template>
+
+              <template #cell(actions)="data">
+                <b-button-group size="sm">
+                  <b-button variant="outline-primary" :to="{name: routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
+                    <i class="fas fa-edit"></i>
+                  </b-button>
+                  <b-button variant="outline-success">
+                    <i class="fas fa-paper-plane"></i>
+                  </b-button>
+                </b-button-group>
+              </template>
+            </b-table>
           </b-card-text>
         </b-tab>
+
         <b-tab title="Soumis">
           <b-card-text>
-            <pre>{{demande_devis_en_cours}}</pre>
+            <b-table :items="demandeDevisSoumis" :fields="soumisTableFields" :busy="busy"
+                     stacked="md" small show-empty hover class="text-center mt-3">
+              <template #table-busy>
+                <l-table-busy/>
+              </template>
+
+              <template #empty>
+                <l-table-empty/>
+              </template>
+              <template #cell(created_at)="data">
+                {{ data.item.created_at | localTimeStr }}
+              </template>
+              <template #cell(est_urgent)="data">
+                <b-badge pill :variant="data.item.est_urgent === true ? 'success' : 'danger'">
+                  <i :class="`fas fa-${data.item.est_urgent === true ? 'check' : 'times'}-circle`"></i>
+                </b-badge>
+              </template>
+
+              <template #cell(actions)>
+                <b-button size="sm" variant="outline-primary">
+                  <i class="fas fa-eye"></i>
+                </b-button>
+              </template>
+            </b-table>
           </b-card-text>
         </b-tab>
+
         <b-tab title="Traités">
           <b-card-text>
-            Tab contents 1
+            <b-table :items="demandeDevisTraite" :fields="taiteTableFields" :busy="busy"
+                     stacked="md" small show-empty hover class="text-center mt-3">
+              <template #table-busy>
+                <l-table-busy/>
+              </template>
+              <template #cell(created_at)="data">
+                {{ data.item.created_at | localTimeStr }}
+              </template>
+            </b-table>
           </b-card-text>
         </b-tab>
       </b-tabs>
@@ -26,30 +86,45 @@
 </template>
 
 <script>
-
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
+import DemandeDevisModel from "@/models/demande_devis.model";
+import {localTimeStr} from "@/utils/filters";
+import Tools from '@/utils/tools'
 
 export default {
   name: "VUDemandeDevis",
   props: {},
+  title() {
+    return Tools.htmlTitle("Demande de devis")
+  },
   data() {
     return {
       BSClass: LemkaHelpers.BSClass,
-      routes: LemkaHelpers.Routes
+      routes: LemkaHelpers.Routes,
+      redactionTableFields: DemandeDevisModel.redactionTableFields,
+      taiteTableFields: DemandeDevisModel.taiteTableFields,
     }
   },
   computed: {
     ...mapGetters({
       demandes_devis: "DemandesDevis/demandesDevis",
       busy: "DemandesDevis/demandesDevisLoadingStatus",
-      demande_devis_en_cours: "DemandesDevis/demandesDevisEnCours"
-    })
+      demandesDevisEnRedaction: "DemandesDevis/demandesDevisEnRedaction",
+      demandeDevisSoumis: "DemandesDevis/demandeDevisSoumis",
+      demandeDevisTraite: "DemandesDevis/demandeDevisTraite"
+    }),
+    soumisTableFields() {
+      return DemandeDevisModel.soumisTableFields
+    }
   },
   methods: {
     ...mapActions({loadDemandeDevis: "DemandesDevis/loadDemandeDevis"}),
-    name() {
-
+  },
+  filters: {
+    localTimeStr: function (value) {
+      value = localTimeStr(value)
+      return value
     }
   },
   created() {

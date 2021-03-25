@@ -45,7 +45,7 @@
                   :loop="true" :autoplay="true" :autoplayTimeout="15000" :animationSpeed="3000">
         <l-slide v-for="(slide, i) in slides" :index="i" :key="i">
           <figure>
-            <b-img :src="require('@/assets/noimage.png')" height="430"></b-img>
+            <b-img loading=lazy :src="require('@/assets/noimage.png')" height="430"></b-img>
             <figcaption>
               <h3>{{ slide }} - Titre</h3>
               <p>{{ message.substring(0, 80) }} ...
@@ -65,7 +65,7 @@
                   :loop="true" :autoplay="true" :autoplayTimeout="15000" :animationSpeed="3000">
         <l-slide v-for="(slide, i) in slides" :index="i" :key="i">
           <figure>
-            <b-img :src="require('@/assets/noimage.png')" height="430"></b-img>
+            <b-img loading=lazy :src="require('@/assets/noimage.png')" height="430"></b-img>
             <figcaption>
               <h3>{{ slide }} - Titre</h3>
               <p>{{ message.substring(0, 80) }} ...

@@ -13,6 +13,7 @@ export default class MercerieOptionModel {
         this.prix_u_ht = R.is(Number, mercerie_option.prix_u_ht) ? mercerie_option.prix_u_ht : null
         this.stock = R.is(Number, mercerie_option.stock) ? mercerie_option.stock : null
         this.ref_couleur = R.is(Object, mercerie_option.ref_couleur) ? new CouleurModel(mercerie_option.ref_couleur) : new CouleurModel()
+        this.caracteristiques = R.is(Array, mercerie_option.caracteristiques) ? mercerie_option.caracteristiques : []
     }
 
     toCreatePayload() {

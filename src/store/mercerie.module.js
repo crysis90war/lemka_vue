@@ -16,7 +16,10 @@ export const MercerieModule = {
         optionsLoadingStatus: false,
 
         caracteristiques: [],
-        caracteristiquesLoadingStatus: false
+        caracteristiquesLoadingStatus: false,
+
+        globalMerceries: [],
+        globalMerceriesLoadingStatus: false,
     },
     getters: {
         merceries: state => state.merceries,
@@ -35,7 +38,13 @@ export const MercerieModule = {
         caracteristique: state => id => {
             return state.caracteristiques.find(item => item.id === id)
         },
-        caracteristiquesLoadingStatus: state => state.caracteristiquesLoadingStatus
+        caracteristiquesLoadingStatus: state => state.caracteristiquesLoadingStatus,
+
+        globalMerceries: state => state.globalMerceries,
+        globalMercerie: state => id => {
+            return state.globalMerceries.find(item => item.id === id)
+        },
+        globalMerceriesLoadingStatus: state => state.globalMerceriesLoadingStatus,
     },
     mutations: {
         // region Merceries
@@ -119,6 +128,19 @@ export const MercerieModule = {
             if (index !== -1) {
                 state.caracteristiques.splice(index, 1)
             }
+        },
+
+        // endregion
+        // region Global Merceries
+
+        SET_GLOBAL_MERCERIES_SUCCESS(state, payload) {
+            state.globalMerceries = payload
+        },
+        SET_GLOBAL_MERCERIES_FAILURE(state) {
+            state.globalMerceries = []
+        },
+        SET_GLOBAL_MERCERIES_LOADING_STATUS(state, loadingStatus) {
+            state.globalMerceriesLoadingStatus = loadingStatus
         }
 
         // endregion
@@ -274,6 +296,26 @@ export const MercerieModule = {
                     commit('DELETE_CARACTERISTIQUE', caracteristique)
                     resolve(r)
                 }, error => {
+                    reject(error)
+                })
+            })
+        },
+
+        // endregion
+        // region Global Merceries
+
+        loadGlobalMercerieOptions: function ({commit}, searchField = "") {
+            let searchParam = `?search=${searchField}`;
+            let endpoint = `${DOMAIN}/public/merceries/${searchField === "" ? searchField : searchParam}`;
+            return new Promise((resolve, reject) => {
+                commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('SET_GLOBAL_MERCERIES_SUCCESS', r.data)
+                    commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('SET_GLOBAL_MERCERIES_FAILURE')
+                    commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', false)
                     reject(error)
                 })
             })
