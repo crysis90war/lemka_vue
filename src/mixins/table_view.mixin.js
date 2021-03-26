@@ -3,7 +3,7 @@ import {localTimeStr} from "@/utils/filters";
 export const tableViewMixin = {
     data() {
         return {
-            // items: [],
+            items: [],
             totalRows: 1,
             currentPage: 1,
             perPage: 10,
@@ -13,7 +13,6 @@ export const tableViewMixin = {
             sortDirection: 'asc',
             filter: null,
             filterOn: [],
-            isBusy: false,
             options: [],
         }
     },
@@ -36,17 +35,20 @@ export const tableViewMixin = {
         }
     },
 
+    watch: {
+        totalRows() {
+            this.itemsLength()
+        }
+    },
+
     methods: {
         onFiltered: function(filteredItems) {
             // Trigger pagination to update the number of buttons/pages due to filtering
             this.totalRows = filteredItems.length
             this.currentPage = 1
         },
-        toggleBusy: function() {
-            this.isBusy = !this.isBusy
-        },
         itemsLength: function(items) {
-            return items.length
+            this.totalRows = items.length
         }
     },
 
@@ -56,8 +58,6 @@ export const tableViewMixin = {
             return value
         }
     },
-    // mounted() {
-    //     // Set the initial number of items
-    //     this.totalRows = this.itemsLength
-    // },
+    created() {
+    },
 }

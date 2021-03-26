@@ -91,14 +91,13 @@
         </template>
       </b-table>
     </div>
-    <pre>{{adminDD}}</pre>
   </div>
 </template>
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import DemandeDevisModel from "@/models/demande_devis.model";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
+import DemandeDevisModel from "@/models/demande_devis.model";
 import LemkaHelpers from "@/helpers";
 
 export default {
@@ -114,11 +113,15 @@ export default {
     ...mapGetters({adminDD: "DemandesDevis/adminDD", busy: "DemandesDevis/adminDDLoadingStatus"})
   },
   methods: {
-    ...mapActions({loadAdminDD: "DemandesDevis/loadAdminDD"})
+    ...mapActions({loadAdminDD: "DemandesDevis/loadAdminDD"}),
+    loadOrRefresh: async function() {
+      await this.loadAdminDD()
+      this.itemsLength(this.adminDD)
+    }
   },
   created() {
-    this.loadAdminDD()
-  }
+    this.loadOrRefresh()
+  },
 }
 </script>
 

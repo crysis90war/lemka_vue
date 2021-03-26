@@ -273,7 +273,7 @@ export default {
       this.toggleLoading()
       await this.initialisation()
 
-      Object.assign(this.article, this.$store.getters["Articles/article"](this.slug))
+      Object.assign(this.article, this.$store.getters["Articles/articleBySlug"](this.slug))
       this.article.ref_type_service = Object.assign(
           new TypeServiceModel(),
           this.$store.getters["TypeServices/typeService"](this.article.ref_type_service)

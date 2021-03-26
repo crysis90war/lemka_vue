@@ -62,18 +62,6 @@ export default {
         },
         {
           href: "#",
-          title: "Bons de commande",
-          icon: LemkaHelpers.FontAwesomeIcons.PLATEAU,
-          children: []
-        },
-        {
-          href: "#",
-          title: "Factures",
-          icon: LemkaHelpers.FontAwesomeIcons.MONEY,
-          children: []
-        },
-        {
-          href: "#",
           title: "Rendez-vous",
           icon: LemkaHelpers.FontAwesomeIcons.CALENDAR,
           children: []

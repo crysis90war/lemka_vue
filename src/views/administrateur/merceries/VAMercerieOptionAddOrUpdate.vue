@@ -1,46 +1,46 @@
 <template>
-  <div>
+  <div class="option_add_or_update">
     <b-container>
       <div v-if="id" class="mb-5">
         <h2>{{ mercerie_option.name }}</h2>
       </div>
 
+      <!-- region Switch -->
       <b-input-group class="my-1">
         <b-form-checkbox v-model="mercerie_option.est_publie" name="check-button" switch>
           <p>{{ mercerie_option.est_publie === true ? 'Publier' : 'En attente' }}</p>
         </b-form-checkbox>
       </b-input-group>
+      <!-- endregion -->
 
+      <!-- region Référence -->
       <b-form-group label="Référence" description="Veuillez encoder la référence de l'option">
         <b-form-input v-model="$v.mercerie_option.reference.$model" type="text"
                       :state="validateState('reference')"></b-form-input>
         <b-form-invalid-feedback>
-          <invalid-feedback :condition="!$v.mercerie_option.reference.required" :error-message="required()">
-          </invalid-feedback>
-          <invalid-feedback :condition="!$v.mercerie_option.reference.minLength"
-                            :error-message="minLength($v.mercerie_option.reference.$params.minLength.min)">
-          </invalid-feedback>
-          <invalid-feedback :condition="!$v.mercerie_option.reference.maxLength"
-                            :error-message="maxLength($v.mercerie_option.reference.$params.maxLength.max)">
-          </invalid-feedback>
+          <l-invalid-feedback :condition="!$v.mercerie_option.reference.required" :error-message="required()"/>
+          <l-invalid-feedback :condition="!$v.mercerie_option.reference.minLength"
+                              :error-message="minLength($v.mercerie_option.reference.$params.minLength.min)"/>
+          <l-invalid-feedback :condition="!$v.mercerie_option.reference.maxLength"
+                              :error-message="maxLength($v.mercerie_option.reference.$params.maxLength.max)"/>
         </b-form-invalid-feedback>
       </b-form-group>
+      <!-- endregion -->
 
+      <!-- region Description -->
       <b-form-group label="Description" description="Veuillez encoder la description de l'option">
-        <b-form-textarea v-model="$v.mercerie_option.description.$model"
-                         :state="validateState('description')"></b-form-textarea>
+        <b-form-textarea v-model="$v.mercerie_option.description.$model" :state="validateState('description')"/>
         <b-form-invalid-feedback>
-          <invalid-feedback :condition="!$v.mercerie_option.description.required" :error-message="required()">
-          </invalid-feedback>
-          <invalid-feedback :condition="!$v.mercerie_option.description.minLength"
-                            :error-message="minLength($v.mercerie_option.description.$params.minLength.min)">
-          </invalid-feedback>
-          <invalid-feedback :condition="!$v.mercerie_option.description.maxLength"
-                            :error-message="maxLength($v.mercerie_option.description.$params.maxLength.max)">
-          </invalid-feedback>
+          <l-invalid-feedback :condition="!$v.mercerie_option.description.required" :error-message="required()"/>
+          <l-invalid-feedback :condition="!$v.mercerie_option.description.minLength"
+                              :error-message="minLength($v.mercerie_option.description.$params.minLength.min)"/>
+          <l-invalid-feedback :condition="!$v.mercerie_option.description.maxLength"
+                              :error-message="maxLength($v.mercerie_option.description.$params.maxLength.max)"/>
         </b-form-invalid-feedback>
       </b-form-group>
+      <!-- endregion -->
 
+      <!-- region Couleur -->
       <b-form-group label="Couleur" description="Veuillez choisir la couleur">
         <multiselect v-model="mercerie_option.ref_couleur" :options="couleurs" :allow-empty="false"
                      label="nom" track-by="nom" placeholder="Veuillez selectionner la couleur"
@@ -56,41 +56,38 @@
         </multiselect>
         <span class="text-danger" v-show="isInvalid"><small>Ce champ est requis</small></span>
       </b-form-group>
+      <!-- endregion -->
 
       <b-row>
+        <!-- region Prix hors TVA -->
         <b-col lg="6">
           <b-form-group label="Prix hors TVA" description="Veuillez encoder le prix hors tva de l'option">
             <b-form-input v-model="$v.mercerie_option.prix_u_ht.$model" type="number" step="0.01" min="0.00"
-                          :state="validateState('prix_u_ht')"></b-form-input>
+                          :state="validateState('prix_u_ht')"/>
             <b-form-invalid-feedback>
-              <invalid-feedback :condition="!$v.mercerie_option.prix_u_ht.required" :error-message="required()">
-              </invalid-feedback>
-              <invalid-feedback :condition="!$v.mercerie_option.prix_u_ht.minValue"
-                                :error-message="minValue($v.mercerie_option.prix_u_ht.$params.minValue.min)">
-              </invalid-feedback>
-              <invalid-feedback :condition="!$v.mercerie_option.prix_u_ht.numeric"
-                                :error-message="decimal()">
-              </invalid-feedback>
+              <l-invalid-feedback :condition="!$v.mercerie_option.prix_u_ht.required" :error-message="required()"/>
+              <l-invalid-feedback :condition="!$v.mercerie_option.prix_u_ht.minValue"
+                                  :error-message="minValue($v.mercerie_option.prix_u_ht.$params.minValue.min)"/>
+              <l-invalid-feedback :condition="!$v.mercerie_option.prix_u_ht.numeric" :error-message="decimal()"/>
             </b-form-invalid-feedback>
           </b-form-group>
         </b-col>
+        <!-- endregion -->
 
+        <!-- region Stock -->
         <b-col lg="6">
           <b-form-group label="Stock" description="Veuillez encoder le stock de l'option">
-            <b-form-input v-model="$v.mercerie_option.stock.$model" type="number" step="0.01" min="0.00"
-                          :state="validateState('stock')"></b-form-input>
+            <b-form-input v-model="$v.mercerie_option.stock.$model" type="number" step="0.01" min="0.00" :state="validateState('stock')"/>
             <b-form-invalid-feedback>
-              <invalid-feedback :condition="!$v.mercerie_option.stock.required" :error-message="required()">
-              </invalid-feedback>
-              <invalid-feedback :condition="!$v.mercerie_option.stock.minValue"
-                                :error-message="minValue($v.mercerie_option.stock.$params.minValue.min)">
-              </invalid-feedback>
-              <invalid-feedback :condition="!$v.mercerie_option.stock.numeric"
-                                :error-message="decimal()">
-              </invalid-feedback>
+              <l-invalid-feedback :condition="!$v.mercerie_option.stock.required" :error-message="required()"/>
+              <l-invalid-feedback :condition="!$v.mercerie_option.stock.minValue"
+                                  :error-message="minValue($v.mercerie_option.stock.$params.minValue.min)"/>
+              <l-invalid-feedback :condition="!$v.mercerie_option.stock.numeric"
+                                  :error-message="decimal()"/>
             </b-form-invalid-feedback>
           </b-form-group>
         </b-col>
+        <!-- endregion -->
       </b-row>
 
       <!-- region Caractéristiques -->
@@ -108,11 +105,11 @@
         <b-table :items="option_characteristics" :fields="MeOptFields" :busy="caractsBusy"
                  hover show-empty small stacked="md" class="text-center my-3">
           <template #table-busy>
-            <TableBusy/>
+            <l-table-busy/>
           </template>
 
           <template #empty>
-            <TableEmpty/>
+            <l-table-empty/>
           </template>
 
           <template #cell(actions)="data">
@@ -197,6 +194,7 @@
       -->
       <!-- endregion -->
 
+      <!-- region Boutons -->
       <b-button-group class="mt-3">
         <b-button variant="outline-dark"
                   @click="$router.push({name: routes.MERCERIE_OPTIONS.name, params: {id: mercerie_id}})">
@@ -209,6 +207,7 @@
           Supprimer
         </b-button>
       </b-button-group>
+      <!-- endregion -->
     </b-container>
   </div>
 </template>
@@ -218,17 +217,13 @@ import MercerieOptionModel from "@/models/mercerie/mercerie_option.model";
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
-import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {fonctions} from "@/mixins/functions.mixin";
-import TableEmpty from "@/components/Table/LTableEmpty";
-import TableBusy from "@/components/Table/LTableBusy";
 import MercerieOptionChatacteristicModel from "@/models/mercerie/mercerie_option_chatacteristic.model";
 
 export default {
   name: "VAMercerieOptionAddOrUpdate",
-  components: {InvalidFeedback, TableEmpty, TableBusy},
   props: {
     mercerie_id: {
       required: true

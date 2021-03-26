@@ -4,6 +4,8 @@ import {format, isValid} from "date-fns";
 import TypeServiceModel from "@/models/type_service.model";
 import ArticleModel from "@/models/article/article.model";
 import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
+import {minLength, required, maxLength} from "vuelidate/lib/validators";
+
 
 export default class DemandeDevisModel {
     constructor(demande_devis = {}) {
@@ -41,7 +43,6 @@ export default class DemandeDevisModel {
             ref_article: this.ref_article.id,
             ref_mensuration: this.ref_mensuration.id,
             ref_mercerie_option: this.ref_mercerie_option
-            // TODO - ref_mercerie_option
         }
     }
 
@@ -52,8 +53,19 @@ export default class DemandeDevisModel {
         }
     }
 
-    static get validation() {
-        return {}
+    static get validations() {
+        return {
+            titre: {
+                required,
+                minLength: minLength(3),
+                maxLength: maxLength(100)
+            },
+            remarque: {
+                required,
+                minLength: minLength(10),
+                maxLength: maxLength(512)
+            }
+        }
     }
 
     static get redactionTableFields() {

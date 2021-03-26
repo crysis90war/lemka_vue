@@ -50,10 +50,6 @@ export const Routes = {
     MO_ADD_OR_UPDATE: {name: AdminView + 'MOAddOrUpdate', value: 'Ajouter/Modifier'},
     MOC_ADD_OR_UPDATE: {name: 'VAMOCAddOrUpdate', value: 'Ajouter/Modifier'},
 
-    BONS_DE_COMMANDE: {name: AdminView + 'BonDeCommande', value: 'Bons de commande'},
-
-    FACTURE: {name: AdminView + 'Facture', value: 'Facture'},
-
     RENDEZ_VOUS: {name: AdminView + 'RendezVous', value: 'Rendez-vous'},
 
     PARAMETRES: {name: AdminView + 'Parametres', value: 'Parametres'},

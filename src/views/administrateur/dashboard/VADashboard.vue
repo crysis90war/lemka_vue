@@ -37,20 +37,6 @@
                      :count="dashboard.devis_count"
                      :route_link="routes.DEVIS.name"
                      :message="`${routes.DEVIS.value} actifs`"></DashboardCard>
-
-      <!-- BON DE COMMANDE -->
-      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.PLATEAU"
-                     :route_value="routes.BONS_DE_COMMANDE.value"
-                     :count="dashboard.bons_de_commande_count"
-                     :route_link="routes.BONS_DE_COMMANDE.name"
-                     :message="`${routes.BONS_DE_COMMANDE.value} actifs`"></DashboardCard>
-
-      <!-- FACTURE -->
-      <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.MONEY"
-                     :route_value="routes.FACTURE.value"
-                     :count="dashboard.factures_count"
-                     :route_link="routes.FACTURE.name"
-                     :message="`${routes.FACTURE.value} actifs`"></DashboardCard>
     </b-card-group>
 
     <b-card-group deck>

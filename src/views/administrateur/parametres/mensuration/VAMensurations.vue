@@ -133,7 +133,7 @@ export default {
   },
   watch: {
     totalRows() {
-      this.itemsLength(this.mensurations)
+      // this.itemsLength(this.mensurations)
     }
   },
   methods: {

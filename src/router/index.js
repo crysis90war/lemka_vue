@@ -17,8 +17,6 @@ import VAMercerieOptionAddOrUpdate from "@/views/administrateur/merceries/VAMerc
 import VAMOCAddOrUpdate from "@/views/administrateur/merceries/VAMOCAddOrUpdate";
 import VADemandeDeDevis from "@/views/administrateur/demande_de_devis/VADemandeDeDevis";
 import VADevis from "@/views/administrateur/devis/VADevis";
-import VABonDeCommande from "@/views/administrateur/bon_de_commande/VABonDeCommande";
-import VAFactures from "@/views/administrateur/factures/VAFactures";
 import VARendezVous from "@/views/administrateur/rendez_vous/VARendezVous";
 import VAParametres from "@/views/administrateur/parametres/VAParametres";
 import VAEntreprise from "@/views/administrateur/parametres/entreprise/VAEntreprise";
@@ -155,18 +153,6 @@ const adminRoutes = [
     name: ROUTES.DEVIS.name,
     meta: {value: ROUTES.DEVIS.value},
     component: VADevis
-  },
-  {
-    path: ADMIN + 'bons-de-commande',
-    name: ROUTES.BONS_DE_COMMANDE.name,
-    meta: {value: ROUTES.BONS_DE_COMMANDE.value},
-    component: VABonDeCommande
-  },
-  {
-    path: ADMIN + 'facture',
-    name: ROUTES.FACTURE.name,
-    meta: {value: ROUTES.FACTURE.value},
-    component: VAFactures
   },
   {
     path: ADMIN + 'rendez-vous',

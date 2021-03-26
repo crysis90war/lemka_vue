@@ -4,7 +4,7 @@
       <b-form>
         <b-form-group label="Genre" description="Veuillez encoder le genre">
           <b-form-input v-model="$v.genre.genre.$model" placeholder="exemple: Femme"
-                        :state="validateState('genre')"></b-form-input>
+                        :state="validateState('genre')"/>
           <b-form-invalid-feedback>
             <invalid-feedback :condition="!$v.genre.genre.required"
                               :error-message="required()">

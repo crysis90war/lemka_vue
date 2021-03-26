@@ -27,7 +27,7 @@
                   <b-button variant="outline-primary" :to="{name: routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
                     <i class="fas fa-edit"></i>
                   </b-button>
-                  <b-button variant="outline-success">
+                  <b-button variant="outline-success" @click.stop.prevent="envoyer(data.item)">
                     <i class="fas fa-paper-plane"></i>
                   </b-button>
                 </b-button-group>
@@ -118,18 +118,25 @@ export default {
       return DemandeDevisModel.soumisTableFields
     }
   },
-  methods: {
-    ...mapActions({loadDemandeDevis: "DemandesDevis/loadDemandeDevis"}),
+  watch: {
+
   },
-  filters: {
-    localTimeStr: function (value) {
-      value = localTimeStr(value)
-      return value
+  methods: {
+    ...mapActions({loadDemandeDevis: "DemandesDevis/loadDemandeDevis", updateDemandeDevis: "DemandesDevis/updateDemandeDevis"}),
+    envoyer: function (payload) {
+      payload.est_soumis = true
+      this.updateDemandeDevis(payload)
     }
   },
   created() {
     if (this.demandes_devis.length === 0) {
       this.loadDemandeDevis()
+    }
+  },
+  filters: {
+    localTimeStr: function (value) {
+      value = localTimeStr(value)
+      return value
     }
   }
 }

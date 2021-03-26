@@ -15,8 +15,11 @@ export const ArticleModule = {
     },
     getters: {
         articles: state => state.articles,
-        article: state => slug => {
+        articleBySlug: state => slug => {
             return state.articles.find(item => item.slug === slug)
+        },
+        articleById: state => id => {
+          return state.articles.find(item => item.id === id)
         },
         articlesLoadingStatus: state => state.articlesLoadingStatus,
         articlesPublies: state => {

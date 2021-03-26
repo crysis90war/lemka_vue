@@ -79,16 +79,6 @@ export default {
           icon: LemkaHelpers.FontAwesomeIcons.FOLDER
         },
         {
-          href: {name: LemkaHelpers.Routes.BONS_DE_COMMANDE.name},
-          title: LemkaHelpers.Routes.BONS_DE_COMMANDE.value,
-          icon: LemkaHelpers.FontAwesomeIcons.SHOPPING_CART
-        },
-        {
-          href: {name: LemkaHelpers.Routes.FACTURE.name},
-          title: LemkaHelpers.Routes.FACTURE.value,
-          icon: LemkaHelpers.FontAwesomeIcons.MONEY
-        },
-        {
           href: {name: LemkaHelpers.Routes.RENDEZ_VOUS.name},
           title: LemkaHelpers.Routes.RENDEZ_VOUS.value,
           icon: LemkaHelpers.FontAwesomeIcons.CALENDAR

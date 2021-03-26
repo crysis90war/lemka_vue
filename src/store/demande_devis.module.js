@@ -110,7 +110,7 @@ export const DemandeDevisModule = {
             })
         },
 
-        loadAdminDD: async function({commit}) {
+        loadAdminDD: function({commit}) {
             let endpoint = `${DOMAIN}/demandedevisadmin/`;
             return new Promise((resolve, reject) => {
                 commit('ADMINDD_LOADING_STATUS', true)
