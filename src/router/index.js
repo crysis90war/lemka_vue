@@ -31,16 +31,16 @@ import VAServiceAddOrUpdate from "@/views/administrateur/parametres/service/VASe
 // endregion
 
 // region User views
-import ViewUser from "@/views/utilisateur/profil/ViewUser";
-import VUInformations from "@/views/utilisateur/profil/informations/VUInformations";
-import VUInformationsUpdate from "@/views/utilisateur/profil/informations/VUInformationsUpdate";
-import VUAdresseAdd from "@/views/utilisateur/profil/informations/VUAdresseAdd";
-import VUAdresseUpdate from "@/views/utilisateur/profil/informations/VUAdresseUpdate";
-import VUMensurations from "@/views/utilisateur/profil/mensurations/VUMensurations";
-import VUUserMensurationAddOrUpdate from "@/views/utilisateur/profil/mensurations/VUUserMensurationAddOrUpdate";
-import VUMensurationDetail from "@/views/utilisateur/profil/mensurations/VUMensurationDetail";
-import VUDemandeDevis from "@/views/utilisateur/profil/demande_de_devis/VUDemandeDevis";
-import VUDemandeDevisAddOrUpdate from "@/views/utilisateur/profil/demande_de_devis/VUDemandeDevisAddOrUpdate";
+import ViewUser from "@/views/utilisateur/ViewUser";
+import VUInformations from "@/views/utilisateur/informations/VUInformations";
+import VUInformationsUpdate from "@/views/utilisateur/informations/VUInformationsUpdate";
+import VUAdresseAdd from "@/views/utilisateur/informations/VUAdresseAdd";
+import VUAdresseUpdate from "@/views/utilisateur/informations/VUAdresseUpdate";
+import VUMensurations from "@/views/utilisateur/mensurations/VUMensurations";
+import VUUserMensurationAddOrUpdate from "@/views/utilisateur/mensurations/VUUserMensurationAddOrUpdate";
+import VUMensurationDetail from "@/views/utilisateur/mensurations/VUMensurationDetail";
+import VUDemandeDevis from "@/views/utilisateur/demande_de_devis/VUDemandeDevis";
+import VUDemandeDevisAddOrUpdate from "@/views/utilisateur/demande_de_devis/VUDemandeDevisAddOrUpdate";
 // endregion
 
 // region Global Views

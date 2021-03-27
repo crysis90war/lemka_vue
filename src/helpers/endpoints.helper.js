@@ -5,6 +5,5 @@ export const Endpoints = {
     DOMAIN: DOMAIN,
     ADMIN_ENDPOINT: DOMAIN + '/admin',
     PROFIL_ENDPOINT: DOMAIN + '/profil',
-    PROFIL: DOMAIN + '/profil',
     DASHBOARD_ENDPOINT: DOMAIN + '/admin-dashboard/',
 }

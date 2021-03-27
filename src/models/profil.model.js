@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import {format, isValid} from "date-fns";
 import GenreModel from "@/models/genre.model";
-import {alphaNum, minLength, numeric, required} from "vuelidate/lib/validators";
+import {alphaNum, maxLength, minLength, numeric, required} from "vuelidate/lib/validators";
 
 export default class ProfilModel {
     constructor(profil = {}) {
@@ -35,6 +35,7 @@ export default class ProfilModel {
             username: {
                 required,
                 minLength: minLength(4),
+                maxLength: maxLength(30),
                 alphaNum
             },
             first_name: {

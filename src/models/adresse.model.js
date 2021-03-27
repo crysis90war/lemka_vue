@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import VilleModel from "@/models/pays/ville.model";
-import {minLength, alphaNum, required} from "vuelidate/lib/validators"
+import {minLength, alphaNum, required, maxLength} from "vuelidate/lib/validators"
 
 export default class AdresseModel {
     constructor(adresse = {}) {
@@ -31,15 +31,19 @@ export default class AdresseModel {
         return {
             rue: {
                 required,
-                minLength: minLength(3)
+                minLength: minLength(3),
+                maxLength: maxLength(50)
             },
             numero: {
+                required,
+                alphaNum,
                 minLength: minLength(1),
-                alphaNum
+                maxLength: maxLength(10)
             },
             boite: {
+                alphaNum,
                 minLength: minLength(1),
-                alphaNum
+                maxLength: maxLength(10)
             }
         }
     }

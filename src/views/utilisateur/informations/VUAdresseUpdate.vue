@@ -6,13 +6,12 @@
         <b-form @submit.prevent="submit">
 
           <b-form-group label="Ville" description="Selectionn selectionner votre ville">
-            <multiselect v-model="adresse.ref_ville"
-                         :options="villes" :loading="villesLoadingStatus"
-                         track-by="ville" placeholder="Veuillez encoder pour lancer la recherche..."
-                         :multiple="false" :searchable="true" :internal-search="false"
+            <multiselect v-model="adresse.ref_ville" :options="villes" :loading="villesLoadingStatus" :class="{ 'invalid': isInvalid }"
+                         label="ville" placeholder="Veuillez encoder pour lancer la recherche..." track-by="ville"
+                         :multiple="false" :searchable="true" :internal-search="false" :allow-empty="false"
                          :clear-on-select="false" :close-on-select="true" :options-limit="20"
                          :max-height="600" :show-no-results="false" :hide-selected="true"
-                         @search-change="updateSelect">
+                         @search-change="updateSelect" @close="onTouch">
               <template slot="singleLabel" slot-scope="{ option }">
                 <span>{{ option.code_postale }} - {{ option.ville }}</span>
               </template>
@@ -30,6 +29,8 @@
               <l-invalid-feedback :condition="!$v.adresse.rue.required" :error-message="required()"/>
               <l-invalid-feedback :condition="!$v.adresse.rue.minLength"
                                   :error-message="minLength($v.adresse.rue.$params.minLength.min)"/>
+              <l-invalid-feedback :condition="!$v.adresse.rue.maxLength"
+                                  :error-message="maxLength($v.adresse.rue.$params.maxLength.max)"/>
             </b-form-invalid-feedback>
           </b-form-group>
 
@@ -39,6 +40,12 @@
                 <b-form-input v-model="$v.adresse.numero.$model"
                               placeholder="Numéro :" :state="validateState('numero')"></b-form-input>
                 <b-form-invalid-feedback>
+                  <l-invalid-feedback :condition="!$v.adresse.numero.required" :error-message="required()"/>
+                  <l-invalid-feedback :condition="!$v.adresse.numero.alphaNum" :error-message="alphaNum()"/>
+                  <l-invalid-feedback :condition="!$v.adresse.numero.minLength"
+                                      :error-message="minLength($v.adresse.numero.$params.minLength.min)"/>
+                  <l-invalid-feedback :condition="!$v.adresse.numero.maxLength"
+                                      :error-message="maxLength($v.adresse.numero.$params.maxLength.max)"/>
                 </b-form-invalid-feedback>
               </b-form-group>
             </b-col>
@@ -48,6 +55,11 @@
                 <b-form-input v-model="$v.adresse.boite.$model"
                               placeholder="Boite :" :state="validateState('boite')"></b-form-input>
                 <b-form-invalid-feedback>
+                  <l-invalid-feedback :condition="!$v.adresse.boite.alphaNum" :error-message="alphaNum()"/>
+                  <l-invalid-feedback :condition="!$v.adresse.boite.minLength"
+                                      :error-message="minLength($v.adresse.boite.$params.minLength.min)"/>
+                  <l-invalid-feedback :condition="!$v.adresse.boite.maxLength"
+                                      :error-message="maxLength($v.adresse.boite.$params.maxLength.max)"/>
                 </b-form-invalid-feedback>
               </b-form-group>
             </b-col>
@@ -75,12 +87,17 @@ import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {fonctions} from "@/mixins/functions.mixin";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
+import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VUAdresseUpdate",
-  mixins: [validationMixin, validationMessageMixin, fonctions],
+  mixins: [validationMixin, validationMessageMixin, fonctions, multiSelectValidationMixin],
   validations: {
     adresse: AdresseModel.validations
+  },
+  title() {
+    return htmlTitle("Modifier adresse")
   },
   data() {
     return {
@@ -95,7 +112,10 @@ export default {
     ...mapGetters({
       villes: "Villes/villes",
       villesLoadingStatus: "Villes/villesLoadingStatus"
-    })
+    }),
+    isInvalid() {
+      return this.isTouched && this.adresse.ref_ville.id === null
+    }
   },
   methods: {
     ...mapActions({
@@ -119,9 +139,11 @@ export default {
       await this.loadVilles(query)
     },
 
-    submit: function() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+    submit: function () {
+      if (this.$v.$invalid ||
+          (this.isTouched === false && this.isInvalid === false) ||
+          (this.isTouched === true && this.isInvalid === true)) {
+        this.isTouched = true
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'

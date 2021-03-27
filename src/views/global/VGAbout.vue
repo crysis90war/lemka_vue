@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Tools from "@/utils/tools";
+import {htmlTitle} from "@/utils/tools";
 import LInput from "@/components/form/LInput";
 
 export default {
@@ -24,7 +24,7 @@ export default {
 
   },
   title() {
-    return Tools.htmlTitle('À propos')
+    return htmlTitle('À propos')
   },
   data() {
     return {

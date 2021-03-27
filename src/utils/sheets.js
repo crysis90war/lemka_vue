@@ -2,6 +2,7 @@
  * Created by denishuang on 2019/7/4.
  */
 
+// eslint-disable-next-line no-unused-vars
 import {set, unset, uniqueId, pick, range} from 'lodash'
 export const ColumnUtil = {
     merge (block, mfns){

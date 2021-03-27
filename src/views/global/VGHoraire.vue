@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import Tools from "@/utils/tools";
+import {htmlTitle, format} from "@/utils/tools";
 import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "VGHoraire",
   title () {
-    return Tools.htmlTitle('Horaire')
+    return htmlTitle('Horaire')
   },
   data() {
     return {
@@ -44,7 +44,7 @@ export default {
   methods: {
     ...mapActions({loadHoraires: "Horaires/loadHoraires"}),
     heure(time) {
-      return Tools.format(time)
+      return format(time)
     }
   },
   created() {

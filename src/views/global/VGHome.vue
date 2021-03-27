@@ -106,7 +106,7 @@
 
 import Carousel from '@/components/Carousel'
 import GoogleMap from "@/components/GoogleMap";
-import Tools from "@/utils/tools"
+import {htmlTitle} from "@/utils/tools"
 import LReviewCard from "@/views/global/LReviewCard";
 
 export default {
@@ -118,7 +118,7 @@ export default {
     'lemka-map': GoogleMap
   },
   title() {
-    return Tools.htmlTitle()
+    return htmlTitle()
   },
   data() {
     return {

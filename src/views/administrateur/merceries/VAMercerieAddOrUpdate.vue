@@ -61,6 +61,7 @@ import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VAMercerieAddOrUpdate",
@@ -73,11 +74,7 @@ export default {
     mercerie: MercerieModel.validations
   },
   title() {
-    if (this.id) {
-      return this.mercerie.nom
-    } else {
-      return 'Créer mercerie'
-    }
+    return htmlTitle(this.id !== undefined ? this.mercerie.nom : "Créer mercerie")
   },
   data() {
     return {

@@ -92,7 +92,7 @@ export const ProfilModule = {
             })
         },
         createAdresse({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/adresses/`;
+            let endpoint = `${DOMAIN}/profil/adresse/create`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_ADRESSE', Object.assign(new AdresseModel(), r.data))

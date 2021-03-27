@@ -47,6 +47,7 @@ import UserMensurationModel from "@/models/user_mensuration/user_mensuration.mod
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {fonctions} from "@/mixins/functions.mixin";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VUMensurationDetail",
@@ -60,6 +61,9 @@ export default {
     mesures: {
       $each: MesureModel.validations
     }
+  },
+  title() {
+    return htmlTitle(this.userMensuration.titre)
   },
   data() {
     return {

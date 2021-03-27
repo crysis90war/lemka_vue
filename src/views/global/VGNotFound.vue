@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Outils from "@/utils/tools";
+import {htmlTitle} from "@/utils/tools";
 import Social from "@/components/Social";
 import LemkaHelpers from "@/helpers";
 
@@ -27,7 +27,7 @@ export default {
     'lemka-social': Social
   },
   title () {
-    return Outils.htmlTitle(this.message)
+    return htmlTitle(this.message)
   },
   data() {
     return {

@@ -107,12 +107,12 @@
 </template>
 
 <script>
-import Tools from "@/utils/tools"
+import {htmlTitle} from "@/utils/tools"
 
 export default {
   name: "VGContact",
   title() {
-    return Tools.htmlTitle('Contact')
+    return htmlTitle('Contact')
   }
 }
 </script>

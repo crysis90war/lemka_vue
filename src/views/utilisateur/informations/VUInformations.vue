@@ -36,7 +36,7 @@
               </b-link>
             </div>
 
-            <div v-if="loading === false" class="mt-2">
+            <div v-if="loading === false && adresse !== null" class="mt-2">
               <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
               <span>{{ adresse.ref_ville.code_postale }} - {{ adresse.ref_ville.ville }}</span><br>
               <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
@@ -76,10 +76,14 @@ import {localTimeStr} from "@/utils/filters";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {fonctions} from "@/mixins/functions.mixin";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VUInformations",
   mixins: [fonctions,],
+  title() {
+    return htmlTitle("Information")
+  },
   data() {
     return {
       image: null,
@@ -110,10 +114,15 @@ export default {
         await this.$store.dispatch("Genres/loadGenres")
         this.profil.ref_genre = this.$store.getters["Genres/genre"](this.profil.ref_genre)
       }
-      await this.loadAdresse()
+      await this.loadAdresse().then(() => {
+      }, error => {
+        if (error.response.data.detail === "Pas trouvé.") {
+          this.adresse = null
+        }
+      })
       if (this.adresse !== null) {
         await this.loadCity(this.adresse.ref_ville)
-        this.adresse.ref_ville = await this.$store.getters["Villes/city"]
+        this.adresse.ref_ville = this.$store.getters["Villes/city"]
         await this.loadPays(this.adresse.ref_ville.ref_pays)
         this.adresse.ref_ville.ref_pays = this.$store.getters["Pays/pays"]
       }

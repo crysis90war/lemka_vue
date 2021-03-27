@@ -58,13 +58,13 @@ import LemkaHelpers from "@/helpers";
 import TableEmpty from "@/components/Table/LTableEmpty";
 import TableBusy from "@/components/Table/LTableBusy";
 import {mapActions, mapGetters} from "vuex";
-import Tools from "@/utils/tools"
+import {htmlTitle} from "@/utils/tools"
 
 export default {
   name: "VUMensurations",
   components: {TableEmpty, TableBusy},
   title() {
-    return Tools.htmlTitle('Mensurations')
+    return htmlTitle('Mensurations')
   },
   data() {
     return {
