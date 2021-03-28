@@ -1,5 +1,5 @@
 <template>
-  <div class="lemka_carousel">
+  <section class="lemka_carousel">
     <l-carousel :controls-visible="true" :clickable="true" :border="0" :space="680"
                 :width="680" :height="480" :perspective="25"
                 :inverseScaling="150" :display="3" :loop="true" :autoplay="true" :autoplayTimeout="15000" :animationSpeed="3000">
@@ -20,7 +20,7 @@
         </figure>
       </l-slide>
     </l-carousel>
-  </div>
+  </section>
 </template>
 
 <script>

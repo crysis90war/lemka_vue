@@ -7,7 +7,6 @@ import '@babel/polyfill'
 import 'mutationobserver-shim'
 import './plugins/axios'
 import './plugins/bootstrap-vue'
-import "./vee-validate";
 import titleMixin from "@/mixins/title.mixin";
 import Lightbox from '@morioh/v-lightbox';
 import '@morioh/v-lightbox/dist/lightbox.css';

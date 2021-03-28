@@ -89,6 +89,29 @@
         <template #cell(created_at)="data">
           {{ data.item.created_at | localTimeStr }}
         </template>
+
+        <template #cell(est_urgent)="data">
+          <b-badge pill :variant="data.item.est_urgent === true ? 'success' : 'danger'">
+            <i :class="`fas fa-${data.item.est_urgent  === true ? 'check' : 'times'}-circle`"></i>
+          </b-badge>
+        </template>
+
+        <template #cell(est_traite)="data">
+          <b-badge pill :variant="data.item.est_urgent === true ? 'success' : 'danger'">
+            <i :class="`fas fa-${data.item.est_urgent  === true ? 'check' : 'times'}-circle`"></i>
+          </b-badge>
+        </template>
+
+        <template #cell(actions)="data">
+          <b-button-group size="sm">
+            <b-button variant="outline-primary" :to="{name: routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
+              <i class="fas fa-edit"></i>
+            </b-button>
+            <b-button variant="outline-success" @click.stop.prevent="envoyer(data.item)">
+              <i class="fas fa-paper-plane"></i>
+            </b-button>
+          </b-button-group>
+        </template>
       </b-table>
     </div>
   </div>
@@ -99,10 +122,14 @@ import {mapActions, mapGetters} from "vuex";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import DemandeDevisModel from "@/models/demande_devis.model";
 import LemkaHelpers from "@/helpers";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VADemandeDeDevis",
   mixins: [tableViewMixin],
+  title() {
+    return htmlTitle("Demande de devis")
+  },
   data() {
     return {
       fields: DemandeDevisModel.tableFields,
@@ -113,10 +140,14 @@ export default {
     ...mapGetters({adminDD: "DemandesDevis/adminDD", busy: "DemandesDevis/adminDDLoadingStatus"})
   },
   methods: {
-    ...mapActions({loadAdminDD: "DemandesDevis/loadAdminDD"}),
+    ...mapActions({loadAdminDD: "DemandesDevis/loadAdminDD", updateAdminDD: "DemandesDevis/updateAdminDD"}),
     loadOrRefresh: async function() {
       await this.loadAdminDD()
       this.itemsLength(this.adminDD)
+    },
+    envoyer: function (payload) {
+      payload.est_soumis = true
+      this.updateAdminDD(payload)
     }
   },
   created() {

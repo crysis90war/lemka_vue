@@ -1,7 +1,7 @@
 <template>
-  <div class="admin_demande_devis_update">
+  <section class="admin_demande_devis_update">
 
-  </div>
+  </section>
 </template>
 
 <script>

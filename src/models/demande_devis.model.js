@@ -103,7 +103,7 @@ export default class DemandeDevisModel {
             {key: 'utilisateur', label: 'Nom', sortable: true},
             {key: 'est_urgent', label: 'Urgent', sortable: true},
             {key: 'est_traite', label: 'Traité', sortable: true},
-            {key: 'actions:', label: 'Actions'}
+            {key: 'actions:', label: 'Actions'},
         ]
     }
 }

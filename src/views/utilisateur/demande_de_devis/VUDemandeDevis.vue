@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$route.name === routes.DEMANDE_DE_DEVIS.name" class="demande_devis">
+  <section v-if="$route.name === routes.DEMANDE_DE_DEVIS.name" class="demande_devis">
     <div :class="BSClass.CARD_BORDERLESS_SHADOW" class="my-4">
       <l-create-refresh size="md" :route="routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name" :load-or-refresh="loadDemandeDevis"/>
 
@@ -80,7 +80,7 @@
         </b-tab>
       </b-tabs>
     </div>
-  </div>
+  </section>
 
   <router-view v-else/>
 </template>

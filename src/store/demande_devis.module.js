@@ -9,7 +9,7 @@ export const DemandeDevisModule = {
         demandesDevis: [],
         demandesDevisLoadingStatus: false,
 
-        adminDD: [],
+        adminDDs: [],
         adminDDLoadingStatus: false
     },
     getters: {
@@ -29,7 +29,7 @@ export const DemandeDevisModule = {
 
         demandesDevisLoadingStatus: state => state.demandesDevisLoadingStatus,
 
-        adminDD: state => state.adminDD,
+        adminDD: state => state.adminDDs,
         adminDDLoadingStatus: state => state.adminDDLoadingStatus
     },
     mutations: {
@@ -59,17 +59,20 @@ export const DemandeDevisModule = {
         },
 
         SET_ADMINDD_SUCCESS(state, payload) {
-            state.adminDD = payload
+            state.adminDDs = payload
         },
         SET_ADMINDD_FAILURE(state) {
-            state.adminDD = []
+            state.adminDDs = []
         },
         ADMINDD_LOADING_STATUS(state, loadingStatus) {
             state.adminDDLoadingStatus = loadingStatus
         },
-        ADD_ADMINDD(state, payload) {
-            state.adminDD.push(payload)
-        }
+        UPDATE_ADMINDD(state, demandeDevis) {
+            const index = state.adminDDs.findIndex(item => item.id === demandeDevis.id)
+            if (index !== -1) {
+                state.adminDDs.splice(index, 1, demandeDevis)
+            }
+        },
     },
     actions: {
         loadDemandeDevis({commit}) {
@@ -121,6 +124,17 @@ export const DemandeDevisModule = {
                 }, error => {
                     commit('SET_ADMINDD_FAILURE')
                     commit('ADMINDD_LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
+        },
+        updateAdminDD: function({commit}, payload) {
+            let endpoint = `${DOMAIN}/demandedevisadmin/${payload.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_ADMINDD', r.data)
+                    resolve(r.data)
+                }, error => {
                     reject(error)
                 })
             })
