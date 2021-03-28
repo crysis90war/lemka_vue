@@ -1,9 +1,9 @@
-import Outils from "@/utils/tools";
+import {actionModal} from "@/utils/tools";
 
 const METHODS = {
     methods: {
         monModal(id, ouvrir = true) {
-            Outils.actionModal(this, id, ouvrir);
+            actionModal(this, id, ouvrir);
         }
     }
 }

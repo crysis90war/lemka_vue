@@ -90,13 +90,13 @@ import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import DemandeDevisModel from "@/models/demande_devis.model";
 import {localTimeStr} from "@/utils/filters";
-import Tools from '@/utils/tools'
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VUDemandeDevis",
   props: {},
   title() {
-    return Tools.htmlTitle("Demande de devis")
+    return htmlTitle("Demande de devis")
   },
   data() {
     return {
