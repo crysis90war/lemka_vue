@@ -76,8 +76,7 @@ export default class ArticleModel {
             {key: 'rayon', label: 'Rayon', sortable: true},
             {key: 'section', label: 'Section', sortable: true},
             {key: 'type_produit', label: 'Type de produit', sortable: true},
-            { key: 'est_active', label: 'Publication', sortable: true},
-            {key: 'actions', label: 'Actions'}
+            {key: 'est_active', label: 'Publication', sortable: true}
         ]
     }
 }

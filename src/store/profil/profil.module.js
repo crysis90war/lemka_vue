@@ -76,6 +76,18 @@ export const ProfilModule = {
             })
         },
 
+        updateProfilImage({commit}, payload) {
+            let endpoint = `${DOMAIN}/profil/`;
+            return new Promise((resolve, reject) => {
+                ApiService.PATCHDate(endpoint, payload).then(r => {
+                    commit('UPDATE_PROFIL', r.data)
+                    resolve(r.data)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+
         loadAdresse({commit}) {
             let endpoint = `${DOMAIN}/profil/adresse/`;
             return new Promise((resolve, reject) => {

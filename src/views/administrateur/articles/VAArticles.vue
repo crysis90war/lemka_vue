@@ -59,7 +59,7 @@
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
         <l-create-refresh :load-or-refresh="loadArticles" :route="routes.ARTICLES_ADD_OR_UPDATE.name"
-                                     create_message="Ajouter un nouveau article" />
+                          create_message="Ajouter un nouveau article"/>
       </b-col>
 
       <b-col lg="7" class="my-1">
@@ -104,13 +104,9 @@
           {{ data.item.est_active === true ? 'Désactiver' : 'Publier' }}
         </b-button>
       </template>
-
-      <template #cell(actions)>
-
-      </template>
     </b-table>
 
-    <pre>{{articles}}</pre>
+    <pre>{{ articles }}</pre>
   </div>
 
   <router-view v-else></router-view>

@@ -2,8 +2,7 @@
   <div v-if="$route.name === routes.MERCERIES.name" class="merceries">
     <b-row>
       <b-col lg="6">
-        <b-form-group label="Filtrer" label-size="sm" label-cols-sm="2" label-align-sm="right"
-                      description="Veuillez encoder pour chercher">
+        <b-form-group label="Filtrer" label-size="sm" label-cols-sm="2" label-align-sm="right" description="Veuillez encoder pour chercher">
           <b-input-group size="sm">
             <b-form-input v-model="filter" type="search" placeholder="Chercher ..."></b-form-input>
             <b-input-group-append>
@@ -55,34 +54,28 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5">
-        <create-refresh-button-group
-            :load-or-refresh="loadMerceries"
-            :route="routes.MERCERIES_ADD_OR_UPDATE.name"
-            create_message="Ajouter mercerie"/>
+        <create-refresh-button-group :load-or-refresh="loadMerceries" :route="routes.MERCERIES_ADD_OR_UPDATE.name"
+                                     create_message="Ajouter mercerie"/>
       </b-col>
 
       <b-col lg="7">
-        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                      align="fill" size="sm" class="my-0">
-        </b-pagination>
+        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" size="sm" class="my-0"/>
       </b-col>
     </b-row>
 
-    <b-table :items="merceries" :fields="fields" :busy="busy" :per-page="perPage" :filter="filter"
-             :current-page="currentPage" :filter-included-fields="filterOn" :sort-by.sync="sortBy"
-             :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-             hover show-empty small stacked="md" class="text-center"
-             @filtered="onFiltered">
+    <b-table :items="merceries" :fields="fields" :busy="busy" :current-page="currentPage" :per-page="perPage"
+             :filter="filter" :filter-included-fields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
+             :sort-direction="sortDirection" show-empty small hover stacked="md" class="text-center mt-3" @filtered="onFiltered">
       <template #table-busy>
-        <TableBusy/>
+        <l-table-busy/>
       </template>
 
       <template #empty>
-        <TableEmpty/>
+        <l-table-empty/>
       </template>
 
       <template #emptyfiltered>
-        <TableEmptyFiltered/>
+        <l-table-empty-filtered/>
       </template>
 
       <template #cell(nom)="data">
@@ -122,15 +115,12 @@ import {tableViewMixin} from "@/mixins/table_view.mixin";
 import {mapActions, mapGetters} from "vuex";
 import MercerieModel from "@/models/mercerie/mercerie.model";
 import {fonctions} from "@/mixins/functions.mixin";
-import TableBusy from "@/components/Table/LTableBusy";
-import TableEmpty from "@/components/Table/LTableEmpty";
-import TableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
 import LemkaHelpers from "@/helpers";
 import CreateRefreshButtonGroup from "@/components/Table/LCreateRefresh";
 
 export default {
   name: "VAMerceries",
-  components: {TableEmptyFiltered, TableEmpty, TableBusy, CreateRefreshButtonGroup},
+  components: {CreateRefreshButtonGroup},
   mixins: [tableViewMixin, fonctions],
   title() {
     return this.$route.meta.value

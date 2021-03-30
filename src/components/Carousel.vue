@@ -1,7 +1,7 @@
 <template>
   <section class="lemka_carousel">
-    <l-carousel :controls-visible="true" :clickable="true" :border="0" :space="680"
-                :width="680" :height="480" :perspective="25"
+    <l-carousel :controls-visible="true" :clickable="true" :border="0" :space="845"
+                :width="860" :height="480" :perspective="25"
                 :inverseScaling="150" :display="3" :loop="true" :autoplay="true" :autoplayTimeout="15000" :animationSpeed="3000">
       <l-slide v-for="(slide, i) in slides" :key="i" :index="i">
         <figure :style="`background-image: url(${slide}); background-repeat: no-repeat; background-size: cover;`"

@@ -103,7 +103,7 @@ export default {
       BSClass: LemkaHelpers.BSClass,
       routes: LemkaHelpers.Routes,
       redactionTableFields: DemandeDevisModel.redactionTableFields,
-      taiteTableFields: DemandeDevisModel.taiteTableFields,
+      taiteTableFields: DemandeDevisModel.traiteTableFields,
     }
   },
   computed: {

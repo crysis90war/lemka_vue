@@ -69,11 +69,10 @@
         </b-col>
       </b-row>
 
-      <b-table :items="adminDD" :fields="fields" :busy="busy"
-               :per-page="perPage" :current-page="currentPage"
-               :filter="filter" :filter-included-fields="filterOn"
-               :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-               hover show-empty small stacked="md" class="text-center" @filtered="onFiltered">
+
+      <b-table :items="adminDD" :fields="fields" :busy="busy" :current-page="currentPage" :per-page="perPage"
+               :filter="filter" :filter-included-fields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
+               :sort-direction="sortDirection" show-empty small hover stacked="md" class="text-center mt-3" @filtered="onFiltered">
         <template #table-busy>
           <l-table-busy/>
         </template>
@@ -97,8 +96,8 @@
         </template>
 
         <template #cell(est_traite)="data">
-          <b-badge pill :variant="data.item.est_urgent === true ? 'success' : 'danger'">
-            <i :class="`fas fa-${data.item.est_urgent  === true ? 'check' : 'times'}-circle`"></i>
+          <b-badge pill :variant="data.item.est_traite === true ? 'success' : 'danger'">
+            <i :class="`fas fa-${data.item.est_traite  === true ? 'check' : 'times'}-circle`"></i>
           </b-badge>
         </template>
 
@@ -141,7 +140,7 @@ export default {
   },
   methods: {
     ...mapActions({loadAdminDD: "DemandesDevis/loadAdminDD", updateAdminDD: "DemandesDevis/updateAdminDD"}),
-    loadOrRefresh: async function() {
+    loadOrRefresh: async function () {
       await this.loadAdminDD()
       this.itemsLength(this.adminDD)
     },

@@ -8,6 +8,7 @@ export default class MercerieModel {
         this.nom = R.is(String, mercerie.nom) ? mercerie.nom : ""
         this.est_publie = R.is(Boolean, mercerie.est_publie) ? mercerie.est_publie : false
         this.categorie = R.is(String, mercerie.categorie) ? mercerie.categorie : ""
+        this.options_count = R.is(Number, mercerie.options_count) ? mercerie.options_count : 0
         this.ref_categorie = R.is(Object, mercerie.ref_categorie) ? new CategorieModel(mercerie.ref_categorie) : new CategorieModel()
     }
 
@@ -43,6 +44,7 @@ export default class MercerieModel {
         return [
             {key: 'categorie', label: 'Catégorie', sortable: true},
             {key: 'nom', label: 'Nom', sortable: true},
+            {key: 'options_count', label: 'Options', sortable: true},
             {key: 'est_publie', label: 'Publication', sortable: true},
             {key: 'actions', label: 'Actions'},
         ]

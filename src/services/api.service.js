@@ -18,6 +18,10 @@ class ApiService {
         return axios.put(endpoint, payload, {headers: authHeader()});
     }
 
+    PATCHDate(endpoint, payload) {
+        return axios.patch(endpoint, payload, {headers: authHeader()})
+    }
+
     DELETEData(endpoint) {
         return axios.delete(endpoint, {headers: authHeader()})
     }

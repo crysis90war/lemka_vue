@@ -290,6 +290,8 @@ export default {
           this.createMercerieOption([this.mercerie_id, this.mercerie_option.toCreatePayload()])
         }
 
+        this.$store.dispatch("Merceries/loadMerceries")
+
         setTimeout(() => {
           this.submitStatus = 'OK'
           this.$router.push({name: this.routes.MERCERIE_OPTIONS.name, params: {id: this.mercerie_id}})

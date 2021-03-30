@@ -35,10 +35,10 @@
 </template>
 
 <script>
-import ProfilModel from "@/models/profil.model";
 import {Cropper} from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 import {dataURLtoFile} from "@/helpers/functions.helper";
+import {mapActions} from "vuex";
 
 export default {
   name: "L-uploadModal",
@@ -63,6 +63,7 @@ export default {
   },
 
   methods: {
+    ...mapActions({updateProfilImage: "Profil/updateProfilImage"}),
     previewImage: function (event) {
       let input = event.target;
       let formatImage = [
@@ -94,16 +95,14 @@ export default {
       this.formData = formData
     },
 
-    updateImage: async function() {
-      // let endpoint = `${LemkaHelpers.Endpoints.DOMAIN}/profil/`;
-      // TODO - UPLOAD IMAGE
-      await ProfilModel.updateProfilImage(this.formData)
-      window.location.reload()
-    },
-
     hideModal() {
       this.$bvModal.hide(this.modalId)
     },
+
+    updateImage: async function() {
+      await this.updateProfilImage(this.formData)
+      this.hideModal()
+    }
   },
 }
 </script>

@@ -88,7 +88,7 @@ export default class DemandeDevisModel {
         ]
     }
 
-    static get taiteTableFields() {
+    static get traiteTableFields() {
         return [
             {key: 'created_at', label: 'Date', sortable: true},
             {key: 'numero_demande_devis', label: 'Numéro', sortable: true},
@@ -103,7 +103,7 @@ export default class DemandeDevisModel {
             {key: 'utilisateur', label: 'Nom', sortable: true},
             {key: 'est_urgent', label: 'Urgent', sortable: true},
             {key: 'est_traite', label: 'Traité', sortable: true},
-            {key: 'actions:', label: 'Actions'},
+            {key: 'actions', label: 'Actions'},
         ]
     }
 }

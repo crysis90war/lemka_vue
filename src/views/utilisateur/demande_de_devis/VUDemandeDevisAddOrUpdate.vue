@@ -231,14 +231,13 @@ export default {
       this.toggleLoading()
     },
     initialisation: async function () {
+      await this.loadGlobalMerceries()
       if (this.userMensurations.length === 0 ||
           this.articlesPublies.length === 0 ||
-          this.typeServices.length === 0 ||
-          this.mercerieOptions.length === 0) {
+          this.typeServices.length === 0) {
         await this.loadTypeServices()
         await this.loadArticles()
         await this.loadUserMensurations()
-        await this.loadGlobalMerceries()
       }
     },
     searchMercerie: async function () {

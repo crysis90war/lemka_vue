@@ -34,21 +34,18 @@ export const tableViewMixin = {
                 })
         }
     },
-
-    watch: {
-        totalRows() {
-            this.itemsLength()
-        }
-    },
-
     methods: {
-        onFiltered: function(filteredItems) {
+        onFiltered: function (filteredItems) {
             // Trigger pagination to update the number of buttons/pages due to filtering
             this.totalRows = filteredItems.length
             this.currentPage = 1
         },
-        itemsLength: function(items) {
-            this.totalRows = items.length
+        itemsLength: function (items) {
+            if (items.length === 0 || this.items === undefined) {
+                this.totalRows = 1
+            } else {
+                this.totalRows = items.length
+            }
         }
     },
 
@@ -57,7 +54,5 @@ export const tableViewMixin = {
             value = localTimeStr(value)
             return value
         }
-    },
-    created() {
-    },
+    }
 }
