@@ -30,6 +30,9 @@ export const DemandeDevisModule = {
         demandesDevisLoadingStatus: state => state.demandesDevisLoadingStatus,
 
         adminDD: state => state.adminDDs,
+        adminUserDD: state => id => {
+            return state.adminDDs.find(item => item.id === id)
+        },
         adminDDLoadingStatus: state => state.adminDDLoadingStatus
     },
     mutations: {

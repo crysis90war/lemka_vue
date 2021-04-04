@@ -106,4 +106,13 @@ export default class DemandeDevisModel {
             {key: 'actions', label: 'Actions'},
         ]
     }
+
+    mainImage (images) {
+        if (images.length > 0) {
+            let image = images.find(item => item.is_main === true)
+            return image.image
+        } else {
+            return ""
+        }
+    }
 }

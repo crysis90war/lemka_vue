@@ -126,8 +126,8 @@ export const UserMensurationModule = {
         },
 
         // endregion
-        // region Mesures
 
+        // region Mesures
         loadMesures: function ({commit}, userMensurationId) {
             let endpoint = `${DOMAIN}/profil/mensurations/${userMensurationId}/mesures/`;
             return new Promise((resolve, reject) => {

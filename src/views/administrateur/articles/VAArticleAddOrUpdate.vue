@@ -286,6 +286,8 @@ export default {
       this.article.ref_tag.forEach(item => {
         this.selected_tags.push(Object.assign(new TagModel(), this.$store.getters["Tags/tag"](item)))
       })
+
+      this.$route.meta.value = this.article.titre
       this.toggleLoading()
     },
 
@@ -444,11 +446,6 @@ export default {
   },
 
   mounted() {
-    if (this.slug !== undefined) {
-      this.$route.meta.value = `Modifier ${this.article.titre}`
-    } else {
-      this.$route.meta.value = "Création de l'article"
-    }
   }
 }
 </script>

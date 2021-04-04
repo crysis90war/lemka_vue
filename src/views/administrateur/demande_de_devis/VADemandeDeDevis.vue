@@ -59,7 +59,7 @@
 
       <b-row class="mt-3 mb-2">
         <b-col lg="5" class="my-1">
-          <l-create-refresh :load-or-refresh="loadAdminDD"/>
+          <l-create-refresh :load-or-refresh="loadOrRefresh"/>
         </b-col>
 
         <b-col lg="7" class="my-1">
@@ -103,11 +103,8 @@
 
         <template #cell(actions)="data">
           <b-button-group size="sm">
-            <b-button variant="outline-primary" :to="{name: routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
-              <i class="fas fa-edit"></i>
-            </b-button>
-            <b-button variant="outline-success" @click.stop.prevent="envoyer(data.item)">
-              <i class="fas fa-paper-plane"></i>
+            <b-button variant="outline-success" :to="{name: 'CreateDevis', params: {demande_devis_id: data.item.id}}">
+              Créer un dévis
             </b-button>
           </b-button-group>
         </template>
@@ -117,9 +114,9 @@
 </template>
 
 <script>
+import DemandeDevisModel from "@/models/demande_devis.model";
 import {mapActions, mapGetters} from "vuex";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
-import DemandeDevisModel from "@/models/demande_devis.model";
 import LemkaHelpers from "@/helpers";
 import {htmlTitle} from "@/utils/tools";
 

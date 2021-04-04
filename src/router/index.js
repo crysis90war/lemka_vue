@@ -54,6 +54,7 @@ import VGNotFound from "@/views/global/VGNotFound";
 import VGCGV from "@/views/global/VGCGV";
 import VGConfidentialite from "@/views/global/VGConfidentialite";
 import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
+import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate";
 // endregion
 
 Vue.use(VueRouter)
@@ -152,7 +153,16 @@ const adminRoutes = [
     path: ADMIN + 'devis',
     name: ROUTES.DEVIS.name,
     meta: {value: ROUTES.DEVIS.value},
-    component: VADevis
+    component: VADevis,
+    children: [
+      {
+        path: ADMIN + 'devi/:id?',
+        name: "CreateDevis",
+        meta: {value: ""},
+        component: VADevisAddOrUpdate,
+        props: true
+      },
+    ]
   },
   {
     path: ADMIN + 'rendez-vous',

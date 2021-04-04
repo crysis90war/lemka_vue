@@ -59,6 +59,7 @@ export const AuthModule = {
         logout({commit}) {
             ApiService.DESTROYSession()
             commit('LOGOUT');
+            window.location.reload()
         },
         register({commit}, payload) {
             let endpoint = `${DOMAIN}/register/`;

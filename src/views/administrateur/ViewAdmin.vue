@@ -9,10 +9,10 @@
         </div>
 
         <ul class="list-unstyled components">
-          <li>
-            <b-nav-item v-for="(item, index) in menu" :key="index" :to="item.href">
+          <li v-for="(item, index) in menu" :key="index">
+            <b-nav-item :to="item.href">
               <i :class="item.icon"></i>
-              {{ item.title }}
+              <span>{{ item.title }}</span>
             </b-nav-item>
           </li>
         </ul>
@@ -29,9 +29,9 @@
           </div>
         </nav>
 
-        <b-card :class="BSClass.CARD_BORDERLESS_SHADOW">
+        <section class="p-5">
           <router-view></router-view>
-        </b-card>
+        </section>
       </div>
 
     </div>
@@ -41,7 +41,7 @@
 
 <script>
 import LemkaHelpers from "@/helpers";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "ViewAdmin",
@@ -103,6 +103,20 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadAdminDD: "DemandesDevis/loadAdminDD",
+      loadUtilisateurs: "Utilisateurs/loadUtilisateurs",
+      loadArticles: "Articles/loadArticles",
+      loadMerceries: "Merceries/loadMerceries",
+      loadTypeService: "TypeServices/loadTypeServices"
+    }),
+    initialisation: async function() {
+      await this.loadAdminDD()
+      await this.loadUtilisateurs()
+      await this.loadArticles()
+      await this.loadMerceries()
+      await this.loadTypeService()
+    },
     sidebarCollapse() {
       this.toggled = !this.toggled
       let sidebar = document.getElementById('sidebar')
@@ -118,6 +132,7 @@ export default {
     if (!this.currentUser) {
       this.$router.push({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
     } else {
+      this.initialisation()
       if (this.$route.name === LemkaHelpers.Routes.ADMIN_ROUTE.name) {
         this.$router.push({name: LemkaHelpers.Routes.DASHBOARD.name})
       }
@@ -154,11 +169,6 @@ export default {
 .router-link-exact-active {
   color: #79648F !important;
   background: #B4A8BF;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background: #fafafa;
 }
 
 p {

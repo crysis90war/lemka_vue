@@ -7,7 +7,7 @@ import {UtilisateurModule} from "@/store/utilisateur.module";
 import {MercerieModule} from "@/store/mercerie.module";
 import {CategorieModule} from "@/store/categorie.module";
 import {CouleurModule} from "@/store/couleur.module";
-import {UserMensurationModule} from "@/store/user_mensuration.module";
+import {UserMensurationModule} from "@/store/user_mensuration/user_mensuration.module";
 import {CaracteristiqueModule} from "@/store/caracteristique.module";
 import {AuthModule} from "@/store/auth.module";
 import {HoraireModule} from "@/store/horaire.module";
@@ -19,6 +19,7 @@ import {CatalogueModule} from "@/store/catalogue/catalogue.module";
 import {VilleModule} from "@/store/ville.module";
 import {PaysModule} from "@/store/pays.module";
 import {ProfilModule} from "@/store/profil/profil.module";
+import {DevisModule} from "@/store/devis.module";
 
 Vue.use(Vuex)
 
@@ -43,5 +44,6 @@ export default new Vuex.Store({
     'Villes': VilleModule,
     'Pays': PaysModule,
     'Profil': ProfilModule,
+    'Devis': DevisModule,
   }
 });

@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <b-container class="dashboard">
     <b-card-group deck class="my-2">
       <!-- UTILISATEUR -->
       <DashboardCard :icon="LemkaHelpers.FontAwesomeIcons.USERS"
@@ -53,7 +53,7 @@
                      :route_link="routes.PARAMETRES.name"
                      :message="`${routes.PARAMETRES.value} actifs`"></DashboardCard>
     </b-card-group>
-  </div>
+  </b-container>
 </template>
 
 <script>

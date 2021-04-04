@@ -117,13 +117,14 @@ import MercerieModel from "@/models/mercerie/mercerie.model";
 import {fonctions} from "@/mixins/functions.mixin";
 import LemkaHelpers from "@/helpers";
 import CreateRefreshButtonGroup from "@/components/Table/LCreateRefresh";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VAMerceries",
   components: {CreateRefreshButtonGroup},
   mixins: [tableViewMixin, fonctions],
   title() {
-    return this.$route.meta.value
+    return htmlTitle("Merceries")
   },
   data() {
     return {
