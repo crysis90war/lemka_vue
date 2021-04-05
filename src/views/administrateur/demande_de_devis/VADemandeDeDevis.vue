@@ -70,7 +70,7 @@
       </b-row>
 
 
-      <b-table :items="adminDD" :fields="fields" :busy="busy" :current-page="currentPage" :per-page="perPage"
+      <b-table :items="adminDDs" :fields="fields" :busy="busy" :current-page="currentPage" :per-page="perPage"
                :filter="filter" :filter-included-fields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
                :sort-direction="sortDirection" show-empty small hover stacked="md" class="text-center mt-3" @filtered="onFiltered">
         <template #table-busy>
@@ -133,13 +133,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({adminDD: "DemandesDevis/adminDD", busy: "DemandesDevis/adminDDLoadingStatus"})
+    ...mapGetters({adminDDs: "DemandesDevis/adminDDs", busy: "DemandesDevis/adminDDLoadingStatus"})
   },
   methods: {
     ...mapActions({loadAdminDD: "DemandesDevis/loadAdminDD", updateAdminDD: "DemandesDevis/updateAdminDD"}),
     loadOrRefresh: async function () {
       await this.loadAdminDD()
-      this.itemsLength(this.adminDD)
+      this.itemsLength(this.adminDDs)
     },
     envoyer: function (payload) {
       payload.est_soumis = true

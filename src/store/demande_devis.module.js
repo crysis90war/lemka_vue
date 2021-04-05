@@ -29,7 +29,10 @@ export const DemandeDevisModule = {
 
         demandesDevisLoadingStatus: state => state.demandesDevisLoadingStatus,
 
-        adminDD: state => state.adminDDs,
+        adminDDs: state => state.adminDDs,
+        adminDDNonTraite: state => {
+            return state.adminDDs.filter(item => item.est_traite === false)
+        },
         adminUserDD: state => id => {
             return state.adminDDs.find(item => item.id === id)
         },
@@ -117,7 +120,7 @@ export const DemandeDevisModule = {
         },
 
         loadAdminDD: function({commit}) {
-            let endpoint = `${DOMAIN}/demandedevisadmin/`;
+            let endpoint = `${DOMAIN}/demandes_devis/`;
             return new Promise((resolve, reject) => {
                 commit('ADMINDD_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -129,10 +132,11 @@ export const DemandeDevisModule = {
                     commit('ADMINDD_LOADING_STATUS', false)
                     reject(error)
                 })
+
             })
         },
         updateAdminDD: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/demandedevisadmin/${payload.id}/`;
+            let endpoint = `${DOMAIN}/demandes_devis/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_ADMINDD', r.data)

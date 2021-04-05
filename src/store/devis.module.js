@@ -57,6 +57,9 @@ export const DevisModule = {
                     reject(error)
                 })
             })
-        }
+        },
+        // loadUserDevis: function({commit}){
+        //     let endpoint = `${DOMAIN}/profil/devis`
+        // }
     }
 }

@@ -94,7 +94,7 @@
         </template>
 
         <template #cell(est_accepte)="data">
-          <b-badge :variant="statutDevis(data.item).variant">{{ statutDevis(data.item).etat }}</b-badge>
+          <b-badge :variant="devis.statutDevis(data.item).variant">{{ devis.statutDevis(data.item).etat }}</b-badge>
         </template>
 
         <template #cell(actions)>
@@ -122,12 +122,13 @@ import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VADevis",
-  mixins: [tableViewMixin],
   title() {
     return htmlTitle('Devis')
   },
+  mixins: [tableViewMixin],
   data() {
     return {
+      devis: new DevisModel(),
       routes: LemkaHelpers.Routes,
       fields: DevisModel.tableFields
     }
@@ -141,30 +142,6 @@ export default {
       await this.loadDevis()
       this.itemsLength(this.deviss)
     },
-    statutDevis: function (item) {
-      let statut = {
-        etat: undefined,
-        variant: undefined
-      }
-      switch (item.est_accepte) {
-        case true:
-          statut.etat = 'Accepté';
-          statut.variant = 'success'
-          break;
-        case false:
-          statut.etat = 'Réfusé';
-          statut.variant = 'danger';
-          break;
-        case null:
-          statut.etat = 'En attente';
-          statut.variant = 'warning';
-          break;
-        default:
-          console.log(item)
-      }
-      return statut
-    }
-
   },
   created() {
     this.loadDevis()

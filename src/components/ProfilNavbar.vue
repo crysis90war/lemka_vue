@@ -55,14 +55,14 @@ export default {
           ]
         },
         {
-          href: "#",
-          title: "Devis",
+          href: {name: LemkaHelpers.Routes.DEVIS_USER.name},
+          title: LemkaHelpers.Routes.DEVIS_USER.value,
           icon: LemkaHelpers.FontAwesomeIcons.FOLDER,
           children: []
         },
         {
-          href: "#",
-          title: "Rendez-vous",
+          href: {name: LemkaHelpers.Routes.RENDEZ_VOUS_USER.name},
+          title: LemkaHelpers.Routes.RENDEZ_VOUS_USER.value,
           icon: LemkaHelpers.FontAwesomeIcons.CALENDAR,
           children: []
         }

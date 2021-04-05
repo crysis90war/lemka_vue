@@ -41,6 +41,8 @@ import VUUserMensurationAddOrUpdate from "@/views/utilisateur/mensurations/VUUse
 import VUMensurationDetail from "@/views/utilisateur/mensurations/VUMensurationDetail";
 import VUDemandeDevis from "@/views/utilisateur/demande_de_devis/VUDemandeDevis";
 import VUDemandeDevisAddOrUpdate from "@/views/utilisateur/demande_de_devis/VUDemandeDevisAddOrUpdate";
+import VUDevis from "@/views/utilisateur/devis/VUDevis";
+import VURendezVous from "@/views/utilisateur/rendez_vous/VURendezVous";
 // endregion
 
 // region Global Views
@@ -55,6 +57,7 @@ import VGCGV from "@/views/global/VGCGV";
 import VGConfidentialite from "@/views/global/VGConfidentialite";
 import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
 import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate";
+
 // endregion
 
 Vue.use(VueRouter)
@@ -304,6 +307,20 @@ const profilRoutes = [
         props: true
       }
     ]
+  },
+  {
+    path: PROFIL + '/devis/',
+    name: ROUTES.DEVIS_USER.name,
+    meta: {value: ROUTES.DEVIS_USER.value},
+    component: VUDevis,
+    children: []
+  },
+  {
+    path: PROFIL + 'rendez-vous',
+    name: ROUTES.RENDEZ_VOUS_USER.name,
+    meta: {value: ROUTES.RENDEZ_VOUS_USER.value},
+    component: VURendezVous,
+    children: []
   }
 ]
 

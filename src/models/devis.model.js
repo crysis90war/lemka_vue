@@ -14,6 +14,8 @@ export default class DevisModel {
         this.ref_demande_de_devis = R.is(Object, devis.ref_demande_de_devis)
             ? new DemandeDevisModel(devis.ref_demande_de_devis)
             : new DemandeDevisModel()
+        this.numero_demande_devis = R.is(String, devis.numero_demande_devis) ? devis.numero_demande_devis : ""
+        this.details = R.is(Array, devis.details) ? devis.details : []
     }
 
     toCreatePayload() {
@@ -43,5 +45,29 @@ export default class DevisModel {
             {key: "est_accepte", label: "Statut", sortable: true},
             {key: "actions", label: "Actions"},
         ]
+    }
+
+    statutDevis (item) {
+        let statut = {
+            etat: undefined,
+            variant: undefined
+        }
+        switch (item.est_accepte) {
+            case true:
+                statut.etat = 'Accepté';
+                statut.variant = 'success'
+                break;
+            case false:
+                statut.etat = 'Réfusé';
+                statut.variant = 'danger';
+                break;
+            case null:
+                statut.etat = 'En attente';
+                statut.variant = 'warning';
+                break;
+            default:
+                console.log(item)
+        }
+        return statut
     }
 }
