@@ -17,7 +17,7 @@ export default class ProfilModel {
         this.first_name = R.is(String, profil.first_name) ? profil.first_name : ""
         this.last_name = R.is(String, profil.last_name) ? profil.last_name : ""
         this.numero_tel = R.is(String, profil.numero_tel) ? profil.numero_tel : ""
-        this.ref_genre = R.is(Object, profil.ref_genre) ? new GenreModel(profil.ref_genre) : new GenreModel()
+        this.genre = R.is(Object, profil.genre) ? new GenreModel(profil.genre) : null
     }
 
     toUpdatePayload() {
@@ -26,7 +26,7 @@ export default class ProfilModel {
             first_name: this.first_name,
             last_name: this.last_name,
             numero_tel: this.numero_tel,
-            ref_genre: this.ref_genre.id
+            ref_genre: this.genre.id
         }
     }
 

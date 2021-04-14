@@ -81,9 +81,9 @@ export const DemandeDevisModule = {
         },
     },
     actions: {
-        loadDemandeDevis({commit}) {
+        loadDemandeDevis: async function({commit}) {
             let endpoint = `${DOMAIN}/profil/demandes_devis/`;
-            return new Promise((resolve, reject) => {
+            return await new Promise((resolve, reject) => {
                 commit('DEMANDE_DEVIS_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
                     commit('LOAD_DEMANDES_DEVIS_SUCCESS', r.data)
@@ -119,9 +119,9 @@ export const DemandeDevisModule = {
             })
         },
 
-        loadAdminDD: function({commit}) {
+        loadAdminDD: async function({commit}) {
             let endpoint = `${DOMAIN}/demandes_devis/`;
-            return new Promise((resolve, reject) => {
+            return await new Promise((resolve, reject) => {
                 commit('ADMINDD_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
                     commit('SET_ADMINDD_SUCCESS', r.data)

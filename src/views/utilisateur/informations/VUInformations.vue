@@ -1,6 +1,6 @@
 <template>
   <div class="informations">
-    <b-card v-if="loading === false" class="my-4" :class="BSClass.CARD_BORDERLESS_SHADOW">
+    <b-card v-if="isLoading === false" class="my-4" :class="BSClass.CARD_BORDERLESS_SHADOW">
       <b-card-body>
         <b-row>
           <b-col lg="7">
@@ -20,12 +20,11 @@
               <span class="mr-2"><i :class="icons.PHONE"></i></span>
               <span>{{ profil.numero_tel }}</span>
             </div>
-            <div v-if="profil.ref_genre !== null && profil.ref_genre !== undefined">
+            <div v-if="profil.genre !== null && profil.genre !== undefined">
               <span class="mr-2"><i :class="icons.GENRE"></i></span>
-              <span>{{ profil.ref_genre.genre }}</span>
+              <span>{{ profil.genre.genre }}</span>
             </div>
             <hr>
-
             <div>
               <span><i :class="icons.HOME" class="mr-2"></i></span>
               <b-link v-if="adresse === null" :to="{name: routes.ADRESSE_ADD.name}" class="">
@@ -35,18 +34,16 @@
                 <ins>Modifier l'adresse</ins>
               </b-link>
             </div>
-
-            <div v-if="loading === false && adresse !== null" class="mt-2">
+            <div v-if="adresseLoading !== true" class="mt-2">
               <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
-              <span>{{ adresse.ref_ville.code_postale }} - {{ adresse.ref_ville.ville }}</span><br>
-              <span>{{ adresse.ref_ville.ref_pays.pays }}</span>
+              <span>{{ adresse.ville.code_postale }} - {{ adresse.ville.ville }}</span><br>
+              <span>{{ adresse.ville.pays.pays }}</span>
             </div>
             <hr>
             <b-button :to="{name: routes.INFORMATIONS_UPDATE.name}" variant="outline-primary my-3">
               Modifier profil
             </b-button>
           </b-col>
-
           <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center">
             <b-img thumbnail rounded=""
                    :src="profil.image" class="h-100"></b-img>
@@ -58,7 +55,6 @@
             </b-button>
             <l-upload-modal></l-upload-modal>
           </b-col>
-
         </b-row>
         <div>
           <span><small>Membre depuis {{ profil.created_at | localTimeStr }}</small></span><br>
@@ -66,7 +62,6 @@
         </div>
       </b-card-body>
     </b-card>
-
     <l-spinner v-else/>
   </div>
 </template>
@@ -80,52 +75,32 @@ import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VUInformations",
-  mixins: [fonctions,],
+  mixins: [fonctions],
   title() {
     return htmlTitle("Information")
   },
   data() {
     return {
-      image: null,
-      loading: false,
       routes: LemkaHelpers.Routes,
       BSClass: LemkaHelpers.BSClass,
       icons: LemkaHelpers.FontAwesomeIcons,
+      image: null,
     }
   },
   computed: {
     ...mapGetters({
-      user: "Auth/user",
       profil: "Profil/profil",
-      adresse: "Profil/adresse",
+      profilLoading: "Profil/loadingStatus",
+      adresse: "Adresse/adresse",
+      adresseLoading: "Adresse/loadingStatus"
     })
   },
   methods: {
-    ...mapActions({
-      loadAdresse: "Profil/loadAdresse",
-      loadPays: "Pays/loadPays",
-      loadCity: "Villes/loadCity"
-    }),
-
+    ...mapActions({loadAdresse: "Adresse/loadAdresse", loadProfil: "Profil/loadProfil",}),
     initialisation: async function () {
       this.toggleLoading()
-      await this.$store.dispatch("Profil/loadProfil")
-      if (this.profil !== null) {
-        await this.$store.dispatch("Genres/loadGenres")
-        this.profil.ref_genre = this.$store.getters["Genres/genre"](this.profil.ref_genre)
-      }
-      await this.loadAdresse().then(() => {
-      }, error => {
-        if (error.response.data.detail === "Pas trouvé.") {
-          this.adresse = null
-        }
-      })
-      if (this.adresse !== null) {
-        await this.loadCity(this.adresse.ref_ville)
-        this.adresse.ref_ville = this.$store.getters["Villes/city"]
-        await this.loadPays(this.adresse.ref_ville.ref_pays)
-        this.adresse.ref_ville.ref_pays = this.$store.getters["Pays/pays"]
-      }
+      await this.loadProfil()
+      await this.loadAdresse()
       this.toggleLoading()
     }
   },

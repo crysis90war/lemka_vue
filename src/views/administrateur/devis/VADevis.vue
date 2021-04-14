@@ -85,6 +85,10 @@
           <l-table-empty-filtered/>
         </template>
 
+        <template #cell(created_at)="data">
+          {{ data.item.created_at | localTimeStr }}
+        </template>
+
         <template #cell(numero_devis)="data">
           <b-link>{{ data.item.numero_devis }}</b-link>
         </template>
@@ -97,13 +101,14 @@
           <b-badge :variant="devis.statutDevis(data.item).variant">{{ devis.statutDevis(data.item).etat }}</b-badge>
         </template>
 
-        <template #cell(actions)>
+        <template #cell(actions)="data">
           <b-button-group size="sm">
-            <b-button variant="outline-primary">
+            <b-button variant="outline-primary"
+                      :to="{name: routes.DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
               <i class="fas fa-edit"></i>
             </b-button>
-            <b-button variant="outline-success">
-              <i class="fas fa-paper-plane"></i>
+            <b-button :variant="data.item.est_soumis === true ? 'outline-info' : 'outline-success'">
+              <i :class="data.item.est_soumis === true ? FAIcons.INFO : FAIcons.PLANE"></i>
             </b-button>
           </b-button-group>
         </template>
@@ -130,7 +135,8 @@ export default {
     return {
       devis: new DevisModel(),
       routes: LemkaHelpers.Routes,
-      fields: DevisModel.tableFields
+      fields: DevisModel.tableFields,
+      FAIcons: LemkaHelpers.FontAwesomeIcons
     }
   },
   computed: {
@@ -142,6 +148,9 @@ export default {
       await this.loadDevis()
       this.itemsLength(this.deviss)
     },
+    sendDevis: function() {
+
+    }
   },
   created() {
     this.loadDevis()

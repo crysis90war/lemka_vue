@@ -52,7 +52,7 @@
           </b-form-group>
 
           <b-form-group label="Sexe" description="Veuillez selectionner votre sexe">
-            <multiselect v-model="profil.ref_genre" :options="genres" :loading="loading"
+            <multiselect v-model="profil.genre" :options="genres" :loading="loading"
                          :multiple="false" :searchable="true" :internal-search="false"
                          :clear-on-select="false" :close-on-select="true" :options-limit="20"
                          :max-height="600" :show-no-results="true" :allow-empty="false"
@@ -106,9 +106,6 @@ export default {
       profil: new ProfilModel(),
       link: LemkaHelpers.Routes.INFORMATIONS.name,
       BSClass: LemkaHelpers.BSClass,
-      // profil: new ProfilModel(),
-      genre: null,
-      // genres: [],
       submitStatus: null,
       loading: false
     }
@@ -117,14 +114,10 @@ export default {
     ...mapGetters({genres: "Genres/genres"})
   },
   methods: {
-    ...mapActions({updateProfil: "Profil/updateProfil"}),
+    ...mapActions({updateProfil: "Profil/updateProfil", loadGenres: "Genres/loadGenres"}),
     initialisation: async function () {
       this.toggleLoading()
-      await this.$store.dispatch("Profil/loadProfil")
       Object.assign(this.profil, await this.$store.getters["Profil/profil"])
-      await this.$store.dispatch("Genres/loadGenres")
-      this.profil.ref_genre = this.$store.getters["Genres/genre"](this.profil.ref_genre)
-
       this.toggleLoading()
     },
 
@@ -152,7 +145,9 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("Genres/loadGenres")
+    if (this.genres.length === 0) {
+      this.loadGenres()
+    }
     this.initialisation()
   },
 }

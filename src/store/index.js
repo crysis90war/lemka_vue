@@ -19,7 +19,10 @@ import {CatalogueModule} from "@/store/catalogue/catalogue.module";
 import {VilleModule} from "@/store/ville.module";
 import {PaysModule} from "@/store/pays.module";
 import {ProfilModule} from "@/store/profil/profil.module";
-import {DevisModule} from "@/store/devis.module";
+import {DevisModule} from "@/store/devis/devis.module";
+import {TVAModule} from "@/store/tva.module";
+import {DetailModule} from "@/store/devis/detail.module";
+import {AdresseModule} from "@/store/adresse.module";
 
 Vue.use(Vuex)
 
@@ -45,5 +48,8 @@ export default new Vuex.Store({
     'Pays': PaysModule,
     'Profil': ProfilModule,
     'Devis': DevisModule,
+    'TVA': TVAModule,
+    'Details': DetailModule,
+    'Adresse': AdresseModule,
   }
 });

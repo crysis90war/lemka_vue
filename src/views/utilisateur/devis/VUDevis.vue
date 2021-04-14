@@ -1,9 +1,12 @@
 <template>
-  <div>DEVIS</div>
+  <div>
+    <b-table :items="userDevis" stacked="lg" fixed></b-table>
+    <pre>{{ userDevis }}</pre>
+  </div>
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "VUDevis",
@@ -13,10 +16,16 @@ export default {
     }
   },
   computed: {
-
+    ...mapGetters({userDevis: "Devis/deviss"}),
   },
   methods: {
-    ...mapActions({loadDevis: "Devis/loadDevis"})
+    ...mapActions({loadUserDevis: "Devis/loadUserDevis"}),
+    loadOrRefresh: async function() {
+      await this.loadUserDevis()
+    }
+  },
+  created() {
+    this.loadOrRefresh()
   }
 }
 </script>

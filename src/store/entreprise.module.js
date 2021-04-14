@@ -8,36 +8,36 @@ export const EntrepriseModule = {
     namespaced: true,
     state: {
         entreprises: [],
-        entrepriseLoadingStatus: false,
+        loadingStatus: false,
     },
     getters: {
         entreprises: state => state.entreprises,
         entreprise: state => {
             return state.entreprises[0]
         },
-        entrepriseLoadingStatus: state => state.entrepriseLoadingStatus
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        LOAD_ENTREPRISES_SUCCES(state, entreprises) {
-            state.entreprises = entreprises
+        SET_ENTREPRISES_SUCCES(state, payload) {
+            state.entreprises = payload
         },
-        LOAD_ENTREPRISES_FAILURE(state) {
+        SET_ENTREPRISES_FAILURE(state) {
             state.entreprises = []
         },
-        ENTREPRISES_LOADING_STATUS(state, entrepriseLoadingStatus) {
-            state.entrepriseLoadingStatus = entrepriseLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
-        ADD_ENTREPRISE(state, entreprise) {
-            state.entreprises.push(entreprise)
+        ADD_ENTREPRISE(state, payload) {
+            state.entreprises.push(payload)
         },
-        UPDATE_ENTREPRISE(state, entreprise) {
-            const index = state.entreprises.findIndex(item => item.id === entreprise.id)
+        UPDATE_ENTREPRISE(state, payload) {
+            const index = state.entreprises.findIndex(item => item.id === payload.id)
             if (index !== -1) {
-                state.entreprises.splice(index, 1, entreprise)
+                state.entreprises.splice(index, 1, payload)
             }
         },
-        DELETE_ENTREPRISE(state, entreprise) {
-            const index = state.entreprises.map(item => item.id).indexOf(entreprise.id)
+        DELETE_ENTREPRISE(state, payload) {
+            const index = state.entreprises.map(item => item.id).indexOf(payload.id)
             if (index !== -1) {
                 state.entreprises.splice(index, 1)
             }
@@ -47,14 +47,14 @@ export const EntrepriseModule = {
         loadEntreprises({commit}) {
             let endpoint = `${DOMAIN}/entreprises/`;
             return new Promise((resolve, reject) => {
-                commit('ENTREPRISES_LOADING_STATUS', true)
+                commit('LOADING_STATUS', true)
                 ApiService.GETData(endpoint).then(r => {
-                    commit('LOAD_ENTREPRISES_SUCCES', r.data)
-                    commit('ENTREPRISES_LOADING_STATUS', false)
+                    commit('SET_ENTREPRISES_SUCCES', r.data)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('LOAD_ENTREPRISES_FAILURE')
-                    commit('ENTREPRISES_LOADING_STATUS', false)
+                    commit('SET_ENTREPRISES_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })
@@ -74,18 +74,19 @@ export const EntrepriseModule = {
             let endpoint = `${DOMAIN}/entreprises/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
-                    commit('UPDATE_ENTREPRISE', Object.assign(new EntrepriseModel(), r.data))
+                    console.log(r.data)
+                    commit('UPDATE_ENTREPRISE', r.data)
                     resolve(r.data)
                 }, error => {
                     reject(error)
                 })
             })
         },
-        deleteEntreprise({commit}, entreprise) {
-            let endpoint = `${DOMAIN}/entreprises/${entreprise.id}/`;
+        deleteEntreprise({commit}, payload) {
+            let endpoint = `${DOMAIN}/entreprises/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
-                    commit('DELETE_ENTREPRISE', entreprise)
+                    commit('DELETE_ENTREPRISE', payload)
                     resolve(r)
                 }, error => {
                     reject(error)

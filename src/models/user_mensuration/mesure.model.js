@@ -5,9 +5,7 @@ export default class MesureModel {
     constructor(mesure = {}) {
         this.id = R.is(Number, mesure.id) ? mesure.id : null
         this.mesure = R.is(Number, mesure.mesure) ? mesure.mesure : null
-        this.mensuration = R.is(String, mesure.mensuration)
-            ? mesure.mensuration
-            : ""
+        this.mensuration = R.is(String, mesure.mensuration) ? mesure.mensuration : ""
     }
 
     toUpdatePayload() {

@@ -6,31 +6,23 @@ import ArticleModel from "@/models/article/article.model";
 import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
 import {minLength, required, maxLength} from "vuelidate/lib/validators";
 
-
 export default class DemandeDevisModel {
-    constructor(demande_devis = {}) {
-        this.id = R.is(Number, demande_devis.id) ? demande_devis.id : null
-        this.created_at = demande_devis.created_at && isValid(demande_devis.created_at)
-            ? format(demande_devis.created_at, "DD-MM-YYYY")
-            : null
-        this.numero_demande_devis = R.is(String, demande_devis.numero_demande_devis) ? demande_devis.numero_demande_devis : ""
-        this.utilisateur = R.is(String, demande_devis.utilisateur) ? demande_devis.utilisateur : ""
-        this.titre = R.is(String, demande_devis.titre) ? demande_devis.titre : ""
-        this.remarque = R.is(String, demande_devis.remarque) ? demande_devis.remarque : ""
-        this.est_urgent = R.is(Boolean, demande_devis.est_urgent) ? demande_devis.est_urgent : false
-        this.est_soumis = R.is(Boolean, demande_devis.est_soumis) ? demande_devis.est_soumis : false
-        this.est_traite = R.is(Boolean, demande_devis.est_traite) ? demande_devis.est_traite : false
-        this.ref_type_service = R.is(Object, demande_devis.ref_type_service)
-            ? new TypeServiceModel(demande_devis.ref_type_service)
-            : new TypeServiceModel()
-        this.ref_mensuration = R.is(Object, demande_devis.ref_mensuration)
-            ? new UserMensurationModel(demande_devis.ref_mensuration)
-            : new UserMensurationModel()
-        this.ref_article = R.is(Object, demande_devis.ref_article)
-            ? new ArticleModel(demande_devis.ref_article)
-            : new ArticleModel()
-        this.ref_mercerie_option = R.is(Array, demande_devis.ref_mercerie_option) ? [demande_devis.ref_type_service] : []
-        this.ref_user = R.is(Object, demande_devis.ref_user) ? new ProfilModel(demande_devis.ref_user) : new ProfilModel()
+    constructor(json = {}) {
+        this.id = R.is(Number, json.id) ? json.id : null
+        this.created_at = json.created_at && isValid(json.created_at) ? format(json.created_at, "DD-MM-YYYY") : null
+        this.numero_demande_devis = R.is(String, json.numero_demande_devis) ? json.numero_demande_devis : ""
+        this.utilisateur = R.is(String, json.utilisateur) ? json.utilisateur : ""
+        this.titre = R.is(String, json.titre) ? json.titre : ""
+        this.remarque = R.is(String, json.remarque) ? json.remarque : ""
+        this.est_urgent = R.is(Boolean, json.est_urgent) ? json.est_urgent : false
+        this.est_soumis = R.is(Boolean, json.est_soumis) ? json.est_soumis : false
+        this.est_traite = R.is(Boolean, json.est_traite) ? json.est_traite : false
+        this.en_cours = R.is(Boolean, json.en_cours) ? json.en_cours : false
+        this.type_service = R.is(Object, json.type_service) ? new TypeServiceModel(json.type_service) : new TypeServiceModel()
+        this.mensuration = R.is(Object, json.mensuration) ? new UserMensurationModel(json.mensuration) : null
+        this.article = R.is(Object, json.article) ? new ArticleModel(json.article) : null
+        this.ref_user = R.is(Object, json.ref_user) ? new ProfilModel(json.ref_user) : new ProfilModel()
+        this.mercerie_options = R.is(Array, json.mercerie_options) ? json.mercerie_options : []
     }
 
     toCreatePayload() {
@@ -39,10 +31,11 @@ export default class DemandeDevisModel {
             remarque: this.remarque,
             est_urgent: this.est_urgent,
             est_soumis: this.est_soumis,
-            ref_type_service: this.ref_type_service.id,
-            ref_article: this.ref_article.id,
-            ref_mensuration: this.ref_mensuration.id,
-            ref_mercerie_option: this.ref_mercerie_option
+            est_traite: this.est_traite,
+            ref_type_service: this.type_service.id,
+            ref_article: this.article !== null ? this.article.id : null,
+            ref_mensuration: this.mensuration !== null ? this.mensuration.id : null,
+            ref_mercerie_options: this.mercerie_options.map(item => item.id)
         }
     }
 
@@ -105,14 +98,5 @@ export default class DemandeDevisModel {
             {key: 'est_traite', label: 'Traité', sortable: true},
             {key: 'actions', label: 'Actions'},
         ]
-    }
-
-    mainImage (images) {
-        if (images.length > 0) {
-            let image = images.find(item => item.is_main === true)
-            return image.image
-        } else {
-            return ""
-        }
     }
 }

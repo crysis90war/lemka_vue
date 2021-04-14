@@ -12,7 +12,7 @@ export default class EntrepriseModel {
         this.site_web = R.is(String, entreprise.site_web) ? entreprise.site_web : ""
         this.rue = R.is(String, entreprise.rue) ? entreprise.rue : ""
         this.numero = R.is(String, entreprise.numero) ? entreprise.numero : ""
-        this.ref_ville = R.is(Object, entreprise.ref_ville) ? new VilleModel(entreprise.ref_ville) : null
+        this.ville = R.is(Object, entreprise.ref_ville) ? new VilleModel(entreprise.ref_ville) : null
     }
 
     toCreatePayload() {
@@ -24,7 +24,7 @@ export default class EntrepriseModel {
             site_web: this.site_web,
             rue: this.rue,
             numero: this.numero,
-            ref_ville: this.ref_ville.id
+            ref_ville: this.ville.id
         }
     }
 

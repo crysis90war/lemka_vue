@@ -159,9 +159,9 @@ const adminRoutes = [
     component: VADevis,
     children: [
       {
-        path: ADMIN + 'devi/:id?',
-        name: "CreateDevis",
-        meta: {value: ""},
+        path: ADMIN + 'devi/:id',
+        name: ROUTES.DEVIS_ADD_OR_UPDATE.name,
+        meta: {value: ROUTES.DEVIS_ADD_OR_UPDATE.value},
         component: VADevisAddOrUpdate,
         props: true
       },

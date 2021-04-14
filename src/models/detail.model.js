@@ -1,6 +1,5 @@
 import * as R from 'ramda'
 import TVAModel from "@/models/tva.model";
-import DevisModel from "@/models/devis.model";
 
 export default class DetailModel {
     constructor(detail = {}) {
@@ -8,8 +7,7 @@ export default class DetailModel {
         this.designation = R.is(String, detail.designation) ? detail.designation : ""
         this.prix_u_ht = R.is(Number, detail.prix_u_ht) ? detail.prix_u_ht : 0
         this.quantite = R.is(Number, detail.quantite) ? detail.quantite : 0
-        this.ref_tva = R.is(Object, detail.ref_tva) ? new TVAModel(detail.ref_tva) : new TVAModel()
-        this.ref_devis = R.is(Object, detail.ref_devis) ? new DevisModel(detail.ref_devis) : new DevisModel()
+        this.tva = R.is(Object, detail.tva) ? new TVAModel(detail.tva) : new TVAModel()
     }
 
     toCreatePayload() {
@@ -17,8 +15,8 @@ export default class DetailModel {
             designation: this.designation,
             prix_u_ht: this.prix_u_ht,
             quantite: this.quantite,
-            ref_tva: this.ref_tva.id,
-            ref_devis: this.ref_devis.id
+            ref_tva: this.tva.id,
+            // ref_devis: this.ref_devis.id
         }
     }
 
@@ -38,7 +36,7 @@ export default class DetailModel {
             {key: "designation", label: "Description"},
             {key: "prix_u_ht", label: "Prix HT"},
             {key: "quantite", label: "Quantité"},
-            {key: "ref_tva", label: "% TVA"},
+            {key: "tva", label: "% TVA"},
             {key: "total_ht", label: "Total HT"},
             {key: "total_tva", label: "Total TVA"},
             {key: "total_ttc", label: "Total TTC"},
@@ -47,15 +45,16 @@ export default class DetailModel {
     }
 
     calculerTVA(item) {
-        let totalTVA
-        let tva = item.ref_tva.taux
-
-        totalTVA = this.calculeTotalHT(item) * tva
+        let totalTVA = 0;
+        if (item.tva !== undefined) {
+            let tva = item.tva.taux
+            totalTVA = this.calculeTotalHT(item) * tva
+        }
         return Number.parseFloat(totalTVA).toFixed(2)
     }
 
     calculeTotalHT(item) {
-        let total_ht
+        let total_ht = 0;
         total_ht = item.prix_u_ht * item.quantite
         return Number.parseFloat(total_ht).toFixed(2)
     }

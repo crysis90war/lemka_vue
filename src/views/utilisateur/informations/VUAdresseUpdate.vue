@@ -6,7 +6,7 @@
         <b-form @submit.prevent="submit">
 
           <b-form-group label="Ville" description="Selectionn selectionner votre ville">
-            <multiselect v-model="adresse.ref_ville" :options="villes" :loading="villesLoadingStatus" :class="{ 'invalid': isInvalid }"
+            <multiselect v-model="adresse.ville" :options="villes" :loading="loadingStatus" :class="{ 'invalid': isInvalid }"
                          label="ville" placeholder="Veuillez encoder pour lancer la recherche..." track-by="ville"
                          :multiple="false" :searchable="true" :internal-search="false" :allow-empty="false"
                          :clear-on-select="false" :close-on-select="true" :options-limit="20"
@@ -69,7 +69,8 @@
             <b-button variant="outline-dark" :to="{name: link}">
               <i class="fas fa-arrow-left"></i>
             </b-button>
-            <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">Sauvegarder
+            <b-button variant="outline-primary" type="submit" :disabled="submitStatus === 'PENDING'">
+              Sauvegarder
             </b-button>
           </b-button-group>
         </b-form>
@@ -101,7 +102,6 @@ export default {
   },
   data() {
     return {
-      adresse: new AdresseModel(),
       loading: false,
       submitStatus: null,
       BSClass: LemkaHelpers.BSClass,
@@ -111,27 +111,22 @@ export default {
   computed: {
     ...mapGetters({
       villes: "Villes/villes",
-      villesLoadingStatus: "Villes/villesLoadingStatus"
+      loadingStatus: "Villes/loadingStatus",
+      adresse: "Adresse/adresse"
     }),
     isInvalid() {
-      return this.isTouched && this.adresse.ref_ville.id === null
+      return this.isTouched && this.adresse.ville.id === null
     }
   },
   methods: {
     ...mapActions({
       loadVilles: "Villes/loadVilles",
       loadCity: "Villes/loadCity",
-      updateAdresse: "Profil/updateAdresse",
+      updateAdresse: "Adresse/updateAdresse",
     }),
     initialisation: async function () {
       this.toggleLoading()
       await this.loadVilles()
-      await this.$store.dispatch("Profil/loadAdresse")
-      Object.assign(this.adresse, await this.$store.getters["Profil/adresse"])
-      if (this.adresse !== null) {
-        await this.loadCity(this.adresse.ref_ville)
-        this.adresse.ref_ville = await this.$store.getters["Villes/city"]
-      }
       this.toggleLoading()
     },
 

@@ -2,10 +2,10 @@
   <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="border-0 nav-shadow colored">
     <b-container>
       <b-navbar-brand :to="{name: routes.HOME_ROUTE.name}" v-if="brandVisible">
-        <img src="../assets/logo.png" alt="" style="max-width: 100px;">
+        <img src="../assets/Lemka.png" alt="" style="max-width: 100px;">
       </b-navbar-brand>
       <b-navbar-brand :to="{name: routes.HOME_ROUTE.name}" v-else>
-        <img src="../assets/logo.png" alt="" style="max-width: 150px;">
+        <img src="../assets/Lemka.png" alt="" style="max-width: 150px;">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

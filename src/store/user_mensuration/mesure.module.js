@@ -26,6 +26,9 @@ export const MesureModule = {
         LOADING_STATUS(state, loadingStatus) {
             state.loadingStatus = loadingStatus
         },
+        ADD_MESURE(state, payload) {
+            state.mesures.push(payload)
+        },
         UPDATE_MESURE(state, mesure) {
             const index = state.mesures.findIndex(item => item.id === mesure.id)
             if (index !== -1) {

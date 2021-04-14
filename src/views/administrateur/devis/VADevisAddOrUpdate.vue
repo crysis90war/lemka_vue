@@ -1,9 +1,21 @@
 <template>
-  <div>
+  <l-spinner v-if="isLoading === true"></l-spinner>
+  <div v-else>
+    <section class="boutons mt-4">
+      <b-container fluid="">
+        <b-button-group>
+          <b-button variant="outline-dark" :to="{name: routes.DEVIS.name}"><i class="fas fa-arrow-left"></i></b-button>
+          <b-button variant="outline-success">Envoyer <i class="fas fa-paper-plane"></i></b-button>
+        </b-button-group>
+      </b-container>
+    </section>
+
     <section class="demande_devis mt-4">
-      <l-spinner v-if="loading === true"></l-spinner>
-      <b-container v-else fluid="">
-        <b-button v-b-toggle.demande_devis variant="secondary">Demande de devis numéro: {{ demandeDevis.numero_demande_devis }}</b-button>
+      <b-container fluid="">
+        <b-button v-b-toggle.demande_devis variant="secondary">
+          Demande de devis numéro : {{ devis.demande_devis.numero_demande_devis }}
+        </b-button>
+        <hr>
         <b-collapse id="demande_devis" class="mt-2" visible>
           <b-card>
             <b-card-body>
@@ -12,15 +24,15 @@
                   <b-tab title="Informations" active>
                     <b-row>
                       <b-col lg="4">
-                        <b-card-text><strong>N°: </strong> {{ demandeDevis.numero_demande_devis }}</b-card-text>
+                        <b-card-text><strong>N°: </strong> {{ devis.demande_devis.numero_demande_devis }}</b-card-text>
                       </b-col>
 
                       <b-col lg="4">
-                        <b-card-text><strong>Nom: </strong> {{ demandeDevis.utilisateur }}</b-card-text>
+                        <b-card-text><strong>Nom: </strong> {{ devis.demande_devis.utilisateur }}</b-card-text>
                       </b-col>
 
                       <b-col lg="4">
-                        <b-card-text><strong>Date: </strong> {{ demandeDevis.created_at | localTimeStr }}</b-card-text>
+                        <b-card-text><strong>Date: </strong> {{ devis.demande_devis.created_at | localTimeStr }}</b-card-text>
                       </b-col>
                     </b-row>
 
@@ -28,14 +40,14 @@
 
                     <b-row>
                       <b-col lg="4">
-                        <b-card-text><strong>Titre: </strong> {{ demandeDevis.titre }}</b-card-text>
+                        <b-card-text><strong>Titre: </strong> {{ devis.demande_devis.titre }}</b-card-text>
                       </b-col>
 
                       <b-col lg="4">
                         <b-card-text>
                           <strong>Urgent: </strong>
-                          <b-badge pill :variant="demandeDevis.est_urgent === true ? 'success' : 'danger'">
-                            <i :class="`fas fa-${demandeDevis.est_urgent  === true ? 'check' : 'times'}-circle`"></i>
+                          <b-badge pill :variant="devis.demande_devis.est_urgent === true ? 'success' : 'danger'">
+                            <i :class="`fas fa-${devis.demande_devis.est_urgent  === true ? 'check' : 'times'}-circle`"></i>
                           </b-badge>
                         </b-card-text>
                       </b-col>
@@ -43,10 +55,19 @@
                       <b-col lg="4">
                         <b-card-text>
                           <strong>Traité: </strong>
-                          <b-badge pill :variant="demandeDevis.est_traite === true ? 'success' : 'danger'">
-                            <i :class="`fas fa-${demandeDevis.est_traite  === true ? 'check' : 'times'}-circle`"></i>
+                          <b-badge pill :variant="devis.demande_devis.est_traite === true ? 'success' : 'danger'">
+                            <i :class="`fas fa-${devis.demande_devis.est_traite  === true ? 'check' : 'times'}-circle`"></i>
                           </b-badge>
                         </b-card-text>
+                      </b-col>
+                    </b-row>
+
+                    <hr>
+
+                    <b-row>
+                      <b-col>
+                        <strong>Service :</strong>
+                        <p>{{ devis.demande_devis.type_service.type_service }}</p>
                       </b-col>
                     </b-row>
 
@@ -55,36 +76,44 @@
                     <b-row>
                       <b-col>
                         <strong>Remarque: </strong>
-                        <b-card-text>{{ demandeDevis.remarque }}</b-card-text>
+                        <b-card-text>{{ devis.demande_devis.remarque }}</b-card-text>
                       </b-col>
                     </b-row>
                   </b-tab>
 
-                  <b-tab title="Mensurations">
-                    <p>TODO - Récupérer les mensuration de l'utilisateur</p>
+                  <b-tab title="Mensurations" :disabled="devis.demande_devis.mensuration === null">
+                    <div v-if="devis.demande_devis.mensuration !== null">
+                      <b-row>
+                        <b-col v-for="mesure in devis.demande_devis.mensuration.mesures" :key="mesure.id" lg="4">
+                          <p><strong>{{ mesure.mensuration }} : </strong> {{ mesure.mesure }} cm</p>
+                        </b-col>
+                      </b-row>
+                    </div>
                   </b-tab>
 
-                  <b-tab title="Article" :disabled="demandeDevis.ref_article === null">
-                    <b-row v-if="demandeDevis.ref_article !== null">
+                  <b-tab title="Article" :disabled="devis.demande_devis.article === null">
+                    <b-row v-if="devis.demande_devis.article !== null">
                       <b-col cols="3">
-                        <b-img v-if="demandeDevis.ref_article" :src="demandeDevis.mainImage(demandeDevis.ref_article.images)" width="128"
-                               height="128"></b-img>
+                        <b-img width="128" height="128"
+                               :src="getImage(devis.demande_devis.article.images)"/>
                       </b-col>
                       <b-col>
-                        <p>{{ demandeDevis.ref_article.titre }}</p>
-                        <p>{{ demandeDevis.ref_article.description }}</p>
+                        <p>{{ devis.demande_devis.article.titre }}</p>
+                        <p>{{ devis.demande_devis.article.description }}</p>
                       </b-col>
                     </b-row>
                   </b-tab>
 
-                  <b-tab title="Merceries" :disabled="demandeDevis.ref_mercerie_option.length === 0">
-                    <b-list-group>
-                      <b-list-group-item v-for="item in demandeDevis.ref_mercerie_option" :key="item.id">
-                        <b-img :src="require('@/assets/noimage.png')" height="72" width="72"></b-img>
-                        <span class="ml-3"><strong>{{ item.reference }}</strong> | {{ item.name }}</span>
-                        <b-button variant="outline-success" size="sm" class="mx-4"><i class="fas fa-plus"></i></b-button>
-                      </b-list-group-item>
-                    </b-list-group>
+                  <b-tab title="Merceries" :disabled="devis.demande_devis.mercerie_options.length === 0">
+                    <div v-if="devis.demande_devis.mercerie_options.length !== 0">
+                      <b-list-group>
+                        <b-list-group-item v-for="mercerieOption in devis.demande_devis.mercerie_options" :key="mercerieOption.id">
+                          <b-img :src="require('@/assets/noimage.png')" height="72" width="72"/>
+                          <span class="ml-3"><strong>{{ mercerieOption.reference }}</strong> | {{ mercerieOption.name }}</span>
+                          <b-button variant="outline-success" size="sm" class="mx-4"><i class="fas fa-plus"></i></b-button>
+                        </b-list-group-item>
+                      </b-list-group>
+                    </div>
                   </b-tab>
 
                   <b-tab title="Image" disabled><p>I'm a disabled tab!</p></b-tab>
@@ -96,10 +125,10 @@
       </b-container>
     </section>
 
-
     <section class="details mt-4">
       <b-container fluid="">
-        <b-button v-b-toggle.details variant="secondary">Détails</b-button>
+        <b-button v-b-toggle.details variant="secondary">Devis : {{ devis.numero_devis }}</b-button>
+        <hr>
         <b-collapse id="details" class="mt-2" visible>
           <b-card>
             <b-card-body>
@@ -120,7 +149,7 @@
                 </b-form-group>
 
                 <b-form-group label="TVA">
-                  <multiselect v-model="detail.ref_tva" :options="tva">
+                  <multiselect v-model="detail.tva" :options="tvas">
                     <template slot="singleLabel" slot-scope="{ option }">
                       <strong>{{ option.taux }}</strong>
                     </template>
@@ -129,11 +158,11 @@
                     </template>
                   </multiselect>
                 </b-form-group>
-                <b-button variant="success" @click="ajouter(); hideModal('ajout-detail')">Ajouter</b-button>
+                <b-button variant="success" @click="ajouterDetail()">Ajouter</b-button>
               </b-modal>
               <!-- endregion -->
 
-              <b-table :items="details" :fields="fields" class="text-center my-2" small stacked="md" :show-empty="true">
+              <b-table :items="devis.details" :fields="fields" class="text-center my-2" small stacked="md" :show-empty="true">
                 <template #empty>
                   <l-table-empty></l-table-empty>
                 </template>
@@ -142,8 +171,8 @@
                   <p>{{ data.item.prix_u_ht }} €</p>
                 </template>
 
-                <template #cell(ref_tva)="data">
-                  <p>{{ data.item.ref_tva.taux * 100 }} %</p>
+                <template #cell(tva)="data">
+                  <p>{{ data.item.tva.taux * 100 }} %</p>
                 </template>
 
                 <template #cell(total_ht)="data">
@@ -157,6 +186,15 @@
                 <template #cell(total_ttc)="data">
                   <p>{{ detail.calculerTotalTTC(data.item) }} €</p>
                 </template>
+
+                <template #cell(actions)="data">
+                  <b-button-group size="sm">
+                    <b-button variant="outline-primary"><i :class="icons.MODIFIER"></i></b-button>
+                    <b-button variant="outline-danger" @click="supprimerDetail(data.item)">
+                      <i :class="icons.SUPPRIMER"></i>
+                    </b-button>
+                  </b-button-group>
+                </template>
               </b-table>
               <hr>
               <b-row>
@@ -168,108 +206,102 @@
                 </b-col>
               </b-row>
               <b-form-group label="Remarque">
-                <b-textarea v-model="devis.remarque"></b-textarea>
+                <b-textarea v-model="devis.remarque" @keyup="updateRemarque"></b-textarea>
               </b-form-group>
-
-              <b-button-group>
-                <b-button variant="outline-dark"><i class="fas fa-arrow-left"></i></b-button>
-                <b-button variant="outline-primary"><i class="fas fa-save"></i></b-button>
-                <b-button variant="outline-success"><i class="fas fa-paper-plane"></i></b-button>
-              </b-button-group>
             </b-card-body>
           </b-card>
         </b-collapse>
       </b-container>
     </section>
 
-    <b-jumbotron class="mt-4" header="DemandeDevis">
-      <pre>{{ demandeDevis }}</pre>
-    </b-jumbotron>
-    <b-jumbotron class="mt-4" header="Detail">
-      <pre>{{ detail.toCreatePayload() }}</pre>
+    <b-jumbotron>
+      <pre style="white-space: pre-wrap">{{ devis }}</pre>
     </b-jumbotron>
   </div>
+
+
+  <!--    <b-jumbotron class="mt-4" header="details">-->
+  <!--      <pre style="white-space: pre-wrap">{{ devis }}</pre>-->
+  <!--    </b-jumbotron>-->
+  <!--  </div>-->
 </template>
 
 <script>
 import {localTimeStr} from "@/utils/filters";
-import DemandeDevisModel from "@/models/demande_devis.model";
 import DevisModel from "@/models/devis.model";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import DetailModel from "@/models/detail.model";
 import {fonctions} from "@/mixins/functions.mixin";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "VADevisAddOrUpdate",
   mixins: [fonctions],
   props: {
-    demande_devis_id: {},
-    devis_id: {}
+    id: {}
   },
   data() {
     return {
-      demandeDevis: new DemandeDevisModel(),
       devis: new DevisModel(),
       detail: new DetailModel(),
       details: [],
       fields: DetailModel.tableFields,
-      loading: false,
-      tva: [
-        {id: 1, taux: 0.21}
-      ]
+      routes: LemkaHelpers.Routes,
+      icons: LemkaHelpers.FontAwesomeIcons
     }
   },
+  computed: {
+    ...mapGetters({tvas: "TVA/tvas", busy: "TVA/loadingStatus"})
+  },
   methods: {
-    ...mapActions({loadGlobalMerceries: "Merceries/loadGlobalMercerieOptions"}),
+    ...mapActions({
+      createDetail: "Devis/createDetail",
+      deleteDetail: "Devis/deleteDetail",
+      updateDetail: "Devis/updateDetail",
+      updateDevis: "Devis/updateDevis"
+    }),
+
+    chargerDevis: async function () {
+      Object.assign(this.devis, await this.$store.getters["Devis/devis"](this.id))
+      this.details = this.devis.details
+    },
+
     initialisation: async function () {
       this.toggleLoading()
-
-      Object.assign(this.demandeDevis, await this.$store.getters["DemandesDevis/adminUserDD"](this.demande_devis_id))
-
-      this.demandeDevis.ref_type_service = this.$store.getters["TypeServices/typeService"](this.demandeDevis.ref_type_service)
-
-      if (this.demandeDevis.ref_article !== null) {
-        this.demandeDevis.ref_article = this.$store.getters["Articles/articleById"](this.demandeDevis.ref_article)
-      }
-
-      if (this.demandeDevis.ref_mercerie_option.length > 0) {
-        await this.loadGlobalMerceries()
-        let merceries = []
-        this.demandeDevis.ref_mercerie_option.forEach(item => {
-          if (item !== undefined) {
-            let mercerie = this.$store.getters["Merceries/globalMercerie"](item)
-            if (mercerie !== undefined) {
-              merceries.push(mercerie)
-            }
-          }
-        })
-        this.demandeDevis.ref_mercerie_option = merceries
-      }
-
-      if (this.devis_id !== undefined) {
-        this.$route.meta.value = this.devis.id
-      } else {
-        this.$route.meta.value = this.demandeDevis.numero_demande_devis
-      }
+      await this.chargerDevis()
       this.toggleLoading()
     },
 
-    submitSave: function() {
-
+    getImage: function (images) {
+      if (images.length > 0) {
+        let image = images.find(item => item.is_main === true)
+        return image.image
+      } else {
+        return ""
+      }
     },
 
-    submitSend: function() {
-
+    updateRemarque: function () {
+      this.updateDevis(this.devis.toUpdatePayload())
     },
-
-    ajouter() {
-      this.detail.ref_devis = this.demande_devis_id
-      this.details.push(this.detail)
+    ajouterDetail() {
+      this.createDetail([this.devis.numero_devis, this.detail.toCreatePayload()])
       this.detail = new DetailModel()
+      this.hideModal('ajout-detail')
+    },
+    modifierDetail(item) {
+      this.updateDetail([this.devis.id, item])
+    },
+    supprimerDetail: function (item) {
+      this.deleteDetail([this.devis.numero_devis, item])
     }
   },
   created() {
-    this.initialisation()
+    if (this.id !== undefined) {
+      this.initialisation()
+    } else {
+      this.$router.push({name: this.routes.DEMANDE_DEVIS_ADMIN.name})
+    }
   },
   filters: {
     localTimeStr: function (value) {

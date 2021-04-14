@@ -11,25 +11,30 @@ export default class DevisModel {
         this.remarque = R.is(String, devis.remarque) ? devis.remarque : ""
         this.est_accepte = R.is(Boolean, devis.est_accepte) ? devis.est_accepte : null
         this.est_soumis = R.is(Boolean, devis.est_soumis) ? devis.est_soumis : false
-        this.ref_demande_de_devis = R.is(Object, devis.ref_demande_de_devis)
-            ? new DemandeDevisModel(devis.ref_demande_de_devis)
-            : new DemandeDevisModel()
         this.numero_demande_devis = R.is(String, devis.numero_demande_devis) ? devis.numero_demande_devis : ""
         this.details = R.is(Array, devis.details) ? devis.details : []
+        this.demande_devis = R.is(Object, devis.demande_devis) ? new DemandeDevisModel(devis.demande_devis) : new DemandeDevisModel()
     }
 
     toCreatePayload() {
         return {
             remarque: this.remarque,
             est_soumis: this.est_soumis,
-            ref_demande_de_devis: this.ref_demande_de_devis.id
+            ref_demande_devis: this.demande_devis.id
         }
     }
 
     toUpdatePayload() {
         return {
             ...this.toCreatePayload(),
-            id: this.id
+            numero_devis: this.numero_devis
+        }
+    }
+
+    toUpdateRemarque() {
+        return {
+            remarque: this.remarque,
+            numero_devis: this.numero_devis
         }
     }
 
@@ -42,6 +47,7 @@ export default class DevisModel {
             {key: "created_at", label: "Date", sortable: true},
             {key: "numero_devis", label: "N° Devis", sortable: true},
             {key: "numero_demande_devis", label: "N° Demande devis", sortable: true},
+            {key: "demande_devis_titre", label: "Titre", sortable: true},
             {key: "est_accepte", label: "Statut", sortable: true},
             {key: "actions", label: "Actions"},
         ]

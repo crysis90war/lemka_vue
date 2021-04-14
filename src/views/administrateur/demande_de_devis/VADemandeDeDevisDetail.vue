@@ -1,5 +1,5 @@
 <template>
-  <section class="admin_demande_devis_update">
+  <section class="admin_demande_devis_detail">
 
   </section>
 </template>

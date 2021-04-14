@@ -70,7 +70,7 @@
       </b-row>
 
 
-      <b-table :items="adminDDs" :fields="fields" :busy="busy" :current-page="currentPage" :per-page="perPage"
+      <b-table :items="adminDDNonTraite" :fields="fields" :busy="busy" :current-page="currentPage" :per-page="perPage"
                :filter="filter" :filter-included-fields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
                :sort-direction="sortDirection" show-empty small hover stacked="md" class="text-center mt-3" @filtered="onFiltered">
         <template #table-busy>
@@ -103,13 +103,16 @@
 
         <template #cell(actions)="data">
           <b-button-group size="sm">
-            <b-button variant="outline-success" :to="{name: 'CreateDevis', params: {demande_devis_id: data.item.id}}">
+            <b-button variant="outline-success" @click="creerDevis(data.item)">
               Créer un dévis
             </b-button>
           </b-button-group>
         </template>
       </b-table>
     </div>
+    <b-jumbotron>
+      <pre>{{adminDDNonTraite}}</pre>
+    </b-jumbotron>
   </div>
 </template>
 
@@ -119,6 +122,7 @@ import {mapActions, mapGetters} from "vuex";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import LemkaHelpers from "@/helpers";
 import {htmlTitle} from "@/utils/tools";
+import DevisModel from "@/models/devis.model";
 
 export default {
   name: "VADemandeDeDevis",
@@ -133,17 +137,34 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({adminDDs: "DemandesDevis/adminDDs", busy: "DemandesDevis/adminDDLoadingStatus"})
+    ...mapGetters({adminDDNonTraite: "DemandesDevis/adminDDNonTraite", busy: "DemandesDevis/adminDDLoadingStatus"})
   },
   methods: {
-    ...mapActions({loadAdminDD: "DemandesDevis/loadAdminDD", updateAdminDD: "DemandesDevis/updateAdminDD"}),
+    ...mapActions({
+      loadAdminDD: "DemandesDevis/loadAdminDD",
+      updateAdminDD: "DemandesDevis/updateAdminDD",
+      createDevis: "Devis/createDevis"
+    }),
     loadOrRefresh: async function () {
-      await this.loadAdminDD()
-      this.itemsLength(this.adminDDs)
+      if (this.adminDDNonTraite.length === 0) {
+        await this.loadAdminDD()
+      }
+      this.itemsLength(this.adminDDNonTraite)
     },
-    envoyer: function (payload) {
-      payload.est_soumis = true
-      this.updateAdminDD(payload)
+    creerDevis: function (demande_devis) {
+      let DDToUpdate = new DemandeDevisModel()
+      let devis = new DevisModel()
+      Object.assign(DDToUpdate, demande_devis)
+      devis.demande_devis = DDToUpdate
+      console.log(devis.toCreatePayload())
+      this.createDevis(devis.toCreatePayload()).then(res => {
+        DDToUpdate.est_traite = true
+        this.updateAdminDD(DDToUpdate.toUpdatePayload()).then(() => {
+          this.$router.push({name: this.routes.DEVIS_ADD_OR_UPDATE.name, params: {demande_devis_id: demande_devis.id, devis_id: res.id}})
+        })
+      }, error => {
+        console.log(error)
+      })
     }
   },
   created() {

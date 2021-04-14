@@ -22,5 +22,6 @@ export const FontAwesomeIcons = {
     ARROW_LEFT: 'fas fa-arrow-left',
     LONG_LEFT_ARROW: 'fas fa-long-arrow-alt-left',
     HEART: 'fas fa-heart',
-    GLOBE: 'fas fa-globe'
+    GLOBE: 'fas fa-globe',
+    PLANE: 'fas fa-paper-plane'
 }

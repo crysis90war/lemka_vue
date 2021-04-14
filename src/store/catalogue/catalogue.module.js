@@ -39,7 +39,7 @@ export const CatalogueModule = {
         DELETE_CATALOGUE(state, catalogue) {
             const index = state.catalogues.map(item => item.id).indexOf(catalogue.id)
             if (index !== -1) {
-                state.catalogue.space(index, 1)
+                state.catalogue.splice(index, 1)
             }
         }
     },

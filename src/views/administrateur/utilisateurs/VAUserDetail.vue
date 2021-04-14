@@ -18,9 +18,9 @@
           <span class="mr-2"><i :class="icons.PHONE"></i></span>
           <span>{{ utilisateur.numero_tel }}</span>
         </div>
-        <div v-if="utilisateur.ref_genre !== null && utilisateur.ref_genre !== undefined">
+        <div v-if="utilisateur.genre !== null && utilisateur.genre !== undefined">
           <span class="mr-2"><i :class="icons.GENRE"></i></span>
-          <span>{{ utilisateur.ref_genre.genre }}</span>
+          <span>{{ utilisateur.genre.genre }}</span>
         </div>
         <hr>
 

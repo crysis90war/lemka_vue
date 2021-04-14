@@ -8,7 +8,7 @@ export default class AdresseModel {
         this.rue = R.is(String, adresse.rue) ? adresse.rue : ""
         this.numero = R.is(String, adresse.numero) ? adresse.numero : ""
         this.boite = R.is(String, adresse.boite) ? adresse.boite : ""
-        this.ref_ville = R.is(Object, adresse.ref_ville) ? new VilleModel(adresse.ref_ville) : new VilleModel()
+        this.ville = R.is(Object, adresse.ville) ? new VilleModel(adresse.ville) : new VilleModel()
     }
 
     toCreatePayload() {
@@ -16,7 +16,7 @@ export default class AdresseModel {
             rue: this.rue,
             numero: this.numero,
             boite: this.boite,
-            ref_ville: this.ref_ville.id
+            ref_ville: this.ville.id
         }
     }
 

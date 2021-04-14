@@ -9,7 +9,7 @@ export const VilleModule = {
     state: {
         villes: [],
         city: null,
-        villesLoadingStatus: false
+        loadingStatus: false
     },
     getters: {
         villes: state => state.villes,
@@ -17,17 +17,17 @@ export const VilleModule = {
             return state.villes.find(item => item.id === id)
         },
         city: state => state.city,
-        villesLoadingStatus: state => state.villesLoadingStatus
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        LOAD_VILLES_SUCCESS(state, villes) {
+        SET_VILLES_SUCCESS(state, villes) {
             state.villes = villes
         },
-        LOAD_VILLES_FAILURE(state) {
+        SET_VILLES_FAILURE(state) {
             state.villes = []
         },
-        VILLES_LOADING_STATUS(state, villesLoadingStatus) {
-            state.villesLoadingStatus = villesLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
         LOAD_CITY(state, city) {
             state.city = city
@@ -53,14 +53,14 @@ export const VilleModule = {
             let searchParam = `?search=${searchField}`;
             let endpoint = `${DOMAIN}/villes/${searchField === "" ? searchField : searchParam}`;
             return new Promise((resolve, reject) => {
-                commit('VILLES_LOADING_STATUS', true)
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_VILLES_SUCCESS', r.data.results)
-                    commit('VILLES_LOADING_STATUS', false)
+                    commit('SET_VILLES_SUCCESS', r.data.results)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data.results)
                 }, error => {
-                    commit('LOAD_VILLES_FAILURE')
-                    commit('VILLES_LOADING_STATUS', false)
+                    commit('SET_VILLES_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })

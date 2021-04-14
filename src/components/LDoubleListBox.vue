@@ -15,8 +15,7 @@
                 <small>{{ selectedMercerie.description.substring(0, 50) }} ...</small>
               </b-col>
               <b-col lg="2" class="d-flex row">
-                <b-img :src="selectedMercerie.images.length > 0 ? selectedMercerie.images[0].image : require('@/assets/noimage.png')"
-                       height="52" width="52"/>
+                <b-img :src="getMainImage(selectedMercerie.images)" height="52" width="52"/>
               </b-col>
             </b-row>
           </b-list-group-item>
@@ -51,15 +50,14 @@
           </b-list-group-item>
           <div v-else>
             <p v-if="rightOptions.length === 0" class="text-center">Rien a selectionner</p>
-            <b-list-group-item v-else v-for="option in rightOptions" :key="option.id"
-                               variant="light" button @click="leftSelected(option)">
+            <b-list-group-item v-else v-for="option in rightOptions" :key="option.id" variant="light" button @click="leftSelected(option)">
               <b-row>
                 <b-col lg="10">
                   <p>{{ option.reference }} | {{ option.name.substring(0, 25) }} ...</p>
                   <small>{{ option.description.substring(0, 50) }} ...</small>
                 </b-col>
                 <b-col lg="2" class="d-flex row">
-                  <b-img :src="option.images.length > 0 ? option.images[0].image : require('@/assets/noimage.png')" height="52" width="52"/>
+                  <b-img :src="getMainImage(option.images)" height="52" width="52"/>
                 </b-col>
               </b-row>
 
@@ -136,6 +134,14 @@ export default {
       if (this.leftItemSelected === true) this.leftItemSelected = false
       this.rightItemSelected = true
       this.selected = element
+    },
+    getMainImage: function (images) {
+      if (images.length > 0) {
+        let image = images.find(img => img.is_main === true)
+        return image.image
+      } else {
+        return require('@/assets/noimage.png')
+      }
     }
   }
 }

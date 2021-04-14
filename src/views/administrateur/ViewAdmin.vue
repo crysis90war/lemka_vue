@@ -108,7 +108,9 @@ export default {
       loadUtilisateurs: "Utilisateurs/loadUtilisateurs",
       loadArticles: "Articles/loadArticles",
       loadMerceries: "Merceries/loadMerceries",
-      loadTypeService: "TypeServices/loadTypeServices"
+      loadTypeService: "TypeServices/loadTypeServices",
+      loadTvas: "TVA/loadTvas",
+      loadGlobalMerceries: "Merceries/loadGlobalMercerieOptions",
     }),
     initialisation: async function() {
       await this.loadAdminDD()
@@ -116,6 +118,8 @@ export default {
       await this.loadArticles()
       await this.loadMerceries()
       await this.loadTypeService()
+      await this.loadTvas()
+      await this.loadGlobalMerceries()
     },
     sidebarCollapse() {
       this.toggled = !this.toggled

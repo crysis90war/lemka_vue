@@ -75,7 +75,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({userMensurations: "UserMensurations/userMensurations", busy: "UserMensurations/userMensurationsLoadingStatus"})
+    ...mapGetters({userMensurations: "UserMensurations/userMensurations", busy: "UserMensurations/loadingStatus"})
   },
   methods: {
     ...mapActions({

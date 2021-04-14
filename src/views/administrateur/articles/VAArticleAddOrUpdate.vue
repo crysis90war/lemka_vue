@@ -11,11 +11,9 @@
         </b-input-group>
 
         <b-form-group label="Titre" description="Encodez le titre de l'article" class="my-1">
-          <b-form-input v-model="$v.article.titre.$model"
-                        placeholder="Titre ..." type="text" :state="validateState('titre')"/>
+          <b-form-input v-model="$v.article.titre.$model" placeholder="Titre ..." type="text" :state="validateState('titre')"/>
           <b-form-invalid-feedback>
-            <l-invalid-feedback :condition="!$v.article.titre.required"
-                                :errorMessage="required()"/>
+            <l-invalid-feedback :condition="!$v.article.titre.required" :errorMessage="required()"/>
             <l-invalid-feedback :condition="!$v.article.titre.minLength"
                                 :errorMessage="minLength($v.article.titre.$params.minLength.min)"/>
             <l-invalid-feedback :condition="!$v.article.titre.maxLength"
@@ -24,11 +22,10 @@
         </b-form-group>
 
         <b-form-group label="Description" description="Veuillez encoder la description de l'article" class="my-1">
-          <b-form-textarea v-model="$v.article.description.$model"
-                           placeholder="Encodage de la description" :state="validateState('description')"/>
+          <b-form-textarea v-model="$v.article.description.$model" placeholder="Encodage de la description"
+                           :state="validateState('description')"/>
           <b-form-invalid-feedback>
-            <l-invalid-feedback :condition="!$v.article.description.required"
-                                :errorMessage="required()"/>
+            <l-invalid-feedback :condition="!$v.article.description.required" :errorMessage="required()"/>
             <l-invalid-feedback :condition="!$v.article.description.minLength"
                                 :errorMessage="minLength($v.article.description.$params.minLength.min)"/>
           </b-form-invalid-feedback>
@@ -53,10 +50,9 @@
 
           <b-col lg="6">
             <b-form-group label="Catalogue" description="Veuillez selectionner le catalogue de l'article" class="my-1">
-              <multiselect v-model="article.ref_catalogue" :options="catalogues" :loading="cataloguesLoadingStatus"
-                           :close-on-select="true" :hide-selected="true" :options-limit="20" :show-no-results="false"
-                           open-direction="bottom" track-by="id" :internal-search="false" :allow-empty="false"
-                           placeholder="Veuillez encoder pour lancer la recherche..."
+              <multiselect v-model="article.catalogue" :options="catalogues" :loading="cataloguesLoadingStatus" :close-on-select="true"
+                           :hide-selected="true" :options-limit="20" :show-no-results="false" open-direction="bottom" track-by="id"
+                           :internal-search="false" :allow-empty="false" placeholder="Veuillez encoder pour lancer la recherche..."
                            selectLabel="Appuyez sur enter pour selectionner." deselectLabel="Appuyez sur enter pour retirer"
                            @search-change="updateSelectCatalogue">
 
@@ -75,11 +71,10 @@
         </b-row>
 
         <b-form-group label="Tags" description="Veuillez chercher ou ajouter un tag" class="my-1">
-          <multiselect v-model="selected_tags" :options="tags" :loading="tagsLoadingStatus" :multiple="true"
-                       :hide-selected="true" :taggable="true" label="tag" track-by="tag"
-                       selectLabel="Appuyez sur enter pour selectionner." deselectLabel="Appuyez sur enter pour retirer"
-                       placeholder="Cherchez ou ajoutez un tag" tag-placeholder="Ajoutez ça comme nouveau tag"
-                       @tag="addTag" @search-change="updateSelectTag"></multiselect>
+          <multiselect v-model="selected_tags" :options="tags" :loading="tagsLoadingStatus" :multiple="true" :hide-selected="true"
+                       :taggable="true" label="tag" track-by="tag" selectLabel="Appuyez sur enter pour selectionner."
+                       deselectLabel="Appuyez sur enter pour retirer" placeholder="Cherchez ou ajoutez un tag"
+                       tag-placeholder="Ajoutez ça comme nouveau tag" @tag="addTag" @search-change="updateSelectTag"></multiselect>
 
           <template slot="singleLabel" slot-scope="{ option }">
             <span>{{ option.tag }}</span>
@@ -278,9 +273,9 @@ export default {
           new TypeServiceModel(),
           this.$store.getters["TypeServices/typeService"](this.article.ref_type_service)
       )
-      this.article.ref_catalogue = Object.assign(
+      this.article.catalogue = Object.assign(
           new CatalogueModel(),
-          this.$store.getters["Catalogues/catalogue"](this.article.ref_catalogue)
+          this.$store.getters["Catalogues/catalogue"](this.article.catalogue)
       )
 
       this.article.ref_tag.forEach(item => {

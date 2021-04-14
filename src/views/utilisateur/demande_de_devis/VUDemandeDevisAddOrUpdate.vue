@@ -1,6 +1,7 @@
 <template>
   <div class="demande_devis_add_or_udpate">
-    <l-spinner v-if="loading === true"/>
+    <l-spinner v-if="isLoading === true"/>
+
     <div :class="shadow" v-else>
       <h2>{{ id !== undefined ? demande_devis.numero_demande_devis : 'Créer la demande de devis' }}</h2>
       <hr>
@@ -53,7 +54,7 @@
 
         <!-- region Service -->
         <b-form-group label="Service *" description="Veuillez selectionner le service de l'article" class="my-1">
-          <multiselect v-model="demande_devis.ref_type_service" :options="typeServices" :class="{ 'invalid': isInvalid }"
+          <multiselect v-model="demande_devis.type_service" :options="typeServices" :class="{ 'invalid': isInvalid }"
                        label="type_service" track-by="type_service" placeholder="Veuillez selectionner le service"
                        selectLabel="Appuyez sur enter pour selectionner" deselectLabel="Appuyez sur enter pour retirer"
                        :allow-empty="false" :hide-selected="true" @close="onTouch">
@@ -89,9 +90,9 @@
         <!-- region Article -->
         <b-form-group label="Article" class="my-1"
                       description="Si un article particulier vous interesse, veuillez le selecetion, sinon laissez vide">
-          <multiselect v-model="demande_devis.ref_article" :options="articlesPublies"
-                       :option-height="104" :show-labels="false" :hide-selected="true" :internal-search="false"
-                       placeholder="Articles optionnel ..." label="Articles" track-by="titre">
+          <multiselect v-model="demande_devis.article" :options="articlesPublies" :option-height="104" :show-labels="false"
+                       :hide-selected="true" :internal-search="false" placeholder="Articles optionnel ..." label="Articles"
+                       track-by="titre">
             <template slot="singleLabel" slot-scope="props">
               <img v-if="props.option.images.length > 0" :src="props.option.images.length > 0 ? props.option.images[0].image : ''"
                    alt="" height="48" width="48">
@@ -112,11 +113,10 @@
         <!-- region Mensuration -->
         <b-form-group label="Mensuration" class="my-1"
                       description="Veuillez selectionner la mensuration pour cette demande, si vous en avez.">
-          <multiselect v-model="demande_devis.ref_mensuration" :options="userMensurations" :hide-selected="true"
+          <multiselect v-model="demande_devis.mensuration" :options="userMensurations" :hide-selected="true"
                        placeholder="Mensuration optionnel ..." label="mensuration" track-by="id" :internal-search="false">
             <template slot="singleLabel" slot-scope="props">
-              <b-badge v-if="demande_devis.ref_mensuration.id !== null" pill
-                       :variant="props.option.is_main === true ? 'success': 'primary'">
+              <b-badge v-if="demande_devis.mensuration.id !== null" pill :variant="props.option.is_main === true ? 'success': 'primary'">
                 {{ props.option.is_main === true ? 'Principale' : 'Secondaire' }}
               </b-badge>
               <span> {{ props.option.titre }}</span>
@@ -137,11 +137,18 @@
         <!-- region Merceries -->
         <b-form-group label="Merceries">
           <b-form-input v-model="searchInput" placeholder="Veuillez encoder pour chercher une mercerie" @keyup="searchMercerie"/>
-          <LDoubleListBox :left-options="selectedMerceries" :right-options="mercerieOptions" :loading="loadingStatus"/>
+          <LDoubleListBox :left-options="demande_devis.mercerie_options" :right-options="mercerieOptions" :loading="loadingStatus"/>
         </b-form-group>
         <!-- endregion -->
 
       </b-form>
+
+      <b-jumbotron header="Demande de devis">
+        <pre style="white-space: pre-wrap">{{demande_devis}}</pre>
+      </b-jumbotron>
+      <b-jumbotron header="Mercerie options">
+        <pre style="white-space: pre-wrap">{{mercerieOptions}}</pre>
+      </b-jumbotron>
     </div>
   </div>
 </template>
@@ -174,10 +181,8 @@ export default {
       shadow: LemkaHelpers.BSClass.CARD_BORDERLESS_SHADOW,
       routes: LemkaHelpers.Routes,
 
-      selectedMerceries: [],
       searchInput: "",
       submitStatus: null,
-      loading: false
     }
   },
   computed: {
@@ -189,16 +194,7 @@ export default {
       loadingStatus: "Merceries/globalMerceriesLoadingStatus"
     }),
     isInvalid() {
-      return this.isTouched && (this.demande_devis.ref_type_service.id === null || false)
-    }
-  },
-  watch: {
-    selectedMerceries() {
-      let merceriesToSubmit = []
-      this.selectedMerceries.forEach(item => {
-        merceriesToSubmit.push(item.id)
-      })
-      this.demande_devis.ref_mercerie_option = merceriesToSubmit
+      return this.isTouched && (this.demande_devis.type_service.id === null || false)
     }
   },
   methods: {
@@ -210,39 +206,32 @@ export default {
       createDemandeDevis: "DemandesDevis/createDemandeDevis",
       updateDemandeDevis: "DemandesDevis/updateDemandeDevis"
     }),
-    chargerDemandeDevis: async function () {
-      this.toggleLoading()
-      await this.initialisation()
-      await Object.assign(this.demande_devis, this.$store.getters["DemandesDevis/demandeDevis"](this.id))
-      if (this.demande_devis.ref_type_service) {
-        this.demande_devis.ref_type_service = this.$store.getters["TypeServices/typeService"](this.demande_devis.ref_type_service)
-      }
-      if (this.demande_devis.ref_article) {
-        this.demande_devis.ref_article = this.$store.getters["Articles/articleById"](this.demande_devis.ref_article)
-      }
-      if (this.demande_devis.ref_mensuration) {
-        this.demande_devis.ref_mensuration = this.$store.getters["UserMensurations/userMensuration"](this.demande_devis.ref_mensuration)
-      }
-      if (this.demande_devis.ref_mercerie_option.length > 0) {
-        this.demande_devis.ref_mercerie_option.forEach(item => {
-          this.selectedMerceries.push(this.$store.getters["Merceries/globalMercerie"](item))
-        })
-      }
-      this.toggleLoading()
-    },
-    initialisation: async function () {
-      await this.loadGlobalMerceries()
-      if (this.userMensurations.length === 0 ||
-          this.articlesPublies.length === 0 ||
-          this.typeServices.length === 0) {
-        await this.loadTypeServices()
-        await this.loadArticles()
+    chargerOptions: async function () {
+      if (this.userMensurations.length === 0) {
         await this.loadUserMensurations()
       }
+      if (this.articlesPublies.length === 0) {
+        await this.loadArticles()
+      }
+      if (this.typeServices.length === 0) {
+        await this.loadTypeServices()
+      }
+      if (this.mercerieOptions.length === 0) {
+        await this.loadGlobalMerceries()
+      }
     },
+    initialisation: async function () {
+      this.toggleLoading()
+      await this.chargerOptions()
+      if (this.id !== undefined) {
+        Object.assign(this.demande_devis, await this.$store.getters["DemandesDevis/demandeDevis"](this.id))
+      }
+      this.toggleLoading()
+    },
+
     searchMercerie: async function () {
       await this.loadGlobalMerceries(this.searchInput)
-      this.selectedMerceries.forEach(item => {
+      this.demande_devis.mercerie_options.forEach(item => {
         const index = this.mercerieOptions.findIndex(i => i.id === item.id)
         if (index !== -1) {
           this.mercerieOptions.splice(index, 1)
@@ -308,11 +297,7 @@ export default {
     }
   },
   created() {
-    if (this.id !== undefined) {
-      this.chargerDemandeDevis()
-    } else {
-      this.initialisation()
-    }
+    this.initialisation()
   }
 }
 </script>

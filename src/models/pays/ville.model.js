@@ -7,14 +7,14 @@ export default class VilleModel {
         this.id = R.is(Number, ville.id) ? ville.id : null
         this.ville = R.is(String, ville.ville) ? ville.ville : ""
         this.code_postale = R.is(String, ville.code_postale) ? ville.code_postale : ""
-        this.ref_pays = R.is(Object, ville.ref_pays) ? new PaysModel(ville.ref_pays) : null
+        this.pays = R.is(Object, ville.pays) ? new PaysModel(ville.pays) : new PaysModel()
     }
 
     toCreatePayload() {
         return {
             ville: this.ville,
             code_postal: this.code_postale,
-            ref_pays: this.ref_pays.id
+            ref_pays: this.pays.id
         }
     }
 

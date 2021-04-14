@@ -45,6 +45,7 @@ export const Routes = {
     DEMANDE_DEVIS_ADMIN: {name: AdminView + "DemandeDevis", value: 'Demandes de devis'},
 
     DEVIS: {name: AdminView + 'Devis', value: 'Devis', icon: 'far fa-folder'},
+    DEVIS_ADD_OR_UPDATE: {name: AdminView + 'DevisAddOrUpdate', value: ''},
 
     MERCERIES: {name: AdminView + 'Merceries', value: 'Merceries', icon: 'fas fa-dolly-flatbed'},
     MERCERIES_ADD_OR_UPDATE: {name: AdminView + 'MercerieAddOrUpdate', value: 'Mercerie'},

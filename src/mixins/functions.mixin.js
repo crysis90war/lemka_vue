@@ -1,4 +1,9 @@
 export const fonctions = {
+    data() {
+        return {
+            isLoading: false
+        }
+    },
     methods: {
         toggleModal: function(modal) {
             this.$refs[modal].toggle('#toggle-btn')
@@ -11,7 +16,7 @@ export const fonctions = {
             this.$bvModal.hide(mondal_id)
         },
         toggleLoading: function() {
-            this.loading = !this.loading
+            this.isLoading = !this.isLoading
         },
     }
 }

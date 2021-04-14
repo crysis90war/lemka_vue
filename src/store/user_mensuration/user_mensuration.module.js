@@ -1,7 +1,6 @@
 import ApiService from "@/services/api.service";
 import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
-import MesureModel from "@/models/user_mensuration/mesure.model";
 
 const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
@@ -9,7 +8,7 @@ export const UserMensurationModule = {
     namespaced: true,
     state: {
         userMensurations: [],
-        userMensurationsLoadingStatus: false,
+        loadingStatus: false,
 
         mesures: [],
         mesuresLoadingStatus: false
@@ -19,24 +18,17 @@ export const UserMensurationModule = {
         userMensuration: state => id => {
             return state.userMensurations.find(item => item.id === id)
         },
-        userMensurationsLoadingStatus: state => state.userMensurationsLoadingStatus,
-
-        mesures: state => state.mesures,
-        mesure: state => id => {
-            return state.mesures.find(item => item.id === id)
-        },
-        mesuresLoadingStatus: state => state.mesuresLoadingStatus
+        loadingStatus: state => state.loadingStatus,
     },
     mutations: {
-        // region Mensurations
-        LOAD_USER_MENSURATIONS_SUCCESS(state, userMensurations) {
+        SET_USER_MENSURATIONS_SUCCESS(state, userMensurations) {
             state.userMensurations = userMensurations
         },
-        LOAD_USER_MENSURATIONS_FAILURE(state) {
+        SET_USER_MENSURATIONS_FAILURE(state) {
             state.userMensurations = []
         },
-        USER_MENSURATIONS_LOADING_STATUS(state, userMensurationsLoadingStatus) {
-            state.userMensurationsLoadingStatus = userMensurationsLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
         ADD_USER_MENSURATION(state, userMensuration) {
             state.userMensurations.push(userMensuration)
@@ -53,40 +45,28 @@ export const UserMensurationModule = {
                 state.userMensurations.splice(index, 1)
             }
         },
-        // endregion
-
-        // region Mesures
-        LOAD_MESURES_SUCCESS(state, mesures) {
-            state.mesures = mesures
-        },
-        LOAD_MESURES_FAILURE(state) {
-            state.mesures = []
-        },
-        MESURES_LOADING_STATUS(state, mesuresLoadingStatus) {
-            state.mesuresLoadingStatus = mesuresLoadingStatus
-        },
-        UPDATE_MESURE(state, mesure) {
-            const index = state.mesures.findIndex(item => item.id === mesure.id)
-            if (index !== -1) {
-                state.mesures.splice(index, 1, mesure)
+        UPDATE_MESURE(state, [user_mensuration_id, payload]) {
+            const userMensurationIndex = state.userMensurations.findIndex(item => item.id === user_mensuration_id)
+            if (userMensurationIndex !== -1) {
+                const mesureIndex = state.userMensurations[userMensurationIndex].mesures.findIndex(item => item.id === payload.id)
+                if (mesureIndex !== -1) {
+                    state.userMensurations[userMensurationIndex].mesures.splice(mesureIndex, 1, payload)
+                }
             }
         }
-        // endregion
     },
     actions: {
-        // region Mensurations
-
         loadUserMensurations: function ({commit}) {
             let endpoint = `${DOMAIN}/profil/mensurations/`;
             return new Promise((resolve, reject) => {
-                commit('USER_MENSURATIONS_LOADING_STATUS', true)
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_USER_MENSURATIONS_SUCCESS', r.data)
-                    commit('USER_MENSURATIONS_LOADING_STATUS', false)
+                    commit('SET_USER_MENSURATIONS_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('LOAD_USER_MENSURATIONS_FAILURE')
-                    commit('USER_MENSURATIONS_LOADING_STATUS', false)
+                    commit('SET_USER_MENSURATIONS_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })
@@ -113,32 +93,13 @@ export const UserMensurationModule = {
                 })
             })
         },
-        deleteUserMensuration: function ({commit}, userMensuration) {
-            let endpoint = `${DOMAIN}/profil/mensurations/${userMensuration.id}/`;
+        deleteUserMensuration: function ({commit}, payload) {
+            let endpoint = `${DOMAIN}/profil/mensurations/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
-                    commit('DELETE_USER_MENSURATION', userMensuration)
+                    commit('DELETE_USER_MENSURATION', payload)
                     resolve(r)
                 }, error => {
-                    reject(error)
-                })
-            })
-        },
-
-        // endregion
-
-        // region Mesures
-        loadMesures: function ({commit}, userMensurationId) {
-            let endpoint = `${DOMAIN}/profil/mensurations/${userMensurationId}/mesures/`;
-            return new Promise((resolve, reject) => {
-                commit('MESURES_LOADING_STATUS', true)
-                ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_MESURES_SUCCESS', r.data)
-                    commit('MESURES_LOADING_STATUS', false)
-                    resolve(r.data)
-                }, error => {
-                    commit('LOAD_MESURES_FAILURE')
-                    commit('MESURES_LOADING_STATUS', false)
                     reject(error)
                 })
             })
@@ -147,14 +108,12 @@ export const UserMensurationModule = {
             let endpoint = `${DOMAIN}/profil/mensurations/${userMensurationId}/mesures/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
-                    commit('UPDATE_MESURE', Object.assign(new MesureModel(), r.data))
+                    commit('UPDATE_MESURE', [userMensurationId, r.data])
                     resolve(r.data)
                 }, error => {
                     reject(error)
                 })
             })
-        },
-
-        // endregion
+        }
     }
 }
