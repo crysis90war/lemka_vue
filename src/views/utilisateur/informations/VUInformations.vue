@@ -34,7 +34,7 @@
                 <ins>Modifier l'adresse</ins>
               </b-link>
             </div>
-            <div v-if="adresseLoading !== true" class="mt-2">
+            <div v-if="adresse !== null" class="mt-2">
               <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
               <span>{{ adresse.ville.code_postale }} - {{ adresse.ville.ville }}</span><br>
               <span>{{ adresse.ville.pays.pays }}</span>
@@ -97,10 +97,13 @@ export default {
   },
   methods: {
     ...mapActions({loadAdresse: "Adresse/loadAdresse", loadProfil: "Profil/loadProfil",}),
+    chargerElement: function() {
+      this.loadProfil()
+      this.loadAdresse()
+    },
     initialisation: async function () {
       this.toggleLoading()
-      await this.loadProfil()
-      await this.loadAdresse()
+      await this.chargerElement()
       this.toggleLoading()
     }
   },

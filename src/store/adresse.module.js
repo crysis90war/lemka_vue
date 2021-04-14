@@ -19,16 +19,16 @@ export const AdresseModule = {
             Object.assign(state.adresse, payload)
         },
         SET_ADRESSE_FAILURE(state) {
-            state.adresse = new AdresseModel()
+            state.adresse = null
         },
         LOADING_STATUS(state, loadingStatus) {
             state.loadingStatus = loadingStatus
         }
     },
     actions: {
-        loadAdresse({commit}) {
+        loadAdresse: async function({commit}) {
             let endpoint = `${DOMAIN}/profil/adresse/`;
-            return new Promise((resolve, reject) => {
+            return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETData(endpoint).then(r => {
                     commit('SET_ADRESSE_SUCCESS', r.data)

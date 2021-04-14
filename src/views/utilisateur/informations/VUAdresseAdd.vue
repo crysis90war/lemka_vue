@@ -3,7 +3,7 @@
     <b-card-body>
       <b-form @submit.prevent="submit">
         <b-form-group label="Ville" description="Selectionn selectionner votre ville">
-          <multiselect v-model="adresse.ref_ville" :options="villes" :loading="loading" :class="{ 'invalid': isInvalid }"
+          <multiselect v-model="adresse.ville" :options="villes" :loading="loading" :class="{ 'invalid': isInvalid }"
                        label="ville" placeholder="Veuillez encoder pour lancer la recherche..." track-by="ville"
                        :multiple="false" :searchable="true" :internal-search="false" :clear-on-select="false" :close-on-select="true"
                        :options-limit="20" :max-height="600" :show-no-results="false" :hide-selected="true" :allow-empty="false"
@@ -69,6 +69,7 @@
         </b-button-group>
       </b-form>
     </b-card-body>
+    <pre>{{adresse.toCreatePayload()}}</pre>
   </b-card>
 </template>
 
@@ -103,11 +104,11 @@ export default {
   computed: {
     ...mapGetters({villes: "Villes/villes"}),
     isInvalid() {
-      return this.isTouched && this.adresse.ref_ville.id === null
+      return this.isTouched && this.adresse.ville.id === null
     }
   },
   methods: {
-    ...mapActions({loadVilles: "Villes/loadVilles", createAdresse: "Profil/createAdresse"}),
+    ...mapActions({loadVilles: "Villes/loadVilles", createAdresse: "Adresse/createAdresse"}),
 
     submit: function () {
       this.$v.$touch()
