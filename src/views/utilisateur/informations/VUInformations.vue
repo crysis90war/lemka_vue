@@ -27,14 +27,14 @@
             <hr>
             <div>
               <span><i :class="icons.HOME" class="mr-2"></i></span>
-              <b-link v-if="adresse === null" :to="{name: routes.ADRESSE_ADD.name}" class="">
+              <b-link v-if="adresse.id === null" :to="{name: routes.ADRESSE_ADD.name}" class="">
                 <ins>Ajouter une adresse</ins>
               </b-link>
-              <b-link v-if="adresse !== null" :to="{name: routes.ADRESSE_UPDATE.name}" class="">
+              <b-link v-if="adresse.id !== null" :to="{name: routes.ADRESSE_UPDATE.name}" class="">
                 <ins>Modifier l'adresse</ins>
               </b-link>
             </div>
-            <div v-if="adresse !== null" class="mt-2">
+            <div v-if="adresse.id !== null" class="mt-2">
               <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
               <span>{{ adresse.ville.code_postale }} - {{ adresse.ville.ville }}</span><br>
               <span>{{ adresse.ville.pays.pays }}</span>

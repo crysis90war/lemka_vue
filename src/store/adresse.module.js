@@ -19,7 +19,7 @@ export const AdresseModule = {
             Object.assign(state.adresse, payload)
         },
         SET_ADRESSE_FAILURE(state) {
-            state.adresse = null
+            state.adresse = new AdresseModel()
         },
         LOADING_STATUS(state, loadingStatus) {
             state.loadingStatus = loadingStatus

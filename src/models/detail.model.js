@@ -3,7 +3,7 @@ import TVAModel from "@/models/tva.model";
 
 export default class DetailModel {
     constructor(detail = {}) {
-        this.id = R.is(Number, detail.id) ? detail.id : 0
+        this.id = R.is(Number, detail.id) ? detail.id : null
         this.designation = R.is(String, detail.designation) ? detail.designation : ""
         this.prix_u_ht = R.is(Number, detail.prix_u_ht) ? detail.prix_u_ht : 0
         this.quantite = R.is(Number, detail.quantite) ? detail.quantite : 0

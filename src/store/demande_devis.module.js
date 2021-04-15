@@ -21,7 +21,10 @@ export const DemandeDevisModule = {
             return state.demandesDevis.filter(item => item.est_soumis === false && item.est_traite === false)
         },
         demandeDevisSoumis: state => {
-            return state.demandesDevis.filter(item => item.est_soumis === true && item.est_traite === false)
+            return state.demandesDevis.filter(item => item.est_soumis === true && item.est_traite === false && item.en_cours === false)
+        },
+        demandeDevisEnCours: state => {
+            return state.demandesDevis.filter(item => (item.est_soumis === true && item.en_cours === true && item.est_traite === false))
         },
         demandeDevisTraite: state => {
             return state.demandesDevis.filter(item => item.est_traite === true)
@@ -32,6 +35,9 @@ export const DemandeDevisModule = {
         adminDDs: state => state.adminDDs,
         adminDDNonTraite: state => {
             return state.adminDDs.filter(item => item.est_traite === false)
+        },
+        adminDDEnCours: state => {
+            return state.adminDDs.filter(item => item.en_cours === false)
         },
         adminUserDD: state => id => {
             return state.adminDDs.find(item => item.id === id)
@@ -51,10 +57,10 @@ export const DemandeDevisModule = {
         ADD_DEMANDE_DEVIS(state, demandeDevis) {
             state.demandesDevis.push(demandeDevis)
         },
-        UPDATE_DEMANDE_DEVIS(state, demandeDevis) {
-            const index = state.demandesDevis.findIndex(item => item.id === demandeDevis.id)
+        UPDATE_DEMANDE_DEVIS(state, payload) {
+            const index = state.demandesDevis.findIndex(item => item.id === payload.id)
             if (index !== -1) {
-                state.demandesDevis.splice(index, 1, demandeDevis)
+                state.demandesDevis.splice(index, 1, payload)
             }
         },
         DELETE_DEMANDE_DEVIs(state, demandeDevis) {

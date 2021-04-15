@@ -52,7 +52,9 @@
           </b-button-group>
         </template>
       </b-table>
-
+      <b-jumbotron>
+        <pre style="white-space: pre-wrap">{{mercerie_options}}</pre>
+      </b-jumbotron>
     </div>
   </div>
 </template>
@@ -110,7 +112,9 @@ export default {
       }
     },
     activerDesactiver: function (item) {
-      let payload = item
+      console.log(item)
+      let object = new MercerieOptionModel(item)
+      let payload = object.toUpdatePayload()
       payload.est_publie = !payload.est_publie
       this.updateMercerieOption([this.id, payload])
     }

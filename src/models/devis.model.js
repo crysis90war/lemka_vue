@@ -27,7 +27,7 @@ export default class DevisModel {
     toUpdatePayload() {
         return {
             ...this.toCreatePayload(),
-            numero_devis: this.numero_devis
+            id: this.id
         }
     }
 

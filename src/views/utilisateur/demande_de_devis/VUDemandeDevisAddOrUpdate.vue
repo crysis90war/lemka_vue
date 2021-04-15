@@ -12,12 +12,10 @@
           <b-button variant="outline-dark" @click="$router.push({name: routes.DEMANDE_DE_DEVIS.name})">
             <i class="fas fa-arrow-left"></i>
           </b-button>
-          <b-button variant="outline-primary" :disabled="submitStatus === 'PENDING'"
-                    @click.stop.prevent="submitSave()">
+          <b-button variant="outline-primary" :disabled="submitStatus === 'PENDING'" @click.stop.prevent="submitSave()">
             <i class="fas fa-save"></i>
           </b-button>
-          <b-button variant="outline-success" :disabled="submitStatus === 'PENDING'"
-                    @click.stop.prevent="submitSend()">
+          <b-button variant="outline-success" :disabled="submitStatus === 'PENDING'" @click.stop.prevent="submitSend()">
             <i class="fas fa-paper-plane"></i>
           </b-button>
         </b-button-group>

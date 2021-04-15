@@ -42,7 +42,7 @@
 
       <!-- region Couleur -->
       <b-form-group label="Couleur" description="Veuillez choisir la couleur">
-        <multiselect v-model="mercerie_option.ref_couleur" :options="couleurs" :allow-empty="false"
+        <multiselect v-model="mercerie_option.couleur" :options="couleurs" :allow-empty="false"
                      label="nom" track-by="nom" placeholder="Veuillez selectionner la couleur"
                      selectLabel="Appuyez sur enter pour selectionner" :class="{ 'invalid': isInvalid }"
                      deselectLabel="Appuyez sur enter pour retirer" @close="onTouch">
@@ -60,7 +60,7 @@
 
       <b-row>
         <!-- region Prix hors TVA -->
-        <b-col lg="6">
+        <b-col lg="4">
           <b-form-group label="Prix hors TVA" description="Veuillez encoder le prix hors tva de l'option">
             <b-form-input v-model="$v.mercerie_option.prix_u_ht.$model" type="number" step="0.01" min="0.00"
                           :state="validateState('prix_u_ht')"/>
@@ -74,8 +74,28 @@
         </b-col>
         <!-- endregion -->
 
+        <!-- region TVA -->
+        <b-col lg="4">
+          <b-form-group label="TVA" description="Veuillez selectionner la TVA">
+            <multiselect v-model="mercerie_option.tva" :options="tvas" :allow-empty="false"
+                         label="tva" track-by="taux" placeholder="Veuillez selectionner la tva"
+                         selectLabel="Appuyez sur enter pour selectionner" :class="{ 'invalid': isInvalid }"
+                         deselectLabel="Appuyez sur enter pour retirer" @close="onTouch">
+              <template slot="singleLabel" slot-scope="{ option }">
+                <span>{{ option.taux !== null ? `${option.taux * 100} %` : null }}</span>
+              </template>
+              <template slot="option" slot-scope="{ option }">
+                <span>{{ option.taux * 100 }} %</span>
+              </template>
+              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+            </multiselect>
+            <span class="text-danger" v-show="isInvalid"><small>Ce champ est requis</small></span>
+          </b-form-group>
+        </b-col>
+        <!-- endregion -->
+
         <!-- region Stock -->
-        <b-col lg="6">
+        <b-col lg="4">
           <b-form-group label="Stock" description="Veuillez encoder le stock de l'option">
             <b-form-input v-model="$v.mercerie_option.stock.$model" type="number" step="0.01" min="0.00" :state="validateState('stock')"/>
             <b-form-invalid-feedback>
@@ -102,8 +122,8 @@
           </b-button>
         </b-button-group>
 
-        <b-table :items="option_characteristics" :fields="MeOptFields" :busy="caractsBusy"
-                 hover show-empty small stacked="md" class="text-center my-3">
+        <b-table :items="option_characteristics" :fields="MeOptFields" :busy="caractsBusy" hover show-empty small stacked="md"
+                 class="text-center my-3">
           <template #table-busy>
             <l-table-busy/>
           </template>
@@ -209,6 +229,10 @@
       </b-button-group>
       <!-- endregion -->
     </b-container>
+
+    <b-jumbotron>
+      <pre style="white-space: pre-wrap">{{mercerie_option.toCreatePayload()}}</pre>
+    </b-jumbotron>
   </div>
 </template>
 
@@ -246,15 +270,17 @@ export default {
     ...mapGetters({
       couleurs: 'Couleurs/couleurs',
       option_characteristics: "Merceries/caracteristiques",
-      caractsBusy: "Merceries/caracteristiquesLoadingStatus"
+      caractsBusy: "Merceries/caracteristiquesLoadingStatus",
+      tvas: "TVA/tvas"
     }),
     isInvalid() {
-      return this.isTouched && this.mercerie_option.ref_couleur.id === null
+      return this.isTouched && this.mercerie_option.couleur.id === null
     }
   },
   methods: {
     ...mapActions({
       loadCouleurs: 'Couleurs/loadCouleurs',
+      loadTvas: "TVA/loadTvas",
       createMercerieOption: 'Merceries/createOption',
       updateMercerieOption: 'Merceries/updateOption',
       loadMercerieOptionCaracteristiques: "Merceries/loadCaracteristiques",

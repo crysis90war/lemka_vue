@@ -54,10 +54,8 @@
 
                       <b-col lg="4">
                         <b-card-text>
-                          <strong>Traité: </strong>
-                          <b-badge pill :variant="devis.demande_devis.est_traite === true ? 'success' : 'danger'">
-                            <i :class="`fas fa-${devis.demande_devis.est_traite  === true ? 'check' : 'times'}-circle`"></i>
-                          </b-badge>
+                          <strong>Statut: </strong>
+                          <b-badge pill :variant="variante(devis.demande_devis).variant">{{ variante(devis.demande_devis).text }}</b-badge>
                         </b-card-text>
                       </b-col>
                     </b-row>
@@ -110,7 +108,10 @@
                         <b-list-group-item v-for="mercerieOption in devis.demande_devis.mercerie_options" :key="mercerieOption.id">
                           <b-img :src="require('@/assets/noimage.png')" height="72" width="72"/>
                           <span class="ml-3"><strong>{{ mercerieOption.reference }}</strong> | {{ mercerieOption.name }}</span>
-                          <b-button variant="outline-success" size="sm" class="mx-4"><i class="fas fa-plus"></i></b-button>
+                          <b-button variant="outline-success" size="sm" class="mx-4" :disabled="mercerieOption.stock === 0"
+                                    @click="ajouterMercerieAuDetail(mercerieOption)">
+                            <i class="fas fa-plus"></i>
+                          </b-button>
                         </b-list-group-item>
                       </b-list-group>
                     </div>
@@ -281,8 +282,37 @@ export default {
       }
     },
 
+    variante: function (demande_devis) {
+      if (demande_devis.en_cours === true && demande_devis.est_traite === false) {
+        return {variant: "warning", text: "En cours de traitement"}
+      } else if (demande_devis.en_cours === true && demande_devis.est_traite === true) {
+        return {variante: "success", text: "Traité"}
+      } else {
+        return {variante: "danger", text: "Une erreur s'est produite"}
+      }
+    },
+    ajouterMercerieAuDetail(mercerie) {
+      if (mercerie.stock > 0) {
+        this.detail.designation = `${mercerie.reference} | ${mercerie.name}`
+        this.detail.quantite = 1
+        this.detail.prix_u_ht = mercerie.prix_u_ht
+        this.detail.tva = mercerie.tva
+        this.ajouterDetail()
+        console.log(this.detail.toCreatePayload())
+      } else {
+        this.makeToast('danger', "Il n'y a plus de stock disponible")
+      }
+    },
     updateRemarque: function () {
-      this.updateDevis(this.devis.toUpdatePayload())
+      let payload = this.devis.toUpdatePayload()
+      this.updateDevis(payload)
+    },
+    makeToast(variant = null, message = "toast") {
+      this.$bvToast.toast(message, {
+        title: `Variant ${variant || 'default'}`,
+        variant: variant,
+        solid: true
+      })
     },
     ajouterDetail() {
       this.createDetail([this.devis.numero_devis, this.detail.toCreatePayload()])

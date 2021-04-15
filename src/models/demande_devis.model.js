@@ -32,6 +32,7 @@ export default class DemandeDevisModel {
             est_urgent: this.est_urgent,
             est_soumis: this.est_soumis,
             est_traite: this.est_traite,
+            en_cours: this.en_cours,
             ref_type_service: this.type_service.id,
             ref_article: this.article !== null ? this.article.id : null,
             ref_mensuration: this.mensuration !== null ? this.mensuration.id : null,

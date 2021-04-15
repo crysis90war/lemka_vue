@@ -65,6 +65,11 @@
           </b-card-text>
         </b-tab>
 
+        <b-tab title="En cours">
+          <b-card-text>Vos demandes de devis en cours de traitements.</b-card-text>
+          <b-table :items="demandeDevisEnCours" show-empty></b-table>
+        </b-tab>
+
         <b-tab title="Traités">
           <b-card-text>
             <b-table :items="demandeDevisTraite" :fields="taiteTableFields" :busy="busy"
@@ -109,6 +114,7 @@ export default {
   computed: {
     ...mapGetters({
       demandes_devis: "DemandesDevis/demandesDevis",
+      demandeDevisEnCours: "DemandesDevis/demandeDevisEnCours",
       busy: "DemandesDevis/demandesDevisLoadingStatus",
       demandesDevisEnRedaction: "DemandesDevis/demandesDevisEnRedaction",
       demandeDevisSoumis: "DemandesDevis/demandeDevisSoumis",
@@ -118,13 +124,13 @@ export default {
       return DemandeDevisModel.soumisTableFields
     }
   },
-  watch: {
-
-  },
   methods: {
     ...mapActions({loadDemandeDevis: "DemandesDevis/loadDemandeDevis", updateDemandeDevis: "DemandesDevis/updateDemandeDevis"}),
-    envoyer: function (payload) {
+    envoyer: function (item) {
+      let demande_devis = new DemandeDevisModel(item)
+      let payload = demande_devis.toUpdatePayload()
       payload.est_soumis = true
+      console.log(payload)
       this.updateDemandeDevis(payload)
     }
   },

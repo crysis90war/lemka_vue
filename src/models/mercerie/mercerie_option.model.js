@@ -1,19 +1,21 @@
 import * as R from 'ramda'
 import CouleurModel from "@/models/couleur.model";
 import {maxLength, minLength, required, decimal, minValue} from "vuelidate/lib/validators";
+import TVAModel from "@/models/tva.model";
 
 export default class MercerieOptionModel {
-    constructor(mercerie_option = {}) {
-        this.id = R.is(Number, mercerie_option.id) ? mercerie_option.id : null
-        this.name = R.is(String, mercerie_option.name) ? mercerie_option.name : ""
-        this.images_count = R.is(Number, mercerie_option.images_count) ? mercerie_option.images_count : 0
-        this.est_publie = R.is(Boolean, mercerie_option.est_publie) ? mercerie_option.est_publie : false
-        this.reference = R.is(String, mercerie_option.reference) ? mercerie_option.reference : ""
-        this.description = R.is(String, mercerie_option.description) ? mercerie_option.description : ""
-        this.prix_u_ht = R.is(Number, mercerie_option.prix_u_ht) ? mercerie_option.prix_u_ht : null
-        this.stock = R.is(Number, mercerie_option.stock) ? mercerie_option.stock : null
-        this.ref_couleur = R.is(Object, mercerie_option.ref_couleur) ? new CouleurModel(mercerie_option.ref_couleur) : new CouleurModel()
-        this.caracteristiques = R.is(Array, mercerie_option.caracteristiques) ? mercerie_option.caracteristiques : []
+    constructor(json = {}) {
+        this.id = R.is(Number, json.id) ? json.id : null
+        this.name = R.is(String, json.name) ? json.name : ""
+        this.images_count = R.is(Number, json.images_count) ? json.images_count : 0
+        this.est_publie = R.is(Boolean, json.est_publie) ? json.est_publie : false
+        this.reference = R.is(String, json.reference) ? json.reference : ""
+        this.description = R.is(String, json.description) ? json.description : ""
+        this.prix_u_ht = R.is(Number, parseFloat(json.prix_u_ht)) ? parseFloat(json.prix_u_ht) : 0
+        this.stock = R.is(Number, json.stock) ? json.stock : 0
+        this.tva = R.is(Object, json.tva) ? new TVAModel(json.tva) : new TVAModel()
+        this.couleur = R.is(Object, json.couleur) ? new CouleurModel(json.couleur) : new CouleurModel()
+        this.caracteristiques = R.is(Array, json.caracteristiques) ? json.caracteristiques : []
     }
 
     toCreatePayload() {
@@ -23,7 +25,8 @@ export default class MercerieOptionModel {
             description: this.description,
             prix_u_ht: this.prix_u_ht,
             stock: this.stock,
-            ref_couleur: this.ref_couleur.id
+            ref_tva: this.tva.id,
+            ref_couleur: this.couleur.id
         }
     }
 

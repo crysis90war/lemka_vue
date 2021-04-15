@@ -91,6 +91,10 @@
         {{ data.item.created_at | localTimeStr }}
       </template>
 
+      <template #cell(type_service)="data">
+        {{data.item.type_service.type_service}}
+      </template>
+
       <template #cell(titre)="data">
         <router-link :to="{name: routes.ARTICLES_ADD_OR_UPDATE.name, params: {slug: data.item.slug}}">
           {{ data.item.titre }}

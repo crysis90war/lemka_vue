@@ -94,7 +94,7 @@ export const DevisModule = {
             })
         },
         updateDevis: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/devis/${payload.numero_devis}/`;
+            let endpoint = `${DOMAIN}/devis/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_DEVIS', r.data)

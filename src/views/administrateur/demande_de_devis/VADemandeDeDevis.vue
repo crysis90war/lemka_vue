@@ -70,7 +70,7 @@
       </b-row>
 
 
-      <b-table :items="adminDDNonTraite" :fields="fields" :busy="busy" :current-page="currentPage" :per-page="perPage"
+      <b-table :items="adminDDEnCours" :fields="fields" :busy="busy" :current-page="currentPage" :per-page="perPage"
                :filter="filter" :filter-included-fields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
                :sort-direction="sortDirection" show-empty small hover stacked="md" class="text-center mt-3" @filtered="onFiltered">
         <template #table-busy>
@@ -110,9 +110,9 @@
         </template>
       </b-table>
     </div>
-    <b-jumbotron>
-      <pre>{{adminDDNonTraite}}</pre>
-    </b-jumbotron>
+<!--    <b-jumbotron>-->
+<!--      <pre style="white-space: pre-wrap">{{adminDDEnCours}}</pre>-->
+<!--    </b-jumbotron>-->
   </div>
 </template>
 
@@ -137,7 +137,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({adminDDNonTraite: "DemandesDevis/adminDDNonTraite", busy: "DemandesDevis/adminDDLoadingStatus"})
+    ...mapGetters({adminDDEnCours: "DemandesDevis/adminDDEnCours", busy: "DemandesDevis/adminDDLoadingStatus"})
   },
   methods: {
     ...mapActions({
@@ -146,26 +146,24 @@ export default {
       createDevis: "Devis/createDevis"
     }),
     loadOrRefresh: async function () {
-      if (this.adminDDNonTraite.length === 0) {
+      if (this.adminDDEnCours.length === 0) {
         await this.loadAdminDD()
       }
-      this.itemsLength(this.adminDDNonTraite)
+      this.itemsLength(this.adminDDEnCours)
     },
     creerDevis: function (demande_devis) {
-      let DDToUpdate = new DemandeDevisModel()
+      let DDToUpdate = new DemandeDevisModel(demande_devis)
       let devis = new DevisModel()
-      Object.assign(DDToUpdate, demande_devis)
       devis.demande_devis = DDToUpdate
-      console.log(devis.toCreatePayload())
       this.createDevis(devis.toCreatePayload()).then(res => {
-        DDToUpdate.est_traite = true
+        DDToUpdate.en_cours = true
         this.updateAdminDD(DDToUpdate.toUpdatePayload()).then(() => {
-          this.$router.push({name: this.routes.DEVIS_ADD_OR_UPDATE.name, params: {demande_devis_id: demande_devis.id, devis_id: res.id}})
+          this.$router.push({name: this.routes.DEVIS_ADD_OR_UPDATE.name, params: {id: res.id}})
         })
       }, error => {
         console.log(error)
       })
-    }
+    },
   },
   created() {
     this.loadOrRefresh()
