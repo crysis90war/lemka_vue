@@ -110,9 +110,6 @@
         </template>
       </b-table>
     </div>
-<!--    <b-jumbotron>-->
-<!--      <pre style="white-space: pre-wrap">{{adminDDEnCours}}</pre>-->
-<!--    </b-jumbotron>-->
   </div>
 </template>
 

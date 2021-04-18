@@ -67,12 +67,12 @@
 
         <b-tab title="En cours">
           <b-card-text>Vos demandes de devis en cours de traitements.</b-card-text>
-          <b-table :items="demandeDevisEnCours" show-empty></b-table>
+          <b-table :items="demandeDevisEnCours" :fields="traiteTableFields" show-empty></b-table>
         </b-tab>
 
         <b-tab title="Traités">
           <b-card-text>
-            <b-table :items="demandeDevisTraite" :fields="taiteTableFields" :busy="busy"
+            <b-table :items="demandeDevisTraite" :fields="traiteTableFields" :busy="busy"
                      stacked="md" small show-empty hover class="text-center mt-3">
               <template #table-busy>
                 <l-table-busy/>
@@ -108,17 +108,17 @@ export default {
       BSClass: LemkaHelpers.BSClass,
       routes: LemkaHelpers.Routes,
       redactionTableFields: DemandeDevisModel.redactionTableFields,
-      taiteTableFields: DemandeDevisModel.traiteTableFields,
+      traiteTableFields: DemandeDevisModel.traiteTableFields,
     }
   },
   computed: {
     ...mapGetters({
-      demandes_devis: "DemandesDevis/demandesDevis",
-      demandeDevisEnCours: "DemandesDevis/demandeDevisEnCours",
       busy: "DemandesDevis/demandesDevisLoadingStatus",
+      demandes_devis: "DemandesDevis/demandesDevis",
       demandesDevisEnRedaction: "DemandesDevis/demandesDevisEnRedaction",
       demandeDevisSoumis: "DemandesDevis/demandeDevisSoumis",
-      demandeDevisTraite: "DemandesDevis/demandeDevisTraite"
+      demandeDevisEnCours: "DemandesDevis/demandeDevisEnCours",
+      demandeDevisTraite: "DemandesDevis/demandeDevisTraite",
     }),
     soumisTableFields() {
       return DemandeDevisModel.soumisTableFields
@@ -132,7 +132,7 @@ export default {
       payload.est_soumis = true
       console.log(payload)
       this.updateDemandeDevis(payload)
-    }
+    },
   },
   created() {
     if (this.demandes_devis.length === 0) {

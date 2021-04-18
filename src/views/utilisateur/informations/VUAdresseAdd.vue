@@ -69,7 +69,6 @@
         </b-button-group>
       </b-form>
     </b-card-body>
-    <pre>{{adresse.toCreatePayload()}}</pre>
   </b-card>
 </template>
 

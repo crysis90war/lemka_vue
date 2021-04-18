@@ -53,6 +53,15 @@ export default class DevisModel {
         ]
     }
 
+    static get userTableFields() {
+        return [
+            {key: 'created_at', label: 'Date', sortable: true},
+            {key: 'numero_devis', label: 'N° Devis', sortable: true},
+            {key: 'numero_demande_devis', label: 'N° Demande devis', sortable: true},
+            {key: "actions", label: "Actions"},
+        ]
+    }
+
     statutDevis (item) {
         let statut = {
             etat: undefined,

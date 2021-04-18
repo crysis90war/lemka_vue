@@ -2,25 +2,24 @@ import * as R from 'ramda'
 import {format, isValid} from "date-fns";
 import TypeServiceModel from "@/models/type_service.model";
 import CatalogueModel from "@/models/catalogue/catalogue.model";
-import TagModel from "@/models/tag.model";
 import {maxLength, minLength, required} from "vuelidate/lib/validators";
 
 export default class ArticleModel {
-    constructor(article = {}) {
-        this.id = R.is(Number, article.id) ? article.id : null
-        this.slug = R.is(String, article.slug) ? article.slug : ""
-        this.created_at = article.created_at && isValid(article.created_at) ? format(article.created_at, "DD-MM-YYYY") : null
-        this.updated_at = article.updated_at && isValid(article.updated_at) ? format(article.updated_at, "DD-MM-YYYY") : null
-        this.est_active = R.is(Boolean, article.est_active) ? article.est_active : false
-        this.titre = R.is(String, article.titre) ? article.titre : ""
-        this.description = R.is(String, article.description) ? article.description : ""
-        this.images_count = R.is(Number, article.images_count) ? article.images_count : null
-        this.likes_count = R.is(Number, article.likes_count) ? article.likes_count : null
-        this.catalogue = R.is(Object, article.catalogue) ? new CatalogueModel(article.catalogue) : null
-        this.type_service = R.is(Object, article.type_service) ? new TypeServiceModel(article.type_service) : new TypeServiceModel()
+    constructor(json = {}) {
+        this.id = R.is(Number, json.id) ? json.id : null
+        this.slug = R.is(String, json.slug) ? json.slug : ""
+        this.created_at = json.created_at && isValid(json.created_at) ? format(json.created_at, "DD-MM-YYYY") : null
+        this.updated_at = json.updated_at && isValid(json.updated_at) ? format(json.updated_at, "DD-MM-YYYY") : null
+        this.est_active = R.is(Boolean, json.est_active) ? json.est_active : false
+        this.titre = R.is(String, json.titre) ? json.titre : ""
+        this.description = R.is(String, json.description) ? json.description : ""
+        this.images_count = R.is(Number, json.images_count) ? json.images_count : null
+        this.likes_count = R.is(Number, json.likes_count) ? json.likes_count : null
+        this.catalogue = R.is(Object, json.catalogue) ? new CatalogueModel(json.catalogue) : new CatalogueModel()
+        this.type_service = R.is(Object, json.type_service) ? new TypeServiceModel(json.type_service) : new TypeServiceModel()
 
-        this.ref_tag = R.is(Array, article.ref_tag) ? [new TagModel(article.ref_tag)] : []
-        this.images = R.is(Array, article.images) ? [article.images] : []
+        this.tags = R.is(Array, json.tags) ? json.tags : []
+        this.images = R.is(Array, json.images) ? [json.images] : []
     }
 
     toCreatePayload() {
@@ -30,7 +29,7 @@ export default class ArticleModel {
             description: this.description,
             ref_type_service: this.type_service.id,
             ref_catalogue: this.catalogue.id,
-            ref_tag: []
+            ref_tag: this.tags.map(item => item.id)
         }
     }
 

@@ -214,17 +214,7 @@
         </b-collapse>
       </b-container>
     </section>
-
-    <b-jumbotron>
-      <pre style="white-space: pre-wrap">{{ devis }}</pre>
-    </b-jumbotron>
   </div>
-
-
-  <!--    <b-jumbotron class="mt-4" header="details">-->
-  <!--      <pre style="white-space: pre-wrap">{{ devis }}</pre>-->
-  <!--    </b-jumbotron>-->
-  <!--  </div>-->
 </template>
 
 <script>

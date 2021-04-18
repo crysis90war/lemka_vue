@@ -1,15 +1,18 @@
 <template>
   <div class="article">
-    <l-spinner v-if="loading"/>
+    <l-spinner v-if="isLoading"/>
 
     <b-container v-else>
       <b-form>
+        <!-- region Switch -->
         <b-input-group class="my-1">
           <b-form-checkbox v-model="article.est_active" name="check-button" switch>
             <p>{{ article.est_active === true ? 'Publié' : 'En attente' }}</p>
           </b-form-checkbox>
         </b-input-group>
+        <!-- endregion -->
 
+        <!-- region Titre -->
         <b-form-group label="Titre" description="Encodez le titre de l'article" class="my-1">
           <b-form-input v-model="$v.article.titre.$model" placeholder="Titre ..." type="text" :state="validateState('titre')"/>
           <b-form-invalid-feedback>
@@ -20,7 +23,9 @@
                                 :errorMessage="maxLength($v.article.titre.$params.maxLength.max)"/>
           </b-form-invalid-feedback>
         </b-form-group>
+        <!-- endregion -->
 
+        <!-- region Description -->
         <b-form-group label="Description" description="Veuillez encoder la description de l'article" class="my-1">
           <b-form-textarea v-model="$v.article.description.$model" placeholder="Encodage de la description"
                            :state="validateState('description')"/>
@@ -30,15 +35,17 @@
                                 :errorMessage="minLength($v.article.description.$params.minLength.min)"/>
           </b-form-invalid-feedback>
         </b-form-group>
+        <!-- endregion -->
 
         <b-row>
+          <!-- region Service -->
           <b-col lg="6">
             <b-form-group label="Service" description="Veuillez selectionner le service de l'article" class="my-1">
-              <multiselect v-model="article.ref_type_service" :options="typeServices" :allow-empty="false" :hide-selected="true"
+              <multiselect v-model="article.type_service" :options="typeServices" :allow-empty="false" :hide-selected="true"
                            label="type_service" track-by="type_service" placeholder="Veuillez selectionner le service"
                            selectLabel="Appuyez sur enter pour selectionner" deselectLabel="Appuyez sur enter pour retirer">
                 <template slot="singleLabel" slot-scope="{ option }">
-                  <span>{{ option.type_service }}</span>
+                  <span>{{ option.type_service.id !== null ? option.type_service : null }}</span>
                 </template>
                 <template slot="option" slot-scope="{ option }">
                   <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
@@ -47,7 +54,9 @@
               </multiselect>
             </b-form-group>
           </b-col>
+          <!-- endregion -->
 
+          <!-- region Catalogue -->
           <b-col lg="6">
             <b-form-group label="Catalogue" description="Veuillez selectionner le catalogue de l'article" class="my-1">
               <multiselect v-model="article.catalogue" :options="catalogues" :loading="cataloguesLoadingStatus" :close-on-select="true"
@@ -57,21 +66,26 @@
                            @search-change="updateSelectCatalogue">
 
                 <template slot="singleLabel" slot-scope="{ option }">
-                  <span>{{ option.rayon }} - {{ option.section }} - {{ option.type_produit }}</span>
+                  <span>
+                    {{option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null }}
+                  </span>
                 </template>
 
                 <template slot="option" slot-scope="{ option }">
-                  <span>{{ option.rayon }} - {{ option.section }} - {{ option.type_produit }}</span>
+                  <span>
+                    {{option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null }}
+                  </span>
                 </template>
 
                 <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
               </multiselect>
             </b-form-group>
           </b-col>
+          <!-- endregion -->
         </b-row>
 
         <b-form-group label="Tags" description="Veuillez chercher ou ajouter un tag" class="my-1">
-          <multiselect v-model="selected_tags" :options="tags" :loading="tagsLoadingStatus" :multiple="true" :hide-selected="true"
+          <multiselect v-model="article.tags" :options="tags" :loading="tagsLoadingStatus" :multiple="true" :hide-selected="true"
                        :taggable="true" label="tag" track-by="tag" selectLabel="Appuyez sur enter pour selectionner."
                        deselectLabel="Appuyez sur enter pour retirer" placeholder="Cherchez ou ajoutez un tag"
                        tag-placeholder="Ajoutez ça comme nouveau tag" @tag="addTag" @search-change="updateSelectTag"></multiselect>
@@ -91,8 +105,8 @@
           <b-button variant="outline-dark" @click="$router.push({name: routes.ARTICLES.name})">
             <i class="fas fa-arrow-left"></i>
           </b-button>
-          <b-button :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
-                    :disabled="submitStatus === 'PENDING'" @click="submit">
+          <b-button :variant="slug !== undefined ? 'outline-primary' : 'outline-success'" :disabled="submitStatus === 'PENDING'"
+                    @click="submit">
             {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
           </b-button>
           <b-button variant="outline-danger" @click="reset">
@@ -127,7 +141,7 @@
           </b-form>
         </b-modal>
 
-        <b-table :items="images" :fields="imagesFields" class="mt-2" stacked="md" small show-empty>
+        <b-table :items="article.images" :fields="imagesFields" class="mt-2" stacked="md" small show-empty>
           <template #empty>
             <div class="text-center">
               Cet article n'a pas d'images
@@ -162,13 +176,8 @@
         </b-table>
       </div>
     </b-container>
-
-    <b-jumbotron class="mt-5" v-if="loading === false">
-      <pre>{{ article.toUpdatePayload() }}</pre>
-      <pre>{{ selected_tags }}</pre>
-      <pre>{{ images }}</pre>
-      <pre>{{ catalogues }}</pre>
-    </b-jumbotron>
+    <l-jumbotron :data="article.toCreatePayload()"/>
+    <l-jumbotron :data="article"/>
   </div>
 </template>
 
@@ -183,9 +192,8 @@ import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import ArticleImageModel from "@/models/article/article_image.model";
-import TypeServiceModel from "@/models/type_service.model";
-import CatalogueModel from "@/models/catalogue/catalogue.model";
 import {fonctions} from "@/mixins/functions.mixin";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VAArticleAddOrUpdate",
@@ -200,10 +208,15 @@ export default {
       required: false
     }
   },
-
+  title() {
+    if (this.slug !== undefined) {
+      return htmlTitle(this.article.titre)
+    } else {
+      return htmlTitle("Ajout d'une nouveau article")
+    }
+  },
   computed: {
     ...mapGetters({
-      images: "Articles/images",
       tags: "Tags/tags",
       tagsLoadingStatus: "Tags/tagsLoadingStatus",
       typeServices: 'TypeServices/typeServices',
@@ -225,8 +238,6 @@ export default {
       imagesFields: ArticleImageModel.tableFields,
       submitStatus: null,
 
-      selected_tags: [],
-
       preview: null,
       image: null,
       destination: null,
@@ -235,54 +246,49 @@ export default {
       image_list: [],
 
       formData: new FormData(),
-
-      dirty: false
     }
   },
 
   methods: {
     ...mapActions({
+      loadArticles: "Articles/loadArticles",
       loadTags: "Tags/loadTags",
       loadTypeServices: "TypeServices/loadTypeServices",
       loadCatalogues: "Catalogues/loadCatalogues",
-      loadArticles: "Articles/loadArticles",
+      createTag: "Tags/createTag",
       createArticle: "Articles/createArticle",
       updateArticle: "Articles/updateArticle",
-      loadImages: "Articles/loadImages",
       createImage: "Articles/createImage",
       updateImage: "Articles/updateImage",
-      createTag: "Tags/createTag"
+      deleteImage: "Articles/deleteImage"
     }),
 
     initialisation: async function () {
-      if (this.tags.length === 0 || this.catalogues.length === 0 || this.typeServices.length === 0 || this.articles.length === 0) {
+      if (this.articles.length === 0) {
         await this.loadArticles()
-        await this.loadCatalogues()
-        await this.loadTypeServices()
+      }
+      if (this.tags.length === 0) {
         await this.loadTags()
       }
-      await this.loadImages(this.slug)
+      if (this.catalogues.length) {
+        await this.loadCatalogues()
+      }
+      if (this.typeServices.length === 0) {
+        await this.loadTypeServices()
+      }
     },
 
     chargerArticle: async function () {
       this.toggleLoading()
       await this.initialisation()
+      let article = await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug)
 
-      Object.assign(this.article, this.$store.getters["Articles/articleBySlug"](this.slug))
-      this.article.ref_type_service = Object.assign(
-          new TypeServiceModel(),
-          this.$store.getters["TypeServices/typeService"](this.article.ref_type_service)
-      )
-      this.article.catalogue = Object.assign(
-          new CatalogueModel(),
-          this.$store.getters["Catalogues/catalogue"](this.article.catalogue)
-      )
-
-      this.article.ref_tag.forEach(item => {
-        this.selected_tags.push(Object.assign(new TagModel(), this.$store.getters["Tags/tag"](item)))
-      })
-
-      this.$route.meta.value = this.article.titre
+      if (article !== undefined) {
+        Object.assign(this.article, article)
+        this.$route.meta.value = this.article.titre
+      } else {
+        await this.$router.push({name: this.routes.ARTICLES.name})
+      }
       this.toggleLoading()
     },
 
@@ -305,7 +311,7 @@ export default {
         tag: newTag,
       }
       this.tags.push(tag)
-      this.selected_tags.push(tag)
+      this.article.tags.push(tag)
     },
 
     submit: async function () {
@@ -315,29 +321,20 @@ export default {
       } else {
         this.submitStatus = 'PENDING'
 
-        let selectedTags = this.selected_tags
-        let tagsToSubmit = []
-        let payload = this.slug !== undefined ? this.article.toUpdatePayload() : this.article.toCreatePayload()
-
-        if (selectedTags.length > 0) {
-          for (let i = 0; i < selectedTags.length; i++) {
+        if (this.article.tags.length > 0) {
+          for (let i = 0; i < this.article.tags.length; i++) {
             let newTag = new TagModel()
 
-            if (selectedTags[i].id === null) {
-              Object.assign(newTag, selectedTags[i])
+            if (this.article.tags[i].id === null) {
+              Object.assign(newTag, this.article.tags[i])
               await this.createTag(newTag.toCreatePayload()).then(tag => {
-                tagsToSubmit.push(tag)
+                this.article.tags.splice(i, 1, tag)
               })
-            } else {
-              newTag = selectedTags[i]
-              tagsToSubmit.push(newTag)
             }
           }
-
-          tagsToSubmit.forEach(tag => {
-            payload.ref_tag.push(tag.id)
-          })
         }
+
+        let payload = this.slug !== undefined ? this.article.toUpdatePayload() : this.article.toCreatePayload()
 
         if (this.slug === undefined) {
           await this.createArticle(payload)
@@ -391,6 +388,7 @@ export default {
     },
 
     createImage: async function () {
+
       await ArticleModel.create_article_image(this.article.slug, this.formData)
     },
 
@@ -398,11 +396,11 @@ export default {
       await ArticleModel.update_article_image_by_id(this.article.slug, this.formData)
     },
 
-    update_image_is_main: async function (image_id, is_main) {
+    update_image_is_main: function (image_id, is_main) {
       let payload = {
         is_main: !is_main
       }
-      await ArticleModel.patch_article_image(this.article.slug, image_id, payload)
+      ArticleModel.patch_article_image(this.article.slug, image_id, payload)
     },
 
     previewMultiImage: function (event) {

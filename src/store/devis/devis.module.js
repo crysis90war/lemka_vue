@@ -14,6 +14,9 @@ export const DevisModule = {
         devis: state => id => {
             return state.deviss.find(item => item.id === id)
         },
+        devisNumberDevis: state => numero_devis => {
+            return state.deviss.find(item => item.numero_devis === numero_devis)
+        },
         devissLoadingStatus: state => state.devissLoadingStatus
     },
     mutations: {

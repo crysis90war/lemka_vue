@@ -157,10 +157,6 @@
       </b-form>
 
     </b-card-body>
-    <b-jumbotron>
-      <pre>{{ entreprise }}</pre>
-      <pre>{{ entreprise.toUpdatePayload() }}</pre>
-    </b-jumbotron>
   </b-card>
 </template>
 

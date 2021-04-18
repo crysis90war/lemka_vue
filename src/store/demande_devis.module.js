@@ -18,16 +18,16 @@ export const DemandeDevisModule = {
         },
         demandesDevis: state => state.demandesDevis,
         demandesDevisEnRedaction: state => {
-            return state.demandesDevis.filter(item => item.est_soumis === false && item.est_traite === false)
+            return state.demandesDevis.filter(item => item.est_soumis === false && item.est_traite === false && item.en_cours === false)
         },
         demandeDevisSoumis: state => {
             return state.demandesDevis.filter(item => item.est_soumis === true && item.est_traite === false && item.en_cours === false)
         },
         demandeDevisEnCours: state => {
-            return state.demandesDevis.filter(item => (item.est_soumis === true && item.en_cours === true && item.est_traite === false))
+            return state.demandesDevis.filter(item => item.est_soumis === true && item.en_cours === true && item.est_traite === false)
         },
         demandeDevisTraite: state => {
-            return state.demandesDevis.filter(item => item.est_traite === true)
+            return state.demandesDevis.filter(item => item.est_soumis === true && item.en_cours === true && item.est_traite === true)
         },
 
         demandesDevisLoadingStatus: state => state.demandesDevisLoadingStatus,

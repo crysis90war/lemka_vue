@@ -140,13 +140,6 @@
         <!-- endregion -->
 
       </b-form>
-
-      <b-jumbotron header="Demande de devis">
-        <pre style="white-space: pre-wrap">{{demande_devis}}</pre>
-      </b-jumbotron>
-      <b-jumbotron header="Mercerie options">
-        <pre style="white-space: pre-wrap">{{mercerieOptions}}</pre>
-      </b-jumbotron>
     </div>
   </div>
 </template>

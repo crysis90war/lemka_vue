@@ -5,9 +5,6 @@
       <LInput :input.sync="car.brand" label="Label" description="Description" placeholder="placeholder ..."></LInput>
       <LInput :input.sync="car.model" label="Label" description="Description" placeholder="placeholder ..."></LInput>
       <b-form-datepicker v-model="car.year" :date-format-options="{ year: 'numeric', month: 'numeric' }" locale="fr"/>
-
-      <pre>{{ car }}</pre>
-
     </b-container>
 
   </div>

@@ -41,14 +41,6 @@
           </b-button>
         </b-button-group>
       </b-form>
-
-      <b-jumbotron header="Opt Carac" class="mt-4">
-        <pre>{{ characteristics }}</pre>
-        <pre>{{ characteristic }}</pre>
-        {{ mercerie_id }}
-        {{ option_id }}
-        {{ id }}
-      </b-jumbotron>
     </b-container>
   </div>
 </template>

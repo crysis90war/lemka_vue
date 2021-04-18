@@ -109,8 +109,6 @@
         </b-button>
       </template>
     </b-table>
-
-    <pre>{{ articles }}</pre>
   </div>
 
   <router-view v-else></router-view>
@@ -133,7 +131,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({articles: 'Articles/articles', busy: 'Articles/articlesLoadingStatus'})
+    ...mapGetters({articles: 'Articles/articles', busy: 'Articles/loadingStatus'})
   },
   methods: {
     ...mapActions({loadArticles: "Articles/loadArticles", updateArticle: "Articles/updateArticle"}),

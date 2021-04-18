@@ -4,11 +4,11 @@ import SectionModel from "@/models/catalogue/section.model";
 import TypeProduitModel from "@/models/catalogue/type_produit.model";
 
 export default class CatalogueModel {
-    constructor(catalogue = {}) {
-        this.id = R.is(Number, catalogue.id) ? catalogue.id : null
-        this.rayon = R.is(Object, catalogue.ref_rayon) ? new RayonModel(catalogue.ref_rayon) : new RayonModel()
-        this.section = R.is(Object, catalogue.ref_section) ? new SectionModel(catalogue.ref_section) : new SectionModel()
-        this.type_produit = R.is(Object, catalogue.ref_type_produit) ? new TypeProduitModel(catalogue.ref_type_produit) : new TypeProduitModel()
+    constructor(json = {}) {
+        this.id = R.is(Number, json.id) ? json.id : null
+        this.rayon = R.is(Object, json.rayon) ? new RayonModel(json.rayon) : new RayonModel()
+        this.section = R.is(Object, json.section) ? new SectionModel(json.section) : new SectionModel()
+        this.type_produit = R.is(Object, json.type_produit) ? new TypeProduitModel(json.type_produit) : new TypeProduitModel()
     }
 
     toCreatePayload() {

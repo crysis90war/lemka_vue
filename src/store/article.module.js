@@ -1,4 +1,3 @@
-import ArticleModel from "@/models/article/article.model";
 import ApiService from "@/services/api.service";
 import LemkaHelpers from "@/helpers";
 
@@ -8,41 +7,27 @@ export const ArticleModule = {
     namespaced: true,
     state: {
         articles: [],
-        articlesLoadingStatus: false,
-
-        images: [],
-        imagesLoadingStatus: false
+        loadingStatus: false,
     },
     getters: {
         articles: state => state.articles,
         articleBySlug: state => slug => {
             return state.articles.find(item => item.slug === slug)
         },
-        articleById: state => id => {
-          return state.articles.find(item => item.id === id)
-        },
-        articlesLoadingStatus: state => state.articlesLoadingStatus,
+        loadingStatus: state => state.loadingStatus,
         articlesPublies: state => {
             return state.articles.filter(item => item.est_active === true)
-        },
-
-        images: state => state.images,
-        image: state => id => {
-            return state.images.find(item => item.id === id)
-        },
-        imagesLoadingStatus: state => state.imagesLoadingStatus
+        }
     },
     mutations: {
-        // region Articles
-
         SET_ARTICLES_SUCCESS(state, payload) {
             state.articles = payload
         },
         SET_ARTICLES_FAILURE(state) {
             state.articles = []
         },
-        ARTICLES_LOADING_STATUS(state, articlesLoadingStatus) {
-            state.articlesLoadingStatus = articlesLoadingStatus
+        LOADING_STATUS(state, articlesLoadingStatus) {
+            state.loadingStatus = articlesLoadingStatus
         },
         ADD_ARTICLE(state, article) {
             state.articles.push(article)
@@ -60,69 +45,61 @@ export const ArticleModule = {
             }
         },
 
-        // endregion
-        // region Images
-
-        LOAD_IMAGES_SUCCES(state, articleImages) {
-            state.images = articleImages
-        },
-        LOAD_IMAGES_FAILURE(state) {
-            state.images = []
-        },
-        IMAGES_LOADING_STATUS(state, imagesLoadingStatus) {
-            state.imagesLoadingStatus = imagesLoadingStatus
-        },
-        ADD_IMAGE(state, image) {
-            state.images.push(image)
-        },
-        UPDATE_IMAGE(state, image) {
-            const index = state.images.findIndex(item => item.id === image.id)
+        ADD_IMAGE(state, [article_slug, payload]) {
+            const index = state.articles.findIndex(item => item.slug === article_slug)
             if (index !== -1) {
-                state.images.splice(index, 1, image)
+                state.articles[index].images.push(payload)
             }
         },
-        DELETE_IMAGE(state, image) {
-            const index = state.images.map(item => item.id).indexOf(image.id);
-            if (index !== -1) {
-                state.images.splice(index, 1)
+        UPDATE_IMAGE(state, [article_slug, payload]) {
+            const articleIndex = state.articles.findIndex(item => item.slug === article_slug)
+            if (articleIndex !== -1) {
+                const imageIndex = state.articles[articleIndex].images.findIndex(item => item.id === payload.id)
+                if (imageIndex !== -1) {
+                    state.article[articleIndex].images.splice(imageIndex, 1, payload)
+                }
+            }
+        },
+        DELETE_IMAGE(state, [article_slug, image]) {
+            const articleIndex = state.articles.findIndex(item => item.slug === article_slug)
+            if (articleIndex !== -1) {
+                const imageIndex = state.articles[articleIndex].images.findIndex(item => item.id === image.id)
+                if (imageIndex !== -1) {
+                    state.article[articleIndex].images.splice(imageIndex, 1, image)
+                }
             }
         }
-
-        // endregion
     },
     actions: {
-        // region Articles
-
         loadArticles: async function ({commit}) {
             let endpoint = `${DOMAIN}/articles/`;
             return await new Promise((resolve, reject) => {
-                commit('ARTICLES_LOADING_STATUS', true)
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
                     commit('SET_ARTICLES_SUCCESS', r.data)
-                    commit('ARTICLES_LOADING_STATUS', false)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
                     commit('SET_ARTICLES_FAILURE')
-                    commit('ARTICLES_LOADING_STATUS', false)
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })
         },
-        createArticle: async function ({commit}, payload) {
+        createArticle: function ({commit}, payload) {
             let endpoint = `${DOMAIN}/articles/`;
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
-                    commit('ADD_ARTICLE', Object.assign(new ArticleModel(), r.data))
+                    commit('ADD_ARTICLE', r.data)
                     resolve(r.data)
                 }, error => {
                     reject(error)
                 })
             })
         },
-        updateArticle: async function ({commit}, payload) {
+        updateArticle: function ({commit}, payload) {
             let endpoint = `${DOMAIN}/articles/${payload.slug}/`;
-
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_ARTICLE', r.data)
                     resolve(r.data)
@@ -131,10 +108,9 @@ export const ArticleModule = {
                 })
             })
         },
-        deleteArticle: async function ({commit}, article) {
+        deleteArticle: function ({commit}, article) {
             let endpoint = `${DOMAIN}/articles/${article.slug}/`;
-
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_ARTICLE', article)
                     resolve(r)
@@ -144,29 +120,11 @@ export const ArticleModule = {
             })
         },
 
-        // endregion
-        // region Images
-
-        loadImages: function ({commit}, article_slug) {
-            let endpoint = `${DOMAIN}/articles/${article_slug}/images/`;
-            return new Promise((resolve, reject) => {
-                commit('IMAGES_LOADING_STATUS', true)
-                ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_IMAGES_SUCCES', r.data)
-                    commit('IMAGES_LOADING_STATUS', false)
-                    resolve(r.data)
-                }, error => {
-                    commit('LOAD_IMAGES_FAILURE')
-                    commit('IMAGES_LOADING_STATUS', false)
-                    reject(error)
-                })
-            })
-        },
         createImage: function({commit}, [article_slug, payload]) {
             let endpoint = `${DOMAIN}/articles/${article_slug}/images/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
-                    commit('ADD_IMAGE', r.data)
+                    commit('ADD_IMAGE', [article_slug, r.data])
                     resolve(r.data)
                 }, error => {
                     reject(error)
@@ -177,7 +135,7 @@ export const ArticleModule = {
             let endpoint = `${DOMAIN}/articles/${article_slug}/images/${payload.id}`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
-                    commit('UPDATE_IMAGE', r.data)
+                    commit('UPDATE_IMAGE', [article_slug, r.data])
                     resolve(r.data)
                 }, error => {
                     reject(error)

@@ -107,8 +107,11 @@
                       :to="{name: routes.DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
               <i class="fas fa-edit"></i>
             </b-button>
-            <b-button :variant="data.item.est_soumis === true ? 'outline-info' : 'outline-success'">
-              <i :class="data.item.est_soumis === true ? FAIcons.INFO : FAIcons.PLANE"></i>
+            <b-button v-if="!data.item.est_soumis" variant="outline-success" @click="sendDevis(data.item)">
+              <i :class="FAIcons.PLANE"></i>
+            </b-button>
+            <b-button v-if="data.item.est_soumis" variant="outline-info">
+              <i :class="FAIcons.INFO"></i>
             </b-button>
           </b-button-group>
         </template>
@@ -124,6 +127,7 @@ import {mapActions, mapGetters} from "vuex";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import LemkaHelpers from "@/helpers";
 import {htmlTitle} from "@/utils/tools";
+import DemandeDevisModel from "@/models/demande_devis.model";
 
 export default {
   name: "VADevis",
@@ -143,13 +147,19 @@ export default {
     ...mapGetters({deviss: "Devis/deviss", busy: "Devis/devissLoadingStatus"})
   },
   methods: {
-    ...mapActions({loadDevis: "Devis/loadDevis"}),
+    ...mapActions({loadDevis: "Devis/loadDevis", updateDevis: "Devis/updateDevis", updateDemandeDevis: "DemandesDevis/updateAdminDD"}),
     loadOrRefresh: async function () {
       await this.loadDevis()
       this.itemsLength(this.deviss)
     },
-    sendDevis: function() {
-
+    sendDevis: function(item) {
+      let devis = new DevisModel(item)
+      let devisPayload = devis.toUpdatePayload()
+      let demandeDevis = new DemandeDevisModel(devis.demande_devis)
+      let demandeDevisPayload = demandeDevis.toUpdatePayload()
+      demandeDevisPayload.est_traite = true
+      this.updateDevis(devisPayload)
+      this.updateDemandeDevis(demandeDevisPayload)
     }
   },
   created() {

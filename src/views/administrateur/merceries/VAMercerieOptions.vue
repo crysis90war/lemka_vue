@@ -52,9 +52,6 @@
           </b-button-group>
         </template>
       </b-table>
-      <b-jumbotron>
-        <pre style="white-space: pre-wrap">{{mercerie_options}}</pre>
-      </b-jumbotron>
     </div>
   </div>
 </template>

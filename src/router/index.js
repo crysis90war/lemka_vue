@@ -57,6 +57,7 @@ import VGCGV from "@/views/global/VGCGV";
 import VGConfidentialite from "@/views/global/VGConfidentialite";
 import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
 import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate";
+import VUDevisDetails from "@/views/utilisateur/devis/VUDevisDetails";
 
 // endregion
 
@@ -313,7 +314,15 @@ const profilRoutes = [
     name: ROUTES.DEVIS_USER.name,
     meta: {value: ROUTES.DEVIS_USER.value},
     component: VUDevis,
-    children: []
+    children: [
+      {
+        path: PROFIL + '/devis/:numero_devis/detail',
+        name: "VUDevisDetail",
+        meta: {value: ""},
+        component: VUDevisDetails,
+        props: true
+      }
+    ]
   },
   {
     path: PROFIL + 'rendez-vous',

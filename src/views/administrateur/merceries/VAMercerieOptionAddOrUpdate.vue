@@ -229,10 +229,6 @@
       </b-button-group>
       <!-- endregion -->
     </b-container>
-
-    <b-jumbotron>
-      <pre style="white-space: pre-wrap">{{mercerie_option.toCreatePayload()}}</pre>
-    </b-jumbotron>
   </div>
 </template>
 
