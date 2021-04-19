@@ -7,68 +7,58 @@ export const UtilisateurModule = {
     namespaced: true,
     state: {
         utilisateurs: [],
-        utilisateursLoadingStatus: false,
-
-        adresse: null
+        loadingStatus: false,
     },
     getters: {
         utilisateur: state => username => {
             return state.utilisateurs.find(utilisateur => utilisateur.username === username)
         },
         utilisateurs: state => state.utilisateurs,
-        utilisateursLoadingStatus: state => state.utilisateursLoadingStatus
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        LOAD_UTILISATEURS_SUCCESS(state, utilisateurs) {
-            state.utilisateurs = utilisateurs
+        SET_UTILISATEURS_SUCCESS(state, payload) {
+            state.utilisateurs = payload
         },
-        LOAD_UTILISATEURS_FAILURE(state) {
+        SET_UTILISATEURS_FAILURE(state) {
             state.utilisateurs = []
         },
-        UTILISATEURS_LOADING_STATUS(state, utilisateursLoadingStatus) {
-            state.utilisateursLoadingStatus = utilisateursLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
-        UPDATE_UTILISATEUR(state, utilisateur) {
-            const index = state.utilisateurs.findIndex(u => u.id === utilisateur.id)
+        UPDATE_UTILISATEUR(state, payload) {
+            const index = state.utilisateurs.findIndex(item => item.id === payload.id)
             if (index !== -1) {
-                state.utilisateurs.splice(index, 1, utilisateur)
+                state.utilisateurs.splice(index, 1, payload)
             }
-        },
-        LOAD_UTILISATEUR_ADRESSE_SUCCES(state, adresse) {
-            state.adresse = adresse
-        },
-        LOAD_UTILISATEUR_ADRESSE_FAILURE(state) {
-            state.adresse = null
         }
     },
     actions: {
-        loadUtilisateurs: function({commit}) {
+        loadUtilisateurs: async function ({commit}) {
             let endpoint = `${DOMAIN}/utilisateurs/`;
-            return new Promise((resolve, reject) => {
-                commit('UTILISATEURS_LOADING_STATUS', true)
+            return await new Promise((resolve, reject) => {
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_UTILISATEURS_SUCCESS', r.data)
-                    commit('UTILISATEURS_LOADING_STATUS', false)
+                    commit('SET_UTILISATEURS_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('LOAD_UTILISATEURS_FAILURE')
-                    commit('UTILISATEURS_LOADING_STATUS', false)
+                    commit('SET_UTILISATEURS_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })
         },
-
-        loadAdresseByUsername: function({commit}, username) {
-            let endpoint = `${DOMAIN}/utilisateurs/${username}/adresses/`;
+        updateUtilisateur: function ({commit}, payload) {
+            let endpoint = `${DOMAIN}/utilisateurs/${payload.username}/`;
             return new Promise((resolve, reject) => {
-                ApiService.GETData(endpoint).then(r => {
-                    commit('LOAD_UTILISATEURS_SUCCESS', r.data)
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_UTILISATEUR', r.data)
                     resolve(r.data)
                 }, error => {
-                    commit('LOAD_UTILISATEURS_FAILURE')
                     reject(error)
                 })
             })
-        }
+        },
     }
 }

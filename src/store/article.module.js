@@ -47,8 +47,11 @@ export const ArticleModule = {
 
         ADD_IMAGE(state, [article_slug, payload]) {
             const index = state.articles.findIndex(item => item.slug === article_slug)
+            console.log(index)
             if (index !== -1) {
+                state.articles[index].images_count += 1
                 state.articles[index].images.push(payload)
+                console.log(state.articles[index].images)
             }
         },
         UPDATE_IMAGE(state, [article_slug, payload]) {
@@ -63,9 +66,10 @@ export const ArticleModule = {
         DELETE_IMAGE(state, [article_slug, image]) {
             const articleIndex = state.articles.findIndex(item => item.slug === article_slug)
             if (articleIndex !== -1) {
+                state.articles[articleIndex].images_count -= 1
                 const imageIndex = state.articles[articleIndex].images.findIndex(item => item.id === image.id)
                 if (imageIndex !== -1) {
-                    state.article[articleIndex].images.splice(imageIndex, 1, image)
+                    state.articles[articleIndex].images.splice(imageIndex, 1)
                 }
             }
         }
@@ -124,6 +128,7 @@ export const ArticleModule = {
             let endpoint = `${DOMAIN}/articles/${article_slug}/images/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
+                    console.log(r.data)
                     commit('ADD_IMAGE', [article_slug, r.data])
                     resolve(r.data)
                 }, error => {
@@ -132,7 +137,7 @@ export const ArticleModule = {
             })
         },
         updateImage: function({commit}, [article_slug, payload]){
-            let endpoint = `${DOMAIN}/articles/${article_slug}/images/${payload.id}`;
+            let endpoint = `${DOMAIN}/articles/${article_slug}/images/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_IMAGE', [article_slug, r.data])
@@ -142,11 +147,11 @@ export const ArticleModule = {
                 })
             })
         },
-        deleteImage: function ({commit}, [article_slug, article]) {
-            let endpoint = `${DOMAIN}/articles/${article_slug}/images/${article.id}`;
+        deleteImage: function ({commit}, [article_slug, image]) {
+            let endpoint = `${DOMAIN}/articles/${article_slug}/images/${image.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
-                    commit('DELETE_IMAGE', article)
+                    commit('DELETE_IMAGE', [article_slug, image])
                     resolve(r)
                 }, error => {
                     reject(error)

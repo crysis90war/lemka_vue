@@ -1,5 +1,5 @@
 <template>
-  <b-jumbotron>
+  <b-jumbotron :header="header">
     <pre style="white-space: pre-wrap">
       {{ data }}
     </pre>
@@ -10,7 +10,11 @@
 export default {
   name: "LJumbotron",
   props: {
-    data: {}
+    data: {},
+    header: {
+      type: String,
+      default: "Header"
+    }
   }
 }
 </script>

@@ -113,36 +113,19 @@
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import LemkaHelpers from "@/helpers";
 import {mapGetters} from "vuex";
+import UtilisateurModel from "@/models/utilisateur.model";
 
 export default {
   name: "VAUsers",
   mixins: [tableViewMixin],
   data() {
     return {
-      fields: [
-        {key: 'image', label: 'Image', sortable: false},
-        {key: 'username', label: 'Username', sortable: true, sortDirection: 'desc'},
-        {key: 'first_name', label: 'Prénom', sortable: true, sortDirection: 'desc'},
-        {key: 'last_name', label: 'Nom', sortable: true, sortDirection: 'desc'},
-        {key: 'email', label: 'Email', sortable: true, sortDirection: 'desc'},
-        {
-          key: 'is_active', label: 'Active',
-          // eslint-disable-next-line no-unused-vars
-          formatter: (value, key, item) => {
-            return value ? 'Oui' : 'Non'
-          },
-          sortable: true,
-          sortByFormatted: true,
-          filterByFormatted: true
-        },
-        {key: 'is_staff', label: 'Role', sortable: true},
-        {key: 'actions', label: 'Actions'}
-      ],
+      fields: UtilisateurModel.tableFields,
       routes: LemkaHelpers.Routes,
     }
   },
   computed: {
-    ...mapGetters({utilisateurs: 'Utilisateurs/utilisateurs', busy: 'Utilisateurs/utilisateursLoadingStatus'})
+    ...mapGetters({utilisateurs: 'Utilisateurs/utilisateurs', busy: 'Utilisateurs/loadingStatus'})
   },
   methods: {
     alert(item) {

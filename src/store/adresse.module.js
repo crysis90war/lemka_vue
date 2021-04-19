@@ -62,6 +62,21 @@ export const AdresseModule = {
                     reject(error)
                 })
             })
+        },
+        loadAdresseByUsername: function ({commit}, username) {
+            let endpoint = `${DOMAIN}/utilisateurs/${username}/adresse/`;
+            return new Promise((resolve, reject) => {
+                commit('LOADING_STATUS', true)
+                ApiService.GETData(endpoint).then(r => {
+                    commit('SET_ADRESSE_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('SET_ADRESSE_FAILURE')
+                    commit('LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
         }
     }
 }

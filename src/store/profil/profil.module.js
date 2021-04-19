@@ -24,8 +24,8 @@ export const ProfilModule = {
         LOADING_STATUS(state, loadingStatus) {
             state.loadingStatus = loadingStatus
         },
-        UPDATE_PROFIL(state, profil) {
-            state.profil = profil
+        UPDATE_PROFIL(state, payload) {
+            state.profil = payload
         }
     },
     actions: {
@@ -44,7 +44,7 @@ export const ProfilModule = {
                 })
             })
         },
-        updateProfil({commit}, payload) {
+        updateProfil: function({commit}, payload) {
             let endpoint = `${DOMAIN}/profil/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
@@ -56,7 +56,7 @@ export const ProfilModule = {
             })
         },
 
-        updateProfilImage({commit}, payload) {
+        updateProfilImage: function({commit}, payload) {
             let endpoint = `${DOMAIN}/profil/`;
             return new Promise((resolve, reject) => {
                 ApiService.PATCHDate(endpoint, payload).then(r => {

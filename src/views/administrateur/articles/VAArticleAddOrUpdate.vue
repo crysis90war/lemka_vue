@@ -3,6 +3,7 @@
     <l-spinner v-if="isLoading"/>
 
     <b-container v-else>
+      <!-- region Article -->
       <b-form>
         <!-- region Switch -->
         <b-input-group class="my-1">
@@ -84,6 +85,7 @@
           <!-- endregion -->
         </b-row>
 
+        <!-- region Tag -->
         <b-form-group label="Tags" description="Veuillez chercher ou ajouter un tag" class="my-1">
           <multiselect v-model="article.tags" :options="tags" :loading="tagsLoadingStatus" :multiple="true" :hide-selected="true"
                        :taggable="true" label="tag" track-by="tag" selectLabel="Appuyez sur enter pour selectionner."
@@ -100,6 +102,7 @@
 
           <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
         </b-form-group>
+        <!-- endregion -->
 
         <b-button-group size="sm" class="my-3">
           <b-button variant="outline-dark" @click="$router.push({name: routes.ARTICLES.name})">
@@ -109,19 +112,18 @@
                     @click="submit">
             {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
           </b-button>
-          <b-button variant="outline-danger" @click="reset">
-            Reset
-          </b-button>
         </b-button-group>
       </b-form>
+      <!-- endregion -->
 
+      <!-- region Images -->
       <div v-if="slug" class="mt-3">
         <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
           Ajouter des images
         </b-button>
 
         <b-modal id="image-modal" ref="image-modal" hide-footer title="Modifier image du profil" size="xl">
-          <b-form @submit.prevent="createImage">
+          <b-form @submit.prevent="ajouterImage">
             <b-form-group id="input-group-image" label-for="input-image" description="Formats autorisés .jpg et .png">
               <b-form-file v-model="image" id="input-image" ref="image" name="input-image" required
                            accept="image/jpeg, image/png, .jpg, .png," @change="previewImage"></b-form-file>
@@ -167,15 +169,19 @@
             </b-button>
           </template>
 
-          <template #cell(actions)>
+          <template #cell(actions)="data">
             <b-button-group>
               <b-button size="sm" variant="outline-primary">Modifier</b-button>
-              <b-button size="sm" variant="outline-danger">Supprimer</b-button>
+              <b-button size="sm" variant="outline-danger" @click="supprimerImage(data.item)">Supprimer</b-button>
             </b-button-group>
           </template>
         </b-table>
       </div>
+      <!-- endregion -->
     </b-container>
+
+    <l-jumbotron header="Article Image" :data="articleImage.toCreatePayload()"/>
+    <l-jumbotron header="Form Data" :data="formData"/>
     <l-jumbotron :data="article.toCreatePayload()"/>
     <l-jumbotron :data="article"/>
   </div>
@@ -232,18 +238,15 @@ export default {
       icons: LemkaHelpers.FontAwesomeIcons,
       BSClass: LemkaHelpers.BSClass,
       routes: LemkaHelpers.Routes,
-      loading: false,
 
       article: new ArticleModel(),
       imagesFields: ArticleImageModel.tableFields,
+      articleImage: new ArticleImageModel(),
       submitStatus: null,
 
       preview: null,
       image: null,
       destination: null,
-
-      preview_list: [],
-      image_list: [],
 
       formData: new FormData(),
     }
@@ -284,7 +287,7 @@ export default {
       let article = await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug)
 
       if (article !== undefined) {
-        Object.assign(this.article, article)
+        Object.assign(this.article, await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug))
         this.$route.meta.value = this.article.titre
       } else {
         await this.$router.push({name: this.routes.ARTICLES.name})
@@ -349,8 +352,6 @@ export default {
       }
     },
 
-    // TODO - Corriger le traitement sur l'image
-    // region Traitement image
     previewImage: function (event) {
       let input = event.target;
       let formatImage = [
@@ -379,7 +380,6 @@ export default {
       let formData = new FormData()
       let file = dataURLtoFile(canvas.toDataURL())
       formData.append('image', file, 'image.jpg')
-      formData.append('ref_article', this.article.slug)
       this.formData = formData
     },
 
@@ -387,13 +387,18 @@ export default {
       this.$bvModal.hide(mondal_id)
     },
 
-    createImage: async function () {
-
-      await ArticleModel.create_article_image(this.article.slug, this.formData)
+    ajouterImage: function () {
+      this.createImage([this.article.slug, this.formData])
+      this.hideModal('image-modal')
     },
 
-    updateImage: async function () {
-      await ArticleModel.update_article_image_by_id(this.article.slug, this.formData)
+    modifierImage: function () {
+      this.updateImage([this.article.slug, this.formData])
+    },
+
+    supprimerImage: function(image) {
+      console.log(image)
+      this.deleteImage([this.article.slug, image])
     },
 
     update_image_is_main: function (image_id, is_main) {
@@ -402,32 +407,6 @@ export default {
       }
       ArticleModel.patch_article_image(this.article.slug, image_id, payload)
     },
-
-    previewMultiImage: function (event) {
-      let input = event.target;
-      if (input.files) {
-        for (let index = 0; index < input.files.length; index++) {
-          let reader = new FileReader();
-          reader.onload = (e) => {
-            this.preview_list.push(e.target.result);
-          }
-          this.image_list.push(input.files[index]);
-          reader.readAsDataURL(input.files[index]);
-        }
-      }
-    },
-
-    deleteImage: function (index) {
-      this.preview_list.slice(index)
-    },
-
-    reset: function () {
-      this.image = null;
-      this.preview = null;
-      this.image_list = [];
-      this.preview_list = [];
-    }
-    // endregion
   },
 
   created() {

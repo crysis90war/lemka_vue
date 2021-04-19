@@ -276,9 +276,9 @@ export default {
       if (demande_devis.en_cours === true && demande_devis.est_traite === false) {
         return {variant: "warning", text: "En cours de traitement"}
       } else if (demande_devis.en_cours === true && demande_devis.est_traite === true) {
-        return {variante: "success", text: "Traité"}
+        return {variant: "success", text: "Traité"}
       } else {
-        return {variante: "danger", text: "Une erreur s'est produite"}
+        return {variant: "danger", text: "Une erreur s'est produite"}
       }
     },
     ajouterMercerieAuDetail(mercerie) {
