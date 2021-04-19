@@ -136,7 +136,9 @@ export default {
   methods: {
     ...mapActions({loadArticles: "Articles/loadArticles", updateArticle: "Articles/updateArticle"}),
     activerDesactiver: function (item) {
-      let payload = item
+      let article = new ArticleModel()
+      Object.assign(article, item)
+      let payload = article.toUpdatePayload()
       payload.est_active = !payload.est_active
       this.updateArticle(payload)
     }

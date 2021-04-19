@@ -7,7 +7,7 @@ export const DevisModule = {
     namespaced: true,
     state: {
         deviss: [],
-        devissLoadingStatus: false,
+        loadingStatus: false,
     },
     getters: {
         deviss: state => state.deviss,
@@ -17,7 +17,7 @@ export const DevisModule = {
         devisNumberDevis: state => numero_devis => {
             return state.deviss.find(item => item.numero_devis === numero_devis)
         },
-        devissLoadingStatus: state => state.devissLoadingStatus
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
         SET_DEVISS_SUCCESS(state, payload) {
@@ -27,7 +27,7 @@ export const DevisModule = {
             state.deviss = []
         },
         LOADING_STATUS(state, payload) {
-            state.devissLoadingStatus = payload
+            state.loadingStatus = payload
         },
         ADD_DEVIS(state, payload) {
             state.deviss.push(payload)

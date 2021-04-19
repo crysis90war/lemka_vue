@@ -4,38 +4,42 @@
   <div v-else>
     <b-tabs>
       <b-tab title="Profil" class="p-3">
-        <div class="d-flex">
-          <div class="mr-2">
-            <b-avatar :src="utilisateur.image" size="4em"></b-avatar>
-          </div>
+        <b-row class="mb-5">
+          <b-col lg="4">
+            <div class="d-flex">
+              <div class="mr-2">
+                <b-avatar v-b-popover.hover.right="popoverConfig" :src="utilisateur.image" size="4em"></b-avatar>
+              </div>
 
-          <div>
-            <span>@{{ utilisateur.username }}</span>
-            <div>
-              <b-badge v-if="utilisateur.is_staff === true" pill variant="success">Administrateur</b-badge>
-              <b-badge v-else pill variant="primary">Utilisateur</b-badge>
+              <div>
+                <span>@{{ utilisateur.username }}</span>
+                <div>
+                  <b-badge v-if="utilisateur.is_staff === true" pill variant="success">Administrateur</b-badge>
+                  <b-badge v-else pill variant="primary">Utilisateur</b-badge>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </b-col>
+          <b-col>
+            <h2>{{ normalizedFullName }}</h2>
 
-        <hr>
-        <h2>{{ normalizedFullName }}</h2>
-
-        <div v-if="utilisateur.email">
-          <span class="mr-2"><i :class="icons.EMAIL"></i></span>
-          <span>{{ utilisateur.email }}</span>
-        </div>
-        <div v-if="utilisateur.numero_tel">
-          <span class="mr-2"><i :class="icons.PHONE"></i></span>
-          <span>{{ utilisateur.numero_tel }}</span>
-        </div>
-        <div v-if="utilisateur.genre !== null && utilisateur.genre !== undefined">
-          <span class="mr-2"><i :class="icons.GENRE"></i></span>
-          <span>{{ utilisateur.genre.genre }}</span>
-        </div>
+            <div v-if="utilisateur.email">
+              <span class="mr-2"><i :class="icons.EMAIL"></i></span>
+              <span>{{ utilisateur.email }}</span>
+            </div>
+            <div v-if="utilisateur.numero_tel">
+              <span class="mr-2"><i :class="icons.PHONE"></i></span>
+              <span>{{ utilisateur.numero_tel }}</span>
+            </div>
+            <div v-if="utilisateur.genre !== null && utilisateur.genre !== undefined">
+              <span class="mr-2"><i :class="icons.GENRE"></i></span>
+              <span>{{ utilisateur.genre.genre }}</span>
+            </div>
+          </b-col>
+        </b-row>
         <div>
-          <span><small>Membre depuis {{ utilisateur.created_at }}</small></span><br>
-          <span><small>Dernière mise à jour {{ utilisateur.updated_at }}</small></span>
+          <span><small>Membre depuis {{ utilisateur.created_at | localTimeStr }}</small></span><br>
+          <span><small>Dernière mise à jour {{ utilisateur.updated_at | localTimeStr }}</small></span>
         </div>
       </b-tab>
 
@@ -84,10 +88,16 @@ export default {
   computed: {
     ...mapGetters({adresse: "Adresse/adresse"}),
     normalizedFullName() {
-      let prenom = this.utilisateur.first_name !== '' ? this.utilisateur.first_name : 'Prénom'
-      let nom = this.utilisateur.last_name !== '' ? this.utilisateur.last_name : 'Nom'
-      return `${prenom} ${nom}`
-    }
+      return this.utilisateur.getFullName()
+    },
+    popoverConfig() {
+      return {
+        html: true,
+        content: () => {
+          return '<img src="' + this.utilisateur.image + '" alt="" width="250px"/>'
+        }
+      }
+    },
   },
   methods: {
     ...mapActions({loadAdresse: "Adresse/loadAdresseByUsername"}),

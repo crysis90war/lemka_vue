@@ -58,7 +58,10 @@ export default {
           href: {name: LemkaHelpers.Routes.DEVIS_USER.name},
           title: LemkaHelpers.Routes.DEVIS_USER.value,
           icon: LemkaHelpers.FontAwesomeIcons.FOLDER,
-          children: []
+          children: [
+              LemkaHelpers.Routes.DEVIS_USER.name,
+              LemkaHelpers.Routes.USER_DEVIS_DETAIL.name
+          ]
         },
         {
           href: {name: LemkaHelpers.Routes.RENDEZ_VOUS_USER.name},

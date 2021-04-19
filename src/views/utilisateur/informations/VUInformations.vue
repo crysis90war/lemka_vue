@@ -1,6 +1,10 @@
 <template>
   <div class="informations">
-    <b-card v-if="isLoading === false" class="my-4" :class="BSClass.CARD_BORDERLESS_SHADOW">
+    <b-card
+        v-if="isLoading === false"
+        class="my-4"
+        :class="BSClass.CARD_BORDERLESS_SHADOW"
+    >
       <b-card-body>
         <b-row>
           <b-col lg="7">
@@ -8,8 +12,16 @@
             <h2>{{ profil.last_name !== '' ? profil.last_name : 'Nom' }}</h2>
             <span>@{{ profil.username }}</span>
             <div>
-              <b-badge v-if="profil.is_staff === true" pill variant="success">Administrateur</b-badge>
-              <b-badge v-else pill variant="primary">Utilisateur</b-badge>
+              <b-badge
+                  v-if="profil.is_staff === true"
+                  pill
+                  variant="success"
+              >Administrateur</b-badge>
+              <b-badge
+                  v-else
+                  pill
+                  variant="primary"
+              >Utilisateur</b-badge>
             </div>
             <hr>
             <div v-if="profil.email">

@@ -13,13 +13,13 @@ export default class ArticleModel {
         this.est_active = R.is(Boolean, json.est_active) ? json.est_active : false
         this.titre = R.is(String, json.titre) ? json.titre : ""
         this.description = R.is(String, json.description) ? json.description : ""
-        this.images_count = R.is(Number, json.images_count) ? json.images_count : null
+        this.images_count = R.is(Number, json.images_count) ? json.images_count : 0
         this.likes_count = R.is(Number, json.likes_count) ? json.likes_count : null
         this.catalogue = R.is(Object, json.catalogue) ? new CatalogueModel(json.catalogue) : new CatalogueModel()
         this.type_service = R.is(Object, json.type_service) ? new TypeServiceModel(json.type_service) : new TypeServiceModel()
 
         this.tags = R.is(Array, json.tags) ? json.tags : []
-        this.images = R.is(Array, json.images) ? [json.images] : []
+        this.images = R.is(Array, json.images) ? json.images : []
     }
 
     toCreatePayload() {

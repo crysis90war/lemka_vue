@@ -1,20 +1,27 @@
 <template>
-  <div>
-    <b-card :title="$route.meta.value" class="my-4" :class="BSClass.CARD_BORDERLESS_SHADOW">
+  <section class="mensurations">
+    <b-card
+        :title="$route.meta.value"
+        class="my-4"
+        :class="BSClass.CARD_BORDERLESS_SHADOW"
+    >
       <b-card-body>
-
-        <b-button-group>
-          <b-button v-if="userMensurations.length < 5" :to="{name: routes.USER_MENSURATION_ADD_OR_UPDATE.name}"
-                    variant="outline-success" size="sm">
-            Ajouter mensuration
-          </b-button>
-          <b-button variant="outline-primary" size="sm" @click="loadOrRefresh">
-            <i class="fas fa-sync-alt"></i>
-          </b-button>
-        </b-button-group>
-
-        <b-table :items="userMensurations" :fields="fields" :busy="busy"
-                 show-empty hover fixed stacked="md" class="text-center mt-3" small>
+        <l-create-refresh
+            create_message="Ajouter Mensuration"
+            :route="routes.USER_MENSURATION_ADD_OR_UPDATE.name"
+            :load-or-refresh="loadOrRefresh"
+        />
+        <b-table
+            :items="userMensurations"
+            :fields="fields"
+            :busy="busy"
+            show-empty
+            hover
+            fixed
+            stacked="md"
+            class="text-center mt-3"
+            small
+        >
           <template #table-busy>
             <TableBusy/>
           </template>
@@ -24,7 +31,10 @@
           </template>
 
           <template #cell(is_main)="data">
-            <b-badge pill :variant="data.item.is_main === true ? 'success': 'primary'">
+            <b-badge
+                pill
+                :variant="data.item.is_main === true ? 'success': 'primary'"
+            >
               {{ data.item.is_main === true ? 'Principale' : 'Secondaire' }}
             </b-badge>
           </template>
@@ -49,7 +59,7 @@
         </b-table>
       </b-card-body>
     </b-card>
-  </div>
+  </section>
 </template>
 
 <script>

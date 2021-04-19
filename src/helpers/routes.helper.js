@@ -25,6 +25,7 @@ export const Routes = {
     DEMANDE_DE_DEVIS: {name: UserView + 'DemandeDeDevis', value: 'Demande de devis'},
     DEMANDE_DE_DEVIS_ADD_OR_UPDATE: {name: UserView + 'DemandeDeDevisAddOrUpdate', value: 'Ajouter/Modifier'},
     DEVIS_USER: {name: UserView + 'Devis', value: 'Devis'},
+    USER_DEVIS_DETAIL: {name: UserView + 'DevisDetail', value: ''},
     RENDEZ_VOUS_USER: {name: UserView + "RendezVOus", value: 'Rendez-vous'},
     // endregion
 

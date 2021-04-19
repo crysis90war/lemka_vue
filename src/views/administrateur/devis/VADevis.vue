@@ -144,7 +144,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({deviss: "Devis/deviss", busy: "Devis/devissLoadingStatus"})
+    ...mapGetters({deviss: "Devis/deviss", busy: "Devis/loadingStatus"})
   },
   methods: {
     ...mapActions({loadDevis: "Devis/loadDevis", updateDevis: "Devis/updateDevis", updateDemandeDevis: "DemandesDevis/updateAdminDD"}),

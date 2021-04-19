@@ -1,12 +1,15 @@
 <template>
-  <div>
+  <div class="devis_detail" :class="BSClass.CARD_BORDERLESS_SHADOW">
     <l-spinner v-if="busy"></l-spinner>
     <b-row v-else>
       <b-col lg="7">
-        <b-jumbotron>
-          <pre style="white-space: pre-wrap">{{ devis }}</pre>
-        </b-jumbotron>
+        <b-button-group class="w-100">
+          <b-button variant="outline-success"><i class="fas fa-check"></i></b-button>
+          <b-button variant="outline-danger"><i class="fas fa-times"></i></b-button>
+        </b-button-group>
+        <l-jumbotron :data="devis"/>
       </b-col>
+
       <b-col lg="5">
         <Messenger/>
       </b-col>
@@ -18,6 +21,7 @@
 import DevisModel from "@/models/devis.model";
 import Messenger from "@/views/utilisateur/devis/Messenger";
 import {mapActions, mapGetters} from "vuex";
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "VUDevisDetails",
@@ -25,10 +29,11 @@ export default {
   data() {
     return {
       devis: new DevisModel(),
+      BSClass: LemkaHelpers.BSClass
     }
   },
   computed: {
-    ...mapGetters({deviss: "Devis/deviss", busy: "Devis/devissLoadingStatus"})
+    ...mapGetters({deviss: "Devis/deviss", busy: "Devis/loadingStatus"})
   },
   methods: {
     ...mapActions({loadDevis: "Devis/loadUserDevis"}),

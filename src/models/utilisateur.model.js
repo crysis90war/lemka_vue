@@ -60,4 +60,10 @@ export default class UtilisateurModel {
             {key: 'actions', label: 'Actions'}
         ]
     }
+
+    getFullName() {
+        let prenom = this.first_name !== '' ? this.first_name : 'Prénom'
+        let nom = this.last_name !== '' ? this.last_name : 'Nom'
+        return `${prenom} ${nom}`
+    }
 }
