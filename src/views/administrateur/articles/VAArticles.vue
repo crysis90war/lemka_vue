@@ -2,30 +2,58 @@
   <div v-if="$route.name === routes.ARTICLES.name" class="articles">
     <b-row>
       <b-col lg="6">
-        <b-form-group label="Filtrer" label-size="sm" label-cols-sm="2" label-align-sm="right"
-                      description="Veuillez encoder pour chercher">
+        <b-form-group
+            label="Filtrer"
+            label-size="sm"
+            label-cols-sm="2"
+            label-align-sm="right"
+            description="Veuillez encoder pour chercher"
+        >
           <b-input-group size="sm">
-            <b-form-input v-model="filter" type="search" placeholder="Chercher ..."></b-form-input>
-
+            <b-form-input
+                v-model="filter"
+                type="search"
+                placeholder="Chercher ..."
+            />
             <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Supprimer</b-button>
+              <b-button
+                  :disabled="!filter"
+                  @click="filter = ''"
+              >
+                Supprimer
+              </b-button>
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
       </b-col>
 
       <b-col lg="6">
-        <b-form-group label="Trier par" label-size="sm" label-cols-sm="2" label-align-sm="right"
-                      description="Veuillez faire votre choix de tri"
-                      v-slot="{ ariaDescribedby }">
+        <b-form-group
+            label="Trier par"
+            label-size="sm"
+            label-cols-sm="2"
+            label-align-sm="right"
+            description="Veuillez faire votre choix de tri"
+            v-slot="{ ariaDescribedby }"
+        >
           <b-input-group size="sm">
-            <b-form-select v-model="sortBy" :options="sortOptions" :aria-describedby="ariaDescribedby" class="w-75">
+            <b-form-select
+                v-model="sortBy"
+                :options="sortOptions"
+                :aria-describedby="ariaDescribedby"
+                class="w-75"
+            >
               <template #first>
                 <option value="">-- vide --</option>
               </template>
             </b-form-select>
 
-            <b-form-select v-model="sortDesc" :disabled="!sortBy" :aria-describedby="ariaDescribedby" size="sm">
+            <b-form-select
+                v-model="sortDesc"
+                :disabled="!sortBy"
+                :aria-describedby="ariaDescribedby"
+                size="sm"
+            >
               <option :value="false">Asc</option>
               <option :value="true">Desc</option>
             </b-form-select>
@@ -36,11 +64,19 @@
 
     <b-row>
       <b-col lg="6">
-        <b-form-group v-model="sortDirection"
-                      label="Filtrer sur" label-size="sm" label-cols-sm="2" label-align-sm="right"
-                      description="Laissez tout décoché pour filtrer sur toutes les données"
-                      v-slot="{ ariaDescribedby }">
-          <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby">
+        <b-form-group
+            v-model="sortDirection"
+            label="Filtrer sur"
+            label-size="sm"
+            label-cols-sm="2"
+            label-align-sm="right"
+            description="Laissez tout décoché pour filtrer sur toutes les données"
+            v-slot="{ ariaDescribedby }"
+        >
+          <b-form-checkbox-group
+              v-model="filterOn"
+              :aria-describedby="ariaDescribedby"
+          >
             <b-form-checkbox value="created_at">Date création</b-form-checkbox>
             <b-form-checkbox value="titre">Titre</b-form-checkbox>
           </b-form-checkbox-group>
@@ -48,9 +84,16 @@
       </b-col>
 
       <b-col lg="6">
-        <b-form-group label="Par page" label-size="sm" label-cols-sm="2"
-                      label-align-sm="right" description="Veuillez selectionner le nombre d'article par page">
-          <b-form-select v-model="perPage" :options="pageOptions" size="sm">
+        <b-form-group
+            label="Par page"
+            label-size="sm"
+            label-cols-sm="2"
+            label-align-sm="right"
+            description="Veuillez selectionner le nombre d'article par page">
+          <b-form-select
+              v-model="perPage"
+              :options="pageOptions" size="sm"
+          >
           </b-form-select>
         </b-form-group>
       </b-col>
@@ -58,23 +101,44 @@
 
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
-        <l-create-refresh :load-or-refresh="loadArticles" :route="routes.ARTICLES_ADD_OR_UPDATE.name"
-                          create_message="Ajouter un nouveau article"/>
+        <l-create-refresh
+            create_message="Ajouter un nouveau article"
+            :route="routes.ARTICLES_ADD_OR_UPDATE.name"
+            :load-or-refresh="loadOrRefresh"
+        />
       </b-col>
 
       <b-col lg="7" class="my-1">
-        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                      align="fill" size="sm" class="my-0">
+        <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            align="fill"
+            size="sm"
+            class="my-0"
+        >
         </b-pagination>
       </b-col>
     </b-row>
 
-    <b-table :items="articles" :fields="fields" :busy="busy"
-             :per-page="perPage" :current-page="currentPage"
-             :filter="filter" :filter-included-fields="filterOn"
-             :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-             hover show-empty small stacked="md" class="text-center" @filtered="onFiltered">
-
+    <b-table
+        :items="articles"
+        :fields="fields"
+        :busy="busy"
+        :per-page="perPage"
+        :current-page="currentPage"
+        :filter="filter"
+        :filter-included-fields="filterOn"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        :sort-direction="sortDirection"
+        hover
+        show-empty
+        small
+        stacked="md"
+        class="text-center"
+        @filtered="onFiltered"
+    >
       <template #table-busy>
         <l-table-busy/>
       </template>
@@ -92,7 +156,7 @@
       </template>
 
       <template #cell(type_service)="data">
-        {{data.item.type_service.type_service}}
+        {{ data.item.type_service.type_service }}
       </template>
 
       <template #cell(titre)="data">
@@ -102,8 +166,11 @@
       </template>
 
       <template #cell(est_active)="data">
-        <b-button :variant="data.item.est_active === true ? 'outline-danger' : 'outline-success'" size="sm"
-                  @click="activerDesactiver(data.item)">
+        <b-button
+            :variant="data.item.est_active === true ? 'outline-danger' : 'outline-success'"
+            size="sm"
+            @click="activerDesactiver(data.item)"
+        >
           <i class="fas fa-power-off"></i>
           {{ data.item.est_active === true ? 'Désactiver' : 'Publier' }}
         </b-button>
@@ -111,7 +178,7 @@
     </b-table>
   </div>
 
-  <router-view v-else></router-view>
+  <router-view v-else/>
 
 </template>
 
@@ -120,10 +187,14 @@ import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 import ArticleModel from "@/models/article/article.model";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VAArticles",
   mixins: [tableViewMixin],
+  title() {
+    return htmlTitle('Articles')
+  },
   data() {
     return {
       fields: ArticleModel.tableFields,
@@ -135,6 +206,9 @@ export default {
   },
   methods: {
     ...mapActions({loadArticles: "Articles/loadArticles", updateArticle: "Articles/updateArticle"}),
+    loadOrRefresh: async function () {
+      await this.loadArticles()
+    },
     activerDesactiver: function (item) {
       let article = new ArticleModel()
       Object.assign(article, item)
@@ -145,7 +219,7 @@ export default {
   },
   created() {
     if (this.articles.length === 0) {
-      this.loadArticles()
+      this.loadOrRefresh()
     }
   }
 }

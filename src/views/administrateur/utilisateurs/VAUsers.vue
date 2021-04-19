@@ -175,10 +175,14 @@ import {tableViewMixin} from "@/mixins/table_view.mixin";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import UtilisateurModel from "@/models/utilisateur.model";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VAUsers",
   mixins: [tableViewMixin],
+  title() {
+    return htmlTitle('Utilisateurs')
+  },
   data() {
     return {
       fields: UtilisateurModel.tableFields,
