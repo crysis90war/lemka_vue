@@ -317,8 +317,8 @@ const profilRoutes = [
     children: [
       {
         path: PROFIL + '/devis/:numero_devis/detail',
-        name: "VUDevisDetail",
-        meta: {value: ""},
+        name: ROUTES.USER_DEVIS_DETAIL.name,
+        meta: {value: ROUTES.USER_DEVIS_DETAIL.value},
         component: VUDevisDetails,
         props: true
       }

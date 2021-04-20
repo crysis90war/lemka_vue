@@ -68,13 +68,17 @@
 
                 <template slot="singleLabel" slot-scope="{ option }">
                   <span>
-                    {{option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null }}
+                    {{
+                      option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null
+                    }}
                   </span>
                 </template>
 
                 <template slot="option" slot-scope="{ option }">
                   <span>
-                    {{option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null }}
+                    {{
+                      option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null
+                    }}
                   </span>
                 </template>
 
@@ -118,36 +122,76 @@
 
       <!-- region Images -->
       <div v-if="slug" class="mt-3">
-        <b-button variant="outline-success" size="sm" @click="showModal('image-modal')">
+        <b-button
+            variant="outline-success"
+            size="sm"
+            @click="showModal('image-modal')"
+        >
           Ajouter des images
         </b-button>
 
-        <b-modal id="image-modal" ref="image-modal" hide-footer title="Modifier image du profil" size="xl">
+        <b-modal
+            id="image-modal"
+            ref="image-modal"
+            hide-footer
+            title="Modifier image du profil"
+            size="xl"
+        >
           <b-form @submit.prevent="ajouterImage">
-            <b-form-group id="input-group-image" label-for="input-image" description="Formats autorisés .jpg et .png">
-              <b-form-file v-model="image" id="input-image" ref="image" name="input-image" required
-                           accept="image/jpeg, image/png, .jpg, .png," @change="previewImage"></b-form-file>
+            <b-form-group description="Formats autorisés .jpg et .png">
+              <b-form-file
+                  v-model="image"
+                  ref="image"
+                  required
+                  accept="image/jpeg, image/png, .jpg, .png,"
+                  @change="previewImage"
+              />
             </b-form-group>
 
             <div class="d-flex">
-              <cropper :src="preview" :stencil-size="{width: 800,height: 800}"
-                       :stencil-props="{handlers: {}, movable: true, scalable: true, resizable: true}"
-                       class="cropper" style="max-width: 720px; max-height: 576px" @change="change"/>
-              <b-img v-if="destination !== null" :src="destination" height="360" width="360"></b-img>
+              <cropper
+                  :src="preview"
+                  :stencil-size="{width: 800,height: 800}"
+                  :stencil-props="{handlers: {}, movable: true, scalable: true, resizable: true}"
+                  class="cropper"
+                  style="max-width: 720px; max-height: 576px"
+                  @change="change"
+              />
+              <b-img
+                  v-if="destination !== null"
+                  :src="destination"
+                  height="360"
+                  width="360"
+              />
             </div>
 
             <b-button-group class="d-flex">
-              <b-button variant="outline-success" type="submit">Créer</b-button>
-              <b-button variant="outline-danger" @click="hideModal('image-modal')">Annuler</b-button>
+              <b-button
+                  variant="outline-success"
+                  type="submit"
+              >
+                Créer
+              </b-button>
+              <b-button
+                  variant="outline-danger"
+                  @click="hideModal('image-modal')"
+              >
+                Annuler
+              </b-button>
             </b-button-group>
           </b-form>
         </b-modal>
 
-        <b-table :items="article.images" :fields="imagesFields" class="mt-2" stacked="md" small show-empty>
+        <b-table
+            :items="article.images"
+            :fields="imagesFields"
+            class="mt-2"
+            stacked="md"
+            small
+            show-empty
+        >
           <template #empty>
-            <div class="text-center">
-              Cet article n'a pas d'images
-            </div>
+            <l-table-empty/>
           </template>
 
           <template #cell(image)="data">
@@ -163,16 +207,25 @@
           </template>
 
           <template #cell(define)="data">
-            <b-button v-if="data.item.is_main === false" size="sm" variant="outline-success"
-                      @click="update_image_is_main(data.item.id, data.item.is_main)">
+            <b-button
+                v-if="data.item.is_main === false"
+                size="sm"
+                variant="outline-success"
+                @click="update_image_is_main(data.item.id, data.item.is_main)"
+            >
               Définir comme principale
             </b-button>
           </template>
 
           <template #cell(actions)="data">
             <b-button-group>
-              <b-button size="sm" variant="outline-primary">Modifier</b-button>
-              <b-button size="sm" variant="outline-danger" @click="supprimerImage(data.item)">Supprimer</b-button>
+              <b-button
+                  size="sm"
+                  variant="outline-danger"
+                  @click="supprimerImage(data.item)"
+              >
+                Supprimer
+              </b-button>
             </b-button-group>
           </template>
         </b-table>
@@ -396,7 +449,7 @@ export default {
       this.updateImage([this.article.slug, this.formData])
     },
 
-    supprimerImage: function(image) {
+    supprimerImage: function (image) {
       console.log(image)
       this.deleteImage([this.article.slug, image])
     },
@@ -415,9 +468,6 @@ export default {
     } else {
       this.initialisation()
     }
-  },
-
-  mounted() {
   }
 }
 </script>

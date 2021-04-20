@@ -4,7 +4,12 @@
     <section class="boutons mt-4">
       <b-container fluid="">
         <b-button-group>
-          <b-button variant="outline-dark" :to="{name: routes.DEVIS.name}"><i class="fas fa-arrow-left"></i></b-button>
+          <b-button
+              variant="outline-dark"
+              :to="{name: routes.DEVIS.name}"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </b-button>
           <b-button variant="outline-success">Envoyer <i class="fas fa-paper-plane"></i></b-button>
         </b-button-group>
       </b-container>

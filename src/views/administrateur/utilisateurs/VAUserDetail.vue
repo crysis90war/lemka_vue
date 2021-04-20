@@ -3,19 +3,37 @@
 
   <div v-else>
     <b-tabs>
-      <b-tab title="Profil" class="p-3">
+      <b-tab
+          title="Profil"
+          class="p-3"
+      >
         <b-row class="mb-5">
           <b-col lg="4">
             <div class="d-flex">
               <div class="mr-2">
-                <b-avatar v-b-popover.hover.right="popoverConfig" :src="utilisateur.image" size="4em"></b-avatar>
+                <b-avatar
+                    v-b-popover.hover.right="popoverConfig"
+                    :src="utilisateur.image"
+                    size="4em"
+                />
               </div>
-
               <div>
                 <span>@{{ utilisateur.username }}</span>
                 <div>
-                  <b-badge v-if="utilisateur.is_staff === true" pill variant="success">Administrateur</b-badge>
-                  <b-badge v-else pill variant="primary">Utilisateur</b-badge>
+                  <b-badge
+                      v-if="utilisateur.is_staff === true"
+                      pill
+                      variant="success"
+                  >
+                    Administrateur
+                  </b-badge>
+                  <b-badge
+                      v-else
+                      pill
+                      variant="primary"
+                  >
+                    Utilisateur
+                  </b-badge>
                 </div>
               </div>
             </div>
@@ -54,7 +72,35 @@
           <span>{{ adresse.ville.pays.pays }}</span>
         </div>
       </b-tab>
-      <b-tab :title="`Mensurations ${utilisateur.mensurations_count}`" :disabled="utilisateur.mensurations_count === 0"></b-tab>
+
+      <b-tab
+          :title="`Mensurations ${utilisateur.mensurations_count}`"
+          :disabled="utilisateur.mensurations_count === 0"
+          class="p-4"
+      >
+        <div v-if="utilisateur.mensurations_count > 0">
+          <section
+              v-for="userMensuration in userMensurations"
+              :key="userMensuration.id"
+          >
+            <b-button
+                v-b-toggle="`mensuration-collapse${userMensuration.id}`"
+                :variant="userMensuration.is_main === true ? 'success' : 'primary'"
+            >
+              {{ userMensuration.titre }}
+            </b-button>
+            <b-collapse :id="`mensuration-collapse${userMensuration.id}`">
+              <b-card>
+                <b-card-body>
+                  Hello
+                </b-card-body>
+              </b-card>
+            </b-collapse>
+          </section>
+        </div>
+
+        <l-jumbotron :data="userMensurations"/>
+      </b-tab>
     </b-tabs>
 
     <l-jumbotron :data="utilisateur"></l-jumbotron>
@@ -86,7 +132,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({adresse: "Adresse/adresse"}),
+    ...mapGetters({adresse: "Adresse/adresse", userMensurations: "UserMensurations/userMensurations"}),
     normalizedFullName() {
       return this.utilisateur.getFullName()
     },
@@ -100,7 +146,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions({loadAdresse: "Adresse/loadAdresseByUsername"}),
+    ...mapActions({loadAdresse: "Adresse/loadAdresseByUsername", loadMensurations: "UserMensurations/loadUserMensurationForAdmin"}),
     chargerAdresse: function (username) {
       this.loadAdresse(username)
     },
@@ -108,8 +154,8 @@ export default {
       Object.assign(this.utilisateur, this.$store.getters["Utilisateurs/utilisateur"](this.$route.params.username))
     },
     // TODO - Charger mes mensuration de l'utilisateur
-    chargerMensuration: function() {
-
+    chargerMensuration: function (username) {
+      this.loadMensurations(username)
     },
     initialisation: async function () {
       this.toggleLoading()
@@ -117,6 +163,9 @@ export default {
       if (utilisateur !== undefined) {
         await this.chargerUtilisateur()
         await this.chargerAdresse(this.$route.params.username)
+        if (this.utilisateur.mensurations_count > 0) {
+          this.chargerMensuration(this.$route.params.username)
+        }
       } else {
         await this.$router.push({name: this.routes.UTILISATEURS.name})
       }

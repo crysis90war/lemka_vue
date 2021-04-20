@@ -102,7 +102,7 @@
     <b-row class="mt-3 mb-2">
       <b-col lg="5" class="my-1">
         <l-create-refresh
-            create_message="Ajouter un nouveau article"
+            create_message="Ajouter un article"
             :route="routes.ARTICLES_ADD_OR_UPDATE.name"
             :load-or-refresh="loadOrRefresh"
         />

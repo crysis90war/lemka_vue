@@ -9,9 +9,6 @@ export const UserMensurationModule = {
     state: {
         userMensurations: [],
         loadingStatus: false,
-
-        mesures: [],
-        mesuresLoadingStatus: false
     },
     getters: {
         userMensurations: state => state.userMensurations,
@@ -114,6 +111,23 @@ export const UserMensurationModule = {
                     reject(error)
                 })
             })
+        },
+
+        loadUserMensurationForAdmin: async function({commit}, username) {
+            let endpoint = `${DOMAIN}/utilisateurs/${username}/mensurations/`;
+            return await new Promise((resolve, reject) => {
+                commit('LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('SET_USER_MENSURATIONS_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('SET_USER_MENSURATIONS_FAILURE')
+                    commit('LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
+
         }
     }
 }
