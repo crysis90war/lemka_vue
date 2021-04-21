@@ -83,23 +83,34 @@
               v-for="userMensuration in userMensurations"
               :key="userMensuration.id"
           >
-            <b-button
+            <b-list-group-item
                 v-b-toggle="`mensuration-collapse${userMensuration.id}`"
                 :variant="userMensuration.is_main === true ? 'success' : 'primary'"
             >
               {{ userMensuration.titre }}
-            </b-button>
+            </b-list-group-item>
             <b-collapse :id="`mensuration-collapse${userMensuration.id}`">
               <b-card>
                 <b-card-body>
-                  Hello
+                  <b-row>
+                    <b-col v-for="mesure in userMensuration.mesures" :key="mesure.id" lg="4">
+                      <div class="d-flex">
+                        <p><strong>{{ mesure.mensuration }} : </strong> {{ mesure.mesure }} cm</p>
+                        <b-button
+                            size="sm"
+                            variant="outline-primary"
+                            v-b-tooltip.hover title="Modifier la valeur"
+                        >
+                          <i :class="icons.MODIFIER"></i>
+                        </b-button>
+                      </div>
+                    </b-col>
+                  </b-row>
                 </b-card-body>
               </b-card>
             </b-collapse>
           </section>
         </div>
-
-        <l-jumbotron :data="userMensurations"/>
       </b-tab>
     </b-tabs>
 
