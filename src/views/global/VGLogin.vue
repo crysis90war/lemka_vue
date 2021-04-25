@@ -2,7 +2,7 @@
   <div class="login">
     <div class="form-container sign-in-container my-4">
       <b-form>
-        <img src="../../assets/logo.png" alt="" style="max-width: 250px"/>
+        <img :src="logo" alt="" style="max-width: 250px"/>
         <div class="social-container">
           <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
           <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
@@ -58,7 +58,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({loggedIn: "Auth/loggedIn"})
+    ...mapGetters({loggedIn: "Auth/loggedIn"}),
+    logo() {
+      return require('@/assets/Lemka.png')
+    }
   },
   methods: {
     ...mapActions({login: "Auth/login"}),

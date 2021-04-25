@@ -216,8 +216,10 @@
 
       <!-- region Boutons -->
       <b-button-group class="mt-3">
-        <b-button variant="outline-dark"
-                  @click="$router.push({name: routes.MERCERIE_OPTIONS.name, params: {id: mercerie_id}})">
+        <b-button
+            variant="outline-dark"
+            @click="$router.push({name: routes.MERCERIE_OPTIONS.name, params: {id: mercerie_id}})"
+        >
           <i class="fas fa-arrow-left"></i>
         </b-button>
         <b-button :variant="id !== undefined ? 'outline-primary' : 'outline-success'" @click.prevent="submit">
@@ -240,7 +242,7 @@ import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin"
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {fonctions} from "@/mixins/functions.mixin";
-import MercerieOptionChatacteristicModel from "@/models/mercerie/mercerie_option_chatacteristic.model";
+import MercerieChatacteristiqueModel from "@/models/mercerie/mercerie_characteristique.model";
 
 export default {
   name: "VAMercerieOptionAddOrUpdate",
@@ -257,7 +259,7 @@ export default {
   data() {
     return {
       mercerie_option: new MercerieOptionModel(),
-      MeOptFields: MercerieOptionChatacteristicModel.tableFields,
+      MeOptFields: MercerieChatacteristiqueModel.tableFields,
       submitStatus: null,
       routes: LemkaHelpers.Routes
     }
@@ -280,7 +282,7 @@ export default {
       createMercerieOption: 'Merceries/createOption',
       updateMercerieOption: 'Merceries/updateOption',
       loadMercerieOptionCaracteristiques: "Merceries/loadCaracteristiques",
-      deleteMercerieOptionCaracteristique: "Merceries/deleteCaracteristique"
+      deleteMercerieOptionCaracteristique: "Merceries/deleteCharacteristique"
     }),
 
     loadOrRefreshCharacteristics: function (mercerie_option_id) {

@@ -4,7 +4,7 @@
       <!-- Sidebar  -->
       <nav id="sidebar" class="bg-light">
         <div class="sidebar-header">
-          <h3><img :src="imageLogo" alt="" style="max-width: 200px;"/></h3>
+          <h3><img :src="logo" alt="" style="max-width: 200px;"/></h3>
           <strong>LK</strong>
         </div>
 
@@ -90,13 +90,15 @@ export default {
         },
       ],
       toggled: false,
-      imageLogo: require('@/assets/logo.png'),
       BSClass: LemkaHelpers.BSClass
     }
   },
 
   computed: {
     ...mapGetters({currentUser: "Auth/user"}),
+    logo() {
+      return require('@/assets/Lemka.png')
+    },
     thisRoute() {
       return this.$route.name
     }
@@ -110,7 +112,7 @@ export default {
       loadMerceries: "Merceries/loadMerceries",
       loadTypeService: "TypeServices/loadTypeServices",
       loadTvas: "TVA/loadTvas",
-      loadGlobalMerceries: "Merceries/loadGlobalMercerieOptions",
+      // loadGlobalMerceries: "Merceries/loadGlobalMercerieOptions",
     }),
     initialisation: async function() {
       await this.loadAdminDD()
@@ -119,7 +121,7 @@ export default {
       await this.loadMerceries()
       await this.loadTypeService()
       await this.loadTvas()
-      await this.loadGlobalMerceries()
+      // await this.loadGlobalMerceries()
     },
     sidebarCollapse() {
       this.toggled = !this.toggled

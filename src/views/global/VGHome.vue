@@ -108,13 +108,12 @@
 
 import Carousel from '@/components/Carousel'
 import GoogleMap from "@/components/GoogleMap";
-import {htmlTitle} from "@/utils/tools"
 import LReviewCard from "@/views/global/LReviewCard";
 import LFeatures from "@/components/LFeatures";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: 'VGHome',
-
   components: {
     LFeatures,
     LReviewCard,

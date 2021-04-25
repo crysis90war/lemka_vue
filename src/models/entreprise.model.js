@@ -12,7 +12,7 @@ export default class EntrepriseModel {
         this.site_web = R.is(String, entreprise.site_web) ? entreprise.site_web : ""
         this.rue = R.is(String, entreprise.rue) ? entreprise.rue : ""
         this.numero = R.is(String, entreprise.numero) ? entreprise.numero : ""
-        this.ville = R.is(Object, entreprise.ref_ville) ? new VilleModel(entreprise.ref_ville) : null
+        this.ville = R.is(Object, entreprise.ville) ? new VilleModel(entreprise.ville) : new VilleModel()
     }
 
     toCreatePayload() {
@@ -44,6 +44,8 @@ export default class EntrepriseModel {
             },
             numero_tva: {
                 required,
+                minLength: minLength(9),
+                maxLength: maxLength(12),
                 alphaNum
             },
             mail_contact: {
@@ -69,6 +71,7 @@ export default class EntrepriseModel {
             },
             numero: {
                 required,
+                minLength: minLength(1),
                 alphaNum
             }
         }

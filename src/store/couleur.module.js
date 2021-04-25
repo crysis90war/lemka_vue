@@ -7,53 +7,53 @@ export const CouleurModule = {
     namespaced: true,
     state: {
         couleurs: [],
-        couleursLoadingStatus: false
+        loadingStatus: false
     },
     getters: {
         couleurs: state => state.couleurs,
         couleur: state => id => {
             return state.couleurs.find(couleur => couleur.id === id)
         },
-        couleursLoadingStatus: state => state.couleursLoadingStatus
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        LOAD_COULEURS_SUCCESS(state, couleurs) {
-            state.couleurs = couleurs
+        SET_COULEURS_SUCCESS(state, payload) {
+            state.couleurs = payload
         },
-        LOAD_COULEURS_FAILURE(state) {
+        SET_COULEURS_FAILURE(state) {
             state.couleurs = []
         },
-        COULEURS_LOADING_STATUS(state, newLoadingStatus) {
-            state.couleursLoadingStatus = newLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
-        ADD_COULEUR(state, couleur) {
-            state.couleurs.push(couleur)
+        ADD_COULEUR(state, payload) {
+            state.couleurs.push(payload)
         },
-        UPDATE_COULEUR(state, couleur) {
-            const index = state.couleurs.findIndex(c => c.id === couleur.id)
+        UPDATE_COULEUR(state, payload) {
+            const index = state.couleurs.findIndex(c => c.id === payload.id)
             if (index !== -1) {
-                state.couleurs.splice(index, 1, couleur)
+                state.couleurs.splice(index, 1, payload)
             }
         },
-        DELETE_COULEUR(state, couleur) {
-            const index = state.couleurs.findIndex(c => c.id === couleur.id)
+        DELETE_COULEUR(state, payload) {
+            const index = state.couleurs.findIndex(c => c.id === payload.id)
             if (index !== -1) {
                 state.couleurs.splice(index, 1)
             }
         }
     },
     actions: {
-        loadCouleurs: function({commit}) {
+        loadCouleurs: async function({commit}) {
             let endpoint = `${DOMAIN}/couleurs/`;
-            return new Promise((resolve, reject) => {
-                commit('COULEURS_LOADING_STATUS', true)
+            return await new Promise((resolve, reject) => {
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_COULEURS_SUCCESS', r.data)
-                    commit('COULEURS_LOADING_STATUS', false)
+                    commit('SET_COULEURS_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('LOAD_COULEURS_FAILURE')
-                    commit('COULEURS_LOADING_STATUS', false)
+                    commit('SET_COULEURS_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })

@@ -96,13 +96,6 @@
                     <b-col v-for="mesure in userMensuration.mesures" :key="mesure.id" lg="4">
                       <div class="d-flex">
                         <p><strong>{{ mesure.mensuration }} : </strong> {{ mesure.mesure }} cm</p>
-                        <b-button
-                            size="sm"
-                            variant="outline-primary"
-                            v-b-tooltip.hover title="Modifier la valeur"
-                        >
-                          <i :class="icons.MODIFIER"></i>
-                        </b-button>
                       </div>
                     </b-col>
                   </b-row>

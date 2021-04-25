@@ -38,7 +38,7 @@ export default new Vuex.Store({
     'Categories': CategorieModule,
     'Couleurs': CouleurModule,
     'UserMensurations': UserMensurationModule,
-    'Characteristics': CaracteristiqueModule,
+    'Characteristiques': CaracteristiqueModule,
     'Horaires': HoraireModule,
     'DemandesDevis': DemandeDevisModule,
     'Tags': TagModule,

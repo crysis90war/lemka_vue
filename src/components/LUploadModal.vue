@@ -17,8 +17,8 @@
                    resizable: true
                  }"
                    :stencil-size="{
-                   width: 480,
-                   height: 480
+                   width: 600,
+                   height: 600
                  }"/>
         </b-col>
         <b-col lg="5">

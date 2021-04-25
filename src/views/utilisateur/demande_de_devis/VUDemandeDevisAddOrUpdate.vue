@@ -193,7 +193,7 @@ export default {
       loadTypeServices: "TypeServices/loadTypeServices",
       loadArticles: "Articles/loadArticles",
       loadUserMensurations: "UserMensurations/loadUserMensurations",
-      loadGlobalMerceries: "Merceries/loadGlobalMercerieOptions",
+      loadGlobalMerceries: "Merceries/loadGlobalMerceries",
       createDemandeDevis: "DemandesDevis/createDemandeDevis",
       updateDemandeDevis: "DemandesDevis/updateDemandeDevis"
     }),

@@ -7,39 +7,39 @@ const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 export const CaracteristiqueModule = {
     namespaced: true,
     state: {
-        caracteristiques: [],
-        caracteristiqueLoadingStatus: false
+        characteristiques: [],
+        loadingStatus: false
     },
     getters: {
-        caracteristique: state => id => {
-            return state.caracteristiques.find(item => item.id === id)
+        characteristique: state => id => {
+            return state.characteristiques.find(item => item.id === id)
         },
-        caracteristiques: state => state.caracteristiques,
-        caracteristiqueLoadingStatus: state => state.caracteristiqueLoadingStatus
+        characteristiques: state => state.characteristiques,
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        LOAD_CARACTERISTIQUES_SUCCESS(state, characteristics) {
-            state.caracteristiques = characteristics
+        SET_CHARACTERISTIQUES_SUCCESS(state, payload) {
+            state.characteristiques = payload
         },
-        LOAD_CARACTERISTIQUES_FAILURE(state) {
-            state.caracteristiques = []
+        SET_CHARACTERISTIQUES_FAILURE(state) {
+            state.characteristiques = []
         },
-        CARACTERISTIQUES_LOADING_STATUS(state, caracteristiqueLoadingStatus) {
-            state.caracteristiqueLoadingStatus = caracteristiqueLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
-        ADD_CARACTERISTIQUE(state, caracteristique) {
-            state.caracteristiques.push(caracteristique)
+        ADD_CHARACTERISTIQUE(state, caracteristique) {
+            state.characteristiques.push(caracteristique)
         },
-        UPDATE_CARACTERISTIQUE(state, caracteristique) {
-            const index = state.caracteristiques.findIndex(item => item.id === caracteristique.id)
+        UPDATE_CHARACTERISTIQUE(state, caracteristique) {
+            const index = state.characteristiques.findIndex(item => item.id === caracteristique.id)
             if (index !== -1) {
-                state.caracteristiques.splice(index, 1, caracteristique)
+                state.characteristiques.splice(index, 1, caracteristique)
             }
         },
-        DELETE_CARACTERISTIQUE(state, caracteristique) {
-            const index = state.caracteristiques.map(item => item.id).indexOf(caracteristique.id)
+        DELETE_CHARACTERISTIQUE(state, caracteristique) {
+            const index = state.characteristiques.map(item => item.id).indexOf(caracteristique.id)
             if (index !== -1) {
-                state.caracteristiques.splice(index, 1)
+                state.characteristiques.splice(index, 1)
             }
         }
     },
@@ -47,14 +47,14 @@ export const CaracteristiqueModule = {
         loadCaracteristiques: function({commit}) {
             let endpoint = `${DOMAIN}/caracteristiques/`;
             return new Promise((resolve, reject) => {
-                commit('CARACTERISTIQUES_LOADING_STATUS', true)
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_CARACTERISTIQUES_SUCCESS', r.data)
-                    commit('CARACTERISTIQUES_LOADING_STATUS', false)
+                    commit('SET_CHARACTERISTIQUES_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('LOAD_CARACTERISTIQUES_FAILURE')
-                    commit('CARACTERISTIQUES_LOADING_STATUS', false)
+                    commit('SET_CHARACTERISTIQUES_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })
@@ -63,7 +63,7 @@ export const CaracteristiqueModule = {
             let endpoint = `${DOMAIN}/caracteristiques/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
-                    commit('ADD_CARACTERISTIQUE', Object.assign(new CaracteristiqueModel(), r.data))
+                    commit('ADD_CHARACTERISTIQUE', Object.assign(new CaracteristiqueModel(), r.data))
                     resolve(r.data)
                 }, error => {
                     reject(error)
@@ -74,7 +74,7 @@ export const CaracteristiqueModule = {
             let endpoint = `${DOMAIN}/caracteristiques/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
-                    commit('UPDATE_CARACTERISTIQUE', Object.assign(new CaracteristiqueModel(), r.data))
+                    commit('UPDATE_CHARACTERISTIQUE', Object.assign(new CaracteristiqueModel(), r.data))
                     resolve(r.data)
                 }, error => {
                     reject(error)
@@ -85,7 +85,7 @@ export const CaracteristiqueModule = {
             let endpoint = `${DOMAIN}/caracteristiques/${caracteristique.id}`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
-                    commit('DELETE_CARACTERISTIQUE', caracteristique)
+                    commit('DELETE_CHARACTERISTIQUE', caracteristique)
                     resolve(r)
                 }, error => {
                     reject(error)

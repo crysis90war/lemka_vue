@@ -2,11 +2,22 @@
   <div class="MOCAddOrUpdate">
     <b-container>
       <b-form>
-        <b-form-group label="Caractéristique" description="Veuillez choisir la caractéristique">
-          <multiselect v-model="characteristic.ref_caracteristique" :options="characteristics" :allow-empty="false"
-                       label="nom" track-by="nom" placeholder="Veuillez selectionner la caractéristique"
-                       selectLabel="Appuyez sur enter pour selectionner" :class="{ 'invalid': isInvalid }"
-                       deselectLabel="Appuyez sur enter pour retirer" @close="onTouch">
+        <b-form-group
+            label="Caractéristique"
+            description="Veuillez choisir la caractéristique"
+        >
+          <multiselect
+              v-model="characteristique.caracteristique"
+              :options="characteristiques"
+              :allow-empty="false"
+              label="nom"
+              track-by="nom"
+              placeholder="Veuillez selectionner la caractéristique"
+              selectLabel="Appuyez sur enter pour selectionner"
+              :class="{ 'invalid': isInvalid }"
+              deselectLabel="Appuyez sur enter pour retirer"
+              @close="onTouch"
+          >
             <template slot="singleLabel" slot-scope="{ option }">
               <span>{{ option.nom }}</span>
             </template>
@@ -18,14 +29,26 @@
           <span class="text-danger" v-show="isInvalid"><small>Ce champ est requis</small></span>
         </b-form-group>
 
-        <b-form-group label="Valeur" description="Veuillez encoder la valeur">
-          <b-form-input v-model="$v.characteristic.valeur.$model" type="number" step="0.01" min="0.00"
-                        :state="validateState('valeur')"></b-form-input>
+        <b-form-group
+            label="Valeur"
+            description="Veuillez encoder la valeur"
+        >
+          <b-form-input
+              v-model="$v.characteristic.valeur.$model"
+              type="number"
+              step="0.01"
+              min="0.00"
+                        :state="validateState('valeur')"
+          />
           <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.characteristic.valeur.required" :error-message="required()">
-            </invalid-feedback>
-            <invalid-feedback :condition="!$v.characteristic.valeur.numeric" :error-message="decimal()">
-            </invalid-feedback>
+            <invalid-feedback
+                :condition="!$v.characteristic.valeur.required"
+                :error-message="required()"
+            />
+            <invalid-feedback
+                :condition="!$v.characteristic.valeur.numeric"
+                :error-message="decimal()"
+            />
           </b-form-invalid-feedback>
         </b-form-group>
 
@@ -50,7 +73,7 @@ import {mapActions, mapGetters} from "vuex";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
-import MercerieOptionChatacteristicModel from "@/models/mercerie/mercerie_option_chatacteristic.model";
+import MercerieChatacteristiqueModel from "@/models/mercerie/mercerie_characteristique.model";
 import LemkaHelpers from "@/helpers";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 
@@ -59,7 +82,7 @@ export default {
   components: {InvalidFeedback},
   mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin,],
   validations: {
-    characteristic: MercerieOptionChatacteristicModel.validations
+    characteristic: MercerieChatacteristiqueModel.validations
   },
   props: {
     mercerie_id: {
@@ -72,23 +95,23 @@ export default {
   data: () => {
     return {
       routes: LemkaHelpers.Routes,
-      characteristic: new MercerieOptionChatacteristicModel(),
+      characteristique: new MercerieChatacteristiqueModel(),
       submitStatus: null,
     }
   },
 
   computed: {
-    ...mapGetters({characteristics: 'Characteristics/caracteristiques'}),
+    ...mapGetters({characteristiques: 'Characteristiques/characteristiques'}),
     isInvalid() {
-      return this.isTouched && this.characteristic.ref_caracteristique.id === null
+      return this.isTouched && this.characteristique.caracteristique.id === null
     }
   },
 
   methods: {
     ...mapActions({
-      loadCharacteristics: "Characteristics/loadCaracteristiques",
-      createMOC: "Merceries/createCaracteristique",
-      updateMOC: "Merceries/updateCaracteristique"
+      loadCharacteristics: "Characteristiques/loadCaracteristiques",
+      createMOC: "Merceries/createCharacteristique",
+      updateMOC: "Merceries/updateCharacteristique"
     }),
     retour: function () {
       this.$router.push({
@@ -108,9 +131,9 @@ export default {
         this.submitStatus = 'PENDING'
 
         if (this.id !== undefined) {
-          this.updateMOC([this.option_id, this.characteristic.toUpdatePayload()])
+          this.updateMOC([this.option_id, this.characteristique.toUpdatePayload()])
         } else {
-          this.createMOC([this.option_id, this.characteristic.toCreatePayload()])
+          this.createMOC([this.option_id, this.characteristique.toCreatePayload()])
         }
 
         setTimeout(() => {

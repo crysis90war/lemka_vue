@@ -26,7 +26,7 @@ export default class ProfilModel {
             first_name: this.first_name,
             last_name: this.last_name,
             numero_tel: this.numero_tel,
-            ref_genre: this.genre.id
+            ref_genre: this.genre !== null ? this.genre.id : null
         }
     }
 
@@ -50,8 +50,4 @@ export default class ProfilModel {
             }
         }
     }
-
-    // static async updateProfilImage(payload) {
-    //     await ApiService.ProfilService.updateProfilImage(payload)
-    // }
 }
