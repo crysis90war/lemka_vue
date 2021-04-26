@@ -53,7 +53,7 @@ export const MercerieModule = {
         ADD_CATACTERISTIQUE(state, [mercerie_id, payload]) {
             const index = state.merceries.findIndex(item => item.id === mercerie_id)
             if (index !== -1) {
-                state.merceries.caracteristiques.push(payload)
+                state.merceries[index].caracteristiques.push(payload)
             }
         },
         UPDATE_CARACTERISTIQUE(state, [mercerie_id, payload]) {
@@ -75,9 +75,9 @@ export const MercerieModule = {
             }
         },
         ADD_IMAGE(state, [mercerie_id, payload]) {
-            const index = state.merceries.findIndex(item => item.id === mercerie_id)
+            const index = state.merceries.map(item => item.id).indexOf(mercerie_id)
             if (index !== -1) {
-                state.merceries.images.push(payload)
+                state.merceries[index].images.push(payload)
                 state.merceries[index].images_count++
             }
         },
@@ -151,8 +151,8 @@ export const MercerieModule = {
                 })
             })
         },
-        createCharacteristique: function({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}//merceries/${mercerie_id}/characteristiques/`;
+        createCharacteristique: function ({commit}, [mercerie_id, payload]) {
+            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_CATACTERISTIQUE', [mercerie_id, r.data])
@@ -162,8 +162,8 @@ export const MercerieModule = {
                 })
             })
         },
-        updateCharacteristique: function({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}//merceries/${mercerie_id}/hcaracteristiques/${payload.id}`;
+        updateCharacteristique: function ({commit}, [mercerie_id, payload]) {
+            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/${payload.id}`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_CARACTERISTIQUE', [mercerie_id, r.data])
@@ -173,11 +173,33 @@ export const MercerieModule = {
                 })
             })
         },
-        deleteCharacteristique: function({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}//merceries/${mercerie_id}/characteristiques/${payload.id}`;
+        deleteCharacteristique: function ({commit}, [mercerie_id, payload]) {
+            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/${payload.id}`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_CARACTERISTIQUE', [mercerie_id, payload])
+                    resolve(r)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+        createImage: function ({commit}, [mercerie_id, payload]) {
+            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/images/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('ADD_IMAGE', [mercerie_id, r.data])
+                    resolve(r.data)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+        deleteImage: function({commit}, [mercerie_id, payload]) {
+            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/images/${payload.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.DELETEData(endpoint).then(r => {
+                    commit('DELETE_IMAGE', [mercerie_id, payload])
                     resolve(r)
                 }, error => {
                     reject(error)

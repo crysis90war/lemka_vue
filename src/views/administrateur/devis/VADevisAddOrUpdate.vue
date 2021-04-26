@@ -113,7 +113,7 @@
                         <b-list-group-item v-for="mercerieOption in devis.demande_devis.mercerie_options" :key="mercerieOption.id">
                           <b-img :src="require('@/assets/noimage.png')" height="72" width="72"/>
                           <span class="ml-3"><strong>{{ mercerieOption.reference }}</strong> | {{ mercerieOption.name }}</span>
-                          <b-button variant="outline-success" size="sm" class="mx-4" :disabled="mercerieOption.stock === 0"
+                          <b-button variant="outline-success" size="sm" class="mx-4"
                                     @click="ajouterMercerieAuDetail(mercerieOption)">
                             <i class="fas fa-plus"></i>
                           </b-button>
@@ -287,16 +287,12 @@ export default {
       }
     },
     ajouterMercerieAuDetail(mercerie) {
-      if (mercerie.stock > 0) {
-        this.detail.designation = `${mercerie.reference} | ${mercerie.name}`
-        this.detail.quantite = 1
-        this.detail.prix_u_ht = mercerie.prix_u_ht
-        this.detail.tva = mercerie.tva
-        this.ajouterDetail()
-        console.log(this.detail.toCreatePayload())
-      } else {
-        this.makeToast('danger', "Il n'y a plus de stock disponible")
-      }
+      this.detail.designation = `${mercerie.reference} | ${mercerie.name}`
+      this.detail.quantite = 1
+      this.detail.prix_u_ht = mercerie.prix_u_ht
+      this.detail.tva = mercerie.tva
+      this.ajouterDetail()
+      console.log(this.detail.toCreatePayload())
     },
     updateRemarque: function () {
       let payload = this.devis.toUpdatePayload()

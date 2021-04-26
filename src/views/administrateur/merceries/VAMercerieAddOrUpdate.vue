@@ -50,10 +50,8 @@
                 track-by="nom"
                 :show-labels="false"
                 placeholder="Veuillez selectionner la catégorie"
-                selectLabel="Appuyez sur enter pour selectionner"
-                :class="{ 'invalid': isInvalid }"
-                deselectLabel="Appuyez sur enter pour retirer"
-                @close="onTouch"
+                :class="{ 'invalid': invalidCategorie }"
+                @close="touchCategorie"
             >
               <template slot="singleLabel" slot-scope="{ option }">
                 <span>{{ option.nom }}</span>
@@ -63,7 +61,7 @@
               </template>
               <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
             </multiselect>
-            <span class="text-danger" v-show="isInvalid"><small>Ce champ est requis</small></span>
+            <span class="text-danger" v-show="invalidCategorie"><small>Ce champ est requis</small></span>
           </b-form-group>
         </b-col>
         <!-- endregion -->
@@ -84,10 +82,8 @@
                 label="Couleur"
                 track-by="nom"
                 placeholder="Veuillez selectionner la couleur"
-                selectLabel="Appuyez sur enter pour selectionner"
-                :class="{ 'invalid': isInvalid }"
-                deselectLabel="Appuyez sur enter pour retirer"
-                @close="onTouch"
+                :class="{ 'invalid': invalidCouleur }"
+                @close="touchCouleur"
             >
               <template slot="singleLabel" slot-scope="{ option }">
                 <span>{{ option.nom }}</span>
@@ -97,7 +93,7 @@
               </template>
               <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
             </multiselect>
-            <span class="text-danger" v-show="isInvalid"><small>Ce champ est requis</small></span>
+            <span class="text-danger" v-show="invalidCouleur"><small>Ce champ est requis</small></span>
           </b-form-group>
         </b-col>
         <!-- endregion -->
@@ -105,7 +101,7 @@
 
       <b-row>
         <!-- region Prix hors TVA -->
-        <b-col lg="4">
+        <b-col lg="6">
           <b-form-group
               label="Prix hors TVA"
               description="Veuillez encoder le prix hors tva de l'option"
@@ -136,7 +132,7 @@
         <!-- endregion -->
 
         <!-- region TVA -->
-        <b-col lg="4">
+        <b-col lg="6">
           <b-form-group
               label="TVA"
               description="Veuillez selectionner la TVA"
@@ -150,10 +146,8 @@
                 label="tva"
                 track-by="taux"
                 placeholder="Veuillez selectionner la tva"
-                selectLabel="Appuyez sur enter pour selectionner"
-                :class="{ 'invalid': isInvalid }"
-                deselectLabel="Appuyez sur enter pour retirer"
-                @close="onTouch"
+                :class="{ 'invalid': invalidTva }"
+                @close="touchTva"
             >
               <template slot="singleLabel" slot-scope="{ option }">
                 <span>{{ option.taux !== null ? `${option.taux * 100} %` : null }}</span>
@@ -163,38 +157,7 @@
               </template>
               <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
             </multiselect>
-            <span class="text-danger" v-show="isInvalid"><small>Ce champ est requis</small></span>
-          </b-form-group>
-        </b-col>
-        <!-- endregion -->
-
-        <!-- region Stock -->
-        <b-col lg="4">
-          <b-form-group
-              label="Stock"
-              description="Veuillez encoder le stock de l'option"
-          >
-            <b-form-input
-                v-model="$v.mercerie.stock.$model"
-                type="number"
-                step="0.01"
-                min="0.00"
-                :state="validateStateMercerie('stock')"
-            />
-            <b-form-invalid-feedback>
-              <l-invalid-feedback
-                  :condition="!$v.mercerie.stock.required"
-                  :error-message="required()"
-              />
-              <l-invalid-feedback
-                  :condition="!$v.mercerie.stock.minValue"
-                  :error-message="minValue($v.mercerie.stock.$params.minValue.min)"
-              />
-              <l-invalid-feedback
-                  :condition="!$v.mercerie.stock.numeric"
-                  :error-message="decimal()"
-              />
-            </b-form-invalid-feedback>
+            <span class="text-danger" v-show="invalidTva"><small>Ce champ est requis</small></span>
           </b-form-group>
         </b-col>
         <!-- endregion -->
@@ -277,7 +240,7 @@
           </template>
 
           <template #cell(caracteristique)="data">
-            <p>{{data.item.caracteristique.nom}}</p>
+            <p>{{ data.item.caracteristique.nom }}</p>
           </template>
 
           <template #cell(actions)>
@@ -305,7 +268,11 @@
       <!-- region Images -->
       <div v-if="id" class="mt-5">
         <b-button-group size="sm">
-          <b-button variant="outline-success">Ajouter image</b-button>
+          <b-button
+              variant="outline-success"
+              @click="showModal('ajout-image')"
+          >Ajouter image
+          </b-button>
         </b-button-group>
 
         <b-table
@@ -366,9 +333,7 @@
                 label="nom"
                 track-by="nom"
                 placeholder="Veuillez selectionner la caractéristique"
-                selectLabel="Appuyez sur enter pour selectionner"
                 :class="{ 'invalid': invalidCharacteristique }"
-                deselectLabel="Appuyez sur enter pour retirer"
                 @close="touchCaracteristique"
             >
               <template slot="singleLabel" slot-scope="{ option }">
@@ -379,7 +344,7 @@
               </template>
               <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
             </multiselect>
-            <span class="text-danger" v-show="isInvalid"><small>Ce champ est requis</small></span>
+            <span class="text-danger" v-show="invalidCharacteristique"><small>Ce champ est requis</small></span>
           </b-form-group>
 
           <b-form-group
@@ -412,12 +377,14 @@
               <b-button
                   variant="outline-danger"
                   @click="hideModal('ajout-caracteristique')"
-              >Annuler</b-button>
+              >Annuler
+              </b-button>
               <b-button
                   variant="outline-success"
                   @click.stop.prevent="addCharacteristique"
                   :disabled="mercerieCharacteristiqueSubmitStatus === 'PENDING'"
-              >Ajouter</b-button>
+              >Ajouter
+              </b-button>
             </b-button-group>
           </div>
         </template>
@@ -425,7 +392,77 @@
       </b-modal>
       <!-- endregion -->
 
-      <l-jumbotron :data="mercerieCharacteristique.toCreatePayload()" class="mt-5"/>
+      <!-- region Ajout Image -->
+      <b-modal
+          id="ajout-image"
+          title="Modifier image du profil"
+          size="xl"
+      >
+        <template #modal-footer>
+          <div class="text-right">
+            <b-button-group>
+              <b-button
+                  variant="outline-danger"
+                  @click="hideModal('ajout-image')"
+              >
+                Annuler
+              </b-button>
+              <b-button
+                  variant="outline-success"
+                  type="button"
+                  @click="addImage"
+                  :disabled="emptyImage"
+              >
+                Ajouter
+              </b-button>
+            </b-button-group>
+          </div>
+        </template>
+        <div>
+          <b-form-group description="Formats autorisés .jpg et .png">
+            <b-form-file
+                v-model="image"
+                required
+                ref="image"
+                accept="image/jpeg, image/png, .jpg, .png,"
+                @change="previewImage"
+            />
+            <b-badge variant="danger" v-show="invalidImage">Veuillez selectionner une image au format valide</b-badge>
+          </b-form-group>
+
+          <b-row class="my-2">
+            <b-col lg="7">
+              <cropper
+                  :src="preview"
+                  class="cropper"
+                  style="max-width: 720px; max-height: 576px"
+                  @change="change"
+                  :stencil-props="{
+                     handlers: {},
+                     movable: true,
+                     scalable: true,
+                     resizable: true
+                   }"
+                  :stencil-size="{
+                     width: 600,
+                     height: 600
+                   }"
+              />
+            </b-col>
+            <b-col lg="5">
+              <b-img
+                  v-if="destination !== null"
+                  :src="destination"
+                  height="360"
+                  width="360"
+              />
+            </b-col>
+          </b-row>
+        </div>
+      </b-modal>
+      <!-- endregion -->
+
+      <l-jumbotron :data="mercerie.images" class="mt-5"/>
     </b-container>
   </div>
 </template>
@@ -437,18 +474,19 @@ import LemkaHelpers from "@/helpers";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/LInvalidFeedback";
-import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
 import {htmlTitle} from "@/utils/tools";
-import {fonctions} from "@/mixins/functions.mixin";
 import MercerieChatacteristiqueModel from "@/models/mercerie/mercerie_characteristique.model";
+import {Cropper} from "vue-advanced-cropper";
+import {dataURLtoFile} from "@/helpers/functions.helper";
+import {fonctions} from "@/mixins/functions.mixin";
 
 export default {
   name: "VAMercerieAddOrUpdate",
-  components: {InvalidFeedback},
+  components: {InvalidFeedback, Cropper},
   props: {
     id: {}
   },
-  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin, fonctions],
+  mixins: [validationMixin, validationMessageMixin, fonctions],
   validations: {
     mercerie: MercerieModel.validations,
     mercerieCharacteristique: MercerieChatacteristiqueModel.validations
@@ -464,12 +502,24 @@ export default {
       mercerieCharacteristiquesFields: MercerieModel.caracteristiquesTableFields,
       imagesFields: MercerieModel.imagesTableFields,
 
+      categorieTouched: false,
+      couleurTouched: false,
+      tvaTouched: false,
       mercerieCharacteristiqueTouched: false,
 
       mercerieCharacteristiqueSubmitStatus: null,
 
       routes: LemkaHelpers.Routes,
-      submitStatus: null
+      submitStatus: null,
+
+      image: null,
+      preview: null,
+      destination: null,
+
+      invalidImage: false,
+      emptyImage: true,
+
+      formData: new FormData()
     }
   },
   computed: {
@@ -480,8 +530,14 @@ export default {
       tvas: "TVA/tvas",
       characteristiques: 'Characteristiques/characteristiques'
     }),
-    isInvalid() {
-      return this.isTouched && this.mercerie.categorie.id === null
+    invalidCategorie() {
+      return this.categorieTouched && this.mercerie.categorie.id === null
+    },
+    invalidCouleur() {
+      return this.couleurTouched && this.mercerie.couleur.id === null
+    },
+    invalidTva() {
+      return this.tvaTouched && this.mercerie.tva.id === null
     },
     invalidCharacteristique() {
       return this.mercerieCharacteristiqueTouched && this.mercerieCharacteristique.caracteristique.id === null
@@ -498,7 +554,9 @@ export default {
       updateMercerie: 'Merceries/updateMercerie',
       createCharacteristique: "Merceries/createCharacteristique",
       updateCharacteristique: "Merceries/updateCharacteristique",
-      deleteCharacteristique: "Merceries/deleteCharacteristique"
+      deleteCharacteristique: "Merceries/deleteCharacteristique",
+      createImage: "Merceries/createImage",
+      deleteImage: "Merceries/deleteImage"
     }),
     initialisation: async function () {
       if (this.characteristiques.length === 0) {
@@ -533,8 +591,17 @@ export default {
 
     submitMercerie: function () {
       this.$v.$touch()
-      if (this.$v.$invalid || (this.isTouched === false && this.isInvalid === true)) {
-        this.isTouched = true
+      if (this.$v.$invalid ||
+          (this.categorieTouched === false && this.invalidCategorie === false) ||
+          (this.categorieTouched === true && this.invalidCategorie === true) ||
+          (this.couleurTouched === false && this.invalidCouleur === false) ||
+          (this.couleurTouched === true && this.invalidCouleur === true) ||
+          (this.tvaTouched === false && this.invalidTva === false) ||
+          (this.tvaTouched === true && this.invalidTva === true)) {
+        this.mercerieCharacteristiqueTouched = true
+        this.categorieTouched = true
+        this.couleurTouched = true
+        this.tvaTouched = true
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
@@ -552,12 +619,12 @@ export default {
       }
     },
 
-    addCharacteristique: function() {
+    addCharacteristique: function () {
       this.$v.$touch()
       if (this.$v.$invalid ||
           (this.mercerieCharacteristiqueTouched === false && this.invalidCharacteristique === false) ||
           (this.mercerieCharacteristiqueTouched === true && this.invalidCharacteristique === true)) {
-        this.mercerieCharacteristiqueTouched = true
+
         this.mercerieCharacteristiqueSubmitStatus = 'ERROR'
       } else {
         this.mercerieCharacteristiqueSubmitStatus = 'PENDING'
@@ -569,22 +636,74 @@ export default {
 
         setTimeout(() => {
           this.mercerieCharacteristiqueSubmitStatus = 'OK'
+          this.mercerieCharacteristique = new MercerieChatacteristiqueModel()
+          this.hideModal('ajout-caracteristique')
         }, 500)
       }
+    },
+
+    addImage: function () {
+      this.createImage([this.mercerie.id, this.formData]).then(() => {
+        this.emptyImage = true
+        this.formData = new FormData()
+      })
+
+      this.hideModal('ajout-image')
     },
 
     validateStateMercerie: function (name) {
       const {$dirty, $error} = this.$v.mercerie[name];
       return $dirty ? !$error : null;
     },
-    validateStateCharacteristique: function(name) {
+    validateStateCharacteristique: function (name) {
       const {$dirty, $error} = this.$v.mercerieCharacteristique[name];
       return $dirty ? !$error : null;
     },
-
-    touchCaracteristique: function() {
+    touchCategorie: function () {
+      this.categorieTouched = true
+    },
+    touchCouleur: function () {
+      this.couleurTouched = true
+    },
+    touchTva: function () {
+      this.tvaTouched = true
+    },
+    touchCaracteristique: function () {
       this.mercerieCharacteristiqueTouched = true
-    }
+    },
+    previewImage: function (event) {
+      let input = event.target;
+      let formatImage = [
+        "image/jpeg",
+        "image/png"
+      ]
+      if (formatImage.includes(input.files[0]['type'])) {
+        this.invalidImage = false
+        this.emptyImage = false
+        if (input.files) {
+          let reader = new FileReader();
+          reader.onload = (e) => {
+            this.preview = e.target.result;
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      } else {
+        this.invalidImage = true
+        this.emptyImage = true
+        console.log('faux')
+      }
+    },
+
+    // eslint-disable-next-line no-unused-vars
+    change({coordinates, canvas, image}) {
+      // console.log(coordinates, canvas, image)
+      this.destination = canvas.toDataURL()
+
+      let formData = new FormData()
+      let file = dataURLtoFile(canvas.toDataURL())
+      formData.append('image', file, 'image.jpg')
+      this.formData = formData
+    },
   },
   created() {
     if (this.id !== undefined) {

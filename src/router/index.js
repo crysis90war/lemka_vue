@@ -12,9 +12,6 @@ import VAArticleAddOrUpdate from "@/views/administrateur/articles/VAArticleAddOr
 import VAArticleDetail from "@/views/administrateur/articles/VAArticleDetail";
 import VAMerceries from "@/views/administrateur/merceries/VAMerceries";
 import VAMercerieAddOrUpdate from "@/views/administrateur/merceries/VAMercerieAddOrUpdate";
-import VAMercerieOptions from "@/views/administrateur/merceries/VAMercerieOptions";
-import VAMercerieOptionAddOrUpdate from "@/views/administrateur/merceries/VAMercerieOptionAddOrUpdate";
-import VAMOCAddOrUpdate from "@/views/administrateur/merceries/VAMOCAddOrUpdate";
 import VADemandeDeDevis from "@/views/administrateur/demande_de_devis/VADemandeDeDevis";
 import VADevis from "@/views/administrateur/devis/VADevis";
 import VARendezVous from "@/views/administrateur/rendez_vous/VARendezVous";
@@ -122,27 +119,6 @@ const adminRoutes = [
         name: ROUTES.MERCERIES_ADD_OR_UPDATE.name,
         meta: {value: ROUTES.MERCERIES_ADD_OR_UPDATE.value},
         component: VAMercerieAddOrUpdate,
-        props: true
-      },
-      {
-        path: ADMIN + 'merceries/:id/options/',
-        name: ROUTES.MERCERIE_OPTIONS.name,
-        meta: {value: ROUTES.MERCERIE_OPTIONS.value},
-        component: VAMercerieOptions,
-        props: true
-      },
-      {
-        path: ADMIN + 'merceries/:mercerie_id/options/:id?',
-        name: ROUTES.MO_ADD_OR_UPDATE.name,
-        meta: {value: ROUTES.MO_ADD_OR_UPDATE.value},
-        component: VAMercerieOptionAddOrUpdate,
-        props: true
-      },
-      {
-        path: ADMIN + 'mercerie_options/:mercerie_id/caracteristiques/:id?/',
-        name: ROUTES.MOC_ADD_OR_UPDATE.name,
-        meta: {value: ROUTES.MOC_ADD_OR_UPDATE.value},
-        component: VAMOCAddOrUpdate,
         props: true
       }
     ]

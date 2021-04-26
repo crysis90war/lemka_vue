@@ -12,7 +12,6 @@ export default class MercerieModel {
         this.nom = R.is(String, json.nom) ? json.nom : ""
         this.description = R.is(String, json.description) ? json.description : ""
         this.prix_u_ht = R.is(Number, parseFloat(json.prix_u_ht)) ? parseFloat(json.prix_u_ht) : 0
-        this.stock = R.is(Number, json.stock) ? json.stock : 0
 
         this.tva = R.is(Object, json.tva) ? new TVAModel(json.tva) : new TVAModel()
         this.couleur = R.is(Object, json.couleur) ? new CouleurModel(json.couleur) : new CouleurModel()
@@ -28,7 +27,6 @@ export default class MercerieModel {
             nom: this.nom,
             description: this.description,
             prix_u_ht: this.prix_u_ht,
-            stock: this.stock,
             ref_tva: this.tva.id,
             ref_couleur: this.couleur.id,
             ref_categorie: this.categorie.id
@@ -58,11 +56,6 @@ export default class MercerieModel {
                 required,
                 decimal,
                 minValue: minValue(0.00),
-            },
-            stock: {
-                required,
-                decimal,
-                minValue: minValue(0.0),
             }
         }
     }
@@ -73,7 +66,7 @@ export default class MercerieModel {
             {key: 'reference', label: 'Reference', sortable: true},
             {key: 'nom', label: 'Nom', sortable: true},
             {key: 'prix_u_ht', label: 'Prix HT', sortable: true},
-            {key: 'stock', label: 'Stock', sortable: true},
+            {key: 'images_count', label: 'Images', sortable: true},
             {key: 'est_publie', label: 'Publication', sortable: true},
             {key: 'actions', label: 'Actions'},
         ]
