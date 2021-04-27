@@ -36,7 +36,7 @@ export const MercerieModule = {
             state.loadingStatus = merceriesLoadingStatus
         },
         ADD_MERCERIE(state, mercerie) {
-            state.merceries.push(mercerie)
+            state.merceries.unshift(mercerie)
         },
         UPDATE_MERCERIE(state, mercerie) {
             const index = state.merceries.findIndex(item => item.id === mercerie.id)
@@ -163,7 +163,7 @@ export const MercerieModule = {
             })
         },
         updateCharacteristique: function ({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/${payload.id}`;
+            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_CARACTERISTIQUE', [mercerie_id, r.data])
@@ -174,7 +174,7 @@ export const MercerieModule = {
             })
         },
         deleteCharacteristique: function ({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/${payload.id}`;
+            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_CARACTERISTIQUE', [mercerie_id, payload])

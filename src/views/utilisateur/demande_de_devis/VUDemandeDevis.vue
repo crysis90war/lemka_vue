@@ -5,13 +5,29 @@
         :class="BSClass.CARD_BORDERLESS_SHADOW" class="my-4"
     >
       <b-card-body>
-        <l-create-refresh size="sm" :route="routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name" :load-or-refresh="loadDemandeDevis"/>
+        <l-create-refresh
+            size="sm"
+            :route="routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name"
+            :load-or-refresh="loadOrRefresh"
+        />
 
-        <b-tabs pills card class="mt-2">
+        <b-tabs
+            pills
+            card
+            class="mt-2"
+        >
           <b-tab title="En rédaction">
             <b-card-text>
-              <b-table :items="demandesDevisEnRedaction" :fields="redactionTableFields" :busy="busy"
-                       stacked="md" small show-empty hover class="text-center mt-3">
+              <b-table
+                  :items="demandesDevisEnRedaction"
+                  :fields="redactionTableFields"
+                  :busy="busy"
+                  stacked="md"
+                  small
+                  show-empty
+                  hover
+                  class="text-center mt-3"
+              >
                 <template #table-busy>
                   <l-table-busy/>
                 </template>
@@ -21,18 +37,26 @@
                 </template>
 
                 <template #cell(est_urgent)="data">
-                  <b-badge pill :variant="data.item.est_urgent === true ? 'success' : 'danger'">
+                  <b-badge
+                      pill
+                      :variant="data.item.est_urgent === true ? 'success' : 'danger'"
+                  >
                     <i :class="`fas fa-${data.item.est_urgent  === true ? 'check' : 'times'}-circle`"></i>
                   </b-badge>
                 </template>
 
                 <template #cell(actions)="data">
                   <b-button-group size="sm">
-                    <b-button variant="outline-primary"
-                              :to="{name: routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
+                    <b-button
+                        variant="outline-primary"
+                        :to="{name: routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}"
+                    >
                       <i class="fas fa-edit"></i>
                     </b-button>
-                    <b-button variant="outline-success" @click.stop.prevent="envoyer(data.item)">
+                    <b-button
+                        variant="outline-success"
+                        @click.stop.prevent="envoyer(data.item)"
+                    >
                       <i class="fas fa-paper-plane"></i>
                     </b-button>
                   </b-button-group>
@@ -43,8 +67,16 @@
 
           <b-tab title="Soumis">
             <b-card-text>
-              <b-table :items="demandeDevisSoumis" :fields="soumisTableFields" :busy="busy"
-                       stacked="md" small show-empty hover class="text-center mt-3">
+              <b-table
+                  :items="demandeDevisSoumis"
+                  :fields="soumisTableFields"
+                  :busy="busy"
+                  stacked="md"
+                  small
+                  show-empty
+                  hover
+                  class="text-center mt-3"
+              >
                 <template #table-busy>
                   <l-table-busy/>
                 </template>
@@ -56,13 +88,19 @@
                   {{ data.item.created_at | localTimeStr }}
                 </template>
                 <template #cell(est_urgent)="data">
-                  <b-badge pill :variant="data.item.est_urgent === true ? 'success' : 'danger'">
+                  <b-badge
+                      :variant="data.item.est_urgent === true ? 'success' : 'danger'"
+                      pill
+                  >
                     <i :class="`fas fa-${data.item.est_urgent === true ? 'check' : 'times'}-circle`"></i>
                   </b-badge>
                 </template>
 
                 <template #cell(actions)>
-                  <b-button size="sm" variant="outline-primary">
+                  <b-button
+                      size="sm"
+                      variant="outline-primary"
+                  >
                     <i class="fas fa-eye"></i>
                   </b-button>
                 </template>
@@ -72,13 +110,25 @@
 
           <b-tab title="En cours">
             <b-card-text>Vos demandes de devis en cours de traitements.</b-card-text>
-            <b-table :items="demandeDevisEnCours" :fields="traiteTableFields" show-empty></b-table>
+            <b-table
+                :items="demandeDevisEnCours"
+                :fields="traiteTableFields"
+                show-empty
+            ></b-table>
           </b-tab>
 
           <b-tab title="Traités">
             <b-card-text>
-              <b-table :items="demandeDevisTraite" :fields="traiteTableFields" :busy="busy"
-                       stacked="md" small show-empty hover class="text-center mt-3">
+              <b-table
+                  :items="demandeDevisTraite"
+                  :fields="traiteTableFields"
+                  :busy="busy"
+                  stacked="md"
+                  small
+                  show-empty
+                  hover
+                  class="text-center mt-3"
+              >
                 <template #table-busy>
                   <l-table-busy/>
                 </template>
@@ -133,6 +183,9 @@ export default {
   },
   methods: {
     ...mapActions({loadDemandeDevis: "DemandesDevis/loadDemandeDevis", updateDemandeDevis: "DemandesDevis/updateDemandeDevis"}),
+    loadOrRefresh: async function() {
+      await this.loadDemandeDevis()
+    },
     envoyer: function (item) {
       let demande_devis = new DemandeDevisModel(item)
       let payload = demande_devis.toUpdatePayload()
@@ -143,7 +196,7 @@ export default {
   },
   created() {
     if (this.demandes_devis.length === 0) {
-      this.loadDemandeDevis()
+      this.loadOrRefresh()
     }
   },
   filters: {

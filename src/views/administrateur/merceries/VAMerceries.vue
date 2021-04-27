@@ -104,7 +104,7 @@
     <b-row class="mt-3 mb-2">
       <b-col lg="5">
         <create-refresh-button-group
-            :load-or-refresh="loadMerceries"
+            :load-or-refresh="loadOrRefresh"
             :route="routes.MERCERIES_ADD_OR_UPDATE.name"
             create_message="Ajouter mercerie"
         />
@@ -157,20 +157,23 @@
       </template>
 
       <template #cell(est_publie)="data">
-        <b-button
-            size="sm"
-            :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'"
-            @click="activerDesactiver(data.item)"
-        >
-          <i class="fas fa-power-off"></i>
-          {{ data.item.est_publie === true ? 'Désactiver' : 'Publier' }}
-        </b-button>
+        <b-button-group size="sm">
+          <b-button
+              v-b-tooltip.top :title="data.item.est_publie === true ? 'Désactiver la mercerie' : 'Activer la mercerie'"
+              :variant="data.item.est_publie === true ? 'outline-danger' : 'outline-success'"
+              @click="activerDesactiver(data.item)"
+          >
+            <i class="fas fa-power-off"></i>
+            {{ data.item.est_publie === true ? 'Désactiver' : 'Publier' }}
+          </b-button>
+        </b-button-group>
+
       </template>
 
       <template #cell(actions)="data">
-        <b-button-group>
+        <b-button-group size="sm">
           <b-button
-              size="sm"
+              v-b-tooltip.top title="Modifier"
               variant="outline-primary"
               :to="{name: routes.MERCERIES_ADD_OR_UPDATE.name, params: {id: data.item.id}}"
           >
@@ -178,12 +181,37 @@
           </b-button>
 
           <b-button
-              size="sm"
+              v-b-tooltip.top title="Supprimer"
               variant="outline-danger"
-              @click="deleteMercerie(data.item)"
+              @click="showModal('delete-modal-'+data.item.id)"
           >
             <i class="fas fa-trash-alt"></i>
           </b-button>
+          <b-modal :id="`delete-modal-${data.item.id}`" :title="data.item.reference">
+            <template #modal-footer>
+              <div class="text-right">
+                <b-button-group size="md">
+                  <b-button
+                      variant="outline-primary"
+                      @click="hideModal('delete-modal-'+data.item.id)"
+                  >
+                    Annuler
+                  </b-button>
+                  <b-button
+                      variant="outline-danger"
+                      @click="supprimerMercerie(data.item)"
+                  >
+                    Supprimer
+                  </b-button>
+                </b-button-group>
+              </div>
+            </template>
+
+            <div class="text-center">
+              <p>Êtes-vous sure de vouloir supprimer</p>
+              <p>"{{ data.item.nom }}"</p>
+            </div>
+          </b-modal>
         </b-button-group>
       </template>
     </b-table>
@@ -223,17 +251,25 @@ export default {
       updateMercerie: "Merceries/updateMercerie",
       deleteMercerie: 'Merceries/deleteMercerie'
     }),
+    loadOrRefresh: async function() {
+      await this.loadMerceries()
+      this.itemsLength(this.merceries)
+    },
     activerDesactiver: function (item) {
       let mercerie = new MercerieModel()
       Object.assign(mercerie, item)
       let payload = mercerie.toUpdatePayload()
       payload.est_publie = !payload.est_publie
       this.updateMercerie(payload)
+    },
+    supprimerMercerie: function (item) {
+      this.deleteMercerie(item)
+      this.hideModal('delete-modal-' + item.id)
     }
   },
   created() {
     if (this.merceries.length === 0) {
-      this.loadMerceries()
+      this.loadOrRefresh()
     }
   }
 }

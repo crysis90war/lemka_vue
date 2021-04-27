@@ -150,6 +150,18 @@
         </b-link>
       </template>
 
+      <template #cell(is_active)="data">
+        <b-badge :variant="data.item.is_active === true ? 'success' : 'danger'">
+          {{data.item.is_active === true ? 'Oui' : 'Non'}}
+        </b-badge>
+      </template>
+
+      <template #cell(is_verified)="data">
+        <b-badge :variant="data.item.is_verified === true ? 'success' : 'danger'">
+          {{data.item.is_verified === true ? 'Oui' : 'Non'}}
+        </b-badge>
+      </template>
+
       <template #cell(is_staff)="data">
         <b-badge v-if="data.item.is_staff === true" pill variant="success">Administrateur</b-badge>
         <b-badge v-else pill variant="primary">Utilisateur</b-badge>

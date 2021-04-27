@@ -6,22 +6,54 @@
         <hr>
         <div class="d-flex justify-content-between">
           <b-button-group>
-            <b-button variant="outline-dark" @click="$router.push({name: routes.MERCERIES.name})">
+            <b-button
+                v-b-tooltip.top title="Revenir vers merceries"
+                variant="outline-dark"
+                @click="$router.push({name: routes.MERCERIES.name})"
+            >
               <i class="fas fa-arrow-left"></i>
             </b-button>
             <b-button
+                v-b-tooltip.top :title="id !== undefined ? 'Modifier : '+ mercerie.nom : 'Créer une nouvelle mercerie'"
                 :variant="id !== undefined ? 'outline-primary' : 'outline-success'"
-                @click.prevent="submitMercerie"
+                @click="addMercerie"
             >
               {{ id !== undefined ? 'Modifier' : 'Créer' }}
             </b-button>
             <b-button
+                v-b-tooltip.top :title="`Supprimer: ${mercerie.nom}`"
                 v-if="id !== undefined"
                 variant="outline-danger"
+                @click="showModal('delete-mercerie-modal')"
             >
               Supprimer
             </b-button>
           </b-button-group>
+          <b-modal id="delete-mercerie-modal" :title="mercerie.reference">
+            <template #modal-footer>
+              <div class="text-right">
+                <b-button-group size="md">
+                  <b-button
+                      variant="outline-primary"
+                      @click="hideModal('delete-mercerie-modal')"
+                  >
+                    Annuler
+                  </b-button>
+                  <b-button
+                      variant="outline-danger"
+                      @click="supprimerMercerie"
+                  >
+                    Supprimer
+                  </b-button>
+                </b-button-group>
+              </div>
+            </template>
+
+            <div class="text-center">
+              <p>Êtes-vous sure de vouloir supprimer</p>
+              <h3>"{{ mercerie.nom }}"</h3>
+            </div>
+          </b-modal>
           <h2>{{ id !== undefined ? mercerie.reference : 'Créer nouvelle mercerie' }}</h2>
         </div>
         <hr>
@@ -243,12 +275,13 @@
             <p>{{ data.item.caracteristique.nom }}</p>
           </template>
 
-          <template #cell(actions)>
+          <template #cell(actions)="data">
             <b-button-group>
               <b-button
                   v-b-tooltip.hover title="Modifier"
                   variant="outline-primary"
                   size="sm"
+                  @click="afficherModifierCharacteristiqueModal(`modifier-characteristique-modal-${data.item.id}`, data.item)"
               >
                 <i class="fas fa-edit"></i>
               </b-button>
@@ -256,10 +289,110 @@
                   v-b-tooltip.hover title="Supprimer"
                   size="sm"
                   variant="outline-danger"
+                  @click="showModal('delete-characteristique-modal-'+data.item.id)"
               >
                 <i class="fas fa-trash-alt"></i>
               </b-button>
             </b-button-group>
+            <b-modal
+                :id="`modifier-characteristique-modal-`+data.item.id"
+                :title="`Modifier : ${data.item.caracteristique.nom}`"
+            >
+              <div>
+                <b-form-group
+                    label="Caractéristique"
+                    description="Veuillez choisir la caractéristique"
+                >
+                  <multiselect
+                      v-model="mercerieCharacteristique.caracteristique"
+                      :options="characteristiques"
+                      :allow-empty="false"
+                      :show-labels="false"
+                      label="nom"
+                      track-by="nom"
+                      placeholder="Veuillez selectionner la caractéristique"
+                      :class="{ 'invalid': invalidCharacteristique }"
+                      @close="touchCaracteristique"
+                  >
+                    <template slot="singleLabel" slot-scope="{ option }">
+                      <span>{{ option.nom }}</span>
+                    </template>
+                    <template slot="option" slot-scope="{ option }">
+                      <span>{{ option.nom }}</span>
+                    </template>
+                    <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+                  </multiselect>
+                  <span class="text-danger" v-show="invalidCharacteristique"><small>Ce champ est requis</small></span>
+                </b-form-group>
+
+                <b-form-group
+                    label="Valeur"
+                    description="Veuillez encoder la valeur"
+                >
+                  <b-form-input
+                      v-model="$v.mercerieCharacteristique.valeur.$model"
+                      type="number"
+                      step="0.01"
+                      min="0.00"
+                      :state="validateStateCharacteristique('valeur')"
+                  />
+                  <b-form-invalid-feedback>
+                    <invalid-feedback
+                        :condition="!$v.mercerieCharacteristique.valeur.required"
+                        :error-message="required()"
+                    />
+                    <invalid-feedback
+                        :condition="!$v.mercerieCharacteristique.valeur.numeric"
+                        :error-message="decimal()"
+                    />
+                  </b-form-invalid-feedback>
+                </b-form-group>
+              </div>
+              <template #modal-footer>
+                <div class="text-right">
+                  <b-button-group>
+                    <b-button
+                        variant="outline-danger"
+                        @click="hideModal('modifier-characteristique-modal-'+data.item.id)"
+                    >
+                      Annuler
+                    </b-button>
+                    <b-button
+                        variant="outline-primary"
+                        @click="modifierCharacteristique(data.item.id)"
+                    >
+                      Modifier
+                    </b-button>
+                  </b-button-group>
+                </div>
+              </template>
+            </b-modal>
+            <b-modal
+                :id="`delete-characteristique-modal-${data.item.id}`"
+                :title="`Supprimer : `+data.item.caracteristique.nom">
+              <div class="text-center">
+                <p>Êtes-vous sur de vouloir supprimer</p>
+                <h3>{{ data.item.caracteristique.nom }} - {{ data.item.valeur }}</h3>
+              </div>
+              <template #modal-footer>
+                <div class="text-right">
+                  <b-button-group>
+                    <b-button
+                        variant="outline-primary"
+                        @click="hideModal('delete-characteristique-modal-'+data.item.id)"
+                    >
+                      Annuler
+                    </b-button>
+                    <b-button
+                        variant="outline-danger"
+                        @click="supprimerCharacteristique(data.item)"
+                    >
+                      Supprimer
+                    </b-button>
+                  </b-button-group>
+                </div>
+              </template>
+            </b-modal>
           </template>
         </b-table>
       </div>
@@ -300,16 +433,44 @@
             </b-badge>
           </template>
 
-          <template #cell(actions)>
+          <template #cell(actions)="data">
             <b-button-group>
               <b-button
                   v-b-tooltip.hover title="Supprimer"
                   size="sm"
                   variant="outline-danger"
+                  @click="showModal(`delete-image-modal-${data.item.id}`)"
               >
                 <i class="fas fa-trash-alt"></i>
               </b-button>
             </b-button-group>
+            <b-modal
+                :id="`delete-image-modal-${data.item.id}`"
+                title="Suppression de l'image"
+            >
+              <div class="text-center">
+                <p>Êtes-vous sure de vouloir supprimer cette image</p>
+                <b-img :src="data.item.image" width="360" height="360"/>
+              </div>
+              <template #modal-footer>
+                <div class="text-right">
+                  <b-button-group>
+                    <b-button
+                        variant="outline-primary"
+                        @click="hideModal(`delete-image-modal-${data.item.id}`)"
+                    >
+                      Annuler
+                    </b-button>
+                    <b-button
+                        variant="outline-danger"
+                        @click="supprimerImage(data.item)"
+                    >
+                      Supprimer
+                    </b-button>
+                  </b-button-group>
+                </div>
+              </template>
+            </b-modal>
           </template>
         </b-table>
       </div>
@@ -462,7 +623,7 @@
       </b-modal>
       <!-- endregion -->
 
-      <l-jumbotron :data="mercerie.images" class="mt-5"/>
+      <l-jumbotron :data="mercerieCharacteristique"/>
     </b-container>
   </div>
 </template>
@@ -552,6 +713,7 @@ export default {
       loadTVAs: "TVA/loadTvas",
       createMercerie: 'Merceries/createMercerie',
       updateMercerie: 'Merceries/updateMercerie',
+      deleteMercerie: "Merceries/deleteMercerie",
       createCharacteristique: "Merceries/createCharacteristique",
       updateCharacteristique: "Merceries/updateCharacteristique",
       deleteCharacteristique: "Merceries/deleteCharacteristique",
@@ -588,8 +750,7 @@ export default {
       this.$route.meta.value = this.mercerie.nom
       this.toggleLoading()
     },
-
-    submitMercerie: function () {
+    addMercerie: function () {
       this.$v.$touch()
       if (this.$v.$invalid ||
           (this.categorieTouched === false && this.invalidCategorie === false) ||
@@ -618,39 +779,77 @@ export default {
         }, 500)
       }
     },
-
+    supprimerMercerie: function () {
+      this.deleteMercerie(this.mercerie).then(() => {
+        this.$router.push({name: this.routes.MERCERIES.name})
+      })
+    },
     addCharacteristique: function () {
       this.$v.$touch()
       if (this.$v.$invalid ||
           (this.mercerieCharacteristiqueTouched === false && this.invalidCharacteristique === false) ||
           (this.mercerieCharacteristiqueTouched === true && this.invalidCharacteristique === true)) {
-
+        this.mercerieCharacteristiqueTouched = true
         this.mercerieCharacteristiqueSubmitStatus = 'ERROR'
       } else {
         this.mercerieCharacteristiqueSubmitStatus = 'PENDING'
 
-        console.log(this.mercerie.id)
         if (this.mercerie.id !== null) {
           this.createCharacteristique([this.mercerie.id, this.mercerieCharacteristique.toCreatePayload()])
         }
 
         setTimeout(() => {
           this.mercerieCharacteristiqueSubmitStatus = 'OK'
+          this.mercerieCharacteristiqueTouched = false
           this.mercerieCharacteristique = new MercerieChatacteristiqueModel()
           this.hideModal('ajout-caracteristique')
         }, 500)
       }
     },
+    afficherModifierCharacteristiqueModal: function (modal_id, item) {
+      this.showModal(modal_id)
+      Object.assign(this.mercerieCharacteristique, item)
+    },
+    modifierCharacteristique: function (modal_id) {
+      this.$v.$touch()
+      if (this.$v.$invalid ||
+          (this.mercerieCharacteristiqueTouched === false && this.invalidCharacteristique === false) ||
+          (this.mercerieCharacteristiqueTouched === true && this.invalidCharacteristique === true)) {
+        this.mercerieCharacteristiqueTouched = true
+        this.mercerieCharacteristiqueSubmitStatus = 'ERROR'
+      } else {
+        this.mercerieCharacteristiqueSubmitStatus = 'PENDING'
 
+        if (this.mercerie.id !== null) {
+          this.updateCharacteristique([this.mercerie.id, this.mercerieCharacteristique.toUpdatePayload()])
+        }
+
+        setTimeout(() => {
+          this.mercerieCharacteristiqueSubmitStatus = 'OK'
+          this.mercerieCharacteristiqueTouched = false
+          this.mercerieCharacteristique = new MercerieChatacteristiqueModel()
+          this.hideModal(`modifier-characteristique-modal-${modal_id}`)
+        }, 1)
+      }
+    },
+    supprimerCharacteristique: function (item) {
+      this.deleteCharacteristique([this.mercerie.id, item])
+    },
     addImage: function () {
       this.createImage([this.mercerie.id, this.formData]).then(() => {
         this.emptyImage = true
+        this.image = null
+        this.preview = null
+        this.destination = null
         this.formData = new FormData()
       })
 
       this.hideModal('ajout-image')
     },
-
+    supprimerImage: function (item) {
+      this.deleteImage([this.mercerie.id, item])
+      this.hideModal(`delete-image-modal-${item.id}`)
+    },
     validateStateMercerie: function (name) {
       const {$dirty, $error} = this.$v.mercerie[name];
       return $dirty ? !$error : null;

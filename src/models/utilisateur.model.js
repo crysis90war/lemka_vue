@@ -42,6 +42,7 @@ export default class UtilisateurModel {
     static get tableFields() {
         return [
             {key: 'image', label: 'Image', sortable: false},
+            {key: 'is_staff', label: 'Role', sortable: true},
             {key: 'username', label: 'Username', sortable: true, sortDirection: 'desc'},
             {key: 'first_name', label: 'Prénom', sortable: true, sortDirection: 'desc'},
             {key: 'last_name', label: 'Nom', sortable: true, sortDirection: 'desc'},
@@ -56,7 +57,7 @@ export default class UtilisateurModel {
                 sortByFormatted: true,
                 filterByFormatted: true
             },
-            {key: 'is_staff', label: 'Role', sortable: true},
+            {key: 'is_verified', label: 'Vérifié', sortable: true},
             {key: 'actions', label: 'Actions'}
         ]
     }

@@ -115,7 +115,7 @@ const adminRoutes = [
     component: VAMerceries,
     children: [
       {
-        path: ADMIN + 'merceries/:id?',
+        path: ADMIN + 'mercerie/:id?',
         name: ROUTES.MERCERIES_ADD_OR_UPDATE.name,
         meta: {value: ROUTES.MERCERIES_ADD_OR_UPDATE.value},
         component: VAMercerieAddOrUpdate,

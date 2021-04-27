@@ -2,34 +2,53 @@
   <div class="demande_devis_add_or_udpate">
     <l-spinner v-if="isLoading === true"/>
 
-    <div :class="shadow" v-else>
-      <h2>{{ id !== undefined ? demande_devis.numero_demande_devis : 'Créer la demande de devis' }}</h2>
-      <hr>
-
+    <div
+        v-else
+        :class="shadow"
+    >
       <!-- region Boutons -->
-      <div class="text-center">
+      <hr>
+      <div class="d-flex justify-content-between">
         <b-button-group>
-          <b-button variant="outline-dark" @click="$router.push({name: routes.DEMANDE_DE_DEVIS.name})">
+          <b-button
+              variant="outline-dark"
+              @click="$router.push({name: routes.DEMANDE_DE_DEVIS.name})"
+          >
             <i class="fas fa-arrow-left"></i>
           </b-button>
-          <b-button variant="outline-primary" :disabled="submitStatus === 'PENDING'" @click.stop.prevent="submitSave()">
+          <b-button
+              variant="outline-primary"
+              :disabled="submitStatus === 'PENDING'" @click.stop.prevent="submitSave()"
+          >
             <i class="fas fa-save"></i>
           </b-button>
-          <b-button variant="outline-success" :disabled="submitStatus === 'PENDING'" @click.stop.prevent="submitSend()">
+          <b-button
+              variant="outline-success"
+              :disabled="submitStatus === 'PENDING'" @click.stop.prevent="submitSend()"
+          >
             <i class="fas fa-paper-plane"></i>
           </b-button>
         </b-button-group>
+
+        <h2>{{ id !== undefined ? demande_devis.numero_demande_devis : 'Création de demande de devis' }}</h2>
       </div>
+      <hr>
       <!-- endregion -->
 
-      <hr>
       <b-form>
 
         <!-- region Switch -->
         <b-form-group>
-          <b-form-checkbox v-model="demande_devis.est_urgent" name="check-button" switch>
+          <b-form-checkbox
+              v-model="demande_devis.est_urgent"
+              name="check-button"
+              switch
+          >
             <p>{{ demande_devis.est_urgent === true ? 'Urgent' : 'Pas urgent' }}</p>
-            <span v-if="demande_devis.est_urgent === true" class="text-danger">
+            <span
+                v-if="demande_devis.est_urgent === true"
+                class="text-danger"
+            >
                 <small> (toute demande urgente engendre des frais supplémentaires)</small>
               </span>
           </b-form-checkbox>
@@ -37,25 +56,48 @@
         <!-- endregion -->
 
         <!-- region Titre -->
-        <b-form-group label="Titre *" description="Veuillez encoder le titre">
-          <b-form-input v-model="$v.demande_devis.titre.$model" :state="validateState('titre')"/>
+        <b-form-group
+            label="Titre *"
+            description="Veuillez encoder le titre"
+        >
+          <b-form-input
+              v-model="$v.demande_devis.titre.$model"
+              :state="validateState('titre')"
+          />
           <b-form-invalid-feedback>
-            <l-invalid-feedback :condition="!$v.demande_devis.titre.required"
-                                :error-message="required()"/>
-            <l-invalid-feedback :condition="!$v.demande_devis.titre.minLength"
-                                :error-message="minLength($v.demande_devis.titre.$params.minLength.min)"/>
-            <l-invalid-feedback :condition="!$v.demande_devis.titre.maxLength"
-                                :error-message="maxLength($v.demande_devis.titre.$params.maxLength.max)"/>
+            <l-invalid-feedback
+                :condition="!$v.demande_devis.titre.required"
+                :error-message="required()"
+            />
+            <l-invalid-feedback
+                :condition="!$v.demande_devis.titre.minLength"
+                :error-message="minLength($v.demande_devis.titre.$params.minLength.min)"
+            />
+            <l-invalid-feedback
+                :condition="!$v.demande_devis.titre.maxLength"
+                :error-message="maxLength($v.demande_devis.titre.$params.maxLength.max)"
+            />
           </b-form-invalid-feedback>
         </b-form-group>
         <!-- endregion -->
 
         <!-- region Service -->
-        <b-form-group label="Service *" description="Veuillez selectionner le service de l'article" class="my-1">
-          <multiselect v-model="demande_devis.type_service" :options="typeServices" :class="{ 'invalid': isInvalid }"
-                       label="type_service" track-by="type_service" placeholder="Veuillez selectionner le service"
-                       selectLabel="Appuyez sur enter pour selectionner" deselectLabel="Appuyez sur enter pour retirer"
-                       :allow-empty="false" :hide-selected="true" @close="onTouch">
+        <b-form-group
+            label="Service *"
+            description="Veuillez selectionner le service de l'article" class="my-1"
+        >
+          <multiselect
+              v-model="demande_devis.type_service"
+              :options="typeServices"
+              :class="{ 'invalid': isInvalid }"
+              :show-labels="false"
+              label="type_service"
+              track-by="type_service"
+              placeholder="Veuillez selectionner le service"
+              :allow-empty="false"
+              :hide-selected="true"
+              @close="onTouch"
+          >
             <template slot="singleLabel" slot-scope="{ option }">
               <span>{{ option.type_service }}</span>
             </template>
@@ -69,15 +111,27 @@
         <!-- endregion -->
 
         <!-- region Remarque -->
-        <b-form-group label="Remarque *" description="Veuillez spécifier en détail votre demande">
-          <b-form-textarea v-model="$v.demande_devis.remarque.$model" :state="validateState('remarque')"/>
+        <b-form-group
+            label="Remarque *"
+            description="Veuillez spécifier en détail votre demande"
+        >
+          <b-form-textarea
+              v-model="$v.demande_devis.remarque.$model"
+              :state="validateState('remarque')"
+          />
           <b-form-invalid-feedback>
-            <l-invalid-feedback :condition="!$v.demande_devis.remarque.required"
-                                :error-message="required()"/>
-            <l-invalid-feedback :condition="!$v.demande_devis.remarque.minLength"
-                                :error-message="minLength($v.demande_devis.remarque.$params.minLength.min)"/>
-            <l-invalid-feedback :condition="!$v.demande_devis.remarque.maxLength"
-                                :error-message="maxLength($v.demande_devis.remarque.$params.maxLength.max)"/>
+            <l-invalid-feedback
+                :condition="!$v.demande_devis.remarque.required"
+                :error-message="required()"
+            />
+            <l-invalid-feedback
+                :condition="!$v.demande_devis.remarque.minLength"
+                :error-message="minLength($v.demande_devis.remarque.$params.minLength.min)"
+            />
+            <l-invalid-feedback
+                :condition="!$v.demande_devis.remarque.maxLength"
+                :error-message="maxLength($v.demande_devis.remarque.$params.maxLength.max)"
+            />
           </b-form-invalid-feedback>
         </b-form-group>
         <!-- endregion -->
@@ -86,11 +140,21 @@
         <h4 class="text-secondary mb4">Optionnel</h4>
 
         <!-- region Article -->
-        <b-form-group label="Article" class="my-1"
-                      description="Si un article particulier vous interesse, veuillez le selecetion, sinon laissez vide">
-          <multiselect v-model="demande_devis.article" :options="articlesPublies" :option-height="104" :show-labels="false"
-                       :hide-selected="true" :internal-search="false" placeholder="Articles optionnel ..." label="Articles"
-                       track-by="titre">
+        <b-form-group
+            label="Article" class="my-1"
+            description="Si un article particulier vous interesse, veuillez le selecetion, sinon laissez vide"
+        >
+          <multiselect
+              v-model="demande_devis.article"
+              :options="articlesPublies"
+              :option-height="104"
+              :show-labels="false"
+              :hide-selected="true"
+              :internal-search="false"
+              placeholder="Articles optionnel ..."
+              label="Articles"
+              track-by="titre"
+          >
             <template slot="singleLabel" slot-scope="props">
               <img v-if="props.option.images.length > 0" :src="props.option.images.length > 0 ? props.option.images[0].image : ''"
                    alt="" height="48" width="48">
@@ -109,19 +173,39 @@
         <!-- endregion -->
 
         <!-- region Mensuration -->
-        <b-form-group label="Mensuration" class="my-1"
-                      description="Veuillez selectionner la mensuration pour cette demande, si vous en avez.">
-          <multiselect v-model="demande_devis.mensuration" :options="userMensurations" :hide-selected="true"
-                       placeholder="Mensuration optionnel ..." label="mensuration" track-by="id" :internal-search="false">
+        <b-form-group
+            label="Mensuration"
+            class="my-1"
+            description="Veuillez selectionner la mensuration pour cette demande, si vous en avez."
+        >
+          <multiselect
+              v-model="demande_devis.mensuration"
+              :options="userMensurations"
+              :hide-selected="true"
+              :show-labels="false"
+              placeholder="Mensuration optionnel ..."
+              label="mensuration" track-by="id"
+              :internal-search="false"
+          >
             <template slot="singleLabel" slot-scope="props">
-              <b-badge v-if="demande_devis.mensuration.id !== null" pill :variant="props.option.is_main === true ? 'success': 'primary'">
+              <b-badge
+                  v-if="demande_devis.mensuration.id !== null"
+                  pill
+                  :variant="props.option.is_main === true ? 'success': 'primary'"
+              >
                 {{ props.option.is_main === true ? 'Principale' : 'Secondaire' }}
               </b-badge>
               <span> {{ props.option.titre }}</span>
             </template>
 
-            <template slot="option" slot-scope="props">
-              <b-badge pill :variant="props.option.is_main === true ? 'success': 'primary'">
+            <template
+                slot="option"
+                slot-scope="props"
+            >
+              <b-badge
+                  pill
+                  :variant="props.option.is_main === true ? 'success': 'primary'"
+              >
                 {{ props.option.is_main === true ? 'Principale' : 'Secondaire' }}
               </b-badge>
               <p>{{ props.option.titre }}</p>
@@ -134,13 +218,23 @@
 
         <!-- region Merceries -->
         <b-form-group label="Merceries">
-          <b-form-input v-model="searchInput" placeholder="Veuillez encoder pour chercher une mercerie" @keyup="searchMercerie"/>
-          <LDoubleListBox :left-options="demande_devis.mercerie_options" :right-options="mercerieOptions" :loading="loadingStatus"/>
+          <b-form-input
+              v-model="searchInput"
+              placeholder="Veuillez encoder pour chercher une mercerie"
+              @keyup="searchMercerie"
+          />
+          <LDoubleListBox
+              :left-options="demande_devis.mercerie_options"
+              :right-options="mercerieOptions"
+              :loading="loadingStatus"
+          />
         </b-form-group>
         <!-- endregion -->
 
       </b-form>
     </div>
+
+    <l-jumbotron :data="demande_devis.toCreatePayload()"/>
   </div>
 </template>
 
@@ -197,7 +291,7 @@ export default {
       createDemandeDevis: "DemandesDevis/createDemandeDevis",
       updateDemandeDevis: "DemandesDevis/updateDemandeDevis"
     }),
-    chargerOptions: async function () {
+    initialisation: async function () {
       if (this.userMensurations.length === 0) {
         await this.loadUserMensurations()
       }
@@ -211,15 +305,12 @@ export default {
         await this.loadGlobalMerceries()
       }
     },
-    initialisation: async function () {
+    chargerDemandeDevis: async function() {
       this.toggleLoading()
-      await this.chargerOptions()
-      if (this.id !== undefined) {
-        Object.assign(this.demande_devis, await this.$store.getters["DemandesDevis/demandeDevis"](this.id))
-      }
+      await this.initialisation()
+      Object.assign(this.demande_devis, await this.$store.getters["DemandesDevis/demandeDevis"](this.id))
       this.toggleLoading()
     },
-
     searchMercerie: async function () {
       await this.loadGlobalMerceries(this.searchInput)
       this.demande_devis.mercerie_options.forEach(item => {
@@ -288,7 +379,11 @@ export default {
     }
   },
   created() {
-    this.initialisation()
+    if (this.id !== undefined) {
+      this.chargerDemandeDevis()
+    } else {
+      this.initialisation()
+    }
   }
 }
 </script>
