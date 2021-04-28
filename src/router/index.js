@@ -100,7 +100,7 @@ const adminRoutes = [
         props: true
       },
       {
-        path: ADMIN + 'articles/:slug/detail',
+        path: ADMIN + 'article/:slug/detail',
         name: ROUTES.ARTICLES_DETAIL.name,
         meta: {value: ROUTES.ARTICLES_DETAIL.value},
         component: VAArticleDetail,

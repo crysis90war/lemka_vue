@@ -1,12 +1,19 @@
 <template>
   <div class="article_detail">
-    <l-spinner v-if="loading"/>
+    <l-spinner v-if="isLoading"/>
 
     <div v-else>
       <b-row>
-        <b-col lg="7" :class="images.length > 0 ? '' : 'my-auto'">
-          <lightbox v-if="images.length > 0" :cells="2" :items="images"></lightbox>
-          <div v-else class="text-center">
+        <b-col lg="7" :class="article.images.length > 0 ? '' : 'my-auto'">
+          <lightbox
+              v-if="article.images.length > 0"
+              :cells="3"
+              :items="getImageUrl(article.images)"
+          />
+          <div
+              v-else
+              class="text-center"
+          >
             <p>Pas d'images</p>
           </div>
         </b-col>
@@ -14,32 +21,23 @@
         <b-col lg="5">
           <span class="text-muted">{{ article.created_at | localTimeStr }}</span>
           <h3>{{ article.titre }}</h3>
-          <h5>{{ article.ref_type_service.type_service }}</h5>
-          <p>{{ article.description }}</p>
-          <span v-for="(tag, index) in article.ref_tag" :key="index">
-              <b-badge pill variant="secondary" class="mr-1">{{ tag.tag }}</b-badge>
-            </span>
+          <h5>{{ article.type_service.type_service }}</h5>
+          <p style="white-space: pre-wrap">{{ article.description }}</p>
+          <span
+              v-for="(tag, index) in article.tags"
+              :key="index"
+          >
+            <b-badge
+                pill
+                variant="secondary"
+                class="mr-1"
+            >
+              {{ tag.tag }}
+            </b-badge>
+          </span>
           <br>
           <br>
-          <span class="text-danger">
-              <i :class="icons.heart"></i>
-              {{ article.likes_count }}
-            </span>
-
-          <div class="pull-bottom mt-5">
-            <b-button-group class="d-flex justify-content-center">
-              <b-button variant="outline-primary" :to="{name: links.articleUpdateLink, params: {slug: article.slug}}">
-                Modifier
-              </b-button>
-              <b-button :variant="article.est_active === true ? 'outline-secondary' : 'outline-success'"
-                        @click="activerDesactiverArticle(article.slug, article.est_active)">
-                {{ article.est_active === true ? 'Désactiver' : 'Publier' }}
-              </b-button>
-              <b-button variant="outline-danger">
-                Supprimer
-              </b-button>
-            </b-button-group>
-          </div>
+          <span class="text-danger"><i :class="icons.HEART"></i> {{ article.likes_count }}</span>
         </b-col>
       </b-row>
     </div>
@@ -50,45 +48,64 @@
 import ArticleModel from "@/models/article/article.model";
 import LemkaHelpers from "@/helpers";
 import {localTimeStr} from "@/utils/filters";
+import {htmlTitle} from "@/utils/tools";
+import {fonctions} from "@/mixins/functions.mixin";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "VAArticleDetail",
+  mixins: [fonctions],
   props: {
     slug: {
       type: String,
       required: true
     },
   },
+  title() {
+    return htmlTitle()
+  },
   data() {
     return {
-      loading: false,
       article: new ArticleModel(),
-      images: [],
-      articleObject: new ArticleModel(),
-      error: null,
-      links: {
-        articlesLink: LemkaHelpers.Routes.ARTICLES.name,
-        articleUpdateLink: LemkaHelpers.Routes.ARTICLES_ADD_OR_UPDATE.name
-      },
+      routes: LemkaHelpers.Routes,
       BSClass: LemkaHelpers.BSClass,
-      icons: {
-        heart: LemkaHelpers.FontAwesomeIcons.HEART
-      }
+      icons: LemkaHelpers.FontAwesomeIcons,
     }
   },
 
   computed: {
+    ...mapGetters({articles: 'Articles/articles'}),
     thisRoute() {
       return this.$route.name
     }
   },
 
   methods: {
-    async chargerArticle() {
+    ...mapActions({loadArticles: "Articles/loadArticles"}),
+    initialisation: async function () {
+      if (this.articles.length === 0) {
+        await this.loadArticles()
+      }
     },
-
-    // eslint-disable-next-line no-unused-vars
-    activerDesactiverArticle: async function (articleSlug, article) {
+    chargerArticle: async function () {
+      this.toggleLoading()
+      await this.initialisation()
+      let article = await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug)
+      if (article !== undefined) {
+        Object.assign(this.article, await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug))
+        this.$route.meta.value = this.article.titre
+        this.toggleLoading()
+      } else {
+        this.toggleLoading()
+        await this.$router.push({name: this.routes.ARTICLES.name})
+      }
+    },
+    getImageUrl: function (images) {
+      let urls = []
+      images.forEach(item => {
+        urls.push(item.image)
+      })
+      return urls
     }
   },
 

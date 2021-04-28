@@ -119,7 +119,7 @@ import {mapActions, mapGetters} from "vuex";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import LemkaHelpers from "@/helpers";
 import {htmlTitle} from "@/utils/tools";
-import DevisModel from "@/models/devis.model";
+import DevisModel from "@/models/devis/devis.model";
 
 export default {
   name: "VADemandeDeDevis",

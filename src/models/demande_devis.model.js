@@ -22,7 +22,7 @@ export default class DemandeDevisModel {
         this.mensuration = R.is(Object, json.mensuration) ? new UserMensurationModel(json.mensuration) : null
         this.article = R.is(Object, json.article) ? new ArticleModel(json.article) : null
         this.ref_user = R.is(Object, json.ref_user) ? new ProfilModel(json.ref_user) : new ProfilModel()
-        this.mercerie_options = R.is(Array, json.mercerie_options) ? json.mercerie_options : []
+        this.merceries = R.is(Array, json.merceries) ? json.merceries : []
     }
 
     toCreatePayload() {
@@ -36,7 +36,7 @@ export default class DemandeDevisModel {
             ref_type_service: this.type_service.id,
             ref_article: this.article !== null ? this.article.id : null,
             ref_mensuration: this.mensuration !== null ? this.mensuration.id : null,
-            ref_mercerie_options: this.mercerie_options.map(item => item.id)
+            ref_merceries: this.merceries.map(item => item.id)
         }
     }
 

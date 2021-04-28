@@ -8,14 +8,14 @@ export const CatalogueModule = {
     namespaced: true,
     state: {
         catalogues: [],
-        cataloguesLoadingStatus: false
+        loadingStatus: false
     },
     getters: {
         catalogues: state => state.catalogues,
         catalogue: state => id => {
             return state.catalogues.find(item => item.id === id)
         },
-        cataloguesLoadingStatus: state => state.cataloguesLoadingStatus
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
         SET_CATALOGUES_SUCCESS(state, payload) {
@@ -24,8 +24,8 @@ export const CatalogueModule = {
         SET_CATALOGUES_FAILURE(state) {
             state.catalogues = []
         },
-        CATALOGUES_LOADING_STATUS(state, cataloguesLoadingStatus) {
-            state.cataloguesLoadingStatus = cataloguesLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
         ADD_CATALOGUE(state, payload) {
             state.catalogues.push(payload)
@@ -48,14 +48,14 @@ export const CatalogueModule = {
             let searchParam = `?search=${searchField}`;
             let endpoint = `${DOMAIN}/catalogues/${searchField === "" ? searchField : searchParam}`;
             return await new Promise((resolve, reject) => {
-                commit('CATALOGUES_LOADING_STATUS', true)
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
                     commit('SET_CATALOGUES_SUCCESS', r.data)
-                    commit('CATALOGUES_LOADING_STATUS', false)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
                     commit('SET_CATALOGUES_FAILURE')
-                    commit('CATALOGUES_LOADING_STATUS', false)
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })

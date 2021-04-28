@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import TVAModel from "@/models/tva.model";
+import {maxLength, minLength, minValue, required} from "vuelidate/lib/validators";
 
 export default class DetailModel {
     constructor(detail = {}) {
@@ -28,7 +29,21 @@ export default class DetailModel {
     }
 
     static get validations() {
-        return {}
+        return {
+            designation: {
+                required,
+                minLength: minLength(3),
+                maxLength: maxLength(255),
+            },
+            prix_u_ht: {
+                required,
+                minValue: minValue(0)
+            },
+            quantite: {
+                required,
+                minValue: minValue(1)
+            }
+        }
     }
 
     static get tableFields() {

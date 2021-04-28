@@ -224,7 +224,7 @@
               @keyup="searchMercerie"
           />
           <LDoubleListBox
-              :left-options="demande_devis.mercerie_options"
+              :left-options="demande_devis.merceries"
               :right-options="mercerieOptions"
               :loading="loadingStatus"
           />
@@ -233,8 +233,6 @@
 
       </b-form>
     </div>
-
-    <l-jumbotron :data="demande_devis.toCreatePayload()"/>
   </div>
 </template>
 
@@ -308,12 +306,12 @@ export default {
     chargerDemandeDevis: async function() {
       this.toggleLoading()
       await this.initialisation()
-      Object.assign(this.demande_devis, await this.$store.getters["DemandesDevis/demandeDevis"](this.id))
+      Object.assign(this.demande_devis, await this.$store.getters["DemandesDevis/demandeDevis"](parseInt(this.$route.params.id)))
       this.toggleLoading()
     },
     searchMercerie: async function () {
       await this.loadGlobalMerceries(this.searchInput)
-      this.demande_devis.mercerie_options.forEach(item => {
+      this.demande_devis.merceries.forEach(item => {
         const index = this.mercerieOptions.findIndex(i => i.id === item.id)
         if (index !== -1) {
           this.mercerieOptions.splice(index, 1)

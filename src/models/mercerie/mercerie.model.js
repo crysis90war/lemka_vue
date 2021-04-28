@@ -83,7 +83,7 @@ export default class MercerieModel {
     static get imagesTableFields() {
         return [
             {key: 'image', label: 'Image'},
-            {key: 'is_main', label: 'Priorité', sortable: true},
+            {key: 'is_main', label: 'Priorité'},
             {key: 'actions', label: 'Actions'}
         ]
     }

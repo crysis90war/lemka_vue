@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import DevisModel from "@/models/devis.model";
+import DevisModel from "@/models/devis/devis.model";
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 import {htmlTitle} from "@/utils/tools";

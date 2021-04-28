@@ -44,8 +44,8 @@ export const DevisModule = {
                 state.deviss.splice(index, 1)
             }
         },
-        ADD_DETAIL(state, [numero_devis, payload]) {
-            const index = state.deviss.findIndex(item => item.numero_devis === numero_devis)
+        ADD_DETAIL(state, [devis_id, payload]) {
+            const index = state.deviss.findIndex(item => item.id === devis_id)
             if (index !== -1) {
                 state.deviss[index].details.push(payload)
             }
@@ -59,8 +59,8 @@ export const DevisModule = {
                 }
             }
         },
-        DELETE_DETAIL(state, [numero_devis, payload]) {
-            const devisIndex = state.deviss.findIndex(item => item.numero_devis === numero_devis)
+        DELETE_DETAIL(state, [devis_id, payload]) {
+            const devisIndex = state.deviss.findIndex(item => item.id === devis_id)
             if (devisIndex !== -1) {
                 const detailIndex = state.deviss[devisIndex].details.map(item => item.id).indexOf(payload.id)
                 if (detailIndex !== -1) {
@@ -107,11 +107,11 @@ export const DevisModule = {
                 })
             })
         },
-        createDetail: function({commit}, [numero_devis, payload]) {
-            let endpoint = `${DOMAIN}/devis/${numero_devis}/details/`;
+        createDetail: function({commit}, [devis_id, payload]) {
+            let endpoint = `${DOMAIN}/devis/${devis_id}/details/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
-                    commit('ADD_DETAIL', [numero_devis, r.data])
+                    commit('ADD_DETAIL', [devis_id, r.data])
                     resolve(r.data)
                 }, error => {
                     reject(error)
@@ -129,11 +129,11 @@ export const DevisModule = {
                 })
             })
         },
-        deleteDetail: function({commit}, [numero_devis, payload]) {
-            let endpoint = `${DOMAIN}/devis/${numero_devis}/details/${payload.id}/`;
+        deleteDetail: function({commit}, [devis_id, payload]) {
+            let endpoint = `${DOMAIN}/devis/${devis_id}/details/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
-                    commit('DELETE_DETAIL', [numero_devis, payload])
+                    commit('DELETE_DETAIL', [devis_id, payload])
                     resolve(r)
                 }, error => {
                     reject(error)

@@ -2,7 +2,7 @@
   <l-spinner v-if="isLoading"/>
   <div v-else class="mercerie">
     <b-container>
-      <div class="text-left my-5">
+      <div class="mb-5">
         <hr>
         <div class="d-flex justify-content-between">
           <b-button-group>
@@ -743,12 +743,12 @@ export default {
       const index = this.merceries.findIndex(item => item.id === parseInt(this.id))
       if (index !== -1) {
         Object.assign(this.mercerie, this.$store.getters["Merceries/mercerie"](parseInt(id)))
+        this.$route.meta.value = this.mercerie.nom
+        this.toggleLoading()
       } else {
         this.toggleLoading()
         await this.$router.push({name: this.routes.MERCERIES.name})
       }
-      this.$route.meta.value = this.mercerie.nom
-      this.toggleLoading()
     },
     addMercerie: function () {
       this.$v.$touch()

@@ -29,7 +29,7 @@ export default class ArticleModel {
             description: this.description,
             ref_type_service: this.type_service.id,
             ref_catalogue: this.catalogue.id,
-            ref_tag: this.tags.map(item => item.id)
+            ref_tags: this.tags.map(item => item.id)
         }
     }
 
@@ -71,6 +71,14 @@ export default class ArticleModel {
             {key: 'section', label: 'Section', sortable: true},
             {key: 'type_produit', label: 'Type de produit', sortable: true},
             {key: 'est_active', label: 'Publication', sortable: true}
+        ]
+    }
+
+    static get imagesFields() {
+        return [
+            {key: 'image', label: 'Image'},
+            {key: 'is_main', label: 'Priorité'},
+            {key: 'actions', label: 'Actions'}
         ]
     }
 }

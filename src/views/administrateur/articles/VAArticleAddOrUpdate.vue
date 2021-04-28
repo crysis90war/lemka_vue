@@ -1,101 +1,230 @@
 <template>
   <div class="article">
     <l-spinner v-if="isLoading"/>
-
     <b-container v-else>
-      <!-- region Article -->
-      <b-form>
-        <!-- region Switch -->
-        <b-input-group class="my-1">
-          <b-form-checkbox v-model="article.est_active" name="check-button" switch>
-            <p>{{ article.est_active === true ? 'Publié' : 'En attente' }}</p>
-          </b-form-checkbox>
-        </b-input-group>
+      <div class="mb-5">
+        <hr>
+        <div class="d-flex justify-content-between">
+          <b-button-group>
+            <b-button
+                v-b-tooltip.top title="Revenir vers articles"
+                variant="outline-dark"
+                @click="$router.push({name: routes.ARTICLES.name})"
+            >
+              <i class="fas fa-arrow-left"></i>
+            </b-button>
+            <b-button
+                v-b-tooltip.top
+                :title="slug !== undefined ? 'Modifier : '+ article.titre : 'Créer un nouvel article'"
+                :variant="slug !== undefined ? 'outline-primary' : 'outline-success'"
+                :disabled="submitStatus === 'PENDING'"
+                @click="submit"
+            >
+              {{ slug !== undefined ? 'Modifier' : 'Créer' }}
+            </b-button>
+            <b-button
+                v-if="slug !== undefined"
+                v-b-tooltip.top :title="`Supprimer: ${article.titre}`"
+                variant="outline-danger"
+                @click="showModal('delete-article-modal')"
+            >
+              Supprimer
+            </b-button>
+          </b-button-group>
+          <b-modal id="delete-article-modal" :title="article.titre">
+            <template #modal-footer>
+              <div class="text-right">
+                <b-button-group size="md">
+                  <b-button
+                      variant="outline-primary"
+                      @click="hideModal('delete-article-modal')"
+                  >
+                    Annuler
+                  </b-button>
+                  <b-button
+                      variant="outline-danger"
+                  >
+                    Supprimer
+                  </b-button>
+                </b-button-group>
+              </div>
+            </template>
+
+            <div class="text-center">
+              <p>Êtes-vous sure de vouloir supprimer</p>
+              <h3>"{{ article.titre }}"</h3>
+            </div>
+          </b-modal>
+          <h3>{{ slug !== undefined ? article.titre : 'Créer nouvelle mercerie' }}</h3>
+        </div>
+        <hr>
+      </div>
+
+      <!-- region Publication -->
+      <b-input-group class="my-1">
+        <b-form-checkbox
+            v-model="article.est_active"
+            name="check-button"
+            switch
+        >
+          <p>{{ article.est_active === true ? 'Publié' : 'En attente' }}</p>
+        </b-form-checkbox>
+      </b-input-group>
+      <!-- endregion -->
+
+      <!-- region Titre -->
+      <b-form-group
+          label="Titre"
+          description="Encodez le titre de l'article"
+          class="my-1"
+      >
+        <b-form-input
+            v-model="$v.article.titre.$model"
+            placeholder="Titre ..." type="text"
+            :state="validateState('titre')"
+        />
+        <b-form-invalid-feedback>
+          <l-invalid-feedback
+              :condition="!$v.article.titre.required"
+              :errorMessage="required()"
+          />
+          <l-invalid-feedback
+              :condition="!$v.article.titre.minLength"
+              :errorMessage="minLength($v.article.titre.$params.minLength.min)"
+          />
+          <l-invalid-feedback
+              :condition="!$v.article.titre.maxLength"
+              :errorMessage="maxLength($v.article.titre.$params.maxLength.max)"
+          />
+        </b-form-invalid-feedback>
+      </b-form-group>
+      <!-- endregion -->
+
+      <!-- region Description -->
+      <b-form-group
+          label="Description"
+          description="Veuillez encoder la description de l'article"
+          class="my-1"
+      >
+        <b-form-textarea
+            v-model="$v.article.description.$model"
+            placeholder="Encodage de la description"
+            :state="validateState('description')"
+        />
+        <b-form-invalid-feedback>
+          <l-invalid-feedback
+              :condition="!$v.article.description.required"
+              :errorMessage="required()"
+          />
+          <l-invalid-feedback
+              :condition="!$v.article.description.minLength"
+              :errorMessage="minLength($v.article.description.$params.minLength.min)"
+          />
+        </b-form-invalid-feedback>
+      </b-form-group>
+      <!-- endregion -->
+
+      <b-row class="mt-3">
+        <!-- region Service -->
+        <b-col lg="6">
+          <b-form-group
+              label="Service"
+              description="Veuillez selectionner le service de l'article"
+          >
+            <multiselect
+                v-model="article.type_service"
+                :options="typeServices"
+                :allow-empty="false"
+                :show-labels="false"
+                :hide-selected="true"
+                label="type_service"
+                track-by="type_service"
+                :class="{ 'invalid': invalidTypeService }"
+                @close="toucheTypeService"
+            >
+              <template slot="singleLabel" slot-scope="{ option }">
+                <span>{{ option.type_service.id !== null ? option.type_service : null }}</span>
+              </template>
+              <template slot="option" slot-scope="{ option }">
+                <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
+              </template>
+              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+            </multiselect>
+            <span class="text-danger" v-show="invalidTypeService"><small>Ce champ est requis</small></span>
+          </b-form-group>
+        </b-col>
         <!-- endregion -->
 
-        <!-- region Titre -->
-        <b-form-group label="Titre" description="Encodez le titre de l'article" class="my-1">
-          <b-form-input v-model="$v.article.titre.$model" placeholder="Titre ..." type="text" :state="validateState('titre')"/>
-          <b-form-invalid-feedback>
-            <l-invalid-feedback :condition="!$v.article.titre.required" :errorMessage="required()"/>
-            <l-invalid-feedback :condition="!$v.article.titre.minLength"
-                                :errorMessage="minLength($v.article.titre.$params.minLength.min)"/>
-            <l-invalid-feedback :condition="!$v.article.titre.maxLength"
-                                :errorMessage="maxLength($v.article.titre.$params.maxLength.max)"/>
-          </b-form-invalid-feedback>
-        </b-form-group>
-        <!-- endregion -->
+        <!-- region Catalogue -->
+        <b-col lg="6">
+          <b-form-group
+              label="Catalogue"
+              description="Veuillez selectionner le catalogue de l'article"
+          >
+            <multiselect
+                v-model="article.catalogue"
+                :options="catalogues"
+                :loading="cataloguesLoadingStatus"
+                :close-on-select="true"
+                :hide-selected="true"
+                :options-limit="20"
+                :show-no-results="false"
+                :show-labels="false"
+                open-direction="bottom"
+                track-by="id"
+                :internal-search="false"
+                :allow-empty="false"
+                placeholder="Veuillez encoder pour lancer la recherche..."
+                :class="{ 'invalid': invalidCatalogue }"
+                @close="toucheCatalogue"
+                @search-change="updateSelectCatalogue"
+            >
 
-        <!-- region Description -->
-        <b-form-group label="Description" description="Veuillez encoder la description de l'article" class="my-1">
-          <b-form-textarea v-model="$v.article.description.$model" placeholder="Encodage de la description"
-                           :state="validateState('description')"/>
-          <b-form-invalid-feedback>
-            <l-invalid-feedback :condition="!$v.article.description.required" :errorMessage="required()"/>
-            <l-invalid-feedback :condition="!$v.article.description.minLength"
-                                :errorMessage="minLength($v.article.description.$params.minLength.min)"/>
-          </b-form-invalid-feedback>
-        </b-form-group>
-        <!-- endregion -->
-
-        <b-row>
-          <!-- region Service -->
-          <b-col lg="6">
-            <b-form-group label="Service" description="Veuillez selectionner le service de l'article" class="my-1">
-              <multiselect v-model="article.type_service" :options="typeServices" :allow-empty="false" :hide-selected="true"
-                           label="type_service" track-by="type_service" placeholder="Veuillez selectionner le service"
-                           selectLabel="Appuyez sur enter pour selectionner" deselectLabel="Appuyez sur enter pour retirer">
-                <template slot="singleLabel" slot-scope="{ option }">
-                  <span>{{ option.type_service.id !== null ? option.type_service : null }}</span>
-                </template>
-                <template slot="option" slot-scope="{ option }">
-                  <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
-                </template>
-                <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-              </multiselect>
-            </b-form-group>
-          </b-col>
-          <!-- endregion -->
-
-          <!-- region Catalogue -->
-          <b-col lg="6">
-            <b-form-group label="Catalogue" description="Veuillez selectionner le catalogue de l'article" class="my-1">
-              <multiselect v-model="article.catalogue" :options="catalogues" :loading="cataloguesLoadingStatus" :close-on-select="true"
-                           :hide-selected="true" :options-limit="20" :show-no-results="false" open-direction="bottom" track-by="id"
-                           :internal-search="false" :allow-empty="false" placeholder="Veuillez encoder pour lancer la recherche..."
-                           selectLabel="Appuyez sur enter pour selectionner." deselectLabel="Appuyez sur enter pour retirer"
-                           @search-change="updateSelectCatalogue">
-
-                <template slot="singleLabel" slot-scope="{ option }">
+              <template slot="singleLabel" slot-scope="{ option }">
                   <span>
                     {{
                       option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null
                     }}
                   </span>
-                </template>
+              </template>
 
-                <template slot="option" slot-scope="{ option }">
+              <template slot="option" slot-scope="{ option }">
                   <span>
                     {{
                       option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null
                     }}
                   </span>
-                </template>
+              </template>
+              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+            </multiselect>
+            <span class="text-danger" v-show="invalidCatalogue"><small>Ce champ est requis</small></span>
+          </b-form-group>
+        </b-col>
+        <!-- endregion -->
+      </b-row>
 
-                <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-              </multiselect>
-            </b-form-group>
-          </b-col>
-          <!-- endregion -->
-        </b-row>
-
-        <!-- region Tag -->
-        <b-form-group label="Tags" description="Veuillez chercher ou ajouter un tag" class="my-1">
-          <multiselect v-model="article.tags" :options="tags" :loading="tagsLoadingStatus" :multiple="true" :hide-selected="true"
-                       :taggable="true" label="tag" track-by="tag" selectLabel="Appuyez sur enter pour selectionner."
-                       deselectLabel="Appuyez sur enter pour retirer" placeholder="Cherchez ou ajoutez un tag"
-                       tag-placeholder="Ajoutez ça comme nouveau tag" @tag="addTag" @search-change="updateSelectTag"></multiselect>
-
+      <!-- region Tag -->
+      <b-form-group
+          label="Tags"
+          description="Veuillez chercher ou ajouter un tag"
+          class="my-1"
+      >
+        <multiselect
+            v-model="article.tags"
+            :options="tags"
+            :loading="tagsLoadingStatus"
+            :multiple="true"
+            :hide-selected="true"
+            :taggable="true"
+            label="tag"
+            track-by="tag"
+            selectLabel="Appuyez sur enter pour selectionner."
+            deselectLabel="Appuyez sur enter pour retirer"
+            placeholder="Cherchez ou ajoutez un tag"
+            tag-placeholder="Ajoutez ça comme nouveau tag"
+            @tag="addTag"
+            @search-change="updateSelectTag"
+        >
           <template slot="singleLabel" slot-scope="{ option }">
             <span>{{ option.tag }}</span>
           </template>
@@ -105,23 +234,16 @@
           </template>
 
           <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-        </b-form-group>
-        <!-- endregion -->
-
-        <b-button-group size="sm" class="my-3">
-          <b-button variant="outline-dark" @click="$router.push({name: routes.ARTICLES.name})">
-            <i class="fas fa-arrow-left"></i>
-          </b-button>
-          <b-button :variant="slug !== undefined ? 'outline-primary' : 'outline-success'" :disabled="submitStatus === 'PENDING'"
-                    @click="submit">
-            {{ slug !== undefined ? 'Modifier' : 'Ajouter' }}
-          </b-button>
-        </b-button-group>
-      </b-form>
+          <span slot="noOptions">Aucun tag disponible. Veuillez encoder pour en créer.</span>
+        </multiselect>
+      </b-form-group>
       <!-- endregion -->
 
       <!-- region Images -->
-      <div v-if="slug" class="mt-3">
+      <div
+          v-if="slug"
+          class="mt-5"
+      >
         <b-button
             variant="outline-success"
             size="sm"
@@ -137,7 +259,7 @@
             title="Modifier image du profil"
             size="xl"
         >
-          <b-form @submit.prevent="ajouterImage">
+          <b-form @submit.prevent="addImage">
             <b-form-group description="Formats autorisés .jpg et .png">
               <b-form-file
                   v-model="image"
@@ -185,18 +307,26 @@
         <b-table
             :items="article.images"
             :fields="imagesFields"
-            class="mt-2"
-            stacked="md"
-            small
+            hover
             show-empty
+            small
+            stacked="md"
+            class="text-center my-3"
         >
           <template #empty>
             <l-table-empty/>
           </template>
 
           <template #cell(image)="data">
-            <b-link :href="data.item.image" target="_blank">
-              <b-img :src="data.item.image" width="50" height="50"></b-img>
+            <b-link
+                :href="data.item.image"
+                target="_blank"
+            >
+              <b-img
+                  :src="data.item.image"
+                  width="50"
+                  height="50"
+              />
             </b-link>
           </template>
 
@@ -204,17 +334,6 @@
             <b-badge :variant="data.item.is_main === true ? 'success' : 'primary'">
               {{ data.item.is_main === true ? 'Principale' : 'Secondaire' }}
             </b-badge>
-          </template>
-
-          <template #cell(define)="data">
-            <b-button
-                v-if="data.item.is_main === false"
-                size="sm"
-                variant="outline-success"
-                @click="update_image_is_main(data.item.id, data.item.is_main)"
-            >
-              Définir comme principale
-            </b-button>
           </template>
 
           <template #cell(actions)="data">
@@ -231,12 +350,10 @@
         </b-table>
       </div>
       <!-- endregion -->
-    </b-container>
 
-    <l-jumbotron header="Article Image" :data="articleImage.toCreatePayload()"/>
-    <l-jumbotron header="Form Data" :data="formData"/>
-    <l-jumbotron :data="article.toCreatePayload()"/>
-    <l-jumbotron :data="article"/>
+      <l-jumbotron :data="article.toCreatePayload()"/>
+      <l-jumbotron :data="article"/>
+    </b-container>
   </div>
 </template>
 
@@ -250,7 +367,6 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import ArticleImageModel from "@/models/article/article_image.model";
 import {fonctions} from "@/mixins/functions.mixin";
 import {htmlTitle} from "@/utils/tools";
 
@@ -274,18 +390,6 @@ export default {
       return htmlTitle("Ajout d'une nouveau article")
     }
   },
-  computed: {
-    ...mapGetters({
-      tags: "Tags/tags",
-      tagsLoadingStatus: "Tags/tagsLoadingStatus",
-      typeServices: 'TypeServices/typeServices',
-      typeServiceLoadingStatus: "TypeServices/typeServiceLoadingStatus",
-      catalogues: "Catalogues/catalogues",
-      articles: "Articles/articles",
-      cataloguesLoadingStatus: "Catalogues/cataloguesLoadingStatus"
-    })
-  },
-
   data() {
     return {
       icons: LemkaHelpers.FontAwesomeIcons,
@@ -293,8 +397,11 @@ export default {
       routes: LemkaHelpers.Routes,
 
       article: new ArticleModel(),
-      imagesFields: ArticleImageModel.tableFields,
-      articleImage: new ArticleImageModel(),
+      imagesFields: ArticleModel.imagesFields,
+
+      catalogueTouched: false,
+      typeServiceTouched: false,
+
       submitStatus: null,
 
       preview: null,
@@ -304,7 +411,23 @@ export default {
       formData: new FormData(),
     }
   },
-
+  computed: {
+    ...mapGetters({
+      tags: "Tags/tags",
+      tagsLoadingStatus: "Tags/tagsLoadingStatus",
+      typeServices: 'TypeServices/typeServices',
+      typeServiceLoadingStatus: "TypeServices/typeServiceLoadingStatus",
+      catalogues: "Catalogues/catalogues",
+      articles: "Articles/articles",
+      cataloguesLoadingStatus: "Catalogues/loadingStatus"
+    }),
+    invalidCatalogue() {
+      return this.catalogueTouched && this.article.catalogue.id === null
+    },
+    invalidTypeService() {
+      return this.typeServiceTouched && this.article.type_service.id === null
+    }
+  },
   methods: {
     ...mapActions({
       loadArticles: "Articles/loadArticles",
@@ -326,11 +449,11 @@ export default {
       if (this.tags.length === 0) {
         await this.loadTags()
       }
-      if (this.catalogues.length) {
-        await this.loadCatalogues()
-      }
       if (this.typeServices.length === 0) {
         await this.loadTypeServices()
+      }
+      if (this.catalogues.length === 0) {
+        await this.loadCatalogues()
       }
     },
 
@@ -354,11 +477,6 @@ export default {
 
     updateSelectCatalogue: async function (query) {
       await this.loadCatalogues(query)
-    },
-
-    validateState: function (name) {
-      const {$dirty, $error} = this.$v.article[name];
-      return $dirty ? !$error : null;
     },
 
     addTag: function (newTag) {
@@ -405,6 +523,14 @@ export default {
       }
     },
 
+    toucheTypeService: function() {
+      this.typeServiceTouched = true
+    },
+
+    toucheCatalogue: function() {
+      this.catalogueTouched = true
+    },
+
     previewImage: function (event) {
       let input = event.target;
       let formatImage = [
@@ -436,29 +562,22 @@ export default {
       this.formData = formData
     },
 
-    hideModal: function (mondal_id) {
-      this.$bvModal.hide(mondal_id)
-    },
-
-    ajouterImage: function () {
+    addImage: function () {
       this.createImage([this.article.slug, this.formData])
+      this.preview = null
+      this.image = null
+      this.destination = null
+      this.formData = new FormData
       this.hideModal('image-modal')
     },
 
-    modifierImage: function () {
-      this.updateImage([this.article.slug, this.formData])
-    },
-
     supprimerImage: function (image) {
-      console.log(image)
       this.deleteImage([this.article.slug, image])
     },
 
-    update_image_is_main: function (image_id, is_main) {
-      let payload = {
-        is_main: !is_main
-      }
-      ArticleModel.patch_article_image(this.article.slug, image_id, payload)
+    validateState: function (name) {
+      const {$dirty, $error} = this.$v.article[name];
+      return $dirty ? !$error : null;
     },
   },
 

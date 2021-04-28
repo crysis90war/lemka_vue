@@ -39,7 +39,7 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import DevisModel from "@/models/devis.model";
+import DevisModel from "@/models/devis/devis.model";
 import LemkaHelpers from "@/helpers";
 
 export default {
