@@ -4,7 +4,7 @@ import LemkaHelpers from "@/helpers";
 
 const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
-export const CaracteristiqueModule = {
+export const CharacteristiqueModule = {
     namespaced: true,
     state: {
         characteristiques: [],

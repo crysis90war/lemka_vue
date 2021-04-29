@@ -59,6 +59,18 @@ export default class DetailModel {
         ]
     }
 
+    static get userTableField() {
+        return [
+            {key: "designation", label: "Description"},
+            {key: "prix_u_ht", label: "Prix HT"},
+            {key: "quantite", label: "Quantité"},
+            {key: "tva", label: "% TVA"},
+            {key: "total_ht", label: "Total HT"},
+            {key: "total_tva", label: "Total TVA"},
+            {key: "total_ttc", label: "Total TTC"},
+        ]
+    }
+
     calculerTVA(item) {
         let totalTVA = 0;
         if (item.tva !== undefined) {

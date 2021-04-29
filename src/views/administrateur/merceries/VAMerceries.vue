@@ -251,7 +251,12 @@ export default {
       updateMercerie: "Merceries/updateMercerie",
       deleteMercerie: 'Merceries/deleteMercerie'
     }),
-    loadOrRefresh: async function() {
+    initialisation: async function () {
+      if (this.merceries.length === 0) {
+        await this.loadMerceries()
+      }
+    },
+    loadOrRefresh: async function () {
       await this.loadMerceries()
       this.itemsLength(this.merceries)
     },
@@ -268,9 +273,7 @@ export default {
     }
   },
   created() {
-    if (this.merceries.length === 0) {
-      this.loadOrRefresh()
-    }
+    this.loadOrRefresh()
   }
 }
 </script>

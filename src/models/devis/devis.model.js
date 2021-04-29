@@ -82,7 +82,14 @@ export default class DevisModel {
                 break;
             default:
                 console.log(item)
+                break;
         }
         return statut
+    }
+
+    getFullName() {
+        let prenom = this.demande_devis.ref_user.first_name !== '' ? this.demande_devis.ref_user.first_name : 'Prénom'
+        let nom = this.demande_devis.ref_user.last_name !== '' ? this.demande_devis.ref_user.last_name : 'Nom'
+        return `${prenom} ${nom}`
     }
 }

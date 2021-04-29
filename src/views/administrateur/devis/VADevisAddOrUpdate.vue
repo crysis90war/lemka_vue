@@ -17,6 +17,7 @@
               v-b-tooltip.top
               :title="`Envoyer le devis : ${devis.numero_devis}`"
               variant="outline-success"
+              @click="envoyerLeDevis"
           >
             <i class="fas fa-paper-plane"></i>
           </b-button>
@@ -142,7 +143,7 @@
                         <b-img
                             width="128"
                             height="128"
-                            :src="getImage(devis.demande_devis.article.images)"
+                            :src="getMainImage(devis.demande_devis.article.images)"
                         />
                       </b-col>
                       <b-col>
@@ -229,29 +230,66 @@
                       label="Designation"
                       description="Veuillez encoder la designation"
                   >
-                    <b-form-input v-model="detail.designation"/>
+                    <b-form-input
+                        v-model="$v.detail.designation.$model"
+                        :state="validateDetailState('designation')"
+                    />
+                    <b-form-invalid-feedback>
+                      <l-invalid-feedback
+                          :condition="!$v.detail.designation.required"
+                          :error-message="required()"
+                      />
+                      <l-invalid-feedback
+                          :condition="!$v.detail.designation.minLength"
+                          :error-message="minLength($v.detail.designation.$params.minLength.min)"
+                      />
+                      <l-invalid-feedback
+                          :condition="!$v.detail.designation.maxLength"
+                          :error-message="maxLength($v.detail.designation.$params.maxLength.max)"
+                      />
+                    </b-form-invalid-feedback>
                   </b-form-group>
-
                   <b-form-group
                       label="Prix HT"
                       description="Veuillez encoder le prix"
                   >
                     <b-form-input
-                        v-model="detail.prix_u_ht"
+                        v-model="$v.detail.prix_u_ht.$model"
                         type="number"
                         step="0.01"
+                        :state="validateDetailState('prix_u_ht')"
                     />
+                    <b-form-invalid-feedback>
+                      <l-invalid-feedback
+                          :condition="!$v.detail.prix_u_ht.required"
+                          :error-message="required()"
+                      />
+                      <l-invalid-feedback
+                          :condition="!$v.detail.designation.minValue"
+                          :error-message="minValue($v.detail.prix_u_ht.$params.minValue.min)"
+                      />
+                    </b-form-invalid-feedback>
                   </b-form-group>
                   <b-form-group
                       label="Quantité"
                       description="Veuillez encoder la quantitée"
                   >
                     <b-form-input
-                        v-model="detail.quantite"
+                        v-model="$v.detail.quantite.$model"
                         type="number"
+                        :state="validateDetailState('quantite')"
                     />
+                    <b-form-invalid-feedback>
+                      <l-invalid-feedback
+                          :condition="!$v.detail.quantite.required"
+                          :error-message="required()"
+                      />
+                      <l-invalid-feedback
+                          :condition="!$v.detail.quantite.minValue"
+                          :error-message="minValue($v.detail.quantite.$params.minValue.min)"
+                      />
+                    </b-form-invalid-feedback>
                   </b-form-group>
-
                   <b-form-group
                       label="TVA"
                       description="Veuillez selectionner la TVA"
@@ -280,11 +318,13 @@
                       <b-button
                           variant="outline-danger"
                           @click="hideModal('ajout-detail')"
-                      >Annuler
+                      >
+                        Annuler
                       </b-button>
                       <b-button
                           variant="outline-success"
                           @click="ajouterDetail()"
+                          :disabled="submitStatus === 'PENDING'"
                       >
                         Ajouter
                       </b-button>
@@ -305,71 +345,109 @@
                 <template #empty>
                   <l-table-empty></l-table-empty>
                 </template>
-
                 <template #cell(prix_u_ht)="data">
                   <p>{{ data.item.prix_u_ht }} €</p>
                 </template>
-
                 <template #cell(tva)="data">
                   <p>{{ data.item.tva.taux * 100 }} %</p>
                 </template>
-
                 <template #cell(total_ht)="data">
                   <p>{{ detail.calculeTotalHT(data.item) }} €</p>
                 </template>
-
                 <template #cell(total_tva)="data">
                   <p>{{ detail.calculerTVA(data.item) }} €</p>
                 </template>
-
                 <template #cell(total_ttc)="data">
                   <p>{{ detail.calculerTotalTTC(data.item) }} €</p>
                 </template>
-
                 <template #cell(actions)="data">
                   <b-button-group size="sm">
                     <b-button
+                        v-b-tooltip.top
+                        :title="`Modifier ${data.item.designation}`"
                         variant="outline-primary"
                         @click="ouvrirModalModifier(data.item.id, data.item)"
                     >
                       <i :class="icons.MODIFIER"></i>
                     </b-button>
                     <b-button
+                        v-b-tooltip.top
+                        :title="`Supprimer ${data.item.designation}`"
                         variant="outline-danger"
-                        @click="supprimerDetail(data.item)"
+                        @click="showModal(`supprimer-detail-modal-${data.item.id}`)"
                     >
                       <i :class="icons.SUPPRIMER"></i>
                     </b-button>
                   </b-button-group>
-                  <b-modal :id="`modifier-detail-modal-${data.item.id}`" :title="detail.designation">
+                  <b-modal
+                      :id="`modifier-detail-modal-${data.item.id}`"
+                      :title="detail.designation"
+                  >
                     <div>
                       <b-form-group
                           label="Designation"
                           description="Veuillez encoder la designation"
                       >
-                        <b-form-input v-model="detail.designation"/>
+                        <b-form-input
+                            v-model="$v.detail.designation.$model"
+                            :state="validateDetailState('designation')"
+                        />
+                        <b-form-invalid-feedback>
+                          <l-invalid-feedback
+                              :condition="!$v.detail.designation.required"
+                              :error-message="required()"
+                          />
+                          <l-invalid-feedback
+                              :condition="!$v.detail.designation.minLength"
+                              :error-message="minLength($v.detail.designation.$params.minLength.min)"
+                          />
+                          <l-invalid-feedback
+                              :condition="!$v.detail.designation.maxLength"
+                              :error-message="maxLength($v.detail.designation.$params.maxLength.max)"
+                          />
+                        </b-form-invalid-feedback>
                       </b-form-group>
-
                       <b-form-group
                           label="Prix HT"
                           description="Veuillez encoder le prix"
                       >
                         <b-form-input
-                            v-model="detail.prix_u_ht"
+                            v-model="$v.detail.prix_u_ht.$model"
                             type="number"
                             step="0.01"
+                            :state="validateDetailState('prix_u_ht')"
                         />
+                        <b-form-invalid-feedback>
+                          <l-invalid-feedback
+                              :condition="!$v.detail.prix_u_ht.required"
+                              :error-message="required()"
+                          />
+                          <l-invalid-feedback
+                              :condition="!$v.detail.designation.minValue"
+                              :error-message="minValue($v.detail.prix_u_ht.$params.minValue.min)"
+                          />
+                        </b-form-invalid-feedback>
                       </b-form-group>
                       <b-form-group
                           label="Quantité"
                           description="Veuillez encoder la quantitée"
                       >
                         <b-form-input
-                            v-model="detail.quantite"
+                            v-model="$v.detail.quantite.$model"
                             type="number"
+                            :state="validateDetailState('quantite')"
                         />
+                        <b-form-invalid-feedback>
+                          <l-invalid-feedback
+                              :condition="!$v.detail.quantite.required"
+                              :error-message="required()"
+                          />
+                          <l-invalid-feedback
+                              :condition="!$v.detail.quantite.minValue"
+                              :error-message="minValue($v.detail.quantite.$params.minValue.min)"
+                          />
+                        </b-form-invalid-feedback>
                       </b-form-group>
-
                       <b-form-group
                           label="TVA"
                           description="Veuillez selectionner la TVA"
@@ -411,6 +489,33 @@
                       </div>
                     </template>
                   </b-modal>
+                  <b-modal
+                      :id="`supprimer-detail-modal-${data.item.id}`"
+                      :title="`${data.item.designation}`"
+                  >
+                    <div class="text-center">
+                      <p>Êtes-vous sur de vouloir supprimer</p>
+                      <h3><strong>{{ data.item.designation }}</strong></h3>
+                    </div>
+                    <template #modal-footer>
+                      <div class="text-right">
+                        <b-button-group>
+                          <b-button
+                              variant="outline-primary"
+                              @click="hideModal(`supprimer-detail-modal-${data.item.id}`)"
+                          >
+                            Annuler
+                          </b-button>
+                          <b-button
+                              variant="outline-danger"
+                              @click="supprimerDetail(data.item)"
+                          >
+                            Supprimer
+                          </b-button>
+                        </b-button-group>
+                      </div>
+                    </template>
+                  </b-modal>
                 </template>
               </b-table>
               <hr>
@@ -437,8 +542,6 @@
       </b-container>
     </section>
     <!-- endregion -->
-
-    <l-jumbotron :data="detail"/>
   </div>
 </template>
 
@@ -449,10 +552,12 @@ import {mapActions, mapGetters} from "vuex";
 import DetailModel from "@/models/devis/detail.model";
 import {fonctions} from "@/mixins/functions.mixin";
 import LemkaHelpers from "@/helpers";
+import {validationMixin} from "vuelidate";
+import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 
 export default {
   name: "VADevisAddOrUpdate",
-  mixins: [fonctions],
+  mixins: [fonctions, validationMixin, validationMessageMixin],
   props: {
     id: {}
   },
@@ -468,6 +573,7 @@ export default {
       routes: LemkaHelpers.Routes,
       icons: LemkaHelpers.FontAwesomeIcons,
 
+      submitStatus: null,
       tvaTouched: false
     }
   },
@@ -502,16 +608,18 @@ export default {
       this.details = this.devis.details
       this.toggleLoading()
     },
-
-    getImage: function (images) {
-      if (images.length > 0) {
-        let image = images.find(item => item.is_main === true)
-        return image.image
-      } else {
-        return ""
-      }
+    envoyerLeDevis: function () {
+      let payload = this.devis.toUpdatePayload()
+      payload.est_soumis = true
+      this.updateDevis(payload).then(() => {
+        this.makeToast('succes', 'Devis envoyé avec succès', 'Devis')
+        setTimeout(() => {
+          this.$router.push({name: this.routes.DEVIS.name})
+        }, 500)
+      }, () => {
+        this.makeToast('danger', 'Une erreure s\'est produit lors de la requete.', 'Envoi du devis')
+      })
     },
-
     variante: function (demande_devis) {
       if (demande_devis.en_cours === true && demande_devis.est_traite === false) {
         return {variant: "warning", text: "En cours de traitement"}
@@ -532,7 +640,6 @@ export default {
         this.ajouterDetail()
       } else {
         Object.assign(this.detail, this.details[index])
-        console.log('Quantité : ')
         this.detail.quantite++
         this.updateDetail([this.devis.id, this.detail.toUpdatePayload()])
         this.detail = new DetailModel()
@@ -542,19 +649,7 @@ export default {
       let payload = this.devis.toUpdatePayload()
       this.updateDevis(payload)
     },
-    makeToast(variant = null, message = "toast") {
-      this.$bvToast.toast(message, {
-        title: `Variant ${variant || 'default'}`,
-        variant: variant,
-        solid: true
-      })
-    },
-    ajouterDetail() {
-      this.createDetail([this.devis.id, this.detail.toCreatePayload()])
-      this.detail = new DetailModel()
-      this.hideModal('ajout-detail')
-    },
-    ouvrirModalAjouter: function() {
+    ouvrirModalAjouter: function () {
       this.detail = new DetailModel()
       this.showModal('ajout-detail')
     },
@@ -562,18 +657,68 @@ export default {
       Object.assign(this.detail, item)
       this.showModal(`modifier-detail-modal-${modal_id}`)
     },
-    fermerModalModifier: function(modal_id) {
+    fermerModalModifier: function (modal_id) {
       this.hideModal(`modifier-detail-modal-${modal_id}`)
       this.detail = new DetailModel()
     },
+    ajouterDetail() {
+      this.$v.$touch()
+      if (this.$v.$invalid ||
+          (this.tvaTouched === false && this.invalidTVA === false) ||
+          (this.tvaTouched === true && this.invalidTVA === true)) {
+        this.tvaTouched = true
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
+
+        this.createDetail([this.devis.id, this.detail.toCreatePayload()])
+            .then(() => {
+              this.makeToast('success', `${this.detail.designation} ajouté avec succès.`, this.detail.designation)
+              this.detail = new DetailModel()
+              this.hideModal('ajout-detail')
+            }, () => {
+              this.makeToast('danger', "Une erreure s'est produit lors de la requete.", "Erreur")
+              this.detail = new DetailModel()
+              this.hideModal('ajout-detail')
+            })
+
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+        }, 500)
+      }
+    },
     modifierDetail(item) {
-      Object.assign(this.detail, item)
-      this.updateDetail([this.devis.id, this.detail.toUpdatePayload()])
-      this.detail = new DetailModel()
-      this.hideModal()
+      this.$v.$touch()
+      if (this.$v.$invalid ||
+          (this.tvaTouched === false && this.invalidTVA === false) ||
+          (this.tvaTouched === true && this.invalidTVA === true)) {
+        this.tvaTouched = true
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
+
+        this.updateDetail([this.devis.id, this.detail.toUpdatePayload()]).then(() => {
+          this.makeToast('success', 'mis a jour effectué avec succes', this.detail.designation)
+          this.detail = new DetailModel()
+          this.hideModal(`modifier-detail-modal-${item.id}`)
+        }, () => {
+          this.makeToast('danger', "Une erreure s'est produit lors de la requete.")
+          this.detail = new DetailModel()
+          this.hideModal(`modifier-detail-modal-${item.id}`)
+        })
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+        }, 500)
+      }
     },
     supprimerDetail: function (item) {
-      this.deleteDetail([this.devis.id, item])
+      this.deleteDetail([this.devis.id, item]).then(() => {
+        this.makeToast('success', `${item.designation} supprimé avec succès`, item.designation)
+        this.hideModal(`supprimer-detail-modal-${item.id}`)
+      }, () => {
+        this.makeToast('danger', "Une erreure s'est produit lors de la requete.")
+        this.hideModal(`supprimer-detail-modal-${item.id}`)
+      })
     },
     toucheTVA: function () {
       this.tvaTouched = true
@@ -585,6 +730,10 @@ export default {
       } else {
         return require('@/assets/noimage.png')
       }
+    },
+    validateDetailState: function (name) {
+      const {$dirty, $error} = this.$v.detail[name];
+      return $dirty ? !$error : null;
     }
   },
   created() {

@@ -185,7 +185,7 @@
         >
           <div class="text-center">
             <p>Êtes-vous sur de vouloir supprimer</p>
-            <h3>"{{data.item.nom}}"</h3>
+            <h3>"{{ data.item.nom }}"</h3>
           </div>
           <template #modal-footer>
             <div class="text-right">
@@ -249,9 +249,7 @@ export default {
     }
   },
   created() {
-    if (this.mensurations.length === 0) {
-      this.loadOrRefresh()
-    }
+    this.loadOrRefresh()
   }
 }
 </script>
