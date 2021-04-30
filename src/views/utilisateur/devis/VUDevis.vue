@@ -1,7 +1,7 @@
 <template>
   <section v-if="$route.name === routes.DEVIS_USER.name" class="user_devis">
     <b-card
-        title="Devis"
+        title="Mes devis"
         class="my-4"
         :class="BSClass.CARD_BORDERLESS_SHADOW"
     >
@@ -13,12 +13,22 @@
             :busy="busy"
             stacked="lg"
             fixed
-            class="text-center"
+            class="mt-2 text-center"
             show-empty
             small
         >
-          <template #empty><l-table-empty/></template>
-          <template #table-busy><l-table-busy/></template>
+          <template #empty>
+            <l-table-empty/>
+          </template>
+          <template #table-busy>
+            <l-table-busy/>
+          </template>
+          <template #cell(created_at)="data">
+            {{ data.item.created_at | localTimeStr }}
+          </template>
+          <template #cell(est_accepte)="data">
+            <b-badge :variant="devis.statutDevis(data.item).variant">{{ devis.statutDevis(data.item).etat }}</b-badge>
+          </template>
           <template #cell(actions)="data">
             <b-button-group size="sm">
               <b-button
@@ -41,6 +51,7 @@
 import {mapActions, mapGetters} from "vuex";
 import DevisModel from "@/models/devis/devis.model";
 import LemkaHelpers from "@/helpers";
+import {localTimeStr} from "@/utils/filters";
 
 export default {
   name: "VUDevis",
@@ -49,7 +60,8 @@ export default {
       fields: DevisModel.userTableFields,
       icons: LemkaHelpers.FontAwesomeIcons,
       routes: LemkaHelpers.Routes,
-      BSClass: LemkaHelpers.BSClass
+      BSClass: LemkaHelpers.BSClass,
+      devis: new DevisModel()
     }
   },
   computed: {
@@ -57,13 +69,19 @@ export default {
   },
   methods: {
     ...mapActions({loadUserDevis: "Devis/loadUserDevis"}),
-    loadOrRefresh: async function() {
+    loadOrRefresh: async function () {
       await this.loadUserDevis()
     }
   },
   created() {
     this.loadOrRefresh()
-  }
+  },
+  filters: {
+    localTimeStr: function (value) {
+      value = localTimeStr(value)
+      return value
+    }
+  },
 }
 </script>
 

@@ -38,6 +38,12 @@ export const DevisModule = {
                 state.deviss.splice(index, 1, payload)
             }
         },
+        STATUS_DEVIS(state, [devis_id, payload]) {
+            const index = state.deviss.findIndex(item => item.id === devis_id)
+            if (index !== -1) {
+                state.deviss[index].est_accepte = payload
+            }
+        },
         DELETE_DEVIS(state, payload) {
             const index = state.deviss.map(item => item.id).indexOf(payload.id)
             if (index !== -1) {
@@ -70,7 +76,7 @@ export const DevisModule = {
         }
     },
     actions: {
-        loadDevis: function({commit}) {
+        loadDevis: function ({commit}) {
             let endpoint = `${DOMAIN}/devis/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
@@ -85,7 +91,7 @@ export const DevisModule = {
                 })
             })
         },
-        createDevis: function({commit}, payload) {
+        createDevis: function ({commit}, payload) {
             let endpoint = `${DOMAIN}/devis/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
@@ -96,7 +102,7 @@ export const DevisModule = {
                 })
             })
         },
-        updateDevis: function({commit}, payload) {
+        updateDevis: function ({commit}, payload) {
             let endpoint = `${DOMAIN}/devis/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
@@ -107,7 +113,18 @@ export const DevisModule = {
                 })
             })
         },
-        createDetail: function({commit}, [devis_id, payload]) {
+        updateDevisState: function({commit}, [devid_id, payload]) {
+          let endpoint = `${DOMAIN}/profil/devis/${devid_id}/`;
+          return new Promise((resolve, reject) => {
+              ApiService.PUTData(endpoint, payload).then(r => {
+                  commit('STATUS_DEVIS', [devid_id, r.data])
+                  resolve(r.data)
+              }, error => {
+                  reject(error)
+              })
+          })
+        },
+        createDetail: function ({commit}, [devis_id, payload]) {
             let endpoint = `${DOMAIN}/devis/${devis_id}/details/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
@@ -118,7 +135,7 @@ export const DevisModule = {
                 })
             })
         },
-        updateDetail: function({commit}, [devis_id, payload]) {
+        updateDetail: function ({commit}, [devis_id, payload]) {
             let endpoint = `${DOMAIN}/devis/${devis_id}/details/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
@@ -129,7 +146,7 @@ export const DevisModule = {
                 })
             })
         },
-        deleteDetail: function({commit}, [devis_id, payload]) {
+        deleteDetail: function ({commit}, [devis_id, payload]) {
             let endpoint = `${DOMAIN}/devis/${devis_id}/details/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
@@ -140,7 +157,7 @@ export const DevisModule = {
                 })
             })
         },
-        loadUserDevis: function({commit}){
+        loadUserDevis: function ({commit}) {
             let endpoint = `${DOMAIN}/profil/devis/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)

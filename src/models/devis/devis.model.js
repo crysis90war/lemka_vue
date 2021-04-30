@@ -58,6 +58,7 @@ export default class DevisModel {
             {key: 'created_at', label: 'Date', sortable: true},
             {key: 'numero_devis', label: 'N° Devis', sortable: true},
             {key: 'numero_demande_devis', label: 'N° Demande devis', sortable: true},
+            {key: 'est_accepte', label: 'Décision', sortable: true},
             {key: "actions", label: "Actions"},
         ]
     }

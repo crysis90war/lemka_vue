@@ -80,8 +80,8 @@
             <b-dropdown-item :to="{ name: routes.PROFIL_ROUTE.name }">
               {{ routes.PROFIL_ROUTE.value }}
             </b-dropdown-item>
-            <b-dropdown-item href="#">
-              Prendre rendez-vous
+            <b-dropdown-item :to="{name: routes.RENDEZ_VOUS_USER_RESERVATION.name}">
+              {{ routes.RENDEZ_VOUS_USER_RESERVATION.value }}
             </b-dropdown-item>
             <b-dropdown-item :to="{name: routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name}">
               Demander un devis

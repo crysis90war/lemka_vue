@@ -67,7 +67,10 @@ export default {
           href: {name: LemkaHelpers.Routes.RENDEZ_VOUS_USER.name},
           title: LemkaHelpers.Routes.RENDEZ_VOUS_USER.value,
           icon: LemkaHelpers.FontAwesomeIcons.CALENDAR,
-          children: []
+          children: [
+              LemkaHelpers.Routes.RENDEZ_VOUS_USER.name,
+              LemkaHelpers.Routes.RENDEZ_VOUS_USER_RESERVATION.name,
+          ]
         }
       ],
     }

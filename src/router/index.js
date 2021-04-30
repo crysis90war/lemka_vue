@@ -55,6 +55,7 @@ import VGConfidentialite from "@/views/global/VGConfidentialite";
 import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
 import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate";
 import VUDevisDetails from "@/views/utilisateur/devis/VUDevisDetails";
+import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVousReservation";
 
 // endregion
 
@@ -305,7 +306,14 @@ const profilRoutes = [
     name: ROUTES.RENDEZ_VOUS_USER.name,
     meta: {value: ROUTES.RENDEZ_VOUS_USER.value},
     component: VURendezVous,
-    children: []
+    children: [
+      {
+        path: PROFIL + 'rendez-vous/reservation',
+        name: ROUTES.RENDEZ_VOUS_USER_RESERVATION.name,
+        meta: {value: ROUTES.RENDEZ_VOUS_USER_RESERVATION.value},
+        component: VURendezVousReservation
+      }
+    ]
   }
 ]
 
