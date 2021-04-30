@@ -42,6 +42,7 @@ import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import AuthModel from "@/models/auth.model";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VGLogin",
@@ -49,6 +50,9 @@ export default {
   mixins: [validationMixin, validationMessageMixin,],
   validations: {
     user: AuthModel.loginValidations
+  },
+  title() {
+    return htmlTitle('Login')
   },
   data() {
     return {

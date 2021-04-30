@@ -67,6 +67,7 @@ import LemkaHelpers from "@/helpers";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VGRegister",
@@ -74,6 +75,9 @@ export default {
   mixins: [validationMixin, validationMessageMixin,],
   validations: {
     user: AuthModel.registerValidations
+  },
+  title() {
+    return htmlTitle('Register')
   },
   data() {
     return {
