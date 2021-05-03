@@ -416,7 +416,7 @@ export default {
       tags: "Tags/tags",
       tagsLoadingStatus: "Tags/tagsLoadingStatus",
       typeServices: 'TypeServices/typeServices',
-      typeServiceLoadingStatus: "TypeServices/typeServiceLoadingStatus",
+      typeServiceLoadingStatus: "TypeServices/loadingStatus",
       catalogues: "Catalogues/catalogues",
       articles: "Articles/articles",
       cataloguesLoadingStatus: "Catalogues/loadingStatus"

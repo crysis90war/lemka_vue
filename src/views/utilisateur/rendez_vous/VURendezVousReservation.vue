@@ -1,51 +1,246 @@
 <template>
   <div class="rendez_vous_reservation">
     <b-card
-        title="prise de rendez-vous"
+        title="Prendre rendez-vous "
         :class="BSClass.CARD_BORDERLESS_SHADOW"
     >
       <b-card-body>
         <div>
           <b-form-group
-              label="Date"
-              description="Veuillez choissir une date"
+              label="Service"
+              description="Veuillez selectionner le service de l'article"
           >
-            <b-form-datepicker
-                v-model="value"
-                class="mb-2"
-            />
+            <multiselect
+                v-model="rendezVous.type_service"
+                :options="typeServices"
+                :allow-empty="false"
+                :show-labels="false"
+                label="type_service"
+                track-by="type_service"
+                :class="{ 'invalid': invalidTypeService }"
+                @close="toucheTypeService"
+            >
+              <template slot="singleLabel" slot-scope="{ option }">
+                <span>{{ option.type_service.id !== null ? option.type_service : null }}</span>
+              </template>
+              <template slot="option" slot-scope="{ option }">
+                <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
+              </template>
+              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+            </multiselect>
+            <span class="text-danger" v-show="invalidTypeService"><small>Ce champ est requis</small></span>
           </b-form-group>
-          <p>Value: '{{ value }}'</p>
+
+          <div v-if="rendezVous.type_service.id !== null">
+            <b-form-group
+                label="Date"
+                description="Veuillez choissir une date"
+            >
+              <b-form-datepicker
+                  v-model="rendezVous.date"
+                  :min="min"
+                  :max="max"
+                  :date-disabled-fn="dateDisabled"
+                  close-button
+                  label-close-button="Fermer"
+                  label-no-date-selected="Aucune date sélectionnée"
+                  @context="onContext(rendezVous.date)"
+              />
+            </b-form-group>
+            <!--            <b-row>-->
+            <!--              <b-col lg="6">-->
+
+            <!--              </b-col>-->
+            <!--              <b-col lg="6">-->
+            <!--                <b-form-group-->
+            <!--                    label="Heure"-->
+            <!--                    description="Veuillez choisir l'heure"-->
+            <!--                >-->
+            <!--                  <b-form-timepicker-->
+            <!--                      v-model="rendezVous.start"-->
+            <!--                      locale="fr"-->
+            <!--                      label-close-button="Fermer"-->
+            <!--                      label-no-time-selected="Aucune heure sélectionnée"-->
+            <!--                      minutes-step="60"-->
+            <!--                      @context="onContext"-->
+            <!--                  />-->
+            <!--                </b-form-group>-->
+            <!--              </b-col>-->
+            <!--            </b-row>-->
+          </div>
+          <div v-if="rendezVous.date !== null">
+            <b-badge :variant="available_hours.available_hours.length === 0 ? 'warning' : 'succes'">{{available_hours.message}}</b-badge>
+            <b-list-group>
+              <b-list-group-item
+                  v-for="(heure, index) in available_hours.available_hours"
+                  :key="index"
+                  button
+                  @click="selectHour(heure)"
+              >
+                {{ heure }}
+              </b-list-group-item>
+            </b-list-group>
+            {{rendezVous.start}}
+          </div>
+          <hr>
+          <div class="mb-4">
+            <h4 class="text-secondary">Optionnel</h4>
+          </div>
+
+          <b-form-group
+              label="Devis"
+              description="Veuillez selectionner le devis que vous avez validé."
+          >
+            <multiselect
+                v-model="rendezVous.devis"
+                :options="deviss"
+                :show-labels="false"
+                :allow-empty="true"
+                label="Devis"
+            >
+              <template slot="singleLabel" slot-scope="{ option }">
+                <span>{{ option.id !== null ? option.numero_devis : null }}</span>
+              </template>
+              <template slot="option" slot-scope="{ option }">
+                <span>{{ option.numero_devis }} | {{ option.demande_devis.titre }}</span>
+              </template>
+              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+            </multiselect>
+          </b-form-group>
+        </div>
+        <div class="text-right">
+          <b-button-group>
+            <b-button variant="outline-dark"><i class="fas fa-arrow-left"></i></b-button>
+            <b-button variant="outline-success">Créer</b-button>
+          </b-button-group>
         </div>
       </b-card-body>
     </b-card>
-    <h1></h1>
+    <l-jumbotron :data="rendezVous.toCreatePayload()"/>
+    <l-jumbotron :data="available_hours"/>
   </div>
 </template>
 
 <script>
 import LemkaHelpers from "@/helpers";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import RendezVousModel from "@/models/rendez_vous.model";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VURendezVousReservation",
+  title() {
+    return htmlTitle(this.$route.meta.value)
+  },
   data() {
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const minDate = new Date(today)
+    minDate.setDate(minDate.getDate() + 1)
+    // minDate.setDate(15)
+    // 15th in two months
+    const maxDate = new Date(today)
+    maxDate.setDate(maxDate.getDay() + 13)
+    // maxDate.setDate(15)
     return {
+      min: minDate,
+      max: maxDate,
       BSClass: LemkaHelpers.BSClass,
-      value: null
+      typeServiceTouched: false,
+      rendezVous: new RendezVousModel(),
+      labels: {
+        fr: {
+          labelHours: 'Stunden',
+          labelMinutes: 'Minuten',
+          labelSeconds: 'Sekunden',
+          labelIncrement: 'Erhöhen',
+          labelDecrement: 'Verringern',
+          labelSelected: 'Ausgewählte Zeit',
+          labelNoTimeSelected: 'Keine Zeit ausgewählt'
+        },
+      },
+      heuresDisponibles: null,
     }
   },
   computed: {
-    ...mapGetters({services: "TypeServices/typeServices"})
-  },
-  methods: {
-    intialisation: function() {
+    ...mapGetters({
+      typeServices: "TypeServices/typeServices",
+      horaires: "Horaires/horaires",
+      deviss: 'Devis/devisAccepte',
+      available_hours: "RendezVous/available_hours"
+    }),
+    invalidTypeService() {
+      return this.typeServiceTouched && this.rendezVous.type_service.id === null
+    },
+    horaireOfDay() {
+      if (this.rendezVous.date !== null) {
+        let jour = this.horaires.find(item => item.jour_semaine === new Date(this.rendezVous.date).getDay())
+        let ouverture = new Date(this.rendezVous.date + ' ' + jour.heure_ouverture).getHours()
+        let pauseMidi = new Date(this.rendezVous.date + ' ' + jour.pause_debut).getHours()
+        let pauseMidiFin = new Date(this.rendezVous.date + ' ' + jour.pause_fin).getHours()
+        let fermeture = new Date(this.rendezVous.date + ' ' + jour.heure_fermeture).getHours()
+        let heures = []
 
+        for (ouverture; ouverture < fermeture; ouverture++) {
+          if (ouverture < pauseMidi || ouverture >= pauseMidiFin) {
+            heures.push(ouverture)
+          }
+        }
+
+        return heures
+      } else {
+        return []
+      }
     }
   },
+  methods: {
+    ...mapActions({
+      loadTypeServices: "TypeServices/loadTypeServices",
+      loadHoraires: "Horaires/loadHoraires",
+      loadUserDevis: "Devis/loadUserDevis",
+      loadHeuresDispo: "RendezVous/loadHeuresDispo"
+    }),
+    initialisation: async function () {
+      if (this.deviss.length === 0) {
+        await this.loadUserDevis()
+      }
+      if (this.typeServices.length === 0) {
+        await this.loadTypeServices()
+      }
+      if (this.horaires.length === 0) {
+        await this.loadHoraires()
+      }
+    },
+    selectHour: function(hour) {
+      this.rendezVous.start = hour
+    },
+    toucheTypeService: function () {
+      this.typeServiceTouched = true
+    },
+    dateDisabled(ymd, date) {
+      // Disable weekends (Sunday = `0`, Saturday = `6`) and
+      // disable days that fall on the 13th of the month
+      const weekday = date.getDay()
+      // const day = date.getDate()
+      // let now = new Date()
+
+      // Return `true` if the date should be disabled
+      return weekday === 0
+    },
+    onContext(date) {
+      if (date !== null) {
+        this.loadHeuresDispo(date)
+        this.rendezVous.start = null
+      }
+      // this.context = ctx
+    },
+  },
+  created() {
+    this.initialisation()
+  },
+  filters: {}
 }
 </script>
 
 <style scoped>
-
 </style>

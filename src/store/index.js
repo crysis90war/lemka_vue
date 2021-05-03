@@ -23,6 +23,7 @@ import {DevisModule} from "@/store/devis/devis.module";
 import {TVAModule} from "@/store/tva.module";
 import {DetailModule} from "@/store/devis/detail.module";
 import {AdresseModule} from "@/store/adresse.module";
+import {RendezVousModule} from "@/store/rendez_vous.module";
 
 Vue.use(Vuex)
 
@@ -51,5 +52,6 @@ export default new Vuex.Store({
     'Details': DetailModule,
     'Adresse': AdresseModule,
     'Characteristiques': CharacteristiqueModule,
+    'RendezVous': RendezVousModule,
   }
 });

@@ -3,17 +3,17 @@ import DemandeDevisModel from "@/models/demande_devis.model";
 import {format, isValid} from "date-fns";
 
 export default class DevisModel {
-    constructor(devis = {}) {
-        this.id = R.is(Number, devis.id) ? devis.id : null
-        this.created_at = devis.created_at && isValid(devis.created_at) ? format(devis.created_at, "DD-MM-YYYY") : null
-        this.updated_at = devis.updated_at && isValid(devis.updated_at) ? format(devis.updated_at, "DD-MM-YYYY") : null
-        this.numero_devis = R.is(String, devis.numero_devis) ? devis.numero_devis : ""
-        this.remarque = R.is(String, devis.remarque) ? devis.remarque : ""
-        this.est_accepte = R.is(Boolean, devis.est_accepte) ? devis.est_accepte : null
-        this.est_soumis = R.is(Boolean, devis.est_soumis) ? devis.est_soumis : false
-        this.numero_demande_devis = R.is(String, devis.numero_demande_devis) ? devis.numero_demande_devis : ""
-        this.details = R.is(Array, devis.details) ? devis.details : []
-        this.demande_devis = R.is(Object, devis.demande_devis) ? new DemandeDevisModel(devis.demande_devis) : new DemandeDevisModel()
+    constructor(json = {}) {
+        this.id = R.is(Number, json.id) ? json.id : null
+        this.created_at = json.created_at && isValid(json.created_at) ? format(json.created_at, "DD-MM-YYYY") : null
+        this.updated_at = json.updated_at && isValid(json.updated_at) ? format(json.updated_at, "DD-MM-YYYY") : null
+        this.numero_devis = R.is(String, json.numero_devis) ? json.numero_devis : ""
+        this.remarque = R.is(String, json.remarque) ? json.remarque : ""
+        this.est_accepte = R.is(Boolean, json.est_accepte) ? json.est_accepte : null
+        this.est_soumis = R.is(Boolean, json.est_soumis) ? json.est_soumis : false
+        this.numero_demande_devis = R.is(String, json.numero_demande_devis) ? json.numero_demande_devis : ""
+        this.details = R.is(Array, json.details) ? json.details : []
+        this.demande_devis = R.is(Object, json.demande_devis) ? new DemandeDevisModel(json.demande_devis) : new DemandeDevisModel()
     }
 
     toCreatePayload() {

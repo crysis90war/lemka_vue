@@ -17,6 +17,9 @@ export const DevisModule = {
         devisNumberDevis: state => numero_devis => {
             return state.deviss.find(item => item.numero_devis === numero_devis)
         },
+        devisAccepte: state => {
+          return state.deviss.filter(item => item.est_accepte === true)
+        },
         loadingStatus: state => state.loadingStatus
     },
     mutations: {

@@ -141,8 +141,9 @@
 
         <!-- region Article -->
         <b-form-group
-            label="Article" class="my-1"
+            label="Article"
             description="Si un article particulier vous interesse, veuillez le selecetion, sinon laissez vide"
+            class="my-1"
         >
           <multiselect
               v-model="demande_devis.article"

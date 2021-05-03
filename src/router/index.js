@@ -302,13 +302,13 @@ const profilRoutes = [
     ]
   },
   {
-    path: PROFIL + 'rendez-vous',
+    path: PROFIL + '/rendez-vous/',
     name: ROUTES.RENDEZ_VOUS_USER.name,
     meta: {value: ROUTES.RENDEZ_VOUS_USER.value},
     component: VURendezVous,
     children: [
       {
-        path: PROFIL + 'rendez-vous/reservation',
+        path: PROFIL + '/rendez-vous/reservation/',
         name: ROUTES.RENDEZ_VOUS_USER_RESERVATION.name,
         meta: {value: ROUTES.RENDEZ_VOUS_USER_RESERVATION.value},
         component: VURendezVousReservation

@@ -113,7 +113,7 @@ export default {
     localTimeStr: function (value) {
       value = localTimeStr(value)
       return value
-    }
+    },
   },
 
   created() {
