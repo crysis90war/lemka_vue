@@ -37,39 +37,27 @@
                 description="Veuillez choissir une date"
             >
               <b-form-datepicker
-                  v-model="rendezVous.date"
+                  v-model="$v.rendezVous.date.$model"
                   :min="min"
                   :max="max"
+                  locale="fr"
                   :date-disabled-fn="dateDisabled"
                   close-button
                   label-close-button="Fermer"
                   label-no-date-selected="Aucune date sélectionnée"
                   @context="onContext(rendezVous.date)"
+                  :state="validationState('date')"
               />
+              <b-form-invalid-feedback>
+                <l-invalid-feedback
+                    :condition="!$v.rendezVous.date.required"
+                    :error-message="required()"
+                />
+              </b-form-invalid-feedback>
             </b-form-group>
-            <!--            <b-row>-->
-            <!--              <b-col lg="6">-->
-
-            <!--              </b-col>-->
-            <!--              <b-col lg="6">-->
-            <!--                <b-form-group-->
-            <!--                    label="Heure"-->
-            <!--                    description="Veuillez choisir l'heure"-->
-            <!--                >-->
-            <!--                  <b-form-timepicker-->
-            <!--                      v-model="rendezVous.start"-->
-            <!--                      locale="fr"-->
-            <!--                      label-close-button="Fermer"-->
-            <!--                      label-no-time-selected="Aucune heure sélectionnée"-->
-            <!--                      minutes-step="60"-->
-            <!--                      @context="onContext"-->
-            <!--                  />-->
-            <!--                </b-form-group>-->
-            <!--              </b-col>-->
-            <!--            </b-row>-->
           </div>
           <div v-if="rendezVous.date !== null">
-            <b-badge :variant="available_hours.available_hours.length === 0 ? 'warning' : 'succes'">{{available_hours.message}}</b-badge>
+            <b-badge :variant="available_hours.available_hours.length === 0 ? 'warning' : 'success'">{{ available_hours.message }}</b-badge>
             <b-list-group>
               <b-list-group-item
                   v-for="(heure, index) in available_hours.available_hours"
@@ -80,13 +68,17 @@
                 {{ heure }}
               </b-list-group-item>
             </b-list-group>
-            {{rendezVous.start}}
+            <b-badge
+                v-if="startError === true"
+                variant="danger"
+            >
+              Veuillez selectionner une heure !
+            </b-badge>
           </div>
           <hr>
           <div class="mb-4">
             <h4 class="text-secondary">Optionnel</h4>
           </div>
-
           <b-form-group
               label="Devis"
               description="Veuillez selectionner le devis que vous avez validé."
@@ -110,14 +102,22 @@
         </div>
         <div class="text-right">
           <b-button-group>
-            <b-button variant="outline-dark"><i class="fas fa-arrow-left"></i></b-button>
-            <b-button variant="outline-success">Créer</b-button>
+            <b-button
+                variant="outline-dark"
+                :to="{name: routes.RENDEZ_VOUS_USER.name}"
+            >
+              <i class="fas fa-arrow-left"></i></b-button>
+            <b-button
+                variant="outline-success"
+                :disabled="rendezVous.start === null || submitStatus === 'PENDING'"
+                @click="submit"
+            >
+              Créer
+            </b-button>
           </b-button-group>
         </div>
       </b-card-body>
     </b-card>
-    <l-jumbotron :data="rendezVous.toCreatePayload()"/>
-    <l-jumbotron :data="available_hours"/>
   </div>
 </template>
 
@@ -126,11 +126,18 @@ import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import RendezVousModel from "@/models/rendez_vous.model";
 import {htmlTitle} from "@/utils/tools";
+import {validationMixin} from "vuelidate/src";
+import {validationMessageMixin} from "@/mixins/validation_message.mixin";
+import {fonctions} from "@/mixins/functions.mixin";
 
 export default {
   name: "VURendezVousReservation",
   title() {
     return htmlTitle(this.$route.meta.value)
+  },
+  mixins: [validationMixin, validationMessageMixin, fonctions],
+  validations: {
+    rendezVous: RendezVousModel.validations
   },
   data() {
     const now = new Date()
@@ -146,6 +153,7 @@ export default {
       min: minDate,
       max: maxDate,
       BSClass: LemkaHelpers.BSClass,
+      submitStatus: null,
       typeServiceTouched: false,
       rendezVous: new RendezVousModel(),
       labels: {
@@ -159,7 +167,10 @@ export default {
           labelNoTimeSelected: 'Keine Zeit ausgewählt'
         },
       },
+      startError: false,
       heuresDisponibles: null,
+      routes: LemkaHelpers.Routes,
+      response: null
     }
   },
   computed: {
@@ -198,7 +209,8 @@ export default {
       loadTypeServices: "TypeServices/loadTypeServices",
       loadHoraires: "Horaires/loadHoraires",
       loadUserDevis: "Devis/loadUserDevis",
-      loadHeuresDispo: "RendezVous/loadHeuresDispo"
+      loadHeuresDispo: "RendezVous/loadHeuresDispo",
+      createRendezVous: "RendezVous/createRendezVous"
     }),
     initialisation: async function () {
       if (this.deviss.length === 0) {
@@ -211,7 +223,34 @@ export default {
         await this.loadHoraires()
       }
     },
-    selectHour: function(hour) {
+    submit: function () {
+      this.$v.$touch()
+      if (this.$v.$invalid ||
+          (this.typeServiceTouched === false && this.invalidTypeService === false) ||
+          (this.typeServiceTouched === true && this.invalidTypeService === true) ||
+          this.rendezVous.start === null
+      ) {
+        this.typeServiceTouched = true
+        this.startError = true
+        console.log(this.startError)
+        this.submitStatus = 'ERROR'
+      } else {
+        this.startError = false
+        this.submitStatus = 'PENDING'
+
+        this.createRendezVous(this.rendezVous.toCreatePayload()).then(() => {
+          this.makeToast('success', 'Votre rendez vous à été créé avec succès', this.rendezVous.date)
+        }, error => {
+          this.makeToast('danger', error.response.data.detail, this.rendezVous.date)
+        })
+
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          this.$router.push({name: this.routes.RENDEZ_VOUS_USER.name})
+        }, 500)
+      }
+    },
+    selectHour: function (hour) {
       this.rendezVous.start = hour
     },
     toucheTypeService: function () {
@@ -234,6 +273,10 @@ export default {
       }
       // this.context = ctx
     },
+    validationState: function (name) {
+      const {$dirty, $error} = this.$v.rendezVous[name]
+      return $dirty ? !$error : null;
+    }
   },
   created() {
     this.initialisation()

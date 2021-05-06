@@ -14,9 +14,9 @@ export function EstEntier(number) {
     return !isNaN(parseInt(number) && isFinite(number))
 }
 
-export function format(time){
+export function format(time) {
     if (time) {
-        return time.replace(/(?:0)?(\d+):(?:00)?(\d+).*/,'$1:$2');
+        return time.replace(/(?:0)?(\d+):(?:00)?(\d+).*/, '$1:$2');
     }
 }
 
@@ -38,11 +38,21 @@ export function makeToast(vm, variant = 'info', message = '', title = '') {
     })
 }
 
-export function actionModal(vm, id, ouvrir = true) {
-    if (ouvrir === true) {
-        vm.$bvModal.show(id)
+export function getMainImage(images) {
+    if (images.length > 0) {
+        let image = images.find(img => img.is_main === true)
+        return image.image
+    } else {
+        return require('@/assets/noimage.png')
     }
-    else {
-        vm.$bvModal.hide(id)
-    }
+}
+
+export default {
+    htmlTitle,
+    isNullOrWhiteSpace,
+    EstEntier,
+    format,
+    handleResponse,
+    makeToast,
+    getMainImage
 }

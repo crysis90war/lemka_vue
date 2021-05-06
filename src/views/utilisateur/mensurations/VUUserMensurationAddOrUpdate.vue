@@ -53,7 +53,8 @@
           </b-button>
           <b-button
               :variant="id !== undefined ? 'outline-primary' : 'outline-success'"
-              :disabled="submitStatus === 'PENDING'" @click.prevent="submit"
+              :disabled="submitStatus === 'PENDING'"
+              @click.prevent="submit"
           >
             {{ id !== undefined ? 'Modifier' : 'Ajouter' }}
           </b-button>
@@ -115,7 +116,6 @@ export default {
         }, 500)
       }
     },
-
     validateState(name) {
       const {$dirty, $error} = this.$v.userMensuration[name]
       return $dirty ? !$error : null;

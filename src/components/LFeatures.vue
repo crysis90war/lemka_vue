@@ -2,28 +2,34 @@
   <section class="features-clean">
     <div class="container">
       <div class="row features">
-        <div class="col-sm-6 col-lg-4 item"><i class="fas fa-cut icon"></i>
+        <div class="col-sm-6 col-lg-4 item">
+          <i class="fas fa-cut icon"></i>
           <h3 class="name">Service de confection</h3>
           <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
         </div>
-        <div class="col-sm-6 col-lg-4 item"><i class="fas fa-clock icon"></i>
+        <div class="col-sm-6 col-lg-4 item">
+          <i class="fas fa-cut icon"></i>
           <h3 class="name">Service de réparation</h3>
           <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
         </div>
-        <div class="col-sm-6 col-lg-4 item"><i class="fa fa-list-alt icon"></i>
+        <div class="col-sm-6 col-lg-4 item">
+          <i class="fas fa-cut icon"></i>
           <h3 class="name">Service de retouche</h3>
           <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
         </div>
-        <div class="col-sm-6 col-lg-4 item"><i class="fa fa-leaf icon"></i>
-          <h3 class="name">Organic</h3>
+        <div class="col-sm-6 col-lg-4 item">
+          <i class="far fa-folder-open icon"></i>
+          <h3 class="name">Demander Devis</h3>
           <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
         </div>
-        <div class="col-sm-6 col-lg-4 item"><i class="fa fa-plane icon"></i>
-          <h3 class="name">Fast</h3>
+        <div class="col-sm-6 col-lg-4 item">
+          <i class="far fa-folder icon"></i>
+          <h3 class="name">Recevoir Devis</h3>
           <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
         </div>
-        <div class="col-sm-6 col-lg-4 item"><i class="fa fa-phone icon"></i>
-          <h3 class="name">Mobile-first</h3>
+        <div class="col-sm-6 col-lg-4 item">
+          <i class="fas fa-calendar-check icon"></i>
+          <h3 class="name">Rendez-Vous</h3>
           <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est.</p>
         </div>
       </div>

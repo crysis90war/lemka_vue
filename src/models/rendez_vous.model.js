@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import {format, isValid} from "date-fns";
 import TypeServiceModel from "@/models/type_service.model";
 import DevisModel from "@/models/devis/devis.model";
+import {required} from "vuelidate/lib/validators";
 
 export default class RendezVousModel {
     constructor(json = {}) {
@@ -28,6 +29,68 @@ export default class RendezVousModel {
         return {
             ...this.toCreatePayload(),
             id: this.id
+        }
+    }
+
+    static get validations() {
+        return {
+            date: {
+                required,
+            },
+            start: {
+                required,
+            }
+        }
+    }
+
+    static get commonTableFields() {
+        return [
+            {key: 'created_at', label: 'Créé le', sortable: true},
+            {key: 'type_service', label: 'Type Service', sortable: true},
+            {key: 'devis', label: 'Devis', sortable: true},
+            {key: 'date', label: 'Date', sortable: true},
+            {key: 'start', label: 'De', sortable: true},
+            {key: 'end', label: 'À', sortable: true}
+        ]
+    }
+
+    static get todayAndFuturTableFields() {
+        return [
+            ...this.commonTableFields,
+            {key: 'actions', label: 'Actions'},
+        ]
+    }
+
+    static get pastTableFields() {
+        return [
+            {key: 'created_at', label: 'Créé le', sortable: true},
+            {key: 'type_service', label: 'Type Service', sortable: true},
+            {key: 'devis', label: 'Devis', sortable: true},
+            {key: 'date', label: 'Date', sortable: true},
+            {key: 'start', label: 'De', sortable: true},
+            {key: 'end', label: 'À', sortable: true}
+        ]
+    }
+
+    static get canceledTableFields() {
+        return [
+            {key: 'created_at', label: 'Créé le', sortable: true},
+            {key: 'type_service', label: 'Type Service', sortable: true},
+            {key: 'devis', label: 'Devis', sortable: true},
+            {key: 'date', label: 'Date', sortable: true},
+            {key: 'start', label: 'De', sortable: true},
+            {key: 'end', label: 'À', sortable: true}
+        ]
+    }
+
+    getVariant (status) {
+        switch (status) {
+            case 1:
+                return 'success'
+            case 2:
+                return ''
+            default:
+                return 'active'
         }
     }
 }

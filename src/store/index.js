@@ -12,7 +12,7 @@ import {CharacteristiqueModule} from "@/store/characteristique.module";
 import {AuthModule} from "@/store/auth.module";
 import {HoraireModule} from "@/store/horaire.module";
 import {DemandeDevisModule} from "@/store/demande_devis.module";
-import {ArticleModule} from "@/store/article.module";
+import {ArticleModule} from "@/store/articles/article.module";
 import {EntrepriseModule} from "@/store/entreprise.module";
 import {TagModule} from "@/store/tag.module";
 import {CatalogueModule} from "@/store/catalogue/catalogue.module";
