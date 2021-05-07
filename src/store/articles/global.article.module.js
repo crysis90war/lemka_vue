@@ -1,3 +1,8 @@
+import ApiService from "@/services/api.service";
+import LemkaHelpers from "@/helpers";
+
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
 export const GlobalArticleModule = {
     namespaced: true,
     state: {
@@ -30,7 +35,19 @@ export const GlobalArticleModule = {
     },
     actions: {
         loadGlobalArticles: async function({commit}) {
-
+            let endpoint = `${DOMAIN}/`;
+            return await new Promise((resolve, reject) => {
+                commit('SET_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('SET_ARTICLES_SUCCESS', r.data)
+                    commit('SET_LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('SET_ARTICLES_FAILURE')
+                    commit('SET_LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
         }
     }
 }

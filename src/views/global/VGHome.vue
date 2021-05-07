@@ -28,13 +28,21 @@
           :autoplayTimeout="15000"
           :animationSpeed="3000"
       >
-        <l-slide v-for="(article, index) in articles" :index="index" :key="article.id" >
-          <figure >
-            <b-img :src="articleMainImage(article.images)" height="430"/>
-            <figcaption>
-              <h3>{{ index }} - {{ article.titre }}</h3>
+        <l-slide
+            v-for="(article, index) in articles"
+            :index="index"
+            :key="article.id"
+            class="rounded-lg"
+        >
+          <figure>
+            <b-img
+                :src="articleMainImage(article.images)"
+                height="430"
+            />
+            <figcaption class="bg-light text-dark">
+              <h3>{{ article.titre }}</h3>
               <p>{{ article.description.substring(0, 80) }} ...
-                <b-link>Plus</b-link>
+                <b-link :to="{name: routes.ARTICLES_DETAIL.name, params: {slug: article.slug}}">Plus</b-link>
               </p>
             </figcaption>
           </figure>
@@ -94,16 +102,6 @@
       </b-row>
     </b-container>
 
-    <l-jumbotron :data="articles"/>
-
-    <b-jumbotron header="Articles">
-      <div v-for="(article, index) in articles" :key="index">
-        <b-img :src="articleMainImage(article.images)" height="430"/>
-        <p >{{article.titre}}</p>
-      </div>
-
-    </b-jumbotron>
-
     <lemka-map></lemka-map>
   </div>
 </template>
@@ -139,6 +137,7 @@ export default {
         {titre: 'PRODUITS POPULAIRES', sousTitre: 'LOREM IPSUM DOLOR SITE CONSECTETUER'},
         {titre: 'TÉMOIGNAGES', sousTitre: 'ILS NOUS FONT CONFIANCE'},
       ],
+      routes: LemkaHelpers.Routes,
       articles: [],
       loading: false
     }
@@ -164,14 +163,20 @@ export default {
 
 <style lang="scss" scoped>
 
-.carousel-3d-container figcaption {
-  position: absolute;
-  background-color: #000000;
-  opacity: 0.45;
-  color: #fff;
-  bottom: 0;
-  padding: 15px;
-  min-width: 100%;
-  box-sizing: border-box;
+.carousel-3d-container {
+  figcaption {
+    position: absolute;
+    background-color: #000000;
+    opacity: 0.70;
+    color: #fff;
+    bottom: 0;
+    padding: 15px;
+    min-width: 100%;
+    box-sizing: border-box;
+
+    p {
+      opacity: 1!important;
+    }
+  }
 }
 </style>

@@ -80,7 +80,8 @@
       >
         <b-form-input
             v-model="$v.article.titre.$model"
-            placeholder="Titre ..." type="text"
+            placeholder="Titre ..."
+            type="text"
             :state="validateState('titre')"
         />
         <b-form-invalid-feedback>
@@ -482,7 +483,7 @@ export default {
     addTag: function (newTag) {
       const tag = {
         id: null,
-        tag: newTag,
+        tag: newTag.split(/\s/).join(''),
       }
       this.tags.push(tag)
       this.article.tags.push(tag)

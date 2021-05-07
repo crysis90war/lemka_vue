@@ -17,6 +17,7 @@ export default class ArticleModel {
         this.likes_count = R.is(Number, json.likes_count) ? json.likes_count : null
         this.catalogue = R.is(Object, json.catalogue) ? new CatalogueModel(json.catalogue) : new CatalogueModel()
         this.type_service = R.is(Object, json.type_service) ? new TypeServiceModel(json.type_service) : new TypeServiceModel()
+        this.user_liked = R.is(Boolean, json.user_liked) ? json.user_liked : false
 
         this.tags = R.is(Array, json.tags) ? json.tags : []
         this.images = R.is(Array, json.images) ? json.images : []

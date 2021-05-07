@@ -75,6 +75,22 @@ export const ArticleModule = {
         }
     },
     actions: {
+        loadGlobalArticles: async function({commit}) {
+            let endpoint = `${DOMAIN}/public/articles/`;
+            return await new Promise((resolve, reject) => {
+                commit('LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('SET_ARTICLES_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('SET_ARTICLES_FAILURE')
+                    commit('LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
+
+        },
         loadArticles: async function ({commit}) {
             let endpoint = `${DOMAIN}/articles/`;
             return await new Promise((resolve, reject) => {
@@ -118,6 +134,28 @@ export const ArticleModule = {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_ARTICLE', article)
                     resolve(r)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+        createLike: function({commit}, slug) {
+            let endpoint = `${DOMAIN}/profil/articles/${slug}/like/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, "").then(r => {
+                    commit('UPDATE_ARTICLE', r.data)
+                    resolve(r.data)
+                }, error => {
+                    reject(error)
+                })
+            })
+        },
+        deleteLike: function({commit}, slug) {
+            let endpoint = `${DOMAIN}/profil/articles/${slug}/like/`;
+            return new Promise((resolve, reject) => {
+                ApiService.DELETEData(endpoint).then(r => {
+                    commit('UPDATE_ARTICLE', r.data)
+                    resolve(r.data)
                 }, error => {
                     reject(error)
                 })

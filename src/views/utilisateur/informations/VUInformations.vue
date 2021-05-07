@@ -12,16 +12,7 @@
             <h2>{{ profil.last_name !== '' ? profil.last_name : 'Nom' }}</h2>
             <span>@{{ profil.username }}</span>
             <div>
-              <b-badge
-                  v-if="profil.is_staff === true"
-                  pill
-                  variant="success"
-              >Administrateur</b-badge>
-              <b-badge
-                  v-else
-                  pill
-                  variant="primary"
-              >Utilisateur</b-badge>
+              <b-badge :variant="userRank(profil).variant" pill>{{ userRank(profil).user_type }}</b-badge>
             </div>
             <hr>
             <div v-if="profil.email">
@@ -52,17 +43,28 @@
               <span>{{ adresse.ville.pays.pays }}</span>
             </div>
             <hr>
-            <b-button :to="{name: routes.INFORMATIONS_UPDATE.name}" variant="outline-primary my-3">
+            <b-button
+                :to="{name: routes.INFORMATIONS_UPDATE.name}"
+                variant="outline-primary my-3"
+            >
               Modifier profil
             </b-button>
           </b-col>
-          <b-col lg="5" fluid class="p-4 bg-secondary d-flex align-items-center justify-content-center">
-            <b-img thumbnail rounded=""
-                   :src="profil.image" class="h-100"></b-img>
-            <b-button id="toggle-btn"
-                      variant="light"
-                      class="position-absolute bottom-0 start-0"
-                      @click="showModal('image-modal')">
+          <b-col
+              class="p-4 bg-secondary d-flex align-items-center justify-content-center"
+              lg="5"
+              fluid
+          >
+            <b-img
+                :src="profil.image" class="h-100"
+                thumbnail
+                rounded=""
+            />
+            <b-button
+                id="toggle-btn"
+                variant="light"
+                class="position-absolute bottom-0 start-0"
+                @click="showModal('image-modal')">
               Modifier photo
             </b-button>
             <l-upload-modal></l-upload-modal>
@@ -109,7 +111,7 @@ export default {
   },
   methods: {
     ...mapActions({loadAdresse: "Adresse/loadAdresse", loadProfil: "Profil/loadProfil",}),
-    chargerElement: function() {
+    chargerElement: function () {
       this.loadProfil()
       this.loadAdresse()
     },
@@ -117,6 +119,30 @@ export default {
       this.toggleLoading()
       await this.chargerElement()
       this.toggleLoading()
+    },
+    userRank: function (user) {
+      let is_staff = user.is_staff;
+      let is_superuser = user.is_superuser;
+      let status = {
+        user_type: '',
+        variant: ''
+      }
+      if (user.is_staff === true && is_superuser === false) {
+        status.user_type = 'Administrateur'
+        status.variant = 'success'
+        return status;
+      } else if (is_staff === true && is_superuser === true) {
+        status.user_type = 'Webmaster'
+        status.variant = 'warning'
+        return status;
+      } else if (is_staff === false && is_superuser === false) {
+        status.user_type = 'Utilisateur'
+        status.variant = 'primary'
+        return status;
+      } else {
+        console.log('Une erreure est survenue')
+        return status
+      }
     }
   },
   created() {

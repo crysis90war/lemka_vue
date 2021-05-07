@@ -9,7 +9,6 @@ import VAUsers from "@/views/administrateur/utilisateurs/VAUsers";
 import VAUserDetail from "@/views/administrateur/utilisateurs/VAUserDetail";
 import VAArticles from "@/views/administrateur/articles/VAArticles";
 import VAArticleAddOrUpdate from "@/views/administrateur/articles/VAArticleAddOrUpdate";
-import VAArticleDetail from "@/views/administrateur/articles/VAArticleDetail";
 import VAMerceries from "@/views/administrateur/merceries/VAMerceries";
 import VAMercerieAddOrUpdate from "@/views/administrateur/merceries/VAMercerieAddOrUpdate";
 import VADemandeDeDevis from "@/views/administrateur/demande_de_devis/VADemandeDeDevis";
@@ -56,6 +55,7 @@ import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
 import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate";
 import VUDevisDetails from "@/views/utilisateur/devis/VUDevisDetails";
 import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVousReservation";
+import VGArticleDetail from "@/views/global/VGArticleDetail";
 
 // endregion
 
@@ -98,13 +98,6 @@ const adminRoutes = [
         name: ROUTES.ARTICLES_ADD_OR_UPDATE.name,
         meta: {value: ROUTES.ARTICLES_ADD_OR_UPDATE.value},
         component: VAArticleAddOrUpdate,
-        props: true
-      },
-      {
-        path: ADMIN + 'article/:slug/detail',
-        name: ROUTES.ARTICLES_DETAIL.name,
-        meta: {value: ROUTES.ARTICLES_DETAIL.value},
-        component: VAArticleDetail,
         props: true
       }
     ]
@@ -356,6 +349,13 @@ const router = new VueRouter({
       name: ROUTES.CONTACT_ROUTE.name,
       meta: {value: ROUTES.CONTACT_ROUTE.value},
       component: VGContact
+    },
+    {
+      path: '/articles/:slug',
+      name: ROUTES.ARTICLES_DETAIL.name,
+      meta: {value: ''},
+      component: VGArticleDetail,
+      props: true
     },
     {
       path: '/cgv',
