@@ -2,7 +2,7 @@
   <div class="about">
     <b-container>
       <div class="text-center my-5">
-        <h1>À propos de nous</h1>
+        <h2 class="h1-lemka">À propos de nous</h2>
       </div>
       <div class="text-justify my-5">
         <p>

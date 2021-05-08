@@ -28,5 +28,9 @@ export const fonctions = {
                 solid: true
             })
         },
+        validateState(object, name) {
+            const {$dirty, $error} = object[name]
+            return $dirty ? !$error : null;
+        },
     }
 }

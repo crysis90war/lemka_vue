@@ -8,36 +8,36 @@ export const GenreModule = {
     namespaced: true,
     state: {
         genres: [],
-        genresLoadingStatus: false
+        loadingStatus: false
     },
     getters: {
         genres: state => state.genres,
         genre: state => id => {
             return state.genres.find(genre => genre.id === id)
         },
-        genresLoadingStatus: state => state.genresLoadingStatus
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        LOAD_GENRES_SUCCESS(state, genres) {
-            state.genres = genres
+        SET_GENRES_SUCCESS(state, payload) {
+            state.genres = payload
         },
-        LOAD_GENRES_FAILURE(state) {
+        SET_GENRES_FAILURE(state) {
             state.genres = []
         },
-        GENRES_LOADING_STATUS(state, genresLoadingStatus) {
-            state.genresLoadingStatus = genresLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
-        ADD_GENRE(state, newGenre) {
-            state.genres.push(newGenre)
+        ADD_GENRE(state, payload) {
+            state.genres.push(payload)
         },
-        UPDATE_GENRE(state, genre) {
-            const index = state.genres.findIndex(g => g.id === genre.id)
+        UPDATE_GENRE(state, payload) {
+            const index = state.genres.findIndex(g => g.id === payload.id)
             if (index !== -1) {
-                state.genres.splice(index, 1, genre)
+                state.genres.splice(index, 1, payload)
             }
         },
-        DELETE_GENRE(state, genre) {
-            const index = state.genres.map(item => item.id).indexOf(genre.id)
+        DELETE_GENRE(state, payload) {
+            const index = state.genres.map(item => item.id).indexOf(payload.id)
             if (index !== -1) {
                 state.genres.splice(index, 1)
             }
@@ -47,14 +47,14 @@ export const GenreModule = {
         loadGenres: async function ({commit}) {
             let endpoint = `${DOMAIN}/genres/`;
             return new Promise((resolve, reject) => {
-                commit('GENRES_LOADING_STATUS', true)
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_GENRES_SUCCESS', r.data)
-                    commit('GENRES_LOADING_STATUS', false)
+                    commit('SET_GENRES_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('LOAD_GENRES_FAILURE')
-                    commit('GENRES_LOADING_STATUS', false)
+                    commit('SET_GENRES_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })

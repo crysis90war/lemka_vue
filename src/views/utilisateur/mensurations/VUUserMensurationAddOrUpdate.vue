@@ -1,34 +1,30 @@
 <template>
-  <b-card
-      :title="id !== undefined ? 'Modifier la mensuration' : 'Ajouter une mensuration'"
-      class="my-4"
-      :class="BSClass.CARD_BORDERLESS_SHADOW"
-  >
-    <b-card-body>
-      <b-form>
-        <b-form-group
+  <div class="user-mensuration">
+    <l-spinner v-if="isLoading"/>
+    <b-card
+        v-else
+        :title="id !== undefined ? 'Modifier la mensuration' : 'Ajouter nouvelle mensuration'"
+        :class="`${BSClass.CARD_BORDERLESS_SHADOW} my-4`"
+    >
+      <b-card-body>
+        <!-- region isMain -->
+        <l-input-field
+            :switch-type="true"
+            v-model="userMensuration.is_main"
             :label="userMensuration.is_main === true ? 'Principale' : 'Secondaire'"
             description="Veuillez spécifier si la mensuration est principale ou secondaire"
-        >
-          <b-form-checkbox
-              v-model="userMensuration.is_main"
-              switch
-          />
-        </b-form-group>
-        <b-form-group
-            id="input-group-titre"
+        />
+        <!-- endregion -->
+        <!-- region Titre -->
+        <l-input-field
+            :input-type="true"
+            v-model="$v.userMensuration.titre.$model"
             label="Titre"
             description="Veuillez encoder le titre pour cette mensuration"
-            label-for="input-titre"
+            placeholder="Titre ..."
+            :state="validateState($v.userMensuration,'titre')"
         >
-          <b-form-input
-              id="input-titre"
-              name="input-name"
-              placeholder="Titre ..."
-              v-model="$v.userMensuration.titre.$model"
-              :state="validateState('titre')"
-          />
-          <b-form-invalid-feedback>
+          <template #invalid-feedback>
             <invalid-feedback
                 :condition="!$v.userMensuration.titre.required"
                 :error-message="required()"
@@ -41,27 +37,37 @@
                 :condition="!$v.userMensuration.titre.maxLength"
                 :error-message="maxLength($v.userMensuration.titre.$params.maxLength.max)"
             />
-          </b-form-invalid-feedback>
-        </b-form-group>
-
-        <b-button-group>
-          <b-button
-              variant="outline-dark"
-              @click="$router.push({name: routes.USER_MENSURATIONS.name})"
-          >
-            <i class="fas fa-arrow-left"></i>
-          </b-button>
-          <b-button
-              :variant="id !== undefined ? 'outline-primary' : 'outline-success'"
-              :disabled="submitStatus === 'PENDING'"
-              @click.prevent="submit"
-          >
-            {{ id !== undefined ? 'Modifier' : 'Ajouter' }}
-          </b-button>
-        </b-button-group>
-      </b-form>
-    </b-card-body>
-  </b-card>
+          </template>
+        </l-input-field>
+        <!-- endregion -->
+        <!-- region Remarque -->
+        <l-input-field
+            :text-area-type="true"
+            v-model="$v.userMensuration.remarque.$model"
+            label="Remarque"
+            description="Veuillez encoder une remarque si nécessaire !"
+            :state="validateState($v.userMensuration, 'remarque')"
+        >
+          <template #invalid-feedback>
+            <invalid-feedback
+                :condition="!$v.userMensuration.remarque.maxLength"
+                :error-message="maxLength($v.userMensuration.remarque.$params.maxLength.max)"
+            />
+          </template>
+        </l-input-field>
+        <!-- endregion -->
+        <!-- region Buttons -->
+        <l-button-group
+            :to="routes.USER_MENSURATIONS.name"
+            :submit-status="submitStatus"
+            :submit="submit"
+            position="right"
+            :params="getRouteParam()"
+        />
+        <!-- endregion -->
+      </b-card-body>
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -70,17 +76,20 @@ import UserMensurationModel from "@/models/user_mensuration/user_mensuration.mod
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import LemkaHelpers from "@/helpers";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import LInputField from "@/components/LInputField";
+import {fonctions} from "@/mixins/functions.mixin";
+import LButtonGroup from "@/components/LButtonGroup";
 
 export default {
   name: "VUUserMensurationAddOrUpdate",
-  components: {InvalidFeedback},
+  components: {LInputField, InvalidFeedback, LButtonGroup},
   props: {
     id: {
       required: false
     }
   },
-  mixins: [validationMixin, validationMessageMixin],
+  mixins: [validationMixin, validationMessageMixin, fonctions],
   validations: {
     userMensuration: UserMensurationModel.validations
   },
@@ -92,11 +101,53 @@ export default {
       BSClass: LemkaHelpers.BSClass,
     }
   },
+  computed: {
+    ...mapGetters({user_mensurations: "UserMensurations/userMensurations"})
+  },
   methods: {
     ...mapActions({
+      loadUserMensurations: "UserMensurations/loadUserMensurations",
       createUserMensuration: "UserMensurations/createUserMensuration",
       updateUserMensuration: "UserMensurations/updateUserMensuration"
     }),
+    initialisation: async function () {
+      if (this.user_mensurations.length === 0) {
+        await this.loadUserMensurations()
+      }
+    },
+    chargerUserMensuration: async function () {
+      this.toggleLoading()
+      await this.initialisation()
+      if (this.id !== undefined) {
+        let user_mensuration = this.$store.getters["UserMensurations/userMensuration"](parseInt(this.$route.params.id))
+        if (user_mensuration !== undefined) {
+          Object.assign(this.userMensuration, this.$store.getters["UserMensurations/userMensuration"](parseInt(this.$route.params.id)))
+          this.toggleLoading()
+        } else {
+          await this.$router.push({name: this.routes.USER_MENSURATIONS.name})
+          this.toggleLoading()
+        }
+      } else {
+        this.toggleLoading()
+      }
+    },
+    getRouteParam: function () {
+      if (this.$route.params.id) {
+        if (this.id !== undefined) {
+          this.setRouteMetaValue()
+          return this.id
+        } else {
+          this.setRouteMetaValue()
+          return parseInt(this.$route.params.id)
+        }
+      } else {
+        this.$route.meta.value = 'Ajouter nouvelle mensuration'
+        return undefined
+      }
+    },
+    setRouteMetaValue: function() {
+      this.$route.meta.value = this.userMensuration.titre
+    },
     submit: function () {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -115,17 +166,11 @@ export default {
           this.$router.push({name: this.routes.USER_MENSURATIONS.name})
         }, 500)
       }
-    },
-    validateState(name) {
-      const {$dirty, $error} = this.$v.userMensuration[name]
-      return $dirty ? !$error : null;
-    },
+    }
   },
 
   created() {
-    if (this.id !== undefined) {
-      Object.assign(this.userMensuration, this.$store.getters["UserMensurations/userMensuration"](this.id))
-    }
+    this.chargerUserMensuration()
   }
 }
 </script>

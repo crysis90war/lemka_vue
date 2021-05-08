@@ -17,7 +17,7 @@ export default class ProfilModel {
         this.first_name = R.is(String, json.first_name) ? json.first_name : ""
         this.last_name = R.is(String, json.last_name) ? json.last_name : ""
         this.numero_tel = R.is(String, json.numero_tel) ? json.numero_tel : ""
-        this.genre = R.is(Object, json.genre) ? new GenreModel(json.genre) : new GenreModel()
+        this.genre = R.is(Object, json.genre) ? new GenreModel(json.genre) : null
     }
 
     toUpdatePayload() {
@@ -38,10 +38,10 @@ export default class ProfilModel {
                 maxLength: maxLength(30),
                 alphaNum
             },
-            first_name: {
+            last_name: {
                 minLength: minLength(2),
             },
-            last_name: {
+            first_name: {
                 minLength: minLength(2),
             },
             numero_tel: {

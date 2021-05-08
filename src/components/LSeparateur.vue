@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-around my-5 text-center">
     <div class="barre w-25"/>
     <div>
-      <h2>{{ titre }}</h2>
+      <h2 class="h1-lemka">{{ titre }}</h2>
       <span class="text-muted">{{ sousTitre }}</span>
     </div>
     <div class="barre w-25"/>

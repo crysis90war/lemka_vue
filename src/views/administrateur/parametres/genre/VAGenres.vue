@@ -54,7 +54,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({genres: 'Genres/genres', busy: 'Genres/genresLoadingStatus'})
+    ...mapGetters({genres: 'Genres/genres', busy: 'Genres/loadingStatus'})
   },
   methods: {
     ...mapActions({deleteGenre: 'Genres/deleteGenre'})
