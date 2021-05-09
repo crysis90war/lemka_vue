@@ -1,12 +1,29 @@
 <template>
   <section class="lemka_carousel">
-    <l-carousel :controls-visible="true" :clickable="true" :border="0" :space="845"
-                :width="860" :height="480" :perspective="25"
-                :inverseScaling="150" :display="3" :loop="true" :autoplay="true" :autoplayTimeout="15000" :animationSpeed="3000">
-      <l-slide v-for="(slide, i) in slides" :key="i" :index="i">
-        <figure :style="`background-image: url(${slide}); background-repeat: no-repeat; background-size: cover;`"
-                class="h-100 w-100 text-center">
-
+    <l-carousel
+        :controls-visible="true"
+        :clickable="true"
+        :border="0"
+        :space="845"
+        :width="860"
+        :height="480"
+        :perspective="25"
+        :inverseScaling="150"
+        :display="3"
+        :loop="true"
+        :autoplay="true"
+        :autoplayTimeout="15000"
+        :animationSpeed="3000"
+    >
+      <l-slide
+          v-for="(slide, i) in slides"
+          :key="i"
+          :index="i"
+      >
+        <figure
+            :style="`background-image: url(${slide}); background-repeat: no-repeat; background-size: cover;`"
+            class="h-100 w-100 text-center"
+        >
           <figcaption class="fig-top" style="display: none;">
             <h4>Title</h4>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
@@ -56,6 +73,7 @@ export default {
       min-width: 100%;
       box-sizing: border-box;
     }
+
     > .fig-bottom {
       display: block !important;
       position: absolute;

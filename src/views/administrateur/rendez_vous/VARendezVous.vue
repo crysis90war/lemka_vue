@@ -1,6 +1,6 @@
 <template>
   <div class="rendez_vous">
-
+    RENDEZVOUS
   </div>
 </template>
 

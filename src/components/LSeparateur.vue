@@ -3,7 +3,7 @@
     <div class="barre w-25"/>
     <div>
       <h2 class="h1-lemka">{{ titre }}</h2>
-      <span class="text-muted">{{ sousTitre }}</span>
+      <small class="text-muted"><i>{{ sousTitre.toUpperCase() }}</i></small>
     </div>
     <div class="barre w-25"/>
   </div>

@@ -11,7 +11,7 @@
     />
 
     <div class="px-5">
-      <l-spinner v-if="loading === true"/>
+      <l-spinner v-if="isLoading === true"/>
       <l-carousel
           v-else
           :disable3d="false"
@@ -29,7 +29,7 @@
           :animationSpeed="3000"
       >
         <l-slide
-            v-for="(article, index) in articles"
+            v-for="(article, index) in newArticles"
             :index="index"
             :key="article.id"
             class="rounded-lg"
@@ -53,7 +53,9 @@
     <l-separateur :titre="separateurs[2].titre" :sous-titre="separateurs[2].sousTitre"/>
 
     <div class="px-5">
+      <l-spinner v-if="isLoading === true"/>
       <l-carousel
+          v-else
           :disable3d="false"
           :controls-visible="true"
           :border="0"
@@ -67,13 +69,21 @@
           :autoplayTimeout="15000"
           :animationSpeed="3000"
       >
-        <l-slide v-for="(slide, i) in slides" :index="i" :key="i">
+        <l-slide
+            v-for="(article, index) in popularArticles"
+            :index="index"
+            :key="article.id"
+            class="rounded-lg"
+        >
           <figure>
-            <b-img loading=lazy :src="require('@/assets/noimage.png')" height="430"></b-img>
-            <figcaption>
-              <h3>{{ slide }} - Titre</h3>
-              <p>{{ message.substring(0, 80) }} ...
-                <b-link>Plus</b-link>
+            <b-img
+                :src="articleMainImage(article.images)"
+                height="430"
+            />
+            <figcaption class="bg-light text-dark">
+              <h3>{{ article.titre }}</h3>
+              <p>{{ article.description.substring(0, 80) }} ...
+                <b-link :to="{name: routes.ARTICLES_DETAIL.name, params: {slug: article.slug}}">Plus</b-link>
               </p>
             </figcaption>
           </figure>
@@ -115,6 +125,7 @@ import LFeatures from "@/components/LFeatures";
 import {getMainImage, htmlTitle} from "@/utils/tools";
 import ApiService from "@/services/api.service";
 import LemkaHelpers from "@/helpers";
+import {fonctions} from "@/mixins/functions.mixin";
 
 export default {
   name: 'VGHome',
@@ -127,36 +138,45 @@ export default {
   title() {
     return htmlTitle()
   },
+  mixins: [fonctions],
   data() {
     return {
-      slides: 10,
-      message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet aut doloremque dolores earum eligendi illo in, itaque maxime molestias, necessitatibus perferendis porro praesentium quisquam quod reiciendis unde vero? Minima, odio!",
       separateurs: [
         {titre: 'LEMKA - Atelier de couture', sousTitre: 'NOS DIVERS SERVICES'},
-        {titre: 'NOUVEAUX PRODUITS', sousTitre: 'LOREM IPSUM DOLOR SITE CONSECTETUER'},
-        {titre: 'PRODUITS POPULAIRES', sousTitre: 'LOREM IPSUM DOLOR SITE CONSECTETUER'},
+        {titre: 'NOUVEAUX PRODUITS', sousTitre: 'NOS TOUS DERNIERS ARTICLES PUBLIÉS'},
+        {titre: 'PRODUITS POPULAIRES', sousTitre: 'nos articles les plus populaires'},
         {titre: 'TÉMOIGNAGES', sousTitre: 'ILS NOUS FONT CONFIANCE'},
       ],
       routes: LemkaHelpers.Routes,
-      articles: [],
-      loading: false
+      newArticles: [],
+      popularArticles: [],
     }
   },
   methods: {
-    loadArticles: async function() {
-      let endpoint = `${LemkaHelpers.Endpoints.DOMAIN}/public/articles/`;
-      this.loading = true
+    loadLastArticles: async function() {
+      let endpoint = `${LemkaHelpers.Endpoints.DOMAIN}/public/last/`;
       await ApiService.GETDatas(endpoint).then(r => {
-        this.articles = r.data
-        this.loading = false
+        this.newArticles = r.data
       })
+    },
+    loadPopularArticles: async function() {
+      let endpoint = `${LemkaHelpers.Endpoints.DOMAIN}/public/popular/`;
+      await ApiService.GETDatas(endpoint).then(r => {
+        this.popularArticles = r.data
+      })
+    },
+    initialisation: async function() {
+      this.toggleLoading()
+      await this.loadLastArticles()
+      await this.loadPopularArticles()
+      this.toggleLoading()
     },
     articleMainImage: function(images) {
       return getMainImage(images)
     }
   },
   created() {
-    this.loadArticles()
+    this.initialisation()
   }
 }
 </script>

@@ -120,30 +120,7 @@ export default {
       await this.chargerElement()
       this.toggleLoading()
     },
-    userRank: function (user) {
-      let is_staff = user.is_staff;
-      let is_superuser = user.is_superuser;
-      let status = {
-        user_type: '',
-        variant: ''
-      }
-      if (user.is_staff === true && is_superuser === false) {
-        status.user_type = 'Administrateur'
-        status.variant = 'success'
-        return status;
-      } else if (is_staff === true && is_superuser === true) {
-        status.user_type = 'Webmaster'
-        status.variant = 'warning'
-        return status;
-      } else if (is_staff === false && is_superuser === false) {
-        status.user_type = 'Utilisateur'
-        status.variant = 'primary'
-        return status;
-      } else {
-        console.log('Une erreure est survenue')
-        return status
-      }
-    }
+
   },
   created() {
     this.initialisation()

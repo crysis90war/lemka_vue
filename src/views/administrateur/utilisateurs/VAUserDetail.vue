@@ -1,114 +1,108 @@
 <template>
-  <l-spinner v-if="isLoading"></l-spinner>
+  <div class="admin-user-detail">
+    <l-spinner v-if="isLoading"/>
 
-  <div v-else>
-    <b-tabs>
-      <b-tab
-          title="Profil"
-          class="p-3"
-      >
-        <b-row class="mb-5">
-          <b-col lg="4">
-            <div class="d-flex">
-              <div class="mr-2">
-                <b-avatar
-                    v-b-popover.hover.right="popoverConfig"
-                    :src="utilisateur.image"
-                    size="4em"
-                />
-              </div>
-              <div>
-                <span>@{{ utilisateur.username }}</span>
+    <div v-else>
+      <b-tabs>
+        <b-tab
+            title="Profil"
+            class="p-3"
+        >
+          <b-row class="mb-5">
+            <b-col lg="4">
+              <div class="d-flex">
+                <div class="mr-2">
+                  <b-avatar
+                      v-b-popover.hover.right="popoverConfig"
+                      :src="utilisateur.image"
+                      size="4em"
+                  />
+                </div>
                 <div>
-                  <b-badge
-                      v-if="utilisateur.is_staff === true"
-                      pill
-                      variant="success"
-                  >
-                    Administrateur
-                  </b-badge>
-                  <b-badge
-                      v-else
-                      pill
-                      variant="primary"
-                  >
-                    Utilisateur
-                  </b-badge>
+                  <span>@{{ utilisateur.username }}</span>
+                  <div>
+                    <b-badge pill :variant="userRank(utilisateur).variant">{{userRank(utilisateur).user_type}}</b-badge>
+                  </div>
                 </div>
               </div>
-            </div>
-          </b-col>
-          <b-col>
-            <h2>{{ normalizedFullName }}</h2>
+            </b-col>
+            <b-col>
+              <h2>{{ normalizedFullName }}</h2>
 
-            <div v-if="utilisateur.email">
-              <span class="mr-2"><i :class="icons.EMAIL"></i></span>
-              <span>{{ utilisateur.email }}</span>
-            </div>
-            <div v-if="utilisateur.numero_tel">
-              <span class="mr-2"><i :class="icons.PHONE"></i></span>
-              <span>{{ utilisateur.numero_tel }}</span>
-            </div>
-            <div v-if="utilisateur.genre !== null && utilisateur.genre !== undefined">
-              <span class="mr-2"><i :class="icons.GENRE"></i></span>
-              <span>{{ utilisateur.genre.genre }}</span>
-            </div>
-          </b-col>
-        </b-row>
-        <div>
-          <span><small>Membre depuis {{ utilisateur.created_at | localTimeStr }}</small></span><br>
-          <span><small>Dernière mise à jour {{ utilisateur.updated_at | localTimeStr }}</small></span>
-        </div>
-      </b-tab>
-
-      <b-tab title="Adresse" class="p-3" :disabled="adresse.id === null">
-
-        <div v-if="adresse.id !== null" class="mt-2">
+              <div v-if="utilisateur.email">
+                <span class="mr-2"><i :class="icons.EMAIL"></i></span>
+                <span class="mr-2">{{ utilisateur.email }}</span>
+                <b-badge
+                    :variant="utilisateur.is_verified === true ? 'success' : 'danger'"
+                >
+                  <i :class="utilisateur.is_verified === true ? 'fas fa-check' : 'fas fa-times'"></i>
+                </b-badge>
+              </div>
+              <div v-if="utilisateur.numero_tel">
+                <span class="mr-2"><i :class="icons.PHONE"></i></span>
+                <span>{{ utilisateur.numero_tel }}</span>
+              </div>
+              <div v-if="utilisateur.genre !== null && utilisateur.genre !== undefined">
+                <span class="mr-2"><i :class="icons.GENRE"></i></span>
+                <span>{{ utilisateur.genre.genre }}</span>
+              </div>
+            </b-col>
+          </b-row>
           <div>
-            <span><i :class="icons.HOME" class="mr-2"></i></span>
+            <span><small>Membre depuis {{ utilisateur.created_at | localTimeStr }}</small></span><br>
+            <span><small>Dernière mise à jour {{ utilisateur.updated_at | localTimeStr }}</small></span>
           </div>
-          <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
-          <span>{{ adresse.ville.code_postale }} - {{ adresse.ville.ville }}</span><br>
-          <span>{{ adresse.ville.pays.pays }}</span>
-        </div>
-      </b-tab>
+        </b-tab>
 
-      <b-tab
-          :title="`Mensurations ${utilisateur.mensurations_count}`"
-          :disabled="utilisateur.mensurations_count === 0"
-          class="p-4"
-      >
-        <div v-if="utilisateur.mensurations_count > 0">
-          <section
-              v-for="userMensuration in userMensurations"
-              :key="userMensuration.id"
-          >
-            <b-list-group-item
-                v-b-toggle="`mensuration-collapse${userMensuration.id}`"
-                :variant="userMensuration.is_main === true ? 'success' : 'primary'"
+        <b-tab title="Adresse" class="p-3" :disabled="adresse.id === null">
+
+          <div v-if="adresse.id !== null" class="mt-2">
+            <div>
+              <span><i :class="icons.HOME" class="mr-2"></i></span>
+            </div>
+            <span>{{ adresse.rue }}, {{ adresse.numero }} {{ adresse.boite }}</span><br>
+            <span>{{ adresse.ville.code_postale }} - {{ adresse.ville.ville }}</span><br>
+            <span>{{ adresse.ville.pays.pays }}</span>
+          </div>
+        </b-tab>
+
+        <b-tab
+            :title="`Mensurations ${utilisateur.mensurations_count}`"
+            :disabled="utilisateur.mensurations_count === 0"
+            class="p-4"
+        >
+          <div v-if="utilisateur.mensurations_count > 0">
+            <section
+                v-for="userMensuration in userMensurations"
+                :key="userMensuration.id"
             >
-              {{ userMensuration.titre }}
-            </b-list-group-item>
-            <b-collapse :id="`mensuration-collapse${userMensuration.id}`">
-              <b-card>
-                <b-card-body>
-                  <b-row>
-                    <b-col v-for="mesure in userMensuration.mesures" :key="mesure.id" lg="4">
-                      <div class="d-flex">
-                        <p><strong>{{ mesure.mensuration }} : </strong> {{ mesure.mesure }} cm</p>
-                      </div>
-                    </b-col>
-                  </b-row>
-                </b-card-body>
-              </b-card>
-            </b-collapse>
-          </section>
-        </div>
-      </b-tab>
-    </b-tabs>
+              <b-list-group-item
+                  v-b-toggle="`mensuration-collapse${userMensuration.id}`"
+                  :variant="userMensuration.is_main === true ? 'success' : 'primary'"
+              >
+                {{ userMensuration.titre }}
+              </b-list-group-item>
+              <b-collapse :id="`mensuration-collapse${userMensuration.id}`">
+                <b-card>
+                  <b-card-body>
+                    <b-row>
+                      <b-col v-for="mesure in userMensuration.mesures" :key="mesure.id" lg="4">
+                        <div class="d-flex">
+                          <p><strong>{{ mesure.mensuration }} : </strong> {{ mesure.mesure }} cm</p>
+                        </div>
+                      </b-col>
+                    </b-row>
+                  </b-card-body>
+                </b-card>
+              </b-collapse>
+            </section>
+          </div>
+        </b-tab>
+      </b-tabs>
 
-    <l-jumbotron :data="utilisateur"></l-jumbotron>
-    <l-jumbotron :data="adresse"></l-jumbotron>
+      <l-jumbotron :data="utilisateur"></l-jumbotron>
+      <l-jumbotron :data="adresse"></l-jumbotron>
+    </div>
   </div>
 </template>
 
