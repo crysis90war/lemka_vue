@@ -224,7 +224,7 @@
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import {mapActions, mapGetters} from "vuex";
 import MercerieModel from "@/models/mercerie/mercerie.model";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import LemkaHelpers from "@/helpers";
 import CreateRefreshButtonGroup from "@/components/Table/LCreateRefresh";
 import {htmlTitle} from "@/utils/tools";
@@ -232,7 +232,7 @@ import {htmlTitle} from "@/utils/tools";
 export default {
   name: "VAMerceries",
   components: {CreateRefreshButtonGroup},
-  mixins: [tableViewMixin, fonctions],
+  mixins: [tableViewMixin, commonMixin],
   title() {
     return htmlTitle("Merceries")
   },

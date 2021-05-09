@@ -1,4 +1,4 @@
-export const fonctions = {
+export const commonMixin = {
     data() {
         return {
             isLoading: false
@@ -15,12 +15,6 @@ export const fonctions = {
         toggleLoading: function() {
             this.isLoading = !this.isLoading
         },
-        /**
-         * NOtification en haut a droite
-         * @param variant une des variante de bootstrap
-         * @param message message en string, par défaut un toast
-         * @param titre
-         */
         makeToast(variant = null, message = "", titre = "") {
             this.$bvToast.toast(message, {
                 title: `${titre}`,

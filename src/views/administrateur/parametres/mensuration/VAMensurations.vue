@@ -222,12 +222,12 @@ import TableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
 import TableEmpty from "@/components/Table/LTableEmpty";
 import TableBusy from "@/components/Table/LTableBusy";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: "VAMensurations",
   components: {TableEmptyFiltered, TableEmpty, TableBusy},
-  mixins: [tableViewMixin, fonctions],
+  mixins: [tableViewMixin, commonMixin],
   data() {
     return {
       fields: MensurationModel.tableFields,

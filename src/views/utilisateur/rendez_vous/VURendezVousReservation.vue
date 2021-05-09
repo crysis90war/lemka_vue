@@ -38,8 +38,8 @@
             >
               <b-form-datepicker
                   v-model="$v.rendezVous.date.$model"
-                  :min="min"
-                  :max="max"
+                  :min="getMinMaxDates().min"
+                  :max="getMinMaxDates().max"
                   locale="fr"
                   :date-disabled-fn="dateDisabled"
                   close-button
@@ -118,6 +118,7 @@
         </div>
       </b-card-body>
     </b-card>
+    <l-jumbotron :data="getMinMaxDates()"/>
   </div>
 </template>
 
@@ -128,30 +129,19 @@ import RendezVousModel from "@/models/rendez_vous.model";
 import {htmlTitle} from "@/utils/tools";
 import {validationMixin} from "vuelidate/src";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: "VURendezVousReservation",
   title() {
     return htmlTitle(this.$route.meta.value)
   },
-  mixins: [validationMixin, validationMessageMixin, fonctions],
+  mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     rendezVous: RendezVousModel.validations
   },
   data() {
-    const now = new Date()
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    const minDate = new Date(today)
-    minDate.setDate(minDate.getDate() + 1)
-    // minDate.setDate(15)
-    // 15th in two months
-    const maxDate = new Date(today)
-    maxDate.setDate(maxDate.getDay() + 13)
-    // maxDate.setDate(15)
     return {
-      min: minDate,
-      max: maxDate,
       BSClass: LemkaHelpers.BSClass,
       submitStatus: null,
       typeServiceTouched: false,
@@ -272,6 +262,24 @@ export default {
         this.rendezVous.start = null
       }
       // this.context = ctx
+    },
+    getMinMaxDates: function() {
+      // TODO - Récupérer correctement les dates max disponible. + 7 semaines
+      const now = new Date()
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const minDate = new Date(today)
+      minDate.setDate(minDate.getDate() + 1)
+      // minDate.setDate(15)
+      // 15th in two months
+      const maxDate = new Date(today)
+      maxDate.setDate(maxDate.getDay() + 13)
+      // maxDate.setDate(15)
+      return {
+        min: minDate,
+        max: maxDate,
+        test: minDate.setDate(minDate.getDate() + 1),
+        test2: maxDate.setDate(maxDate.getDay() + 13)
+      }
     },
     validationState: function (name) {
       const {$dirty, $error} = this.$v.rendezVous[name]

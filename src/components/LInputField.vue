@@ -3,7 +3,7 @@
     <b-form-checkbox v-if="switchType === true" v-model="inputVal" switch>
       <p>{{label}}</p>
     </b-form-checkbox>
-    <b-form-input v-if="inputType === true" v-model="inputVal" :placeholder="placeholder" :state="state"/>
+    <b-form-input v-if="inputType === true" v-model="inputVal" :type="type" :placeholder="placeholder" :state="state"/>
     <b-textarea v-if="textAreaType === true" v-model="inputVal" :placeholder="placeholder" :state="state"/>
 
     <b-form-invalid-feedback>
@@ -51,6 +51,10 @@ export default {
     placeholder: {
       type: String,
       default: ""
+    },
+    type: {
+      type: String,
+      default: 'text'
     },
     state: {
       type: Boolean,

@@ -78,7 +78,7 @@ import InvalidFeedback from "@/components/LInvalidFeedback";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import LInputField from "@/components/LInputField";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import LButtonGroup from "@/components/LButtonGroup";
 
 export default {
@@ -89,7 +89,7 @@ export default {
       required: false
     }
   },
-  mixins: [validationMixin, validationMessageMixin, fonctions],
+  mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     userMensuration: UserMensurationModel.validations
   },

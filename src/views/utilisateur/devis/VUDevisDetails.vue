@@ -168,14 +168,14 @@ import EntrepriseModel from "@/models/entreprise.model";
 import {localTimeStr} from "@/utils/filters";
 import DetailModel from "@/models/devis/detail.model";
 import html2pdf from 'html2pdf.js'
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: "VUDevisDetails",
   title() {
     return htmlTitle('Devis N° ' + this.$route.params.numero_devis)
   },
-  mixins: [fonctions],
+  mixins: [commonMixin],
   data() {
     return {
       detail: new DetailModel(),

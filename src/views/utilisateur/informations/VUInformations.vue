@@ -84,12 +84,12 @@
 import {localTimeStr} from "@/utils/filters";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VUInformations",
-  mixins: [fonctions],
+  mixins: [commonMixin],
   title() {
     return htmlTitle("Information")
   },

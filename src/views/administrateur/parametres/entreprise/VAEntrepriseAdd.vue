@@ -270,13 +270,13 @@ import EntrepriseModel from "@/models/entreprise.model";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
 
 export default {
   name: "VAEntrepriseAdd",
-  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin, fonctions],
+  mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin, commonMixin],
   validations: {
     entreprise: EntrepriseModel.validations
   },

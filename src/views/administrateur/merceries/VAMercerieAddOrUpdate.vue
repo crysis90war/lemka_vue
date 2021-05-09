@@ -639,7 +639,7 @@ import {htmlTitle} from "@/utils/tools";
 import MercerieChatacteristiqueModel from "@/models/mercerie/mercerie_characteristique.model";
 import {Cropper} from "vue-advanced-cropper";
 import {dataURLtoFile} from "@/helpers/functions.helper";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: "VAMercerieAddOrUpdate",
@@ -647,7 +647,7 @@ export default {
   props: {
     id: {}
   },
-  mixins: [validationMixin, validationMessageMixin, fonctions],
+  mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     mercerie: MercerieModel.validations,
     mercerieCharacteristique: MercerieChatacteristiqueModel.validations

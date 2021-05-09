@@ -220,7 +220,7 @@ import LemkaHelpers from "@/helpers";
 import DemandeDevisModel from "@/models/demande_devis.model";
 import {mapActions, mapGetters} from "vuex";
 import LDoubleListBox from "@/components/LDoubleListBox";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
@@ -229,7 +229,7 @@ import LInputField from "@/components/LInputField";
 export default {
   name: "VUDemandeDevisAddOrUpdate",
   components: {LInputField, LDoubleListBox},
-  mixins: [fonctions, validationMixin, validationMessageMixin, multiSelectValidationMixin],
+  mixins: [commonMixin, validationMixin, validationMessageMixin, multiSelectValidationMixin],
   props: {
     id: {
       required: false

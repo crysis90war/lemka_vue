@@ -86,14 +86,14 @@ import {validationMixin} from "vuelidate";
 import AdresseModel from "@/models/adresse.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
 import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VUAdresseUpdate",
-  mixins: [validationMixin, validationMessageMixin, fonctions, multiSelectValidationMixin],
+  mixins: [validationMixin, validationMessageMixin, commonMixin, multiSelectValidationMixin],
   validations: {
     adresse: AdresseModel.validations
   },

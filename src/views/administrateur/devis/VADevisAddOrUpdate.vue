@@ -550,14 +550,14 @@ import {localTimeStr} from "@/utils/filters";
 import DevisModel from "@/models/devis/devis.model";
 import {mapActions, mapGetters} from "vuex";
 import DetailModel from "@/models/devis/detail.model";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import LemkaHelpers from "@/helpers";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 
 export default {
   name: "VADevisAddOrUpdate",
-  mixins: [fonctions, validationMixin, validationMessageMixin],
+  mixins: [commonMixin, validationMixin, validationMessageMixin],
   props: {
     id: {}
   },

@@ -144,7 +144,7 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import ProfilModel from "@/models/profil.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {htmlTitle} from "@/utils/tools";
 import LInputField from "@/components/LInputField";
 import LButtonGroup from "@/components/LButtonGroup";
@@ -152,7 +152,7 @@ import LButtonGroup from "@/components/LButtonGroup";
 export default {
   name: "VUInformationsUpdate",
   components: {LButtonGroup, LInputField},
-  mixins: [validationMixin, validationMessageMixin, fonctions],
+  mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     profil: ProfilModel.validations
   },

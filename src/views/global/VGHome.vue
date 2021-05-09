@@ -96,10 +96,10 @@
     <b-container fluid="lg">
       <b-row>
         <b-col lg="6">
-          <l-review-card username="Dolores" :value="4.9"/>
+          <l-review-card username="Dolores" :value="4.5"/>
         </b-col>
         <b-col lg="6">
-          <l-review-card username="Christine" :value="4.7"/>
+          <l-review-card username="Christine" :value="4.0"/>
         </b-col>
       </b-row>
       <b-row>
@@ -107,7 +107,7 @@
           <l-review-card username="Jean-Luc" :value="4.5"/>
         </b-col>
         <b-col lg="6">
-          <l-review-card username="Nova" :value="4.6"/>
+          <l-review-card username="Nova" :value="5.0"/>
         </b-col>
       </b-row>
     </b-container>
@@ -125,7 +125,7 @@ import LFeatures from "@/components/LFeatures";
 import {getMainImage, htmlTitle} from "@/utils/tools";
 import ApiService from "@/services/api.service";
 import LemkaHelpers from "@/helpers";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: 'VGHome',
@@ -138,7 +138,7 @@ export default {
   title() {
     return htmlTitle()
   },
-  mixins: [fonctions],
+  mixins: [commonMixin],
   data() {
     return {
       separateurs: [

@@ -62,12 +62,12 @@ import ArticleModel from "@/models/article/article.model";
 import LemkaHelpers from "@/helpers";
 import {localTimeStr} from "@/utils/filters";
 import {htmlTitle} from "@/utils/tools";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "VAArticleDetail",
-  mixins: [fonctions],
+  mixins: [commonMixin],
   props: {
     slug: {
       type: String,

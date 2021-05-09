@@ -8,26 +8,56 @@
           <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
         </div>
         <span>ou utilisez votre compte</span>
-        <b-form-group description="Veuillez encoder votre email">
-          <b-input v-model="$v.user.email.$model" type="email" placeholder="Email ..."
-                   :state="validateState('email')"></b-input>
-          <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.user.email.required" :error-message="required()"/>
-            <invalid-feedback :condition="!$v.user.email.email" :error-message="email()"/>
-          </b-form-invalid-feedback>
-        </b-form-group>
-        <b-form-group description="Veuillez encoder votre mot de passe">
-          <b-input v-model="$v.user.password.$model" type="password" placeholder="Mot de passe ..."
-                   :state="validateState('password')"/>
-          <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.user.password.required" :error-message="required()"/>
-            <invalid-feedback :condition="!$v.user.password.minLength" :error-message="minLength($v.user.password.$params.minLength.min)"/>
-          </b-form-invalid-feedback>
-        </b-form-group>
+        <l-input-field
+            :input-type="true"
+            v-model="$v.user.email.$model"
+            placeholder="Email ..."
+            type="email"
+            :state="validateState($v.user, 'email')"
+        >
+          <template #invalid-feedback>
+            <invalid-feedback
+                :condition="!$v.user.email.required"
+                :error-message="required()"
+            />
+            <invalid-feedback
+                :condition="!$v.user.email.email"
+                :error-message="email()"
+            />
+          </template>
+        </l-input-field>
+        <l-input-field
+            :input-type="true"
+            v-model="$v.user.password.$model"
+            type="password"
+            placeholder="Mot de passe ..."
+            :state="validateState($v.user, 'password')"
+        >
+          <template #invalid-feedback>
+            <invalid-feedback
+                :condition="!$v.user.password.required"
+                :error-message="required()"
+            />
+            <invalid-feedback
+                :condition="!$v.user.password.minLength"
+                :error-message="minLength($v.user.password.$params.minLength.min)"
+            />
+          </template>
+        </l-input-field>
+
         <a href="#">Mot de passe oublié ?</a>
         <b-alert variant="danger" :show="message !== ''">{{ message }}</b-alert>
-        <b-button variant="outline-success" :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
-          <b-spinner variant="success" type="grow" small v-show="submitStatus === 'PENDING'"></b-spinner>
+        <b-button
+            variant="outline-success"
+            :disabled="submitStatus === 'PENDING'"
+            @click.prevent="submit"
+        >
+          <b-spinner
+              variant="success"
+              type="grow"
+              class="mr-2"
+              small v-show="submitStatus === 'PENDING'"
+          />
           Se connecter
         </b-button>
       </b-form>
@@ -43,11 +73,13 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import AuthModel from "@/models/auth.model";
 import {htmlTitle} from "@/utils/tools";
+import LInputField from "@/components/LInputField";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: "VGLogin",
-  components: {InvalidFeedback},
-  mixins: [validationMixin, validationMessageMixin,],
+  components: {LInputField, InvalidFeedback},
+  mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     user: AuthModel.loginValidations
   },
@@ -82,8 +114,8 @@ export default {
             this.submitStatus = 'OK'
             this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
           }, 500)
-        }, () => {
-          this.message = 'Identifiants non valides, réessayez'
+        }, error => {
+          this.message = error.response.data.detail
           this.submitStatus = 'ERROR'
           setTimeout(() => {
             this.submitStatus = null
@@ -91,16 +123,12 @@ export default {
           }, 5000)
         })
       }
-    },
-    validateState: function (name) {
-      const {$dirty, $error} = this.$v.user[name];
-      return $dirty ? !$error : null;
     }
   },
   created() {
-    if (this.loggedIn) {
-      this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
-    }
+    // if (this.loggedIn === true) {
+    //   this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
+    // }
   }
 }
 </script>

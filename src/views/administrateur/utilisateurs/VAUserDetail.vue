@@ -109,7 +109,7 @@
 <script>
 import UtilisateurModel from "@/models/utilisateur.model";
 import LemkaHelpers from "@/helpers";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
 import {localTimeStr} from "@/utils/filters";
 
@@ -120,7 +120,7 @@ export default {
       required: true
     },
   },
-  mixins: [fonctions],
+  mixins: [commonMixin],
   data() {
     return {
       utilisateur: new UtilisateurModel(),

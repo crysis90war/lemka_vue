@@ -182,11 +182,11 @@ import {mapActions, mapGetters} from "vuex";
 import {htmlTitle} from "@/utils/tools";
 import RendezVousModel from "@/models/rendez_vous.model";
 import {date2fullStr, date2str, localTimeStr} from "@/utils/filters";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: "VURendezVous",
-  mixins: [fonctions],
+  mixins: [commonMixin],
   title() {
     return htmlTitle('Mes rendez-vous')
   },

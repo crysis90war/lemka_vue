@@ -368,13 +368,13 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import {fonctions} from "@/mixins/functions.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VAArticleAddOrUpdate",
   components: {Cropper},
-  mixins: [validationMixin, validationMessageMixin, fonctions],
+  mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     article: ArticleModel.validations
   },
