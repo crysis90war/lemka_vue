@@ -24,6 +24,9 @@ import {TVAModule} from "@/store/tva.module";
 import {DetailModule} from "@/store/devis/detail.module";
 import {AdresseModule} from "@/store/adresse.module";
 import {RendezVousModule} from "@/store/rendez_vous.module";
+import {RayonModule} from "@/store/catalogue/rayon.module";
+import {SectionModule} from "@/store/catalogue/section.module";
+import {TypeProduitModule} from "@/store/catalogue/type_produit.module";
 
 Vue.use(Vuex)
 
@@ -53,5 +56,8 @@ export default new Vuex.Store({
     'Adresse': AdresseModule,
     'Characteristiques': CharacteristiqueModule,
     'RendezVous': RendezVousModule,
+    'Rayons': RayonModule,
+    'Sections': SectionModule,
+    'TypeProduits': TypeProduitModule
   }
 });

@@ -20,7 +20,6 @@
           :height="430"
           :width="380"
           :space="400"
-          :display="4"
           :perspective="0"
           :inverse-scaling="-70"
           :loop="true"

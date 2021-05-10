@@ -39,11 +39,8 @@
             </b-col>
 
             <b-col lg="3">
-              <h5>SERVICE CLIENTS</h5>
+              <h5>LÉGALES</h5>
               <ul class="list-unstyled text-small liens-footer">
-                <li>
-                  <b-link class="text-secondary" :to="{path: '/'}">Accueil</b-link>
-                </li>
                 <li>
                   <b-link class="text-secondary" :to="{name: 'VGConfidentialite'}">Politique de confidentialité</b-link>
                 </li>

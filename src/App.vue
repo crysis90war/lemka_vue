@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LemkaHelpers from "@/helpers";
@@ -53,14 +53,15 @@ export default {
   },
   created() {
     this.getRoute();
-    // axios.interceptors.response.use(response => {
-    //   return response;
-    // }, error => {
-    //   if (error.response.status === 401) {
-    //     this.$store.dispatch('Auth/logout')
-    //   }
-    //   return Promise.reject(error);
-    // })
+    axios.interceptors.response.use(response => {
+      return response;
+    }, error => {
+      if (error.response.data.detail === 'Given token not valid for any token type') {
+        this.$store.dispatch('Auth/logout')
+        console.log('disconnecting')
+      }
+      return Promise.reject(error);
+    })
   },
   watch: {
     $route() {

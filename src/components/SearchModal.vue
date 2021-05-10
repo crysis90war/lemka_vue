@@ -2,19 +2,26 @@
   <div>
     <!--    <b-button v-b-modal.modal-no-backdrop.modal-xl>Open modal</b-button>-->
 
-    <b-modal id="modal-no-backdrop" hide-backdrop content-class="shadow" hide-footer size="xl" hide-header
-             @show="resetModal"
-             @hidden="resetModal"
-             @ok="handleOk">
-      <b-form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-input-group>
-          <b-form-input placeholder="Rechercher"></b-form-input>
-          <b-input-group-append>
-            <b-button class="btn-grad">Chercher</b-button>
-            <b-button class="fermer" @click="resetModal"><i class="fas fa-times"></i></b-button>
-          </b-input-group-append>
-        </b-input-group>
-      </b-form>
+    <b-modal
+        id="modal-no-backdrop"
+        content-class="shadow"
+        hide-footer
+        size="xl"
+        hide-header
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="handleOk"
+    >
+      <b-input-group>
+        <b-form-input
+            placeholder="Rechercher"
+            v-model="name"
+        />
+        <b-input-group-append>
+          <b-button class="btn-grad rounded-right" @click="handleSubmit">Chercher</b-button>
+          <b-button class="fermer" @click="resetModal"><i class="fas fa-times"></i></b-button>
+        </b-input-group-append>
+      </b-input-group>
     </b-modal>
   </div>
 </template>
@@ -30,11 +37,6 @@ export default {
     }
   },
   methods: {
-    checkFormValidity() {
-      const valid = this.$refs.form.checkValidity()
-      this.nameState = valid
-      return valid
-    },
     resetModal() {
       this.name = ''
       this.nameState = null
@@ -49,16 +51,10 @@ export default {
       this.handleSubmit()
     },
     handleSubmit() {
-      // Exit when the form isn't valid
-      if (!this.checkFormValidity()) {
-        return
-      }
-      // Push the name to submitted names
-      this.submittedNames.push(this.name)
-      // Hide the modal manually
       this.$nextTick(() => {
-        this.$bvModal.hide('modal-prevent-closing')
+        this.$bvModal.hide('modal-no-backdrop')
       })
+      this.$router.push({name: 'VGRecherche', query: {search: this.name}})
     }
   }
 }
@@ -73,7 +69,7 @@ export default {
 }
 
 .btn-grad {
-  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6  51%, #834d9b  100%)
+  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%)
 }
 
 .btn-grad {

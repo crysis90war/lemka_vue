@@ -56,6 +56,7 @@ import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate"
 import VUDevisDetails from "@/views/utilisateur/devis/VUDevisDetails";
 import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVousReservation";
 import VGArticleDetail from "@/views/global/VGArticleDetail";
+import VGRecherche from "@/views/global/VGRecherche";
 
 // endregion
 
@@ -368,6 +369,13 @@ const router = new VueRouter({
       name: "VGConfidentialite",
       meta: {value: "Politique de confidentialité"},
       component: VGConfidentialite
+    },
+    {
+      path: '/recherche',
+      name: 'VGRecherche',
+      meta: {value: 'Recherche'},
+      component: VGRecherche,
+      props: route => ({query: route.query.search})
     },
     {
       path: '/retour-remboursement',

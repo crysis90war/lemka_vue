@@ -2,9 +2,9 @@ import * as R from 'ramda'
 import {minLength, required, alpha, maxLength} from "vuelidate/lib/validators";
 
 export default class RayonModel {
-    constructor(rayon = {}) {
-        this.id = R.is(Number, rayon.id) ? rayon.id : null
-        this.rayon = R.is(String, rayon.rayon) ? rayon.rayon : ""
+    constructor(json = {}) {
+        this.id = R.is(Number, json.id) ? json.id : null
+        this.rayon = R.is(String, json.rayon) ? json.rayon : ""
     }
 
     toCreatePayload() {

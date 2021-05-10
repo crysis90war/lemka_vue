@@ -16,21 +16,22 @@
         :animationSpeed="3000"
     >
       <l-slide
-          v-for="(slide, i) in slides"
+          v-for="(slide, i) in carousel"
           :key="i"
           :index="i"
+          class="rounded-lg"
       >
         <figure
-            :style="`background-image: url(${slide}); background-repeat: no-repeat; background-size: cover;`"
+            :style="`background-image: url(${slide.image}); background-repeat: no-repeat; background-size: cover;`"
             class="h-100 w-100 text-center"
         >
           <figcaption class="fig-top" style="display: none;">
-            <h4>Title</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+            <h4>{{ slide.titre }}</h4>
+            <p>{{ slide.description }}</p>
           </figcaption>
 
           <figcaption class="fig-bottom" style="display: none;">
-            <b-button variant="light" disabled>
+            <b-button variant="light" :to="{name: slide.link}" disabled>
               Voir plus
             </b-button>
           </figcaption>
@@ -46,12 +47,31 @@ export default {
   name: "Carousel",
   data() {
     return {
-      slides: [
-        "https://lemka.be/images/backgroundsection.jpg",
-        "https://lemka.be/images/backgroundsection2.jpg",
-        "https://lemka.be/images/backgroundsection3.jpg",
-        "https://image.freepik.com/psd-gratuit/vue-dessus-fermeture-eclair-disposition-fils_23-2148591902.jpg",
-        "https://image.freepik.com/psd-gratuit/conception-dessins-cousus-main-fils_23-2148685201.jpg"
+      carousel: [
+        {
+          image: require('@/assets/carousel/realisations.jpg'),
+          titre: "Réalisations",
+          description: "Un aperçu de nos réalisations et de notre savoir faire dans la couture, du vêtements de tous les jours au sur-mesure haut de gamme.",
+          link: ""
+        },
+        {
+          image: require('@/assets/carousel/merceries.jpg'),
+          titre: "Merceries",
+          description: "Profitez de notre grande sélection de tissus pour tous vos projets ! Nous avons sélectionné pour vous le meilleur des tissus pour vos vêtements et accessoires!",
+          link: ""
+        },
+        {
+          image: require('@/assets/carousel/rendezvous.jpg'),
+          titre: "Rendez-vous",
+          description: "Voulez-vous prendre rendez-vous pour un service ou un devis ? Créez ou connectez vous pour vous rendre dans la section rendez-vous!",
+          link: ""
+        },
+        {
+          image: require('@/assets/carousel/devis.jpg'),
+          titre: "Devis",
+          description: "Vous avez besoin d'un devis ? Crééz un compte ou connectez vous pour vous rendez dans la section demande de devis!",
+          link: ""
+        },
       ]
     }
   },
@@ -66,7 +86,7 @@ export default {
       display: block !important;
       position: absolute;
       background-color: #FFFFFF;
-      opacity: 0.7;
+      opacity: 0.75;
       color: #000000;
       top: 30%;
       padding: 10px;
