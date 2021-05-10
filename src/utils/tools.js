@@ -38,15 +38,6 @@ export function makeToast(vm, variant = 'info', message = '', title = '') {
     })
 }
 
-export function getMainImage(images) {
-    if (images.length > 0) {
-        let image = images.find(img => img.is_main === true)
-        return image.image
-    } else {
-        return require('@/assets/noimage.png')
-    }
-}
-
 export default {
     htmlTitle,
     isNullOrWhiteSpace,
@@ -54,5 +45,4 @@ export default {
     format,
     handleResponse,
     makeToast,
-    getMainImage
 }

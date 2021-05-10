@@ -375,7 +375,8 @@ const router = new VueRouter({
       name: 'VGRecherche',
       meta: {value: 'Recherche'},
       component: VGRecherche,
-      props: route => ({query: route.query.search})
+      props: true
+      // props: route => ({query: route.query.search})
     },
     {
       path: '/retour-remboursement',

@@ -34,8 +34,8 @@
             class="rounded-lg"
         >
           <figure>
-            <b-img
-                :src="articleMainImage(article.images)"
+            <b-img-lazy
+                :src="getMainImage(article.images)"
                 height="430"
             />
             <figcaption class="bg-light text-dark">
@@ -75,8 +75,8 @@
             class="rounded-lg"
         >
           <figure>
-            <b-img
-                :src="articleMainImage(article.images)"
+            <b-img-lazy
+                :src="getMainImage(article.images)"
                 height="430"
             />
             <figcaption class="bg-light text-dark">
@@ -119,9 +119,9 @@
 
 import Carousel from '@/components/Carousel'
 import GoogleMap from "@/components/GoogleMap";
-import LReviewCard from "@/views/global/LReviewCard";
+import LReviewCard from "@/components/LReviewCard";
 import LFeatures from "@/components/LFeatures";
-import {getMainImage, htmlTitle} from "@/utils/tools";
+import {htmlTitle} from "@/utils/tools";
 import ApiService from "@/services/api.service";
 import LemkaHelpers from "@/helpers";
 import {commonMixin} from "@/mixins/common.mixin";
@@ -169,9 +169,6 @@ export default {
       await this.loadLastArticles()
       await this.loadPopularArticles()
       this.toggleLoading()
-    },
-    articleMainImage: function(images) {
-      return getMainImage(images)
     }
   },
   created() {

@@ -14,9 +14,18 @@
     >
       <b-input-group>
         <b-form-input
-            placeholder="Rechercher"
-            v-model="name"
+            placeholder="Veuillez encoder et cherchez ou laissez vide et cherchez"
+            v-model="query"
+            @keyup.enter="handleSubmit"
         />
+        <template #prepend>
+          <b-form-select v-model="categorie">
+            <template #first>
+              <b-form-select-option value="Articles">Articles</b-form-select-option>
+            </template>
+            <b-form-select-option value="Merceries">Merceries</b-form-select-option>
+          </b-form-select>
+        </template>
         <b-input-group-append>
           <b-button class="btn-grad rounded-right" @click="handleSubmit">Chercher</b-button>
           <b-button class="fermer" @click="resetModal"><i class="fas fa-times"></i></b-button>
@@ -31,15 +40,13 @@ export default {
   name: "SearchModal",
   data() {
     return {
-      name: '',
-      nameState: null,
-      submittedNames: []
+      query: '',
+      categorie: 'Articles',
     }
   },
   methods: {
     resetModal() {
-      this.name = ''
-      this.nameState = null
+      this.query = ''
       this.$nextTick(() => {
         this.$bvModal.hide('modal-no-backdrop')
       })
@@ -54,13 +61,13 @@ export default {
       this.$nextTick(() => {
         this.$bvModal.hide('modal-no-backdrop')
       })
-      this.$router.push({name: 'VGRecherche', query: {search: this.name}})
+      this.$router.push({name: 'VGRecherche', params: {propCategorie: this.categorie, propQuery: this.query}}).catch(()=>{});
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .fermer {
   background-color: transparent;
@@ -69,28 +76,25 @@ export default {
 }
 
 .btn-grad {
-  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%)
-}
-
-.btn-grad {
+  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%);
   background-size: 200% auto;
   color: white;
   border: none;
   letter-spacing: 1px;
   transition: transform 80ms ease-in;
-}
 
-.btn-grad:hover {
-  background-position: right center; /* change the direction of the change here */
-  color: #fff;
-  text-decoration: none;
-}
+  &:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+  }
 
-.btn-grad:active {
-  transform: scale(0.95);
-}
+  &:active {
+    transform: scale(0.95);
+  }
 
-.btn-grad:focus {
-  outline: none;
+  &:focus {
+    outline: none;
+  }
 }
 </style>

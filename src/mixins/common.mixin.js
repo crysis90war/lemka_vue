@@ -46,6 +46,14 @@ export const commonMixin = {
                 return status
             }
         },
+        getMainImage: function(images) {
+            if (images.length > 0) {
+                let image = images.find(img => img.is_main === true)
+                return image.image
+            } else {
+                return require('@/assets/noimage.png')
+            }
+        },
         validateState(object, name) {
             const {$dirty, $error} = object[name]
             return $dirty ? !$error : null;

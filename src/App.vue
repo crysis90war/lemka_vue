@@ -47,7 +47,8 @@ export default {
       return (
           (route !== LemkaHelpers.Routes.HOME_ROUTE.name) &&
           (route !== LemkaHelpers.Routes.LOGIN_ROUTE.name) &&
-          (route !== LemkaHelpers.Routes.REGISTER_ROUTE.name)
+          (route !== LemkaHelpers.Routes.REGISTER_ROUTE.name) &&
+          (route !== 'VGRecherche')
       );
     }
   },

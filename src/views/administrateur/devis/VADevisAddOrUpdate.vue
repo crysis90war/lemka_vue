@@ -723,14 +723,6 @@ export default {
     toucheTVA: function () {
       this.tvaTouched = true
     },
-    getMainImage: function (images) {
-      if (images.length > 0) {
-        let image = images.find(img => img.is_main === true)
-        return image.image
-      } else {
-        return require('@/assets/noimage.png')
-      }
-    },
     validateDetailState: function (name) {
       const {$dirty, $error} = this.$v.detail[name];
       return $dirty ? !$error : null;

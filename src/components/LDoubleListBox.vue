@@ -134,8 +134,11 @@
 </template>
 
 <script>
+import {commonMixin} from "@/mixins/common.mixin";
+
 export default {
   name: "LDoubleListBox",
+  mixins: [commonMixin],
   props: {
     rightOptions: {
       type: Array,
@@ -197,14 +200,6 @@ export default {
       if (this.leftItemSelected === true) this.leftItemSelected = false
       this.rightItemSelected = true
       this.selected = element
-    },
-    getMainImage: function (images) {
-      if (images.length > 0) {
-        let image = images.find(img => img.is_main === true)
-        return image.image
-      } else {
-        return require('@/assets/noimage.png')
-      }
     },
     popoverConfig: function(img) {
       return {
