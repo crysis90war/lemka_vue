@@ -70,8 +70,7 @@
             <b-col lg="3">
               <h5>A PROPOS DE NOUS</h5>
               <p class="text-secondary text-justify">
-                Atelier de couture proposant la confection de vêtements sur mesure, la retouche, de même adapter le vêtement à la personne
-                désireuse et enfin la réparation sur une vaste gamme de tissus.
+                {{ entreprise.a_propos_resume }}
               </p>
             </b-col>
           </b-row>
@@ -82,7 +81,7 @@
         <b-container>
           <b-row class="py-4">
             <b-col>
-              <p>Copyright &copy; LEMKA - Atelier de couture {{ new Date().getFullYear() }}</p>
+              <p>Copyright &copy; {{ entreprise.nom_societe }} {{ new Date().getFullYear() }}</p>
             </b-col>
 
             <b-col>
@@ -100,6 +99,7 @@
 import BackToTop from "@/components/BackToTop";
 import Social from "@/components/Social";
 import {mapActions, mapGetters} from "vuex";
+import EntrepriseModel from "@/models/entreprise.model";
 
 export default {
   name: "Footer",
@@ -107,14 +107,28 @@ export default {
     Social,
     'back-to-top': BackToTop
   },
+  data() {
+    return {
+      entreprise: new EntrepriseModel()
+    }
+  },
   computed: {
-    ...mapGetters({entreprise: "Entreprises/entreprise"})
+    ...mapGetters({entreprises: "Entreprises/entreprises"})
   },
   methods: {
     ...mapActions({loadEntreprise: "Entreprises/loadEntreprises"}),
+    initialisation: async function() {
+      if (this.entreprises.length === 0) {
+        await this.loadEntreprise()
+      }
+    },
+    chargerEntreprise: async function() {
+      await this.initialisation()
+      Object.assign(this.entreprise, this.$store.getters["Entreprises/entreprise"])
+    }
   },
   created() {
-    this.loadEntreprise()
+    this.chargerEntreprise()
   }
 }
 </script>

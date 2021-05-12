@@ -1,3 +1,5 @@
+import {localTimeStr} from "@/utils/filters";
+
 export const commonMixin = {
     data() {
         return {
@@ -65,5 +67,11 @@ export const commonMixin = {
             const {$dirty, $error} = object[name]
             return $dirty ? !$error : null;
         }
-    }
+    },
+    filters: {
+        localTimeStr: function (value) {
+            value = localTimeStr(value)
+            return value
+        },
+    },
 }

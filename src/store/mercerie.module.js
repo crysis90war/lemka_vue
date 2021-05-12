@@ -103,6 +103,21 @@ export const MercerieModule = {
         }
     },
     actions: {
+        loadGlobalMerceries: function ({commit}, params = "") {
+            let endpoint = `${DOMAIN}/public/merceries/${params}`;
+            return new Promise((resolve, reject) => {
+                commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('SET_GLOBAL_MERCERIES_SUCCESS', r.data)
+                    commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('SET_GLOBAL_MERCERIES_FAILURE')
+                    commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
+        },
         loadMerceries: async function ({commit}) {
             let endpoint = `${DOMAIN}/merceries/`;
             return await new Promise((resolve, reject) => {
@@ -202,22 +217,6 @@ export const MercerieModule = {
                     commit('DELETE_IMAGE', [mercerie_id, payload])
                     resolve(r)
                 }, error => {
-                    reject(error)
-                })
-            })
-        },
-        loadGlobalMerceries: function ({commit}, searchField = "") {
-            let searchParam = `?search=${searchField}`;
-            let endpoint = `${DOMAIN}/public/merceries/${searchField === "" ? searchField : searchParam}`;
-            return new Promise((resolve, reject) => {
-                commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', true)
-                ApiService.GETDatas(endpoint).then(r => {
-                    commit('SET_GLOBAL_MERCERIES_SUCCESS', r.data)
-                    commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', false)
-                    resolve(r.data)
-                }, error => {
-                    commit('SET_GLOBAL_MERCERIES_FAILURE')
-                    commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', false)
                     reject(error)
                 })
             })

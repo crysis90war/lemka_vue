@@ -23,7 +23,6 @@ export const AuthModule = {
         user: state => {
             if (state.user !== null) {
                 let token = state.user.access
-                console.log(jwt_decode(token))
                 return jwt_decode(token)
             } else {
                 return null

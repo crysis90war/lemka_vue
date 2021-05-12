@@ -60,7 +60,6 @@
 <script>
 import ArticleModel from "@/models/article/article.model";
 import LemkaHelpers from "@/helpers";
-import {localTimeStr} from "@/utils/filters";
 import {htmlTitle} from "@/utils/tools";
 import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
@@ -132,14 +131,6 @@ export default {
       }
     }
   },
-
-  filters: {
-    localTimeStr: function (value) {
-      value = localTimeStr(value)
-      return value
-    },
-  },
-
   created() {
     this.chargerArticle()
   },

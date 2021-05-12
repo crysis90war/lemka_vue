@@ -4,12 +4,14 @@ const GlobalView = 'VG';
 
 export const Routes = {
     // region Global routes
-    HOME_ROUTE: {name: GlobalView + 'Home', value: 'Accueil'},
+    HOME_ROUTE: {name: GlobalView + "Home", value: 'Accueil'},
     LOGIN_ROUTE: {name: GlobalView + 'Login', value: 'Se connecter'},
     REGISTER_ROUTE: {name: GlobalView + 'Register', value: 'S\'inscrire'},
     HORAIRE_ROUTE: {name: GlobalView + 'Horaire', value: 'Horaire'},
     CONTACT_ROUTE: {name: GlobalView + 'Contact', value: 'Contact'},
     ABOUT_ROUTE: {name: GlobalView + 'About', value: 'À propos'},
+    ARTICLES_DETAIL: {name: GlobalView + 'ArticleDetail', value: 'Detail de l\'article',},
+    MERCERIES_DETAIL: {name: GlobalView + 'MercerieDetail', value: ""},
     PAGE_NOT_FOUND_ROUTE: {name: GlobalView + 'PageNotFound', value: 'PageNotFound'},
     // endregion
 
@@ -36,13 +38,12 @@ export const Routes = {
     DASHBOARD: {name: AdminView + 'Dashboard', value: 'Dashboard'},
 
     UTILISATEURS: {name: AdminView + 'Utilisateurs', value: 'Utilisateurs'},
-    UTILISATEURS_DETAIL: {name: AdminView + 'UtilisateursDetail', value: 'Detail',},
+    UTILISATEURS_DETAIL: {name: AdminView + 'UtilisateursDetail', value: 'Detail'},
 
     ARTICLES: {name: AdminView + 'Articles', value: 'Articles',},
     ARTICLES_ADD_OR_UPDATE: {name: AdminView + 'ArticleAddOrUPdate', value: "Ajouter-modifer l'article"},
-    ARTICLE_ADD: {name: AdminView + 'AddArticle', value: 'Ajouter un articles',},
-    ARTICLES_UPDATE: {name: AdminView + 'ArticleUpdate', value: 'Update',},
-    ARTICLES_DETAIL: {name: AdminView + 'ArticleDetail', value: 'Detail de l\'article',},
+    ARTICLE_ADD: {name: AdminView + 'AddArticle', value: 'Ajouter un articles'},
+    ARTICLES_UPDATE: {name: AdminView + 'ArticleUpdate', value: 'Update'},
 
     DEMANDE_DEVIS_ADMIN: {name: AdminView + "DemandeDevis", value: 'Demandes de devis'},
 

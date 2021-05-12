@@ -232,7 +232,7 @@
                           :img-left="listShow === true"
                           :img-top="listShow === false"
                           :title="selectedCategorie === 'Articles' ? item.titre : item.nom"
-                          :to-route="routes.ARTICLES_DETAIL.name"
+                          :to-route="selectedCategorie === 'Articles' ? routes.ARTICLES_DETAIL.name : routes.MERCERIES_DETAIL.name"
                           :to-param="selectedCategorie === 'Articles' ? item.slug : item.id"
                           :slug-true="selectedCategorie === 'Articles'"
                           :id-true="selectedCategorie === 'Merceries'"
@@ -255,7 +255,6 @@
 </template>
 
 <script>
-import ApiService from "@/services/api.service"
 import LemkaHelpers from "@/helpers";
 import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
@@ -301,7 +300,9 @@ export default {
       typeServices: "TypeServices/typeServices",
       tags: "Tags/tags",
       couleurs: "Couleurs/couleurs",
-      categories: "Categories/categories"
+      categories: "Categories/categories",
+      merceries: "Merceries/globalMerceries",
+      articles: "Articles/gloabalArticles"
     })
   },
   watch: {
@@ -309,7 +310,6 @@ export default {
       this.searchArticleQuery()
     },
     selectedCategorie(newValue) {
-
       switch (newValue) {
         case "Articles":
           this.searchArticleQuery()
@@ -319,26 +319,26 @@ export default {
           break;
       }
     },
-    selectedRayon(newValue) {
-      this.searchArticleQuery(this.search, this.selectedTypeService, newValue, this.selectedSection, this.selectedTypeProduit, this.selectedTags)
+    selectedRayon() {
+      this.searchArticleQuery()
     },
-    selectedSection(newValue) {
-      this.searchArticleQuery(this.search, this.selectedTypeService, this.selectedRayon, newValue, this.selectedTypeProduit, this.selectedTags)
+    selectedSection() {
+      this.searchArticleQuery()
     },
-    selectedTypeProduit(newValue) {
-      this.searchArticleQuery(this.search, this.selectedTypeService, this.selectedRayon, this.selectedSection, newValue, this.selectedTags)
+    selectedTypeProduit() {
+      this.searchArticleQuery()
     },
-    selectedTypeService(newValue) {
-      this.searchArticleQuery(this.search, newValue, this.selectedRayon, this.selectedSection, this.selectedTypeProduit, this.selectedTags)
+    selectedTypeService() {
+      this.searchArticleQuery()
     },
-    selectedTags(newTags) {
-      this.searchArticleQuery(this.search, this.selectedTypeService, this.selectedRayon, this.selectedSection, this.selectedTypeProduit, newTags)
+    selectedTags() {
+      this.searchArticleQuery()
     },
-    selectedMercerieCategorie(newValue) {
-      this.searchMercerieQuery(this.search, newValue, this.selectedCouleur)
+    selectedMercerieCategorie() {
+      this.searchMercerieQuery()
     },
-    selectedCouleur(newValue) {
-      this.searchMercerieQuery(this.search, this.selectedMercerieCategorie, newValue)
+    selectedCouleur() {
+      this.searchMercerieQuery()
     }
   },
   methods: {
@@ -349,7 +349,9 @@ export default {
       loadTypeServices: "TypeServices/loadTypeServices",
       loadTags: "Tags/loadTags",
       loadCouleur: "Couleurs/loadCouleurs",
-      loadCategories: "Categories/loadCategories"
+      loadCategories: "Categories/loadCategories",
+      loadGlobalMerceries: 'Merceries/loadGlobalMerceries',
+      loadGlobalArticles: "Articles/loadGlobalArticles"
     }),
     initialisation: async function () {
       if (this.tags.length === 0) {
@@ -377,29 +379,34 @@ export default {
         this.selectedCategorie = this.propCategorie
       }
     },
-    searchArticleQuery: async function (query = "", service = null, rayon = null, section = null, typeProduit = null, tags = []) {
+    searchArticleQuery: async function () {
       this.toggleLoading()
 
-      let endpoint = LemkaHelpers.Endpoints.DOMAIN + '/public/articles/' + this.articleQueryParams(query, service, rayon, section, typeProduit, tags);
-      await ApiService.GETDatas(endpoint).then(r => {
-        this.data = r.data
+      await this.loadGlobalArticles(this.articleQueryParams()).then(() => {
+        this.data = this.articles
       }, () => {
         this.makeToast('danger', "Une erreur s'est produit lors de votre requete", 'Error')
       })
 
       this.toggleLoading()
     },
-    searchMercerieQuery: async function (query = "", categorie = null, couleur = null) {
+    searchMercerieQuery: async function () {
       this.toggleLoading()
-      let endpoint = LemkaHelpers.Endpoints.DOMAIN + '/public/merceries/' + this.mercerieQueryParams(query, categorie, couleur);
-      await ApiService.GETDatas(endpoint).then(r => {
-        this.data = r.data
+      await this.loadGlobalMerceries(this.mercerieQueryParams()).then(() => {
+        this.data = this.merceries
       }, () => {
         this.makeToast('danger', "Une erreur s'est produit lors de votre requete", 'Error')
       })
       this.toggleLoading()
     },
-    articleQueryParams: function (search = "", ref_type_service = null, ref_catalogue__ref_rayon = null, ref_catalogue__ref_section = null, ref_catalogue__ref_type_produit = null, ref_tags = []) {
+    articleQueryParams: function () {
+      let search = this.search
+      let ref_type_service = this.selectedTypeService
+      let ref_catalogue__ref_rayon = this.selectedRayon
+      let ref_catalogue__ref_section = this.selectedSection
+      let ref_catalogue__ref_type_produit = this.selectedTypeProduit
+      let ref_tags = this.selectedTags
+
       if (ref_type_service === null || ref_type_service === undefined) {
         ref_type_service = ""
       }
@@ -421,14 +428,18 @@ export default {
       }
       return params
     },
-    mercerieQueryParams: function (query = "", ref_categorie = null, ref_couleur = null) {
+    mercerieQueryParams: function () {
+      let search = this.search
+      let ref_categorie = this.selectedMercerieCategorie
+      let ref_couleur = this.selectedCouleur
+
       if (ref_categorie === null || ref_categorie === undefined) {
         ref_categorie = ""
       }
       if (ref_couleur === null || ref_couleur === undefined) {
         ref_couleur = ""
       }
-      return `?ref_categorie=${ref_categorie}&ref_couleur=${ref_couleur}&search=${query}`
+      return `?ref_categorie=${ref_categorie}&ref_couleur=${ref_couleur}&search=${search}`
     },
     searchResultCount: function () {
       let count = this.data.length
@@ -452,16 +463,12 @@ export default {
     } else if (this.selectedCategorie === "Merceries") {
       this.searchMercerieQuery()
     } else {
-      console.log("Une erreur s'est produit !")
+      console.log("Une erreur s'est produite !")
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.box-shadow {
-  &:hover {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-}
+
 </style>

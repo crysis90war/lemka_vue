@@ -57,6 +57,7 @@ import VUDevisDetails from "@/views/utilisateur/devis/VUDevisDetails";
 import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVousReservation";
 import VGArticleDetail from "@/views/global/VGArticleDetail";
 import VGRecherche from "@/views/global/VGRecherche";
+import VGMercerieDetail from "@/views/global/VGMercerieDetail";
 
 // endregion
 
@@ -356,6 +357,13 @@ const router = new VueRouter({
       name: ROUTES.ARTICLES_DETAIL.name,
       meta: {value: ''},
       component: VGArticleDetail,
+      props: true
+    },
+    {
+      path: '/mercerie/:id',
+      name: ROUTES.MERCERIES_DETAIL.name,
+      meta: {value: ''},
+      component: VGMercerieDetail,
       props: true
     },
     {

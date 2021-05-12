@@ -8,6 +8,8 @@ export const ArticleModule = {
     state: {
         articles: [],
         loadingStatus: false,
+
+        gloabalArticles: [],
     },
     getters: {
         articles: state => state.articles,
@@ -17,7 +19,8 @@ export const ArticleModule = {
         loadingStatus: state => state.loadingStatus,
         articlesPublies: state => {
             return state.articles.filter(item => item.est_active === true)
-        }
+        },
+        gloabalArticles: state => state.gloabalArticles
     },
     mutations: {
         SET_ARTICLES_SUCCESS(state, payload) {
@@ -72,19 +75,27 @@ export const ArticleModule = {
                     state.articles[articleIndex].images.splice(imageIndex, 1)
                 }
             }
-        }
+        },
+
+
+        SET_GLOBAL_ARTICLESS_SUCCESS(state, payload) {
+            state.gloabalArticles = payload
+        },
+        SET_GLOBAL_ARTICLESS_FAILURE(state) {
+            state.gloabalArticles = []
+        },
     },
     actions: {
-        loadGlobalArticles: async function({commit}) {
-            let endpoint = `${DOMAIN}/public/articles/`;
+        loadGlobalArticles: async function({commit}, params = "") {
+            let endpoint = `${DOMAIN}/public/articles/${params}`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('SET_ARTICLES_SUCCESS', r.data)
+                    commit('SET_GLOBAL_ARTICLESS_SUCCESS', r.data)
                     commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('SET_ARTICLES_FAILURE')
+                    commit('SET_GLOBAL_ARTICLESS_FAILURE')
                     commit('LOADING_STATUS', false)
                     reject(error)
                 })
@@ -195,8 +206,7 @@ export const ArticleModule = {
                     reject(error)
                 })
             })
-        }
-
+        },
         // endregion
     }
 }

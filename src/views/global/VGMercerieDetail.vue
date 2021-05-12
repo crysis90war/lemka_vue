@@ -18,40 +18,26 @@
                 v-else
                 class="text-center"
             >
-              <p>Cet article n'a pas d'images</p>
+              <p>Cete mercerie n'a pas d'image(s)</p>
             </div>
           </b-col>
 
           <b-col lg="5">
-            <span class="text-muted">{{ article.created_at | localTimeStr }}</span>
-            <h3>{{ article.titre }}</h3>
-            <h5>{{ article.type_service.type_service }}</h5>
-            <p style="white-space: pre-wrap">{{ article.description }}</p>
-            <div class="d-flex justify-content-start">
-              <b-badge
-                  v-for="(tag, index) in article.tags"
-                  :key="index"
-                  pill
-                  variant="secondary"
-                  class="mr-1"
-              >
-                {{ tag.tag }}
-              </b-badge>
-            </div>
-            <div v-if="currentUser" class="my-5">
-              <b-button
-                  size="sm"
-                  variant="outline-danger"
-                  @click="createOrDeleteLike(article.slug)"
-              >
-                <i :class="icons.HEART"></i> {{ article.likes_count }}
-              </b-button>
-            </div>
-            <div v-else class="my-5">
-              <span class="text-danger"><i :class="icons.HEART"></i> {{ article.likes_count }}</span>
-            </div>
+            <h2>{{ mercerie.reference }}</h2>
+            <h3>{{ mercerie.nom }}</h3>
+            <h5>{{ mercerie.categorie.nom }}</h5>
+
+            <h5>Couleur : {{mercerie.couleur.nom}}</h5>
+            <p style="white-space: pre-wrap">{{ mercerie.description }}</p>
+            <ul>
+              <li v-for="(caracteristique, index) in mercerie.caracteristiques"
+                  :key="index">{{ caracteristique.caracteristique.nom }} - {{ caracteristique.valeur }}
+              </li>
+            </ul>
+            <h5>Prix : {{mercerie.prix_u_ht}}</h5>
           </b-col>
         </b-row>
+        <l-jumbotron :data="mercerie"/>
       </b-container>
     </div>
   </div>
@@ -86,7 +72,24 @@ export default {
     ...mapGetters({merceries: "Merceries/globalMerceries"})
   },
   methods: {
-    ...mapActions({loadMerceries: "Merceries/loadGlobalMerceries"})
+    ...mapActions({loadMerceries: "Merceries/loadGlobalMerceries"}),
+    initialisation: async function () {
+      if (this.merceries.length === 0) {
+        await this.loadMerceries()
+      }
+    },
+    chargerMercerie: function () {
+      this.toggleLoading()
+      this.initialisation()
+      let mercerie = this.merceries.find(item => item.id === parseInt(this.$route.params.id))
+      if (mercerie !== undefined) {
+        Object.assign(this.mercerie, mercerie)
+      }
+      this.toggleLoading()
+    }
+  },
+  created() {
+    this.chargerMercerie()
   }
 }
 </script>
