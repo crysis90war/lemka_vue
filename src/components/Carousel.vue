@@ -31,7 +31,7 @@
           </figcaption>
 
           <figcaption class="fig-bottom" style="display: none;">
-            <b-button variant="light" :to="{name: slide.link}" disabled>
+            <b-button variant="light" :to="slide.link">
               Voir plus
             </b-button>
           </figcaption>
@@ -52,13 +52,13 @@ export default {
           image: require('@/assets/carousel/realisations.jpg'),
           titre: "Réalisations",
           description: "Un aperçu de nos réalisations et de notre savoir faire dans la couture, du vêtements de tous les jours au sur-mesure haut de gamme.",
-          link: ""
+          link: {name: 'VGRecherche', params: {propCategorie: 'Articles'}}
         },
         {
           image: require('@/assets/carousel/merceries.jpg'),
           titre: "Merceries",
           description: "Profitez de notre grande sélection de tissus pour tous vos projets ! Nous avons sélectionné pour vous le meilleur des tissus pour vos vêtements et accessoires!",
-          link: ""
+          link: {name: 'VGRecherche', params: {propCategorie: 'Merceries'}}
         },
         {
           image: require('@/assets/carousel/rendezvous.jpg'),

@@ -27,7 +27,8 @@ class ApiService {
     }
 
     DESTROYSession() {
-        sessionStorage.removeItem('user');
+        // sessionStorage.removeItem('user');
+        localStorage.removeItem('user');
     }
 }
 

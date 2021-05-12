@@ -126,9 +126,9 @@ export default {
     }
   },
   created() {
-    // if (this.loggedIn === true) {
-    //   this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
-    // }
+    if (this.loggedIn === true) {
+      this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
+    }
   }
 }
 </script>

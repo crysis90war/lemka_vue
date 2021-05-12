@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-<!--    <lemka-header></lemka-header>-->
+    <!--    <lemka-header></lemka-header>-->
     <lemka-navbar></lemka-navbar>
     <b-breadcrumb v-if="checkRoute() === true" class="mb-0">
       <b-breadcrumb-item :to="{name: routes.HOME_ROUTE.name}"><i class="fas fa-home"></i></b-breadcrumb-item>
@@ -36,20 +36,23 @@ export default {
   computed: {
     ...mapGetters({loggedIn: "Auth/loggedIn"})
   },
+  watch: {
+    $route() {
+      this.getRoute();
+    },
+  },
   methods: {
-    getRoute() {
+    getRoute: function () {
       this.items = this.$route.matched;
     },
-
-    checkRoute() {
+    checkRoute: function () {
       let route = this.$route.name;
-
       return (
           (route !== LemkaHelpers.Routes.HOME_ROUTE.name) &&
           (route !== LemkaHelpers.Routes.LOGIN_ROUTE.name) &&
           (route !== LemkaHelpers.Routes.REGISTER_ROUTE.name) &&
           (route !== 'VGRecherche')
-      );
+      )
     }
   },
   created() {
@@ -63,12 +66,7 @@ export default {
       }
       return Promise.reject(error);
     })
-  },
-  watch: {
-    $route() {
-      this.getRoute();
-    },
-  },
+  }
 }
 </script>
 

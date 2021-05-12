@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <lemka-carousel></lemka-carousel>
+    <lemka-carousel/>
     <l-separateur :titre="separateurs[0].titre" :sous-titre="separateurs[0].sousTitre"/>
 
     <l-features/>

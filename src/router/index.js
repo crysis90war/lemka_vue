@@ -413,7 +413,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const authRequired = to.matched.some(record => record.meta.requiresAuth);
-  const loggedIn = sessionStorage.getItem('user');
+  // const loggedIn = sessionStorage.getItem('user');
+  const loggedIn = localStorage.getItem('user');
 
   if (authRequired && !loggedIn) {
     next({name: ROUTES.LOGIN_ROUTE.name});

@@ -2,18 +2,16 @@
   <div class="recherche">
     <div class="mx-5 px-5 py-3">
       <b-form-input
-          placeholder="e.g. robe"
+          placeholder="e.g. robe / tissu"
           size="lg"
-          v-model="query"
-          @keyup.enter="searchQuery(query)"
+          v-model="search"
+          @keyup.enter="selectedCategorie === 'Articles'
+          ? searchArticleQuery(search, selectedTypeService, selectedRayon, selectedSection, selectedTypeProduit, selectedTags)
+          : searchMercerieQuery(search, selectedMercerieCategorie, selectedCouleur)"
       />
     </div>
 
     <div class="mx-5 px-5">
-<!--      <div class="text-center my-5">-->
-<!--        <h2 class="h1-lemka">Recherches</h2>-->
-<!--      </div>-->
-
       <div>
         <b-row>
           <b-col cols="2">
@@ -24,7 +22,7 @@
               <div class="accordion" role="tablist">
                 <b-card no-body class="mb-1 border-0">
                   <b-card-header header-tag="header" class="p-1" role="tab">
-                    <b-button block v-b-toggle.accordion-1 variant="light">Catégorie</b-button>
+                    <b-button block v-b-toggle.accordion-1 variant="light">Articles/Merceries</b-button>
                   </b-card-header>
                   <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
                     <b-card-body>
@@ -37,7 +35,28 @@
                   </b-collapse>
                 </b-card>
 
-                <b-card no-body class="mb-1 border-0">
+                <b-card no-body class="mb-1 border-0" v-if="selectedCategorie === 'Articles'">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button block v-b-toggle.accordion-service variant="light">Service</b-button>
+                  </b-card-header>
+                  <b-collapse id="accordion-service" visible accordion="my-accordion" role="tabpanel">
+                    <b-card-body>
+                      <b-form-radio-group
+                          v-model="selectedRayon"
+                          :options="typeServices"
+                          value-field="id"
+                          text-field="type_service"
+                          stacked
+                      >
+                        <template #first>
+                          <b-form-radio :value="null">Tous</b-form-radio>
+                        </template>
+                      </b-form-radio-group>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+
+                <b-card no-body class="mb-1 border-0" v-if="selectedCategorie === 'Articles'">
                   <b-card-header header-tag="header" class="p-1" role="tab">
                     <b-button block v-b-toggle.accordion-2 variant="light">Catalogue</b-button>
                   </b-card-header>
@@ -88,13 +107,82 @@
                   </b-collapse>
                 </b-card>
 
-                <b-card no-body class="mb-1 border-0">
+                <b-card no-body class="mb-1 border-0" v-if="selectedCategorie === 'Articles'">
                   <b-card-header header-tag="header" class="p-1" role="tab">
                     <b-button block v-b-toggle.accordion-3 variant="light">Tags</b-button>
                   </b-card-header>
-                  <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
+                  <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel" style="min-height: 600px;">
                     <b-card-body>
-                      <b-card-text>tags</b-card-text>
+                      <b-card-text>
+                        <multiselect
+                            v-model="selectedTags"
+                            :options="tags"
+                            :multiple="true"
+                            :hide-selected="true"
+                            :show-labels="false"
+                            :taggable="true"
+                            tag-placeholder=""
+                            label="tag"
+                            track-by="tag"
+                            placeholder="Tags"
+                            open-direction="below"
+                            :max="10"
+                            @search-change="updateSelectTag"
+                        >
+                          <template slot="singleLabel" slot-scope="{ option }">
+                            <span>{{ option.tag }}</span>
+                          </template>
+
+                          <template slot="option" slot-scope="{ option }">
+                            <span>{{ option.tag }}</span>
+                          </template>
+
+                          <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
+                          <span slot="noOptions">Aucun tag disponible. Veuillez encoder pour en créer.</span>
+                        </multiselect>
+                      </b-card-text>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+
+                <b-card no-body class="mb-1 border-0" v-if="selectedCategorie === 'Merceries'">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button block v-b-toggle.accordion-mercerie-type variant="light">Catégorie</b-button>
+                  </b-card-header>
+                  <b-collapse id="accordion-mercerie-type" visible accordion="my-accordion" role="tabpanel">
+                    <b-card-body>
+                      <b-form-radio-group
+                          v-model="selectedMercerieCategorie"
+                          :options="categories"
+                          value-field="id"
+                          text-field="nom"
+                          stacked
+                      >
+                        <template #first>
+                          <b-form-radio :value="null">Tous</b-form-radio>
+                        </template>
+                      </b-form-radio-group>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+
+                <b-card no-body class="mb-1 border-0" v-if="selectedCategorie === 'Merceries'">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button block v-b-toggle.accordion-couleur variant="light">Couleur</b-button>
+                  </b-card-header>
+                  <b-collapse id="accordion-couleur" visible accordion="my-accordion" role="tabpanel">
+                    <b-card-body>
+                      <b-form-radio-group
+                          v-model="selectedCouleur"
+                          :options="couleurs"
+                          value-field="id"
+                          text-field="nom"
+                          stacked
+                      >
+                        <template #first>
+                          <b-form-radio :value="null">Tous</b-form-radio>
+                        </template>
+                      </b-form-radio-group>
                     </b-card-body>
                   </b-collapse>
                 </b-card>
@@ -102,89 +190,67 @@
             </div>
           </b-col>
           <b-col cols="10">
-            <div>
-              <div class="d-flex justify-content-between my-3">
-                <div>
-                  <p class="text-muted">Résultats de recherche</p>
-                </div>
-                <div class="d-flex justify-content-end">
-                  <div class="align-middle">
-                    <p class="text-muted">{{ returnArticleResultsCount() }}</p>
-                  </div>
-                  <div>
-                    <b-button
-                        size="sm"
-                        variant="outline-secondary"
-                        v-b-tooltip
-                        title="Switcher de vue"
-                        @click="toggleListShow"
-                        class="ml-3"
-                    >
-                      <i :class="listShow === true ? 'fas fa-th' : 'fas fa-th-list'"></i>
-                    </b-button>
-                  </div>
-                </div>
-              </div>
-
+            <div class="d-flex justify-content-between my-3">
               <div>
-                <l-spinner v-if="isLoading === true"/>
-                <div v-else>
-                  <div v-if="data.length === 0" class="text-center">
-                    <h1><i class="far fa-surprise"></i></h1>
-                    <p>Aucun éléments trouvé</p>
-                    <p>Veuillez modifier vos critères de recherches !</p>
-                  </div>
-                  <div v-else class="px-4">
-                    <b-row v-if="!listShow">
-                      <b-col cols="3" v-for="item in data" :key="item.id" class="d-flex justify-content-between">
-                        <b-card
-                            :img-src="getMainImage(item.images)"
-                            :img-alt="item.titre"
-                            img-top
-                            style="max-width: 20rem;"
-                            class="box-shadow"
-                        >
-                          <b-card-title>
-                            <b-link :to="{name: routes.ARTICLES_DETAIL.name, params: {slug: item.slug}}">{{item.titre}}</b-link>
-                          </b-card-title>
-                          <b-card-text>
-                            {{ item.description }}
-                          </b-card-text>
-                        </b-card>
-                      </b-col>
-                    </b-row>
-                    <b-row v-else>
-                      <b-col cols="6" v-for="item in data" :key="item.id">
-                        <b-card
-                            :img-src="getMainImage(item.images)"
-                            img-height="180"
-                            class="box-shadow"
-                            :img-alt="item.titre"
-                            img-left
-                        >
-                          <b-card-title>
-                            <b-link :to="{name: routes.ARTICLES_DETAIL.name, params: {slug: item.slug}}">{{item.titre}}</b-link>
-                          </b-card-title>
-                          <b-card-text>
-                            {{ item.description }}
-                          </b-card-text>
-                        </b-card>
-                      </b-col>
-                    </b-row>
-                  </div>
+                <p class="text-muted">Résultats de recherche</p>
+              </div>
+              <div class="d-flex justify-content-end">
+                <div class="align-middle">
+                  <p class="text-muted">{{ searchResultCount() }}</p>
+                </div>
+                <div>
+                  <b-button
+                      size="sm"
+                      variant="outline-secondary"
+                      v-b-tooltip
+                      title="Changer de vue"
+                      @click="toggleListShow"
+                      class="ml-3"
+                  >
+                    <i :class="listShow === true ? 'fas fa-th' : 'fas fa-th-list'"></i>
+                  </b-button>
                 </div>
               </div>
+            </div>
 
+            <div>
+              <l-spinner v-if="isLoading === true"/>
+              <div v-else>
+                <div v-if="data.length === 0" class="text-center">
+                  <h1><i class="far fa-surprise"></i></h1>
+                  <p>Aucun éléments trouvé</p>
+                  <p>Veuillez modifier vos critères de recherches !</p>
+                </div>
+                <div v-else class="px-4">
+                  <b-row>
+                    <b-col :cols="!listShow ? '3' : '12'" v-for="item in data" :key="item.id" :class="!listShow ? 'd-flex justify-content-between' : ''">
+                      <l-card-product
+                          :list-show="listShow"
+                          :img-src="getMainImage(item.images)"
+                          :img-height="!listShow ? '':'180'"
+                          :img-alt="selectedCategorie === 'Articles' ? item.titre : item.nom"
+                          :img-left="listShow === true"
+                          :img-top="listShow === false"
+                          :title="selectedCategorie === 'Articles' ? item.titre : item.nom"
+                          :to-route="routes.ARTICLES_DETAIL.name"
+                          :to-param="selectedCategorie === 'Articles' ? item.slug : item.id"
+                          :slug-true="selectedCategorie === 'Articles'"
+                          :id-true="selectedCategorie === 'Merceries'"
+                          :description="item.description"
+                          :tags="item.tags"
+                          tag-name="tag"
+                          :style="!listShow ? 'max-width: 20rem;' : '' "
+                      />
+                    </b-col>
+                  </b-row>
+                </div>
+              </div>
             </div>
           </b-col>
         </b-row>
       </div>
-
-      <!-- region DEBUGGING -->
-      {{ selectedCategorie }}
-      <l-jumbotron :data="data"/>
-      <!-- endregion -->
     </div>
+    {{ selectedTags }}
   </div>
 </template>
 
@@ -193,20 +259,30 @@ import ApiService from "@/services/api.service"
 import LemkaHelpers from "@/helpers";
 import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
+import {htmlTitle} from "@/utils/tools";
+import LCardProduct from "@/components/LCardProduct";
 
 export default {
   name: "VGRecherche",
+  components: {LCardProduct},
   mixins: [commonMixin],
+  title() {
+    return htmlTitle('Recherche')
+  },
   data() {
     return {
       routes: LemkaHelpers.Routes,
       data: [],
       listShow: true,
-      query: "",
+      search: "",
       selectedCategorie: "Articles",
+      selectedTypeService: null,
       selectedRayon: null,
       selectedSection: null,
       selectedTypeProduit: null,
+      selectedTags: [],
+      selectedMercerieCategorie: null,
+      selectedCouleur: null
     }
   },
   props: {
@@ -218,29 +294,70 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({rayons: 'Rayons/rayons', sections: "Sections/sections", typeProduits: "TypeProduits/typeProduits"})
+    ...mapGetters({
+      rayons: 'Rayons/rayons',
+      sections: "Sections/sections",
+      typeProduits: "TypeProduits/typeProduits",
+      typeServices: "TypeServices/typeServices",
+      tags: "Tags/tags",
+      couleurs: "Couleurs/couleurs",
+      categories: "Categories/categories"
+    })
   },
   watch: {
     $route() {
-      this.searchQuery()
+      this.searchArticleQuery()
+    },
+    selectedCategorie(newValue) {
+
+      switch (newValue) {
+        case "Articles":
+          this.searchArticleQuery()
+          break;
+        case "Merceries":
+          this.searchMercerieQuery()
+          break;
+      }
     },
     selectedRayon(newValue) {
-      this.searchQuery(this.query, newValue, this.selectedSection, this.selectedTypeProduit, this.query)
+      this.searchArticleQuery(this.search, this.selectedTypeService, newValue, this.selectedSection, this.selectedTypeProduit, this.selectedTags)
     },
     selectedSection(newValue) {
-      this.searchQuery(this.query, this.selectedRayon, newValue, this.selectedTypeProduit, this.query)
+      this.searchArticleQuery(this.search, this.selectedTypeService, this.selectedRayon, newValue, this.selectedTypeProduit, this.selectedTags)
     },
     selectedTypeProduit(newValue) {
-      this.searchQuery(this.query, this.selectedRayon, this.selectedSection, newValue, this.query)
+      this.searchArticleQuery(this.search, this.selectedTypeService, this.selectedRayon, this.selectedSection, newValue, this.selectedTags)
+    },
+    selectedTypeService(newValue) {
+      this.searchArticleQuery(this.search, newValue, this.selectedRayon, this.selectedSection, this.selectedTypeProduit, this.selectedTags)
+    },
+    selectedTags(newTags) {
+      this.searchArticleQuery(this.search, this.selectedTypeService, this.selectedRayon, this.selectedSection, this.selectedTypeProduit, newTags)
+    },
+    selectedMercerieCategorie(newValue) {
+      this.searchMercerieQuery(this.search, newValue, this.selectedCouleur)
+    },
+    selectedCouleur(newValue) {
+      this.searchMercerieQuery(this.search, this.selectedMercerieCategorie, newValue)
     }
   },
   methods: {
     ...mapActions({
       loadRayons: "Rayons/loadRayons",
       loadSections: "Sections/loadSections",
-      loadTypeProduits: "TypeProduits/loadTypeProduits"
+      loadTypeProduits: "TypeProduits/loadTypeProduits",
+      loadTypeServices: "TypeServices/loadTypeServices",
+      loadTags: "Tags/loadTags",
+      loadCouleur: "Couleurs/loadCouleurs",
+      loadCategories: "Categories/loadCategories"
     }),
     initialisation: async function () {
+      if (this.tags.length === 0) {
+        await this.loadTags()
+      }
+      if (this.typeServices.length === 0) {
+        await this.loadTypeServices()
+      }
       if (this.rayons.length === 0) {
         await this.loadRayons()
       }
@@ -250,22 +367,42 @@ export default {
       if (this.typeProduits.length === 0) {
         await this.loadTypeProduits()
       }
+      if (this.categories.length === 0) {
+        await this.loadCategories()
+      }
+      if (this.couleurs.length === 0) {
+        await this.loadCouleur()
+      }
       if (this.propCategorie !== undefined) {
         this.selectedCategorie = this.propCategorie
       }
     },
-    searchQuery: async function (query = "", rayon = null, section = null, typeProduit = null, description = "") {
-      let searchquery = this.articleQueryParams(query, rayon, section, typeProduit, description);
-      let endpoint = LemkaHelpers.Endpoints.DOMAIN + '/public/articles/' + searchquery
+    searchArticleQuery: async function (query = "", service = null, rayon = null, section = null, typeProduit = null, tags = []) {
       this.toggleLoading()
+
+      let endpoint = LemkaHelpers.Endpoints.DOMAIN + '/public/articles/' + this.articleQueryParams(query, service, rayon, section, typeProduit, tags);
       await ApiService.GETDatas(endpoint).then(r => {
         this.data = r.data
       }, () => {
-        this.makeToast('danger', 'Something went wrong', 'Error')
+        this.makeToast('danger', "Une erreur s'est produit lors de votre requete", 'Error')
+      })
+
+      this.toggleLoading()
+    },
+    searchMercerieQuery: async function (query = "", categorie = null, couleur = null) {
+      this.toggleLoading()
+      let endpoint = LemkaHelpers.Endpoints.DOMAIN + '/public/merceries/' + this.mercerieQueryParams(query, categorie, couleur);
+      await ApiService.GETDatas(endpoint).then(r => {
+        this.data = r.data
+      }, () => {
+        this.makeToast('danger', "Une erreur s'est produit lors de votre requete", 'Error')
       })
       this.toggleLoading()
     },
-    articleQueryParams: function (titre = "", ref_catalogue__ref_rayon = null, ref_catalogue__ref_section = null, ref_catalogue__ref_type_produit = null, description = "") {
+    articleQueryParams: function (search = "", ref_type_service = null, ref_catalogue__ref_rayon = null, ref_catalogue__ref_section = null, ref_catalogue__ref_type_produit = null, ref_tags = []) {
+      if (ref_type_service === null || ref_type_service === undefined) {
+        ref_type_service = ""
+      }
       if (ref_catalogue__ref_rayon === null || ref_catalogue__ref_rayon === undefined) {
         ref_catalogue__ref_rayon = ""
       }
@@ -275,23 +412,48 @@ export default {
       if (ref_catalogue__ref_type_produit === null || ref_catalogue__ref_type_produit === undefined) {
         ref_catalogue__ref_type_produit = ""
       }
-      return `?titre=${titre}&description=${description}&ref_catalogue__ref_rayon=${ref_catalogue__ref_rayon}&ref_catalogue__ref_section=${ref_catalogue__ref_section}&ref_catalogue__ref_type_produit=${ref_catalogue__ref_type_produit}`
-    },
-    returnArticleResultsCount: function () {
-      let count = this.data.length
-      let article = 'Article'
-      if (count > 1) {
-        article = article + 's'
+      let params = `?ref_type_service=${ref_type_service}&ref_catalogue__ref_rayon=${ref_catalogue__ref_rayon}&ref_catalogue__ref_section=${ref_catalogue__ref_section}&ref_catalogue__ref_type_produit=${ref_catalogue__ref_type_produit}&search=${search}`
+      if (ref_tags.length > 0) {
+        let text = '&ref_tags=';
+        ref_tags.forEach(item => {
+          params += text + item.id.toString()
+        })
       }
-      return count + ' ' + article
+      return params
+    },
+    mercerieQueryParams: function (query = "", ref_categorie = null, ref_couleur = null) {
+      if (ref_categorie === null || ref_categorie === undefined) {
+        ref_categorie = ""
+      }
+      if (ref_couleur === null || ref_couleur === undefined) {
+        ref_couleur = ""
+      }
+      return `?ref_categorie=${ref_categorie}&ref_couleur=${ref_couleur}&search=${query}`
+    },
+    searchResultCount: function () {
+      let count = this.data.length
+      let text = this.selectedCategorie.slice(0, -1)
+      if (count > 1) {
+        text = text + 's'
+      }
+      return count + ' ' + text
     },
     toggleListShow: function () {
       this.listShow = !this.listShow
-    }
+    },
+    updateSelectTag: async function (query) {
+      await this.loadTags(query)
+    },
   },
   created() {
     this.initialisation()
-    this.searchQuery()
+    if (this.selectedCategorie === 'Articles') {
+      this.searchArticleQuery()
+    } else if (this.selectedCategorie === "Merceries") {
+      this.searchMercerieQuery()
+    } else {
+      console.log("Une erreur s'est produit !")
+    }
   }
 }
 </script>

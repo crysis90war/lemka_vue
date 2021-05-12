@@ -54,9 +54,16 @@ export const commonMixin = {
                 return require('@/assets/noimage.png')
             }
         },
+        getImagesUrl: function (images) {
+            let urls = []
+            images.forEach(item => {
+                urls.push(item.image)
+            })
+            return urls
+        },
         validateState(object, name) {
             const {$dirty, $error} = object[name]
             return $dirty ? !$error : null;
-        },
+        }
     }
 }

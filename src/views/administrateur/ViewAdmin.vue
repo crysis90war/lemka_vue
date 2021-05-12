@@ -42,6 +42,7 @@
 <script>
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
+import ApiService from '@/services/api.service';
 
 export default {
   name: "ViewAdmin",
@@ -93,7 +94,6 @@ export default {
       BSClass: LemkaHelpers.BSClass
     }
   },
-
   computed: {
     ...mapGetters({currentUser: "Auth/user"}),
     logo() {
@@ -103,7 +103,18 @@ export default {
       return this.$route.name
     }
   },
-
+  watch: {
+    currentUser() {
+      if (!this.currentUser) {
+        this.$router.push({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
+      }
+    },
+    thisRoute: function () {
+      if (this.thisRoute === LemkaHelpers.Routes.ADMIN_ROUTE.name) {
+        this.$router.push({name: LemkaHelpers.Routes.DASHBOARD.name})
+      }
+    }
+  },
   methods: {
     ...mapActions({
       loadAdminDD: "DemandesDevis/loadAdminDD",
@@ -114,7 +125,7 @@ export default {
       loadTvas: "TVA/loadTvas",
       // loadGlobalMerceries: "Merceries/loadGlobalMercerieOptions",
     }),
-    initialisation: async function() {
+    initialisation: async function () {
       await this.loadAdminDD()
       await this.loadUtilisateurs()
       await this.loadArticles()
@@ -144,27 +155,21 @@ export default {
       }
     }
   },
-
-  watch: {
-    currentUser() {
-      if (!this.currentUser) {
-        this.$router.push({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
-      }
-    },
-    thisRoute: function () {
-      if (this.thisRoute === LemkaHelpers.Routes.ADMIN_ROUTE.name) {
-        this.$router.push({name: LemkaHelpers.Routes.DASHBOARD.name})
-      }
-    }
-  },
-
   async beforeRouteEnter(to, from, next) {
-    let currentUser = JSON.parse(sessionStorage.getItem('user'))
-    if (currentUser.is_staff === true) {
-      next();
-    } else {
-      next({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
-    }
+    next(vm => {
+      const currentUser = vm.$store.getters["Auth/user"]
+      if (currentUser.is_staff === true) {
+        const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+        ApiService.GETData(DOMAIN + '/is-admin/').then(() => {
+          next();
+        }, () => {
+          next({name: LemkaHelpers.Routes.PROFIL_ROUTE.name})
+        })
+        next();
+      } else {
+        next({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
+      }
+    })
   }
 }
 </script>

@@ -472,12 +472,12 @@ export default {
       this.toggleLoading()
     },
 
-    updateSelectTag: async function (query) {
-      await this.loadTags(query)
-    },
-
     updateSelectCatalogue: async function (query) {
       await this.loadCatalogues(query)
+    },
+
+    updateSelectTag: async function (query) {
+      await this.loadTags(query)
     },
 
     addTag: function (newTag) {

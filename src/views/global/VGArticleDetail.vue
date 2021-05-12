@@ -11,7 +11,7 @@
           >
             <lightbox
                 v-if="article.images.length > 0"
-                :items="getImageUrl(article.images)"
+                :items="getImagesUrl(article.images)"
                 :cells="3"
             />
             <div
@@ -75,7 +75,7 @@ export default {
     },
   },
   title() {
-    return htmlTitle()
+    return htmlTitle('Article')
   },
   data() {
     return {
@@ -130,13 +130,6 @@ export default {
       } else {
         console.log("Une erreur s'est produit lors de traitement !")
       }
-    },
-    getImageUrl: function (images) {
-      let urls = []
-      images.forEach(item => {
-        urls.push(item.image)
-      })
-      return urls
     }
   },
 

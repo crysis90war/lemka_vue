@@ -9,7 +9,7 @@
               <ul class="list-unstyled text-small text-secondary">
                 <li>
                   <h5 class="text-secondary">
-                    LEMKA - Atelier de couture
+                    {{ entreprise.nom_societe }}
                   </h5>
                 </li>
 
@@ -17,22 +17,23 @@
                   <b-link
                       class="text-secondary"
                       href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer=0650894447&actionLu=Recherche"
-                      target="_blank">
-                    BE 0650 894 447
+                      target="_blank"
+                  >
+                    {{ entreprise.numero_tva }}
                   </b-link>
                 </li>
                 <li>Tel:
                   <b-link
                       class="text-secondary no-underline"
                       href="tel: 00320472894621">
-                    +32 (0) 472 89 46 21
+                    +32 {{ entreprise.numero_tel }}
                   </b-link>
                 </li>
                 <li>E-mail:
                   <b-link
                       class="text-secondary no-underline"
                       href="mailto: elena@lemka.be">
-                    elena@lemka.be
+                    {{ entreprise.mail_contact }}
                   </b-link>
                 </li>
               </ul>
@@ -58,7 +59,12 @@
               <p class="text-secondary">Suivez-nous sur les réseaux sociaux. Tenez-vous au courant de toutes les activités, nouvelles et
                 plus</p>
               <!-- Social buttons -->
-              <Social/>
+              <Social
+                  :facebook="entreprise.facebook_link"
+                  :instagram="entreprise.instagram_link"
+                  :twitter="entreprise.twitter_link"
+                  :linkedin="entreprise.linkedin_link"
+              />
             </b-col>
 
             <b-col lg="3">
@@ -93,12 +99,22 @@
 <script>
 import BackToTop from "@/components/BackToTop";
 import Social from "@/components/Social";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Footer",
   components: {
     Social,
     'back-to-top': BackToTop
+  },
+  computed: {
+    ...mapGetters({entreprise: "Entreprises/entreprise"})
+  },
+  methods: {
+    ...mapActions({loadEntreprise: "Entreprises/loadEntreprises"}),
+  },
+  created() {
+    this.loadEntreprise()
   }
 }
 </script>

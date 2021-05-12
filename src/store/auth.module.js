@@ -1,8 +1,10 @@
 import ApiService from "@/services/api.service";
 import LemkaHelpers from "@/helpers";
+import jwt_decode from "jwt-decode"
 
 const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
-const user = JSON.parse(sessionStorage.getItem('user'));
+// const user = JSON.parse(sessionStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem('user'));
 // const initialState = user
 //     ? {status: {loggedIn: true}, user}
 //     : {status: {loggedIn: false}, user: null};
@@ -18,7 +20,15 @@ export const AuthModule = {
     },
     getters: {
         loggedIn: state => state.status.loggedIn,
-        user: state => state.user
+        user: state => {
+            if (state.user !== null) {
+                let token = state.user.access
+                console.log(jwt_decode(token))
+                return jwt_decode(token)
+            } else {
+                return null
+            }
+        }
     },
     mutations: {
         LOGIN_SUCCESS(state, user) {
@@ -48,7 +58,8 @@ export const AuthModule = {
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('LOGIN_SUCCESS', r.data)
-                    sessionStorage.setItem('user', JSON.stringify(r.data));
+                    // sessionStorage.setItem('user', JSON.stringify(r.data));
+                    localStorage.setItem('user', JSON.stringify(r.data));
                     resolve(r.data)
                 }, error => {
                     commit('LOGIN_FAILURE')
