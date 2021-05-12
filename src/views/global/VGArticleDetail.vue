@@ -86,7 +86,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({articles: 'Articles/articles', currentUser: "Auth/user"}),
+    ...mapGetters({articles: 'Articles/gloabalArticles', currentUser: "Auth/user"}),
     thisRoute() {
       return this.$route.name
     },
@@ -106,9 +106,9 @@ export default {
     chargerArticle: async function () {
       this.toggleLoading()
       await this.initialisation()
-      let article = await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug)
+      let article = this.articles.find(item => item.slug === (this.$route.params.slug))
       if (article !== undefined) {
-        Object.assign(this.article, await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug))
+        Object.assign(this.article, this.articles.find(item => item.slug === (this.$route.params.slug)))
         this.$route.meta.value = this.article.titre
         this.toggleLoading()
       } else {

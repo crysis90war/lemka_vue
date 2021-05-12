@@ -10,7 +10,7 @@ export const Routes = {
     HORAIRE_ROUTE: {name: GlobalView + 'Horaire', value: 'Horaire'},
     CONTACT_ROUTE: {name: GlobalView + 'Contact', value: 'Contact'},
     ABOUT_ROUTE: {name: GlobalView + 'About', value: 'À propos'},
-    ARTICLES_DETAIL: {name: GlobalView + 'ArticleDetail', value: 'Detail de l\'article',},
+    ARTICLES_DETAIL: {name: GlobalView + 'ArticleDetail', value: ''},
     MERCERIES_DETAIL: {name: GlobalView + 'MercerieDetail', value: ""},
     PAGE_NOT_FOUND_ROUTE: {name: GlobalView + 'PageNotFound', value: 'PageNotFound'},
     // endregion

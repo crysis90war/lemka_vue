@@ -360,7 +360,7 @@ const router = new VueRouter({
       props: true
     },
     {
-      path: '/mercerie/:id',
+      path: '/merceries/:id',
       name: ROUTES.MERCERIES_DETAIL.name,
       meta: {value: ''},
       component: VGMercerieDetail,

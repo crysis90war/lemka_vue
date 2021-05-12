@@ -6,8 +6,8 @@
           size="lg"
           v-model="search"
           @keyup.enter="selectedCategorie === 'Articles'
-          ? searchArticleQuery(search, selectedTypeService, selectedRayon, selectedSection, selectedTypeProduit, selectedTags)
-          : searchMercerieQuery(search, selectedMercerieCategorie, selectedCouleur)"
+          ? searchArticleQuery()
+          : searchMercerieQuery()"
       />
     </div>
 
