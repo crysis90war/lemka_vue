@@ -30,7 +30,7 @@
             v-for="(rdv, index) in selected === '' ? getAllRDV() : getRdvFromDate(selected)"
             :key="index">
           <!-- Via space separated string of IDs passed to directive value -->
-          <b-button v-b-toggle="`collapse-rdv-${rdv.id}`" class="w-100 mb-2  text-dark border" variant="outline-light">
+          <b-button size="lg" v-b-toggle="`collapse-rdv-${rdv.id}`" class="w-100 mb-2  text-dark border" variant="outline-light">
             {{ rdv.user.first_name }} {{ rdv.user.last_name }} : {{ rdv.start }} - {{ rdv.end }}
           </b-button>
 
