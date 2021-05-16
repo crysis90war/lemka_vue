@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "run": "node server.js"
@@ -17,6 +18,7 @@
     "date-fns": "^2.21.1",
     "express": "^4.17.1",
     "html2pdf.js": "^0.9.3",
+    "js-cookie": "^2.2.1",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "qs": "^6.10.1",
@@ -40,8 +42,11 @@
     "@vue/cli-plugin-babel": "^4.5.12",
     "@vue/cli-plugin-eslint": "^4.5.12",
     "@vue/cli-plugin-router": "^4.5.12",
+    "@vue/cli-plugin-unit-jest": "^4.5.13",
     "@vue/cli-plugin-vuex": "^4.5.12",
     "@vue/cli-service": "^4.5.13",
+    "@vue/test-utils": "^1.0.3",
+    "async-validator": "^3.5.2",
     "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "bootstrap": "^4.6.0",
@@ -68,7 +73,18 @@
     ],
     "parserOptions": {
       "parser": "babel-eslint"
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",

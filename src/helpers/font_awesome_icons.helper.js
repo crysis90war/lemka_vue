@@ -15,6 +15,8 @@ export const FontAwesomeIcons = {
     SHOPPING_CART: 'fas fa-shopping-cart',
     MONEY: 'fas fa-money-bill',
     CALENDAR: 'fas fa-calendar-check',
+    CLOCK: 'far fa-clock',
+    COMPANY: "far fa-building",
     PARAMETRES: 'fas fa-sliders-h',
     EMAIL: 'far fa-envelope',
     PHONE: 'fas fa-phone',

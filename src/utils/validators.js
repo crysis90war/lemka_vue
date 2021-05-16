@@ -1,10 +1,5 @@
-/**
- * Created by denishuang on 2019/7/31.
- */
-
-import {strQ2B} from './quanbanjiao'
-
-import schema from 'async-validator'
+import {strQ2B} from './quanbanjiao';
+import schema from 'async-validator';
 
 export function notFloat(v) {
     if (typeof v === 'number') {
@@ -53,7 +48,7 @@ export const Mobile = {
 export const IDCard = {
     synonyms: ['身份证', '身份证号', '身份证号码'],
     type: 'string',
-    pattern: '^[1-9]\d{5}(19|2\d)\d{2}((0[1-9])|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$',
+    pattern: '^[1-9]d{5}(19|2d)d{2}((0[1-9])|(1[0-2]))(([0|1|2]d)|3[0-1])d{3}([0-9]|X)$',
     message: '格式不正确',
     format(v){
         return NUM_STR_FORMATERS.reduce((v, f) => f(v), v)
@@ -64,7 +59,7 @@ export const IDCard = {
 export const QQ = {
     synonyms: ['QQ', 'QQ号', 'QQ号码', '扣扣'],
     type: 'string',
-    pattern: '^\d{4,16}$',
+    pattern: '^d{4,16}$',
     message: '格式不正确',
     format(v){
         return NUM_STR_FORMATERS.reduce((v, f) => f(v), v)
@@ -75,6 +70,7 @@ export function Validator(config) {
         config,
         validator: new schema(config),
         validate(d){
+            // eslint-disable-next-line no-unused-vars
             this.validator.validate(d, (errors, fields) => {
                 if(errors){
                     let ed={}
@@ -152,4 +148,14 @@ export function genFieldRules(f) {
         rs.push({max: f.max_length, message: `长度最大为${f.max_length}`})
     }
     return rs
+}
+
+export default {
+    genFieldRules,
+    HanName,
+    Mobile,
+    IDCard,
+    QQ,
+    genValidatorFromTableItems,
+    clear$Fields,
 }

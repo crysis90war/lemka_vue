@@ -1,9 +1,11 @@
-import {localTimeStr} from "@/utils/filters";
+import {date2fullStr, localTimeStr} from "@/utils/filters";
 
 export const commonMixin = {
     data() {
         return {
-            isLoading: false
+            isLoading: false,
+            message: "",
+            variant: "success"
         }
     },
     methods: {
@@ -66,6 +68,13 @@ export const commonMixin = {
         validateState(object, name) {
             const {$dirty, $error} = object[name]
             return $dirty ? !$error : null;
+        },
+        customMessage: function(message, variant, time = 1000) {
+            this.message = message;
+            this.variant = variant;
+            setTimeout(() => {
+                this.message = ""
+            }, time)
         }
     },
     filters: {
@@ -73,5 +82,8 @@ export const commonMixin = {
             value = localTimeStr(value)
             return value
         },
+        getFullDate: function (value) {
+            return date2fullStr(value)
+        }
     },
 }

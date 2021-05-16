@@ -11,7 +11,8 @@ export const RendezVousModule = {
         available_hours: {
             message: "",
             available_hours: []
-        }
+        },
+        adminRendezVouss: [],
     },
     getters: {
         rendezvouss: state => state.rendezvouss,
@@ -19,7 +20,8 @@ export const RendezVousModule = {
             return state.rendezvouss.find(item => item.id === id)
         },
         loadingStatus: state => state.loadingStatus,
-        available_hours: state => state.available_hours
+        available_hours: state => state.available_hours,
+        adminRendezVouss: state => state.adminRendezVouss
     },
     mutations: {
         SET_RENDEZ_VOUS_SUCCESS(state, payload) {
@@ -48,6 +50,12 @@ export const RendezVousModule = {
                 message: "",
                 available_hours: []
             }
+        },
+        SET_ADMIN_RDV_SUCCESS(state, payload) {
+            state.adminRendezVouss = payload
+        },
+        SET_ADMIN_RDV_FAILURE(state) {
+            state.adminRendezVouss = []
         }
     },
     actions: {
@@ -100,6 +108,21 @@ export const RendezVousModule = {
                     resolve(r.data)
                 }, error => {
                     commit('SET_AVAILABLE_HOURS_FAILURE')
+                    reject(error)
+                })
+            })
+        },
+        loadAdminRDV: async function({commit}) {
+            let endpoint = `${DOMAIN}/rendezvous/`;
+            return await new Promise((resolve, reject) => {
+                commit('LOADING_STATUS', true)
+                ApiService.GETDatas(endpoint).then(r => {
+                    commit('SET_ADMIN_RDV_SUCCESS', r.data)
+                    commit('LOADING_STATUS', false)
+                    resolve(r.data)
+                }, error => {
+                    commit('SET_ADMIN_RDV_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })

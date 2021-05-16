@@ -50,9 +50,9 @@ export default {
     return {
       menu: [
         {
-          href: {name: LemkaHelpers.Routes.DASHBOARD.name},
-          title: LemkaHelpers.Routes.DASHBOARD.value,
-          icon: LemkaHelpers.FontAwesomeIcons.TACHOMETRE
+          href: {name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name},
+          title: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.value,
+          icon: LemkaHelpers.FontAwesomeIcons.COMPANY
         },
         {
           href: {name: LemkaHelpers.Routes.UTILISATEURS.name},
@@ -85,6 +85,11 @@ export default {
           icon: LemkaHelpers.FontAwesomeIcons.CALENDAR
         },
         {
+          href: {name: LemkaHelpers.Routes.ADMIN_HORAIRE.name},
+          title: LemkaHelpers.Routes.ADMIN_HORAIRE.value,
+          icon: LemkaHelpers.FontAwesomeIcons.CLOCK
+        },
+        {
           href: {name: LemkaHelpers.Routes.PARAMETRES.name},
           title: LemkaHelpers.Routes.PARAMETRES.value,
           icon: LemkaHelpers.FontAwesomeIcons.PARAMETRES
@@ -111,7 +116,7 @@ export default {
     },
     thisRoute: function () {
       if (this.thisRoute === LemkaHelpers.Routes.ADMIN_ROUTE.name) {
-        this.$router.push({name: LemkaHelpers.Routes.DASHBOARD.name})
+        this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
       }
     }
   },
@@ -151,7 +156,7 @@ export default {
     } else {
       this.initialisation()
       if (this.$route.name === LemkaHelpers.Routes.ADMIN_ROUTE.name) {
-        this.$router.push({name: LemkaHelpers.Routes.DASHBOARD.name})
+        this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
       }
     }
   },

@@ -2,20 +2,28 @@
   <div>
     <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="nav-shadow border-top colored">
       <b-navbar-nav>
-        <b-nav-item :to="{name: routes.entreprise.name}" :active="$route.name === routes.entreprise.name">
-          {{ routes.entreprise.value }}
+        <b-nav-item :to="{name: routes.mensuration.name}" :active="$route.name === routes.mensuration.name">
+          {{ routes.mensuration.value }}
         </b-nav-item>
 
         <b-nav-item :to="{name: routes.genre.name}" :active="$route.name === routes.genre.name">
           {{ routes.genre.value }}
         </b-nav-item>
 
-        <b-nav-item :to="{name: routes.mensuration.name}" :active="$route.name === routes.mensuration.name">
-          {{ routes.mensuration.value }}
+        <b-nav-item :to="{name: routes.service.name}" :active="$route.name === routes.service.name">
+          {{ routes.service.value }}
         </b-nav-item>
 
         <b-nav-item :to="{name: routes.service.name}" :active="$route.name === routes.service.name">
-          {{ routes.service.value }}
+          Catalogue
+        </b-nav-item>
+
+        <b-nav-item :to="{name: routes.service.name}" :active="$route.name === routes.service.name">
+          Couleur
+        </b-nav-item>
+
+        <b-nav-item :to="{name: routes.service.name}" :active="$route.name === routes.service.name">
+          Categorie
         </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
@@ -50,14 +58,14 @@ export default {
 
   created() {
     if (this.$route.name === LemkaHelpers.Routes.PARAMETRES.name) {
-      this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
+      this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_MENSURATION.name})
     }
   },
 
   watch: {
     thisRoute: function () {
       if (this.thisRoute === LemkaHelpers.Routes.PARAMETRES.name) {
-        this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
+        this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_MENSURATION.name})
       }
     }
   },

@@ -35,8 +35,6 @@ export const Routes = {
     // region Admin routes
     ADMIN_ROUTE: {name: AdminView, value: 'Administration'},
 
-    DASHBOARD: {name: AdminView + 'Dashboard', value: 'Dashboard'},
-
     UTILISATEURS: {name: AdminView + 'Utilisateurs', value: 'Utilisateurs'},
     UTILISATEURS_DETAIL: {name: AdminView + 'UtilisateursDetail', value: 'Detail'},
 
@@ -57,6 +55,8 @@ export const Routes = {
     MOC_ADD_OR_UPDATE: {name: 'VAMOCAddOrUpdate', value: 'Ajouter/Modifier'},
 
     RENDEZ_VOUS: {name: AdminView + 'RendezVous', value: 'Rendez-vous'},
+
+    ADMIN_HORAIRE: {name: AdminView + 'Horaire', value: 'Horaire'},
 
     PARAMETRES: {name: AdminView + 'Parametres', value: 'Parametres'},
     PARAMETRES_ENTREPRISE: {name: AdminView + 'Entreprise', value: 'Entreprise'},

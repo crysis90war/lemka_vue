@@ -16,8 +16,8 @@ export default class HoraireModel{
 
     toCreatePayload() {
         return {
-            jour: this.jour,
-            jour_semaine: this.jour_semaine,
+            // jour: this.jour,
+            // jour_semaine: this.jour_semaine,
             heure_ouverture: this.heure_ouverture,
             pause_debut: this.pause_debut,
             pause_fin: this.pause_fin,

@@ -4,7 +4,6 @@ import LemkaHelpers from "@/helpers";
 
 // region Admin views
 import ViewAdmin from "@/views/administrateur/ViewAdmin";
-import VADashboard from "@/views/administrateur/dashboard/VADashboard";
 import VAUsers from "@/views/administrateur/utilisateurs/VAUsers";
 import VAUserDetail from "@/views/administrateur/utilisateurs/VAUserDetail";
 import VAArticles from "@/views/administrateur/articles/VAArticles";
@@ -15,9 +14,9 @@ import VADemandeDeDevis from "@/views/administrateur/demande_de_devis/VADemandeD
 import VADevis from "@/views/administrateur/devis/VADevis";
 import VARendezVous from "@/views/administrateur/rendez_vous/VARendezVous";
 import VAParametres from "@/views/administrateur/parametres/VAParametres";
-import VAEntreprise from "@/views/administrateur/parametres/entreprise/VAEntreprise";
-import VAEntrepriseAdd from "@/views/administrateur/parametres/entreprise/VAEntrepriseAdd";
-import VAEntrepriseUpdate from "@/views/administrateur/parametres/entreprise/VAEntrepriseUpdate";
+import VAEntreprise from "@/views/administrateur/entreprise/VAEntreprise";
+import VAEntrepriseAdd from "@/views/administrateur/entreprise/VAEntrepriseAdd";
+import VAEntrepriseUpdate from "@/views/administrateur/entreprise/VAEntrepriseUpdate";
 import VAGenres from "@/views/administrateur/parametres/genre/VAGenres";
 import VAGenreAddOrUpdate from "@/views/administrateur/parametres/genre/VAGenreAddOrUpdate";
 import VAMensurations from "@/views/administrateur/parametres/mensuration/VAMensurations";
@@ -58,6 +57,7 @@ import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVou
 import VGArticleDetail from "@/views/global/VGArticleDetail";
 import VGRecherche from "@/views/global/VGRecherche";
 import VGMercerieDetail from "@/views/global/VGMercerieDetail";
+import VAHoraire from "@/views/administrateur/horaire/VAHoraire";
 
 // endregion
 
@@ -68,12 +68,6 @@ const PROFIL = '/profil';
 const ADMIN = '/admin/';
 
 const adminRoutes = [
-  {
-    path: ADMIN + 'dashboard',
-    name: ROUTES.DASHBOARD.name,
-    meta: {value: ROUTES.DASHBOARD.value},
-    component: VADashboard
-  },
   {
     path: ADMIN + 'utilisateurs',
     name: ROUTES.UTILISATEURS.name,
@@ -147,31 +141,38 @@ const adminRoutes = [
     component: VARendezVous
   },
   {
+    path: ADMIN + 'horaires',
+    name: ROUTES.ADMIN_HORAIRE.name,
+    meta: {value: ROUTES.ADMIN_HORAIRE.value},
+    component: VAHoraire
+  },
+  {
+    path: ADMIN + 'entreprise',
+    name: ROUTES.PARAMETRES_ENTREPRISE.name,
+    meta: {value: ROUTES.PARAMETRES_ENTREPRISE.value},
+    component: VAEntreprise,
+    children: [
+      {
+        path: ADMIN + 'entreprise/ajouter',
+        name: ROUTES.PARAMETRES_ENTREPRISE_ADD.name,
+        meta: {value: ROUTES.PARAMETRES_ENTREPRISE_ADD.value},
+        component: VAEntrepriseAdd
+      },
+      {
+        path: ADMIN + 'entreprise/update',
+        name: ROUTES.PARAMETRES_ENTREPRISE_UPDATE.name,
+        meta: {value: ROUTES.PARAMETRES_ENTREPRISE_UPDATE.value},
+        component: VAEntrepriseUpdate
+      }
+    ]
+  },
+  {
     path: ADMIN + 'parametres',
     name: ROUTES.PARAMETRES.name,
     meta: {value: ROUTES.PARAMETRES.value},
     component: VAParametres,
     children: [
-      {
-        path: ADMIN + 'parametres/entreprise',
-        name: ROUTES.PARAMETRES_ENTREPRISE.name,
-        meta: {value: ROUTES.PARAMETRES_ENTREPRISE.value},
-        component: VAEntreprise,
-        children: [
-          {
-            path: ADMIN + 'parametres/entreprise/ajouter',
-            name: ROUTES.PARAMETRES_ENTREPRISE_ADD.name,
-            meta: {value: ROUTES.PARAMETRES_ENTREPRISE_ADD.value},
-            component: VAEntrepriseAdd
-          },
-          {
-            path: ADMIN + 'parametres/entreprise/update',
-            name: ROUTES.PARAMETRES_ENTREPRISE_UPDATE.name,
-            meta: {value: ROUTES.PARAMETRES_ENTREPRISE_UPDATE.value},
-            component: VAEntrepriseUpdate
-          }
-        ]
-      },
+
       {
         path: ADMIN + 'parametres/genres',
         name: ROUTES.PARAMETRES_GENRE.name,

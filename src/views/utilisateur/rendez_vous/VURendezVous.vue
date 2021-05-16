@@ -181,7 +181,7 @@ import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {htmlTitle} from "@/utils/tools";
 import RendezVousModel from "@/models/rendez_vous.model";
-import {date2fullStr, date2str, localTimeStr} from "@/utils/filters";
+import {date2str} from "@/utils/filters";
 import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
@@ -252,14 +252,6 @@ export default {
       if (item.date === this.today && (item.start < this.time)) return 'table-danger'
       if (item.date === this.today && (item.start <= this.time && this.time <= item.end)) return 'table-success'
       if (item.date > this.today) return 'table-info'
-    }
-  },
-  filters: {
-    localTimeStr: function (value) {
-      return localTimeStr(value)
-    },
-    getFullDate: function (value) {
-      return date2fullStr(value)
     }
   },
   created() {

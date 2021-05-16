@@ -1,6 +1,6 @@
 <template>
   <b-card
-      class="box-shadow"
+      class="box-shadow rounded-lg"
       :img-src="imgSrc"
       :img-height="imgHeight"
       :img-alt="imgAlt"

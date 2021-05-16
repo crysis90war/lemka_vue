@@ -85,6 +85,8 @@
               <b-collapse :id="`mensuration-collapse${userMensuration.id}`">
                 <b-card>
                   <b-card-body>
+                    <b-form-group label="Remarque :" :description="`${userMensuration.remarque}`"/>
+                    <hr>
                     <b-row>
                       <b-col v-for="mesure in userMensuration.mesures" :key="mesure.id" lg="4">
                         <div class="d-flex">
@@ -99,9 +101,6 @@
           </div>
         </b-tab>
       </b-tabs>
-
-      <l-jumbotron :data="utilisateur"></l-jumbotron>
-      <l-jumbotron :data="adresse"></l-jumbotron>
     </div>
   </div>
 </template>
@@ -151,7 +150,6 @@ export default {
     chargerUtilisateur: function () {
       Object.assign(this.utilisateur, this.$store.getters["Utilisateurs/utilisateur"](this.$route.params.username))
     },
-    // TODO - Charger mes mensuration de l'utilisateur
     chargerMensuration: function (username) {
       this.loadMensurations(username)
     },
@@ -164,6 +162,7 @@ export default {
         if (this.utilisateur.mensurations_count > 0) {
           this.chargerMensuration(this.$route.params.username)
         }
+        this.$route.meta.value = this.$route.params.username
       } else {
         await this.$router.push({name: this.routes.UTILISATEURS.name})
       }

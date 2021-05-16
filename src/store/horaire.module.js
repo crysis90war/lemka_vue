@@ -44,7 +44,7 @@ export const HoraireModule = {
     },
     actions: {
         loadHoraires({commit}){
-            let endpoint = `${DOMAIN}/horaire/`;
+            let endpoint = `${DOMAIN}/horaires/`;
             return new Promise((resolve, reject) => {
                 commit('HORAIRE_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -54,6 +54,17 @@ export const HoraireModule = {
                 }, error => {
                     commit('LOAD_HORAIRES_FAILURE')
                     commit('HORAIRE_LOADING_STATUS', false)
+                    reject(error)
+                })
+            })
+        },
+        updateHoraire: function({commit}, payload) {
+            let endpoint = `${DOMAIN}/horaires/${payload.id}/`;
+            return new Promise((resolve, reject) => {
+                ApiService.PUTData(endpoint, payload).then(r => {
+                    commit('UPDATE_HORAIRE', r.data)
+                    resolve(r.data)
+                }, error => {
                     reject(error)
                 })
             })

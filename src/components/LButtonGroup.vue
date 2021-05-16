@@ -8,11 +8,11 @@
         <i class="fas fa-arrow-left"></i>
       </b-button>
       <b-button
-          :variant="params !== undefined ? 'outline-primary' : 'outline-success'"
+          :variant="!params ? 'outline-primary' : 'outline-success'"
           :disabled="submitStatus === 'PENDING'"
           @click.prevent="submit"
       >
-        {{ params !== undefined ? 'Modifier' : 'Ajouter' }}
+        {{ !params ? 'Modifier' : 'Ajouter' }}
       </b-button>
     </b-button-group>
   </div>
@@ -34,7 +34,10 @@ export default {
       type: String,
       defaul: null
     },
-    params: {},
+    params: {
+      type: Boolean,
+      default: false
+    },
     position: {
       type: String,
       default: 'left'

@@ -27,6 +27,8 @@ export default class EntrepriseModel {
             numero_tva: this.numero_tva,
             mail_contact: this.mail_contact,
             numero_tel: this.numero_tel,
+            a_propos_resume: this.a_propos_resume,
+            a_propos_complet: this.a_propos_complet,
             site_web: this.site_web,
             rue: this.rue,
             numero: this.numero,
@@ -70,12 +72,18 @@ export default class EntrepriseModel {
                 minLength: minLength(5),
                 maxLength: maxLength(255)
             },
+            a_propos_resume: {
+                maxLength: maxLength(255)
+            },
+            a_propos_complet: {
+                maxLength: maxLength(2048)
+            },
             site_web: {
                 required,
                 url
             },
             facebook_link: {
-              url
+                url
             },
             instagram_link: {
                 url

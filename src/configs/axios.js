@@ -1,13 +1,10 @@
-/**
- * Created by denishuang on 2017/7/28.
- */
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import Vue from 'vue'
 
-
-function genBaseUrl (tpl) {
+// eslint-disable-next-line no-unused-vars
+function genBaseUrl(tpl) {
     let a = tpl
     location.pathname.split('/').forEach((s, i) => {
         a = a.replace('$' + i, s)

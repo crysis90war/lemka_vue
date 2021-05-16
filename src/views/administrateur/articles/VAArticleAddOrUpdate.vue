@@ -351,9 +351,6 @@
         </b-table>
       </div>
       <!-- endregion -->
-
-      <l-jumbotron :data="article.toCreatePayload()"/>
-      <l-jumbotron :data="article"/>
     </b-container>
   </div>
 </template>
