@@ -399,7 +399,8 @@ const router = new VueRouter({
       path: '/register-success',
       name: "VGRegisterSuccess",
       meta: {value: "Compte créé avec succès"},
-      component: VGRegisterSuccess
+      component: VGRegisterSuccess,
+      props: true
     },
     {
       path: '/recherche',

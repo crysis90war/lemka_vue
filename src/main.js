@@ -22,6 +22,7 @@ import LTableEmpty from "@/components/Table/LTableEmpty";
 import LTableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
 import {Carousel3d, Slide} from 'vue-carousel-3d'
 import LJumbotron from "@/components/LJumbotron";
+import VueAnalytics from "vue-analytics";
 
 Vue.config.productionTip = false
 
@@ -40,6 +41,10 @@ Vue.component('l-jumbotron', LJumbotron)
 
 // Vue.use(Vuelidate)
 Vue.use(Lightbox)
+Vue.use(VueAnalytics, {
+    id: "UA-180100266-1",
+    router
+})
 Vue.mixin(titleMixin)
 
 new Vue({

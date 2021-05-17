@@ -157,7 +157,7 @@ export default {
           console.log('Registering ...')
           setTimeout(() => {
             this.submitStatus = 'OK'
-            this.$router.push({name: "VGRegisterSuccess"});
+            this.$router.push({name: "VGRegisterSuccess", params: {fromRegister: true}});
           }, 5000)
         }, () => {
           this.message = 'Identifiants non valides, réessayez'
