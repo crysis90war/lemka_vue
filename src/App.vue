@@ -52,10 +52,17 @@ export default {
           (route !== LemkaHelpers.Routes.REGISTER_ROUTE.name) &&
           (route !== 'VGRecherche')
       )
+    },
+    stopGoogleAnalytics() {
+      this.$ga.disable();
+    },
+    engageGoogleAnalytics() {
+      this.$ga.enable();
     }
   },
   created() {
     this.getRoute();
+    this.engageGoogleAnalytics()
     axios.interceptors.response.use(response => {
       return response;
     }, error => {
