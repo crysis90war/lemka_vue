@@ -155,7 +155,6 @@ export default {
 
         this.register(this.user.toRegisterPayload()).then(() => {
           console.log('Registering ...')
-          this.message = 'Compte créé avec succès, veuillez confirmer votre email !'
           setTimeout(() => {
             this.submitStatus = 'OK'
             this.$router.push({name: "VGRegisterSuccess"});
