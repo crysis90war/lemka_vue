@@ -29,7 +29,14 @@
               />
             </template>
           </l-input-field>
-          <b-button variant="outline-success" class="rounded-right">Réinisialiser</b-button>
+          <b-button
+              variant="outline-success"
+              class="rounded-right"
+              @click="resetPassword"
+              :disabled="submitStatus === 'PENDING'"
+          >
+            Réinisialiser
+          </b-button>
         </div>
       </div>
     </b-container>
@@ -42,6 +49,7 @@ import {validationMixin} from "vuelidate";
 import {commonMixin} from "@/mixins/common.mixin";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LInputField from "@/components/LInputField";
+import ApiService from '@/services/api.service'
 
 export default {
   name: "VGResetPassword",
@@ -59,10 +67,25 @@ export default {
     return {
       form: {
         email: ""
-      }
+      },
+      submitStatus: null
     }
   },
+  methods: {
+    resetPassword: function () {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
 
+        ApiService.POSTData()
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+        }, 1000)
+      }
+    },
+  }
 }
 </script>
 

@@ -37,7 +37,6 @@
             <h5>Prix : {{mercerie.prix_u_ht}}</h5>
           </b-col>
         </b-row>
-        <l-jumbotron :data="mercerie"/>
       </b-container>
     </div>
   </div>
@@ -78,9 +77,9 @@ export default {
         await this.loadMerceries()
       }
     },
-    chargerMercerie: function () {
+    chargerMercerie: async function () {
       this.toggleLoading()
-      this.initialisation()
+      await this.initialisation()
       let mercerie = this.merceries.find(item => item.id === parseInt(this.$route.params.id))
       if (mercerie !== undefined) {
         Object.assign(this.mercerie, mercerie)

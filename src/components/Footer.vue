@@ -25,7 +25,7 @@
                 <li>Tel:
                   <b-link
                       class="text-secondary no-underline"
-                      href="tel: 00320472894621">
+                      :href="`tel: ${entreprise.numero_tel}`">
                     +32 {{ entreprise.numero_tel }}
                   </b-link>
                 </li>
