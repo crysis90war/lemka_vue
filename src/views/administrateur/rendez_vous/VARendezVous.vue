@@ -45,7 +45,7 @@
                 </b-col>
               </b-row>
               <div v-if="rdv.devis !== null">
-                <b-button v-b-toggle="`collapse-devis-${rdv.numero_devis}`">{{rdv.devis.numero_devis}}</b-button>
+                <b-button variant="outline-light" class="text-dark" v-b-toggle="`collapse-devis-${rdv.numero_devis}`">Devis n° {{rdv.devis.numero_devis}}</b-button>
                 <b-collapse :id="`collapse-devis-${rdv.numero_devis}`">
                   <b-card></b-card>
                 </b-collapse>

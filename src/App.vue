@@ -19,7 +19,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LemkaHelpers from "@/helpers";
 import {mapGetters} from "vuex";
-
 export default {
   name: 'Home',
   components: {

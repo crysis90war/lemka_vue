@@ -118,7 +118,6 @@
         </div>
       </b-card-body>
     </b-card>
-    <l-jumbotron :data="getMinMaxDates()"/>
   </div>
 </template>
 
@@ -230,14 +229,14 @@ export default {
 
         this.createRendezVous(this.rendezVous.toCreatePayload()).then(() => {
           this.makeToast('success', 'Votre rendez vous à été créé avec succès', this.rendezVous.date)
+          setTimeout(() => {
+            this.submitStatus = 'OK'
+            this.$router.push({name: this.routes.RENDEZ_VOUS_USER.name})
+          }, 2000)
         }, error => {
           this.makeToast('danger', error.response.data.detail, this.rendezVous.date)
+          this.submitStatus = 'ERROR'
         })
-
-        setTimeout(() => {
-          this.submitStatus = 'OK'
-          this.$router.push({name: this.routes.RENDEZ_VOUS_USER.name})
-        }, 500)
       }
     },
     selectHour: function (hour) {
@@ -250,11 +249,11 @@ export default {
       // Disable weekends (Sunday = `0`, Saturday = `6`) and
       // disable days that fall on the 13th of the month
       const weekday = date.getDay()
-      // const day = date.getDate()
+      const day = date.getDate()
       // let now = new Date()
 
       // Return `true` if the date should be disabled
-      return weekday === 0
+      return weekday === 0 || day === 28
     },
     onContext(date) {
       if (date !== null) {
@@ -264,7 +263,6 @@ export default {
       // this.context = ctx
     },
     getMinMaxDates: function() {
-      // TODO - Récupérer correctement les dates max disponible. + 7 semaines
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
       const minDate = new Date(today)
@@ -272,13 +270,11 @@ export default {
       // minDate.setDate(15)
       // 15th in two months
       const maxDate = new Date(today)
-      maxDate.setDate(maxDate.getDay() + 13)
+      maxDate.setDate(maxDate.getDate() + 13)
       // maxDate.setDate(15)
       return {
         min: minDate,
-        max: maxDate,
-        test: minDate.setDate(minDate.getDate() + 1),
-        test2: maxDate.setDate(maxDate.getDay() + 13)
+        max: maxDate
       }
     },
     validationState: function (name) {

@@ -58,6 +58,7 @@ import VGArticleDetail from "@/views/global/VGArticleDetail";
 import VGRecherche from "@/views/global/VGRecherche";
 import VGMercerieDetail from "@/views/global/VGMercerieDetail";
 import VAHoraire from "@/views/administrateur/horaire/VAHoraire";
+import VGResetPassword from "@/views/global/VGResetPassword";
 
 // endregion
 
@@ -378,6 +379,12 @@ const router = new VueRouter({
       name: "VGConfidentialite",
       meta: {value: "Politique de confidentialité"},
       component: VGConfidentialite
+    },
+    {
+      path: '/password-reset',
+      name: "VGResetPassword",
+      meta: {value: "Mot de passe oublié"},
+      component: VGResetPassword
     },
     {
       path: '/recherche',

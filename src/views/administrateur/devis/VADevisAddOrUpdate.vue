@@ -630,7 +630,6 @@ export default {
       }
     },
     ajouterMercerieAuDetail(mercerie) {
-      // TODO - compléter l'ajout depuis bouton "+" mercerie
       let index = this.devis.details.findIndex(item => item.designation === `${mercerie.reference} | ${mercerie.nom}` && item.prix_u_ht === mercerie.prix_u_ht)
       if (index === -1) {
         this.detail.designation = `${mercerie.reference} | ${mercerie.nom}`

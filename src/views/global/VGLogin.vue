@@ -45,7 +45,7 @@
           </template>
         </l-input-field>
 
-        <a href="#">Mot de passe oublié ?</a>
+        <router-link :to="{name: 'VGResetPassword'}">Mot de passe oublié ?</router-link>
         <b-alert variant="danger" :show="message !== ''">{{ message }}</b-alert>
         <b-button
             variant="outline-success"
