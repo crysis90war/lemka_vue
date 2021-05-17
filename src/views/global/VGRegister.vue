@@ -1,8 +1,7 @@
 <template>
   <div class="register">
-    <div class="form-container sign-in-container my-4">
-
-      <b-form>
+    <div class="d-flex justify-content-center">
+      <div class="my-5 text-center">
         <img :src="logo" alt="" style="max-width: 250px;"/>
 
         <div class="social-container">
@@ -10,52 +9,103 @@
           <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
         </div>
 
-        <b-form-group>
-          <b-input v-model="$v.user.email.$model" type="email" placeholder="Email ..."
-                   :state="validateState('email')"></b-input>
-          <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.user.email.required" :error-message="required()"/>
-            <invalid-feedback :condition="!$v.user.email.email" :error-message="email()"/>
-          </b-form-invalid-feedback>
-        </b-form-group>
+        <!-- region Email -->
+        <l-input-field
+            :input-type="true"
+            v-model="$v.user.email.$model"
+            type="email"
+            placeholder="Email ..."
+            :state="validateState($v.user, 'email')"
+        >
+          <template #invalid-feedback>
+            <invalid-feedback
+                :condition="!$v.user.email.required"
+                :error-message="required()"
+            />
+            <invalid-feedback
+                :condition="!$v.user.email.email"
+                :error-message="email()"
+            />
+          </template>
+        </l-input-field>
+        <!-- endregion -->
 
-        <b-form-group>
-          <b-form-input v-model="$v.user.username.$model" type="text" placeholder="Pseudo ..."
-                        :state="validateState('username')"/>
-          <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.user.username.required" :error-message="required()"/>
-            <invalid-feedback :condition="!$v.user.username.minLength"
-                              :error-message="minLength($v.user.username.$params.minLength.min)"/>
-            <invalid-feedback :condition="!$v.user.username.maxLength"
-                              :error-message="maxLength($v.user.username.$params.maxLength.max)"/>
-          </b-form-invalid-feedback>
-        </b-form-group>
+        <!-- region Username -->
+        <l-input-field
+            :input-type="true"
+            v-model="$v.user.username.$model"
+            placeholder="Pseudo ..."
+            :state="validateState($v.user, 'username')"
+        >
+          <template #invalid-feedback>
+            <invalid-feedback
+                :condition="!$v.user.username.required"
+                :error-message="required()"
+            />
+            <invalid-feedback
+                :condition="!$v.user.username.minLength"
+                :error-message="minLength($v.user.username.$params.minLength.min)"
+            />
+            <invalid-feedback
+                :condition="!$v.user.username.maxLength"
+                :error-message="maxLength($v.user.username.$params.maxLength.max)"
+            />
+          </template>
+        </l-input-field>
+        <!-- endregion -->
 
-        <b-form-group>
-          <b-input v-model="$v.user.password.$model" type="password" placeholder="Mot de passe ..."
-                   :state="validateState('password')"/>
-          <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.user.password.required" :error-message="required()"/>
-            <invalid-feedback :condition="!$v.user.password.minLength"
-                              :error-message="minLength($v.user.password.$params.minLength.min)"/>
-          </b-form-invalid-feedback>
-        </b-form-group>
+        <!-- region Password -->
+        <l-input-field
+            :input-type="true"
+            v-model="$v.user.password.$model"
+            type="password"
+            placeholder="Mot de passe ..."
+            :state="validateState($v.user, 'password')"
+        >
+          <template #invalid-feedback>
+            <invalid-feedback
+                :condition="!$v.user.password.required"
+                :error-message="required()"
+            />
+            <invalid-feedback
+                :condition="!$v.user.password.minLength"
+                :error-message="minLength($v.user.password.$params.minLength.min)"
+            />
+          </template>
+        </l-input-field>
+        <!-- endregion -->
 
-        <b-form-group>
-          <b-input v-model="$v.user.password2.$model" type="password" placeholder="Confirmer mot de passe ..."
-                   :state="validateState('password2')"/>
-          <b-form-invalid-feedback>
-            <invalid-feedback :condition="!$v.user.password2.required" :error-message="required()"/>
-            <invalid-feedback :condition="!$v.user.password2.sameAsPassword" :error-message="sameAs()"/>
-          </b-form-invalid-feedback>
-        </b-form-group>
+        <!-- region Password 2 -->
+        <l-input-field
+            :input-type="true"
+            v-model="$v.user.password2.$model"
+            type="password"
+            placeholder="Confirmer mot de passe ..."
+            :state="validateState($v.user, 'password2')"
+        >
+          <template #invalid-feedback>
+            <invalid-feedback
+                :condition="!$v.user.password2.required"
+                :error-message="required()"
+            />
+            <invalid-feedback
+                :condition="!$v.user.password2.sameAsPassword"
+                :error-message="sameAs()"
+            />
+          </template>
+        </l-input-field>
+        <!-- endregion -->
 
-        <b-alert variant="danger" :show="message !== ''">{{ message }}</b-alert>
-        <b-button variant="outline-success" :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
-          <b-spinner variant="success" type="grow" small v-show="submitStatus === 'PENDING'"></b-spinner>
-          S'inscrire
-        </b-button>
-      </b-form>
+        <div class="mt-3">
+          <b-alert variant="danger" :show="message !== ''">{{ message }}</b-alert>
+
+          <b-button variant="outline-success" :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
+            <b-spinner variant="success" type="grow" small v-show="submitStatus === 'PENDING'"/>
+            S'inscrire
+          </b-button>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -68,11 +118,13 @@ import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {htmlTitle} from "@/utils/tools";
+import LInputField from "@/components/LInputField";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: "VGRegister",
-  components: {InvalidFeedback},
-  mixins: [validationMixin, validationMessageMixin,],
+  components: {LInputField, InvalidFeedback},
+  mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     user: AuthModel.registerValidations
   },
@@ -106,8 +158,8 @@ export default {
           this.message = 'Compte créé avec succès, veuillez confirmer votre email !'
           setTimeout(() => {
             this.submitStatus = 'OK'
-            this.$router.push({name: LemkaHelpers.Routes.LOGIN_ROUTE.name});
-          }, 500)
+            this.$router.push({name: "VGRegisterSuccess"});
+          }, 5000)
         }, () => {
           this.message = 'Identifiants non valides, réessayez'
           this.submitStatus = 'ERROR'
@@ -117,19 +169,6 @@ export default {
           }, 5000)
         })
       }
-    },
-
-    validateState: function (name) {
-      const {$dirty, $error} = this.$v.user[name];
-      return $dirty ? !$error : null;
-    },
-
-    handleRegister() {
-      this.$store.dispatch('auth/register', this.user).then(response => {
-        this.message = response
-      }, error => {
-        this.message = error
-      })
     }
   },
   created() {

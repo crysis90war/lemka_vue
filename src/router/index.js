@@ -59,6 +59,8 @@ import VGRecherche from "@/views/global/VGRecherche";
 import VGMercerieDetail from "@/views/global/VGMercerieDetail";
 import VAHoraire from "@/views/administrateur/horaire/VAHoraire";
 import VGResetPassword from "@/views/global/VGResetPassword";
+import VGEmailVerify from "@/views/global/VGEmailVerify";
+import VGRegisterSuccess from "@/views/global/VGRegisterSuccess";
 
 // endregion
 
@@ -381,10 +383,23 @@ const router = new VueRouter({
       component: VGConfidentialite
     },
     {
+      path: '/email-verify',
+      name: "VGEmailVerify",
+      meta: {value: "Vérification d'email"},
+      component: VGEmailVerify,
+      props: route => ({query: route.query.token})
+    },
+    {
       path: '/password-reset',
       name: "VGResetPassword",
       meta: {value: "Mot de passe oublié"},
       component: VGResetPassword
+    },
+    {
+      path: '/register-success',
+      name: "VGRegisterSuccess",
+      meta: {value: "Compte créé avec succès"},
+      component: VGRegisterSuccess
     },
     {
       path: '/recherche',

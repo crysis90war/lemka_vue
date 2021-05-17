@@ -1,13 +1,14 @@
 <template>
   <div class="login">
-    <div class="form-container sign-in-container my-4">
-      <b-form>
+    <div class="d-flex justify-content-center">
+      <div class="my-5 text-center">
         <img :src="logo" alt="" style="max-width: 250px"/>
         <div class="social-container">
           <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
           <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
         </div>
         <span>ou utilisez votre compte</span>
+        <!-- region Email -->
         <l-input-field
             :input-type="true"
             v-model="$v.user.email.$model"
@@ -26,6 +27,9 @@
             />
           </template>
         </l-input-field>
+        <!-- endregion -->
+
+        <!-- region Password -->
         <l-input-field
             :input-type="true"
             v-model="$v.user.password.$model"
@@ -44,23 +48,27 @@
             />
           </template>
         </l-input-field>
+        <!-- endregion -->
 
         <router-link :to="{name: 'VGResetPassword'}">Mot de passe oublié ?</router-link>
-        <b-alert variant="danger" :show="message !== ''">{{ message }}</b-alert>
-        <b-button
-            variant="outline-success"
-            :disabled="submitStatus === 'PENDING'"
-            @click.prevent="submit"
-        >
-          <b-spinner
-              variant="success"
-              type="grow"
-              class="mr-2"
-              small v-show="submitStatus === 'PENDING'"
-          />
-          Se connecter
-        </b-button>
-      </b-form>
+
+        <div class="mt-3">
+          <b-alert variant="danger" :show="message !== ''">{{ message }}</b-alert>
+          <b-button
+              variant="outline-success"
+              :disabled="submitStatus === 'PENDING'"
+              @click.prevent="submit"
+          >
+            <b-spinner
+                variant="success"
+                type="grow"
+                class="mr-2"
+                small v-show="submitStatus === 'PENDING'"
+            />
+            Se connecter
+          </b-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
