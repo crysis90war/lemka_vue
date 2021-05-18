@@ -50,6 +50,7 @@ import {commonMixin} from "@/mixins/common.mixin";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LInputField from "@/components/LInputField";
 import ApiService from '@/services/api.service'
+import LemkaHelpers from "@/helpers";
 
 export default {
   name: "VGResetPassword",
@@ -79,7 +80,12 @@ export default {
       } else {
         this.submitStatus = 'PENDING'
 
-        ApiService.POSTData()
+        let endpoint = `${LemkaHelpers.Endpoints.DOMAIN}/request-reset-email/`;
+        ApiService.POSTData(endpoint, this.form).then(r => {
+          console.log(r)
+        }, error => {
+          console.log(error)
+        })
         setTimeout(() => {
           this.submitStatus = 'OK'
         }, 1000)
