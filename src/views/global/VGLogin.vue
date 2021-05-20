@@ -4,8 +4,8 @@
       <div class="my-5 text-center">
         <img :src="logo" alt="" style="max-width: 250px"/>
         <div class="social-container">
-          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+          <b-button variant="light" class="btn-circle" @click="logInWithFacebook"><i class="fab fa-facebook-f"></i></b-button>
+          <b-button variant="light" class="btn-circle"><i class="fab fa-google-plus-g"></i></b-button>
         </div>
         <span>ou utilisez votre compte</span>
         <!-- region Email -->
@@ -108,7 +108,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({login: "Auth/login"}),
+    ...mapActions({login: "Auth/login", facebookLogin: "Auth/facebookLogin"}),
     submit: function () {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -131,11 +131,55 @@ export default {
           }, 5000)
         })
       }
+    },
+
+    // FACEBOOK
+    logInWithFacebook: async function() {
+      let vm = this
+      window.FB.login(function (response) {
+        if (response.authResponse) {
+          let payload = {
+            "auth_token": response.authResponse.accessToken
+          }
+          vm.facebookLogin(payload).then(() => {
+            console.log('Connecting with facebook ...')
+            vm.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name})
+          })
+          // Now you can redirect the user or do an AJAX request to
+          // a PHP script that grabs the signed request from the cookie.
+        } else {
+          alert("User cancelled login or did not fully authorize.");
+        }
+      });
+      return false;
+    },
+    initFacebook: async function() {
+      await this.loadFacebookSDK(document, "script", "facebook-jssdk");
+      window.fbAsyncInit = function () {
+        window.FB.init({
+          appId: "491041752346235", //You will need to change this
+          cookie: true, // This is important, it's not enabled by default
+          version: "v13.0"
+        });
+      };
+    },
+    loadFacebookSDK: async function(d, s, id) {
+      let js,
+          fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
     }
   },
   created() {
     if (this.loggedIn === true) {
       this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
+    } else {
+      this.initFacebook()
     }
   }
 }
@@ -143,4 +187,14 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/assets/styles/login";
+
+.facebook{
+  color:white;
+  min-width: 150px;
+  background-color: #000000a1;
+  height: 2.5rem;
+  border-radius: 2rem;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
 </style>

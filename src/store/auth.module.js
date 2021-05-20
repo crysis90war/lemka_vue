@@ -66,6 +66,31 @@ export const AuthModule = {
                 })
             })
         },
+        facebookLogin: function({commit}, payload) {
+            let endpoint = `${DOMAIN}/auth-social/facebook/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('LOGIN_SUCCESS', r.data)
+                    localStorage.setItem('user', JSON.stringify(r.data));
+                    resolve(r.data)
+                }, error => {
+                    commit('LOGIN_FAILURE')
+                    reject(error)
+                })
+            })
+        },
+        loginGoogle: function({commit}, payload) {
+            let endpoint = `${DOMAIN}/auth-social/google/`;
+            return new Promise((resolve, reject) => {
+                ApiService.POSTData(endpoint, payload).then(r => {
+                    commit('LOGIN_SUCCESS', r.data)
+                    resolve(r.data)
+                }, error => {
+                    commit('LOGIN_FAILURE')
+                    reject(error)
+                })
+            })
+        },
         logout({commit}) {
             ApiService.DESTROYSession()
             commit('LOGOUT');
