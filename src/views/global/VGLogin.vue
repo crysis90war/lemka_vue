@@ -144,13 +144,15 @@ export default {
           vm.facebookLogin(payload).then(() => {
             console.log('Connecting with facebook ...')
             vm.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name})
+          }, () => {
+            window.location.reload()
           })
           // Now you can redirect the user or do an AJAX request to
           // a PHP script that grabs the signed request from the cookie.
         } else {
           alert("User cancelled login or did not fully authorize.");
         }
-      });
+      }, {scope: 'public_profile,email'});
       return false;
     },
     initFacebook: async function() {
