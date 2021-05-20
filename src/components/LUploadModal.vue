@@ -86,9 +86,7 @@ export default {
 
     // eslint-disable-next-line no-unused-vars
     change({ coordinates, canvas, image }) {
-      // console.log(coordinates, canvas, image)
       this.destination = canvas.toDataURL()
-
       let formData = new FormData()
       let file = dataURLtoFile(canvas.toDataURL())
       formData.append('image', file, 'image.jpg')

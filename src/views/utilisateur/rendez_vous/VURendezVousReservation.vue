@@ -221,7 +221,6 @@ export default {
       ) {
         this.typeServiceTouched = true
         this.startError = true
-        console.log(this.startError)
         this.submitStatus = 'ERROR'
       } else {
         this.startError = false

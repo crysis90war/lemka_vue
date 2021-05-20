@@ -169,7 +169,6 @@ export default {
           let payload = {
             "auth_token": response.authResponse.accessToken
           }
-          console.log(payload)
           vm.facebookLogin(payload).then(() => {
             console.log('Connecting with facebook ...')
             vm.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name})

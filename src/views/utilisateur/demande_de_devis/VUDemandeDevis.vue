@@ -190,7 +190,6 @@ export default {
       let demande_devis = new DemandeDevisModel(item)
       let payload = demande_devis.toUpdatePayload()
       payload.est_soumis = true
-      console.log(payload)
       this.updateDemandeDevis(payload)
     },
   },

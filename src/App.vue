@@ -68,7 +68,6 @@ export default {
     }, error => {
       if (error.response.data.detail === 'Given token not valid for any token type') {
         this.$store.dispatch('Auth/logout')
-        console.log('disconnecting')
       }
       return Promise.reject(error);
     })

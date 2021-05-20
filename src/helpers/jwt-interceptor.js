@@ -13,10 +13,6 @@ export function jwtInterceptor() {
         const isLoggedIn = !!user;
         const isApiUrl = request.url.startsWith(DOMAIN)
 
-        console.log(isApiUrl)
-        console.log(isLoggedIn)
-        console.log(account)
-
         if (isLoggedIn && isApiUrl) {
             request.headers.common['Authorization'] = `Bearer ${account.access}`
         }

@@ -51,7 +51,6 @@ export const ArticleModule = {
             if (index !== -1) {
                 state.articles[index].images_count += 1
                 state.articles[index].images.push(payload)
-                console.log(state.articles[index].images)
             }
         },
         UPDATE_IMAGE(state, [article_slug, payload]) {

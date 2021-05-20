@@ -71,7 +71,6 @@ export const EntrepriseModule = {
             let endpoint = `entreprises/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
-                    console.log(r.data)
                     commit('UPDATE_ENTREPRISE', r.data)
                     resolve(r.data)
                 }, error => {
