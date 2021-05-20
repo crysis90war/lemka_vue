@@ -1,8 +1,12 @@
 import axios from "axios";
 import authHeader from "@/services/auth-header";
-import LemkaHelpers from "@/helpers";
 
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+let DOMAIN;
+if (process.env.VUE_APP_NODE_END === 'development') {
+    DOMAIN = 'http://127.0.0.1:8000';
+} else {
+    DOMAIN = 'https://lemka-api.herokuapp.com';
+}
 
 axios.defaults.baseURL = DOMAIN;
 

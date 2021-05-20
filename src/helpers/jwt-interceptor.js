@@ -1,10 +1,14 @@
 import axios from 'axios';
-import LemkaHelpers from "@/helpers/index";
 const user = JSON.parse(localStorage.getItem('user'));
 
 export function jwtInterceptor() {
     axios.interceptors.request.use(request => {
-        const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+        let DOMAIN;
+        if (process.env.VUE_APP_NODE_END === 'development') {
+            DOMAIN = 'http://127.0.0.1:8000';
+        } else {
+            DOMAIN = 'https://lemka-api.herokuapp.com';
+        }
         const account = user ? user : null;
         const isLoggedIn = !!user;
         const isApiUrl = request.url.startsWith(DOMAIN)
