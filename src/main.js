@@ -26,6 +26,8 @@ import VueAnalytics from "vue-analytics";
 
 Vue.config.productionTip = false
 
+console.log(Vue.config.productionTip)
+
 Vue.component('l-create-refresh', LCreateRefreshButtonGroup)
 Vue.component('multiselect', Multiselect)
 Vue.component('l-separateur', LSeparateur)

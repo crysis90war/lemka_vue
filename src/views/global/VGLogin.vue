@@ -134,18 +134,47 @@ export default {
     },
 
     // FACEBOOK
-    logInWithFacebook: async function() {
+    statusChangeCallback: function (response) {  // Called with the results from FB.getLoginStatus().
+      console.log('statusChangeCallback');
+      console.log(response);                   // The current login status of the person.
+      if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+        this.testAPI();
+      } else {                                 // Not logged into your webpage or we are unable to tell.
+        document.getElementById('status').innerHTML = 'Please log into this webpage.';
+      }
+    },
+
+    checkLoginState: function () {               // Called when a person is finished with the Login Button.
+      let vm = this
+      // eslint-disable-next-line no-undef
+      FB.getLoginStatus(function (response) {   // See the onlogin handler
+        vm.statusChangeCallback(response);
+      });
+    },
+
+    testAPI: function () {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+      console.log('Welcome!  Fetching your information.... ');
+      // eslint-disable-next-line no-undef
+      FB.api('/me', function (response) {
+        console.log('Successful login for: ' + response.name);
+        document.getElementById('status').innerHTML =
+            'Thanks for logging in, ' + response.name + '!';
+      });
+    },
+
+    logInWithFacebook: async function () {
       let vm = this
       window.FB.login(function (response) {
         if (response.authResponse) {
           let payload = {
             "auth_token": response.authResponse.accessToken
           }
+          console.log(payload)
           vm.facebookLogin(payload).then(() => {
             console.log('Connecting with facebook ...')
             vm.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name})
-          }, () => {
-            window.location.reload()
+          }, error => {
+            console.log(error)
           })
           // Now you can redirect the user or do an AJAX request to
           // a PHP script that grabs the signed request from the cookie.
@@ -153,35 +182,37 @@ export default {
           alert("User cancelled login or did not fully authorize.");
         }
       }, {scope: 'public_profile,email'});
-      return false;
     },
-    initFacebook: async function() {
-      await this.loadFacebookSDK(document, "script", "facebook-jssdk");
+    initFacebook: async function () {
       window.fbAsyncInit = function () {
-        window.FB.init({
-          appId: "491041752346235", //You will need to change this
-          cookie: true, // This is important, it's not enabled by default
-          version: "v13.0"
+        // eslint-disable-next-line no-undef
+        FB.init({
+          appId: process.env.VUE_APP_FACEBOOK_APP_ID,
+          xfbml: true,
+          version: 'v10.0'
         });
+        // eslint-disable-next-line no-undef
+        FB.AppEvents.logPageView();
       };
-    },
-    loadFacebookSDK: async function(d, s, id) {
-      let js,
-          fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
-        return;
-      }
-      js = d.createElement(s);
-      js.id = id;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
+
+      (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
     }
+  },
+  async mounted() {
+    await this.initFacebook()
   },
   created() {
     if (this.loggedIn === true) {
       this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
-    } else {
-      this.initFacebook()
     }
   }
 }
@@ -190,8 +221,8 @@ export default {
 <style lang="scss" scoped>
 @import "src/assets/styles/login";
 
-.facebook{
-  color:white;
+.facebook {
+  color: white;
   min-width: 150px;
   background-color: #000000a1;
   height: 2.5rem;
