@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const TypeServiceModule = {
     namespaced: true,
@@ -44,7 +41,7 @@ export const TypeServiceModule = {
     },
     actions: {
         loadTypeServices: async function ({commit}) {
-            let endpoint = `${DOMAIN}/types_services/`;
+            let endpoint = `types_services/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -59,7 +56,7 @@ export const TypeServiceModule = {
             })
         },
         createTypeService: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/types_services/`;
+            let endpoint = `types_services/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_TYPE_SERVICE', r.data)
@@ -70,7 +67,7 @@ export const TypeServiceModule = {
             })
         },
         updateTypeService: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/types_services/${payload.id}/`;
+            let endpoint = `types_services/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_TYPE_SERVICE', r.data)
@@ -81,7 +78,7 @@ export const TypeServiceModule = {
             })
         },
         deleteTypeService: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/types_services/${payload.id}/`;
+            let endpoint = `types_services/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_TYPE_SERVICE', payload)

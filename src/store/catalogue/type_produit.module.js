@@ -1,7 +1,4 @@
 import ApiService from '@/services/api.service';
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const TypeProduitModule = {
     namespaced: true,
@@ -44,7 +41,7 @@ export const TypeProduitModule = {
     },
     actions: {
         loadTypeProduits: async function({commit}) {
-            let endpoint = `${DOMAIN}/type-produits/`;
+            let endpoint = `type-produits/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -59,7 +56,7 @@ export const TypeProduitModule = {
             })
         },
         createTypeProduit: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/type-produits/`;
+            let endpoint = `type-produits/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_TYPE_PRODUIT')
@@ -70,7 +67,7 @@ export const TypeProduitModule = {
             })
         },
         updateTypeProduit: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/type-produits/${payload.id}/`;
+            let endpoint = `type-produits/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_TYPE_PRODUIT', r.data)
@@ -81,7 +78,7 @@ export const TypeProduitModule = {
             })
         },
         deleteTypeProduit: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/type-produits/${payload.id}/`;
+            let endpoint = `type-produits/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_TYPE_PRODUIT', payload)

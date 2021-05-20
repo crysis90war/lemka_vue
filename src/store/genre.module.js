@@ -1,8 +1,5 @@
 import GenreModel from "@/models/genre.model";
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const GenreModule = {
     namespaced: true,
@@ -45,7 +42,7 @@ export const GenreModule = {
     },
     actions: {
         loadGenres: async function ({commit}) {
-            let endpoint = `${DOMAIN}/genres/`;
+            let endpoint = `genres/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -60,7 +57,7 @@ export const GenreModule = {
             })
         },
         createGenre: async function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/genres/`;
+            let endpoint = `genres/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_GENRE', Object.assign(new GenreModel(), r.data))
@@ -71,7 +68,7 @@ export const GenreModule = {
             })
         },
         updateGenre: async function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/genres/${payload.id}/`;
+            let endpoint = `genres/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_GENRE', Object.assign(new GenreModel(), r.data))
@@ -82,7 +79,7 @@ export const GenreModule = {
             })
         },
         deleteGenre: async function({commit}, genre) {
-            let endpoint = `${DOMAIN}/genres/${genre.id}/`;
+            let endpoint = `genres/${genre.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_GENRE', genre)

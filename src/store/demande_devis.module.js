@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const DemandeDevisModule = {
     namespaced: true,
@@ -88,7 +85,7 @@ export const DemandeDevisModule = {
     },
     actions: {
         loadDemandeDevis: async function({commit}) {
-            let endpoint = `${DOMAIN}/profil/demandes_devis/`;
+            let endpoint = `profil/demandes_devis/`;
             return await new Promise((resolve, reject) => {
                 commit('DEMANDE_DEVIS_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -103,7 +100,7 @@ export const DemandeDevisModule = {
             })
         },
         createDemandeDevis({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/demandes_devis/`;
+            let endpoint = `profil/demandes_devis/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_DEMANDE_DEVIS', r.data)
@@ -114,7 +111,7 @@ export const DemandeDevisModule = {
             })
         },
         updateDemandeDevis({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/demandes_devis/${payload.id}/`;
+            let endpoint = `profil/demandes_devis/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_DEMANDE_DEVIS', r.data)
@@ -126,7 +123,7 @@ export const DemandeDevisModule = {
         },
 
         loadAdminDD: async function({commit}) {
-            let endpoint = `${DOMAIN}/demandes_devis/`;
+            let endpoint = `demandes_devis/`;
             return await new Promise((resolve, reject) => {
                 commit('ADMINDD_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -142,7 +139,7 @@ export const DemandeDevisModule = {
             })
         },
         updateAdminDD: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/demandes_devis/${payload.id}/`;
+            let endpoint = `demandes_devis/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_ADMINDD', r.data)

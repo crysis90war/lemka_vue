@@ -1,8 +1,5 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
 import TagModel from "@/models/tag.model";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const TagModule = {
     namespaced: true,
@@ -46,7 +43,7 @@ export const TagModule = {
     actions: {
         loadTags({commit}, searchField = "") {
             let searchParam = `?search=${searchField}`;
-            let endpoint = `${DOMAIN}/tags/${searchField === "" ? searchField : searchParam}`;
+            let endpoint = `tags/${searchField === "" ? searchField : searchParam}`;
             return new Promise((resolve, reject) => {
                 commit('TAGS_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -61,7 +58,7 @@ export const TagModule = {
             })
         },
         createTag({commit}, payload) {
-            let endpoint = `${DOMAIN}/tags/`;
+            let endpoint = `tags/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_TAG', Object.assign(new TagModel(), r.data))

@@ -1,8 +1,5 @@
-import LemkaHelpers from "@/helpers";
 import ApiService from "@/services/api.service";
 import CatalogueModel from "@/models/catalogue/catalogue.model";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const CatalogueModule = {
     namespaced: true,
@@ -46,7 +43,7 @@ export const CatalogueModule = {
     actions: {
         loadCatalogues: async function ({commit}, searchField = "") {
             let searchParam = `?search=${searchField}`;
-            let endpoint = `${DOMAIN}/catalogues/${searchField === "" ? searchField : searchParam}`;
+            let endpoint = `catalogues/${searchField === "" ? searchField : searchParam}`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -61,7 +58,7 @@ export const CatalogueModule = {
             })
         },
         createCatalogue: async function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/catalogues/`;
+            let endpoint = `catalogues/`;
             return await new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_CATALOGUE', Object.assign(new CatalogueModel(), r.data))
@@ -72,7 +69,7 @@ export const CatalogueModule = {
             })
         },
         updateCatalogue: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/catalogues/${payload.id}/`;
+            let endpoint = `catalogues/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_CATALOGUE', Object.assign(new CatalogueModel(), r.data))
@@ -83,7 +80,7 @@ export const CatalogueModule = {
             })
         },
         deleteCatalogue: function({commit}, catalogue) {
-            let endpoint = `${DOMAIN}/catalogues/${catalogue.id}/`;
+            let endpoint = `catalogues/${catalogue.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_CATALOGUE', catalogue)

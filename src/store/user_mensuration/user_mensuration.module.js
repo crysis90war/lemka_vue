@@ -1,8 +1,5 @@
 import ApiService from "@/services/api.service";
 import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const UserMensurationModule = {
     namespaced: true,
@@ -54,7 +51,7 @@ export const UserMensurationModule = {
     },
     actions: {
         loadUserMensurations: function ({commit}) {
-            let endpoint = `${DOMAIN}/profil/mensurations/`;
+            let endpoint = `profil/mensurations/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -69,7 +66,7 @@ export const UserMensurationModule = {
             })
         },
         createUserMensuration: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/mensurations/`;
+            let endpoint = `profil/mensurations/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_USER_MENSURATION', Object.assign(new UserMensurationModel(), r.data))
@@ -80,7 +77,7 @@ export const UserMensurationModule = {
             })
         },
         updateUserMensuration: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/mensurations/${payload.id}/`;
+            let endpoint = `profil/mensurations/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_USER_MENSURATION', Object.assign(new UserMensurationModel(), r.data))
@@ -91,7 +88,7 @@ export const UserMensurationModule = {
             })
         },
         deleteUserMensuration: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/mensurations/${payload.id}/`;
+            let endpoint = `profil/mensurations/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_USER_MENSURATION', payload)
@@ -102,7 +99,7 @@ export const UserMensurationModule = {
             })
         },
         updateMesure: function({commit}, [userMensurationId, payload]) {
-            let endpoint = `${DOMAIN}/profil/mensurations/${userMensurationId}/mesures/${payload.id}/`;
+            let endpoint = `profil/mensurations/${userMensurationId}/mesures/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_MESURE', [userMensurationId, r.data])
@@ -114,7 +111,7 @@ export const UserMensurationModule = {
         },
 
         loadUserMensurationForAdmin: async function({commit}, username) {
-            let endpoint = `${DOMAIN}/utilisateurs/${username}/mensurations/`;
+            let endpoint = `utilisateurs/${username}/mensurations/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {

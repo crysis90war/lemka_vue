@@ -1,7 +1,4 @@
 import ApiService from '@/services/api.service'
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const DetailModule = {
     namespaced: true,
@@ -44,7 +41,7 @@ export const DetailModule = {
     },
     actions: {
         loadDetails: async function({commit}, devis_id) {
-            let endpoint = `${DOMAIN}/details/${devis_id}/`;
+            let endpoint = `details/${devis_id}/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -59,7 +56,7 @@ export const DetailModule = {
             })
         },
         createDetail: function({commit}, [numero_devis, payload]) {
-            let endpoint = `${DOMAIN}/devis/${numero_devis}/details/`;
+            let endpoint = `devis/${numero_devis}/details/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_DETAIL', r.data)
@@ -70,7 +67,7 @@ export const DetailModule = {
             })
         },
         updateDetail: function({commit}, [numero_devis, payload]) {
-            let endpoint = `${DOMAIN}/devis/${numero_devis}/details/${payload.id}/`;
+            let endpoint = `devis/${numero_devis}/details/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_DETAIL', r.data)
@@ -81,7 +78,7 @@ export const DetailModule = {
             })
         },
         deleteDetail: function({commit}, [numero_devis, payload]) {
-            let endpoint = `${DOMAIN}/devis/${numero_devis}/details/${payload.id}/`;
+            let endpoint = `devis/${numero_devis}/details/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_DETAIL', payload)

@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const RendezVousModule = {
     namespaced: true,
@@ -60,7 +57,7 @@ export const RendezVousModule = {
     },
     actions: {
         loadRendezVous: async function({commit}) {
-            let endpoint = `${DOMAIN}/profil/rendez-vous/`;
+            let endpoint = `profil/rendez-vous/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -75,7 +72,7 @@ export const RendezVousModule = {
             })
         },
         createRendezVous: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/rendez-vous/`;
+            let endpoint = `profil/rendez-vous/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_RENDEZ_VOUS', r.data)
@@ -86,7 +83,7 @@ export const RendezVousModule = {
             })
         },
         annulerRendezVous: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/rendez-vous/${payload.id}/`;
+            let endpoint = `profil/rendez-vous/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 let item = {
                     'est_annule': !payload.est_annule
@@ -101,7 +98,7 @@ export const RendezVousModule = {
             })
         },
         loadHeuresDispo: async function({commit}, date) {
-            let endpoint = `${DOMAIN}/profil/available-hours/${date}/`;
+            let endpoint = `profil/available-hours/${date}/`;
             return await new Promise((resolve, reject) => {
                 ApiService.GETDatas(endpoint).then(r => {
                     commit('SET_AVAILABLE_HOURS_SUCCESS', r.data)
@@ -113,7 +110,7 @@ export const RendezVousModule = {
             })
         },
         loadAdminRDV: async function({commit}) {
-            let endpoint = `${DOMAIN}/rendezvous/`;
+            let endpoint = `rendezvous/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {

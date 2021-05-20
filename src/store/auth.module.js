@@ -1,8 +1,6 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
 import jwt_decode from "jwt-decode"
 
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 // const user = JSON.parse(sessionStorage.getItem('user'));
 const user = JSON.parse(localStorage.getItem('user'));
 // const initialState = user
@@ -53,7 +51,7 @@ export const AuthModule = {
     },
     actions: {
         login: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/login/`;
+            let endpoint = `auth/login/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('LOGIN_SUCCESS', r.data)
@@ -67,7 +65,7 @@ export const AuthModule = {
             })
         },
         facebookLogin: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/auth-social/facebook/`;
+            let endpoint = `auth-social/facebook/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('LOGIN_SUCCESS', r.data)
@@ -80,7 +78,7 @@ export const AuthModule = {
             })
         },
         loginGoogle: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/auth-social/google/`;
+            let endpoint = `auth-social/google/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('LOGIN_SUCCESS', r.data)
@@ -97,7 +95,7 @@ export const AuthModule = {
             window.location.reload()
         },
         register({commit}, payload) {
-            let endpoint = `${DOMAIN}/register/`;
+            let endpoint = `register/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('REGISTER_SUCCESS')

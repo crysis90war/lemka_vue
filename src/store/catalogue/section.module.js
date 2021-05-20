@@ -1,7 +1,4 @@
 import ApiService from '@/services/api.service';
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const SectionModule = {
     namespaced: true,
@@ -44,7 +41,7 @@ export const SectionModule = {
     },
     actions: {
         loadSections: async function({commit}) {
-            let endpoint = `${DOMAIN}/sections/`;
+            let endpoint = `sections/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -59,7 +56,7 @@ export const SectionModule = {
             })
         },
         createSection: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/rayons/`;
+            let endpoint = `rayons/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_SECTION', r.data)
@@ -70,7 +67,7 @@ export const SectionModule = {
             })
         },
         updateSection: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/rayons/${payload.id}/`;
+            let endpoint = `rayons/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_SECTION', r.data)
@@ -81,7 +78,7 @@ export const SectionModule = {
             })
         },
         deleteSection: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/rayons/${payload.id}/`;
+            let endpoint = `rayons/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_SECTION', payload)

@@ -1,7 +1,4 @@
 import ApiService from '@/services/api.service';
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const RayonModule = {
     namespaced: true,
@@ -44,7 +41,7 @@ export const RayonModule = {
     },
     actions: {
         loadRayons: async function({commit}) {
-            let endpoint = `${DOMAIN}/rayons/`;
+            let endpoint = `rayons/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -59,7 +56,7 @@ export const RayonModule = {
             })
         },
         createRayon: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/rayons/`;
+            let endpoint = `rayons/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_RAYON', r.data)
@@ -70,7 +67,7 @@ export const RayonModule = {
             })
         },
         updateRayon: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/rayons/${payload.id}/`;
+            let endpoint = `rayons/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_RAYON', r.data)
@@ -81,7 +78,7 @@ export const RayonModule = {
             })
         },
         deleteRayon: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/rayons/${payload.id}/`;
+            let endpoint = `rayons/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_RAYON', payload)

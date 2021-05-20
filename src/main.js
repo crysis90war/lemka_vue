@@ -23,10 +23,12 @@ import LTableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
 import {Carousel3d, Slide} from 'vue-carousel-3d'
 import LJumbotron from "@/components/LJumbotron";
 import VueAnalytics from "vue-analytics";
+// import {jwtInterceptor} from "@/helpers/jwt-interceptor";
+import {initFacebookSdk} from "@/helpers/init-facebook-sdk";
 
-Vue.config.productionTip = false
+// jwtInterceptor();
 
-console.log(Vue.config.productionTip)
+Vue.config.productionTip = process.env.VUE_APP_NODE_END === 'development';
 
 Vue.component('l-create-refresh', LCreateRefreshButtonGroup)
 Vue.component('multiselect', Multiselect)
@@ -49,9 +51,14 @@ Vue.use(VueAnalytics, {
 })
 Vue.mixin(titleMixin)
 
-new Vue({
-    i18n,
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
+initFacebookSdk().then(startApp)
+
+function startApp() {
+    new Vue({
+        i18n,
+        router,
+        store,
+        render: h => h(App)
+    }).$mount('#app')
+}
+

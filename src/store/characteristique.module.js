@@ -1,8 +1,5 @@
 import ApiService from "@/services/api.service";
 import CaracteristiqueModel from "@/models/characteristic.model";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const CharacteristiqueModule = {
     namespaced: true,
@@ -45,7 +42,7 @@ export const CharacteristiqueModule = {
     },
     actions: {
         loadCaracteristiques: function({commit}) {
-            let endpoint = `${DOMAIN}/caracteristiques/`;
+            let endpoint = `caracteristiques/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -60,7 +57,7 @@ export const CharacteristiqueModule = {
             })
         },
         createCaracteristique: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/caracteristiques/`;
+            let endpoint = `caracteristiques/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_CHARACTERISTIQUE', Object.assign(new CaracteristiqueModel(), r.data))
@@ -71,7 +68,7 @@ export const CharacteristiqueModule = {
             })
         },
         updateCaracteristique: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/caracteristiques/${payload.id}/`;
+            let endpoint = `caracteristiques/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_CHARACTERISTIQUE', Object.assign(new CaracteristiqueModel(), r.data))
@@ -82,7 +79,7 @@ export const CharacteristiqueModule = {
             })
         },
         deleteCaracteristique: function({commit}, caracteristique) {
-            let endpoint = `${DOMAIN}/caracteristiques/${caracteristique.id}`;
+            let endpoint = `caracteristiques/${caracteristique.id}`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_CHARACTERISTIQUE', caracteristique)

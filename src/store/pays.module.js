@@ -1,8 +1,5 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
 import PaysModel from "@/models/pays/pays.model";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const PaysModule = {
     namespaced: true,
@@ -50,7 +47,7 @@ export const PaysModule = {
     },
     actions: {
         loadCountries({commit}) {
-            let endpoint = `${DOMAIN}/pays/`;
+            let endpoint = `pays/`;
             return new Promise((resolve, reject) => {
                 commit('COUNTRIES_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -65,7 +62,7 @@ export const PaysModule = {
             })
         },
         createCountry({commit}, payload) {
-            let endpoint = `${DOMAIN}/pays/`;
+            let endpoint = `pays/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_COUNTRY', Object.assign(new PaysModel(), r.data))
@@ -76,7 +73,7 @@ export const PaysModule = {
             })
         },
         loadPays({commit}, pays_id) {
-            let endpoint = `${DOMAIN}/pays/${pays_id}/`;
+            let endpoint = `pays/${pays_id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.GETData(endpoint).then(r => {
                     commit('LOAD_PAYS', Object.assign(new PaysModel(), r.data))
@@ -87,7 +84,7 @@ export const PaysModule = {
             })
         },
         updateCountry({commit}, payload) {
-            let endpoint = `${DOMAIN}/pays/${payload.id}/`;
+            let endpoint = `pays/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_COUNTRY', Object.assign(new PaysModel(), r.data))
@@ -98,7 +95,7 @@ export const PaysModule = {
             })
         },
         deleteCountry({commit}, country) {
-            let endpoint = `${DOMAIN}/pays/${country.id}/`;
+            let endpoint = `pays/${country.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_COUNTRY', country)

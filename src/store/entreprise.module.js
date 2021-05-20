@@ -1,8 +1,5 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
 import EntrepriseModel from "@/models/entreprise.model";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const EntrepriseModule = {
     namespaced: true,
@@ -45,7 +42,7 @@ export const EntrepriseModule = {
     },
     actions: {
         loadEntreprises({commit}) {
-            let endpoint = `${DOMAIN}/entreprises/`;
+            let endpoint = `entreprises/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETData(endpoint).then(r => {
@@ -60,7 +57,7 @@ export const EntrepriseModule = {
             })
         },
         createEntreprise({commit}, payload) {
-            let endpoint = `${DOMAIN}/entreprises/`;
+            let endpoint = `entreprises/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_ENTREPRISE', Object.assign(new EntrepriseModel(), r.data))
@@ -71,7 +68,7 @@ export const EntrepriseModule = {
             })
         },
         updateEntreprise({commit}, payload) {
-            let endpoint = `${DOMAIN}/entreprises/${payload.id}/`;
+            let endpoint = `entreprises/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     console.log(r.data)
@@ -83,7 +80,7 @@ export const EntrepriseModule = {
             })
         },
         deleteEntreprise({commit}, payload) {
-            let endpoint = `${DOMAIN}/entreprises/${payload.id}/`;
+            let endpoint = `entreprises/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_ENTREPRISE', payload)

@@ -43,6 +43,7 @@
                   </b-button>
                   <b-button
                       variant="outline-danger"
+                      @click="supprimerArticle(article)"
                   >
                     Supprimer
                   </b-button>
@@ -435,6 +436,7 @@ export default {
       createTag: "Tags/createTag",
       createArticle: "Articles/createArticle",
       updateArticle: "Articles/updateArticle",
+      deleteArticle: "Articles/deleteArticle",
       createImage: "Articles/createImage",
       updateImage: "Articles/updateImage",
       deleteImage: "Articles/deleteImage"
@@ -519,6 +521,12 @@ export default {
           this.$router.push({name: this.routes.ARTICLES.name})
         }, 500)
       }
+    },
+
+    supprimerArticle: function(item) {
+      this.deleteArticle(item).then(() => {
+        this.$router.push({name: this.routes.ARTICLES.name})
+      })
     },
 
     toucheTypeService: function() {

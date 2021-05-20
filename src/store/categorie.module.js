@@ -1,8 +1,5 @@
 import CategorieModel from "@/models/categorie.model";
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const CategorieModule = {
     namespaced: true,
@@ -52,7 +49,7 @@ export const CategorieModule = {
     },
     actions: {
         loadCategories: function ({commit}) {
-            let endpoint = `${DOMAIN}/categories/`;
+            let endpoint = `categories/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -67,7 +64,7 @@ export const CategorieModule = {
             })
         },
         createCategorie: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/categories/`;
+            let endpoint = `categories/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_CATEGORIE', Object.assign(new CategorieModel(), r.data))
@@ -78,7 +75,7 @@ export const CategorieModule = {
             })
         },
         loadCategorie: function ({commit}, categorie_id) {
-            let endpoint = `${DOMAIN}/categories/${categorie_id}/`;
+            let endpoint = `categories/${categorie_id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.GETData(endpoint).then(r => {
                     commit('LOAD_CATEGORIE_SUCCESS', Object.assign(new CategorieModel(), r.data))
@@ -90,7 +87,7 @@ export const CategorieModule = {
             })
         },
         updateCategorie: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/categories/${payload.id}/`;
+            let endpoint = `categories/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint).then(r => {
                     commit('UPDATE_CATEGORIE', Object.assign(new CategorieModel(), r.data))
@@ -101,7 +98,7 @@ export const CategorieModule = {
             })
         },
         deleteCategorie: function ({commit}, categorie) {
-            let endpoint = `${DOMAIN}/categories/${categorie.id}/`;
+            let endpoint = `categories/${categorie.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_CATEGORIE', categorie)

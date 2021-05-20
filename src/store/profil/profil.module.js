@@ -1,8 +1,5 @@
-import LemkaHelpers from "@/helpers";
 import ApiService from "@/services/api.service";
 import ProfilModel from "@/models/profil.model";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const ProfilModule = {
     namespaced: true,
@@ -30,7 +27,7 @@ export const ProfilModule = {
     },
     actions: {
         loadProfil: function({commit}) {
-            let endpoint = `${DOMAIN}/profil/`;
+            let endpoint = `profil/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETData(endpoint).then(r => {
@@ -45,7 +42,7 @@ export const ProfilModule = {
             })
         },
         updateProfil: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/`;
+            let endpoint = `profil/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_PROFIL', Object.assign(new ProfilModel(), r.data))
@@ -57,7 +54,7 @@ export const ProfilModule = {
         },
 
         updateProfilImage: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/`;
+            let endpoint = `profil/`;
             return new Promise((resolve, reject) => {
                 ApiService.PATCHDate(endpoint, payload).then(r => {
                     commit('UPDATE_PROFIL', r.data)

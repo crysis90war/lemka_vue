@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const TVAModule = {
     namespaced: true,
@@ -44,7 +41,7 @@ export const TVAModule = {
     },
     actions: {
         loadTvas({commit}) {
-            let endpoint = `${DOMAIN}/tva/`;
+            let endpoint = `tva/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {

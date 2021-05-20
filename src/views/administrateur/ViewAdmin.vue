@@ -164,8 +164,7 @@ export default {
     next(vm => {
       const currentUser = vm.$store.getters["Auth/user"]
       if (currentUser.is_staff === true) {
-        const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
-        ApiService.GETData(DOMAIN + '/is-admin/').then(() => {
+        ApiService.GETData('is-admin/').then(() => {
           next();
         }, () => {
           next({name: LemkaHelpers.Routes.PROFIL_ROUTE.name})

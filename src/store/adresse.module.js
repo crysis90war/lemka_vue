@@ -1,8 +1,5 @@
 import AdresseModel from "@/models/adresse.model";
-import LemkaHelpers from "@/helpers";
 import ApiService from '@/services/api.service'
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const AdresseModule = {
     namespaced: true,
@@ -27,7 +24,7 @@ export const AdresseModule = {
     },
     actions: {
         loadAdresse: async function({commit}) {
-            let endpoint = `${DOMAIN}/profil/adresse/`;
+            let endpoint = `profil/adresse/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETData(endpoint).then(r => {
@@ -42,7 +39,7 @@ export const AdresseModule = {
             })
         },
         createAdresse({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/adresse/create/`;
+            let endpoint = `profil/adresse/create/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('SET_ADRESSE_SUCCESS', r.data)
@@ -53,7 +50,7 @@ export const AdresseModule = {
             })
         },
         updateAdresse({commit}, payload) {
-            let endpoint = `${DOMAIN}/profil/adresse/`;
+            let endpoint = `profil/adresse/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('SET_ADRESSE_SUCCESS', r.data)
@@ -64,7 +61,7 @@ export const AdresseModule = {
             })
         },
         loadAdresseByUsername: function ({commit}, username) {
-            let endpoint = `${DOMAIN}/utilisateurs/${username}/adresse/`;
+            let endpoint = `utilisateurs/${username}/adresse/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETData(endpoint).then(r => {

@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const ArticleModule = {
     namespaced: true,
@@ -87,7 +84,7 @@ export const ArticleModule = {
     },
     actions: {
         loadGlobalArticles: async function({commit}, params = "") {
-            let endpoint = `${DOMAIN}/public/articles/${params}`;
+            let endpoint = `public/articles/${params}`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -103,7 +100,7 @@ export const ArticleModule = {
 
         },
         loadArticles: async function ({commit}) {
-            let endpoint = `${DOMAIN}/articles/`;
+            let endpoint = `articles/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -118,7 +115,7 @@ export const ArticleModule = {
             })
         },
         createArticle: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/articles/`;
+            let endpoint = `articles/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_ARTICLE', r.data)
@@ -129,7 +126,7 @@ export const ArticleModule = {
             })
         },
         updateArticle: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/articles/${payload.slug}/`;
+            let endpoint = `articles/${payload.slug}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_ARTICLE', r.data)
@@ -139,11 +136,11 @@ export const ArticleModule = {
                 })
             })
         },
-        deleteArticle: function ({commit}, article) {
-            let endpoint = `${DOMAIN}/articles/${article.slug}/`;
+        deleteArticle: function ({commit}, payload) {
+            let endpoint = `articles/${payload.slug}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
-                    commit('DELETE_ARTICLE', article)
+                    commit('DELETE_ARTICLE', payload)
                     resolve(r)
                 }, error => {
                     reject(error)
@@ -151,7 +148,7 @@ export const ArticleModule = {
             })
         },
         createLike: function({commit}, slug) {
-            let endpoint = `${DOMAIN}/profil/articles/${slug}/like/`;
+            let endpoint = `profil/articles/${slug}/like/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, "").then(r => {
                     commit('UPDATE_ARTICLE', r.data)
@@ -162,7 +159,7 @@ export const ArticleModule = {
             })
         },
         deleteLike: function({commit}, slug) {
-            let endpoint = `${DOMAIN}/profil/articles/${slug}/like/`;
+            let endpoint = `profil/articles/${slug}/like/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('UPDATE_ARTICLE', r.data)
@@ -174,7 +171,7 @@ export const ArticleModule = {
         },
 
         createImage: function({commit}, [article_slug, payload]) {
-            let endpoint = `${DOMAIN}/articles/${article_slug}/images/`;
+            let endpoint = `articles/${article_slug}/images/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     console.log(r.data)
@@ -186,7 +183,7 @@ export const ArticleModule = {
             })
         },
         updateImage: function({commit}, [article_slug, payload]){
-            let endpoint = `${DOMAIN}/articles/${article_slug}/images/${payload.id}/`;
+            let endpoint = `articles/${article_slug}/images/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_IMAGE', [article_slug, r.data])
@@ -197,7 +194,7 @@ export const ArticleModule = {
             })
         },
         deleteImage: function ({commit}, [article_slug, image]) {
-            let endpoint = `${DOMAIN}/articles/${article_slug}/images/${image.id}/`;
+            let endpoint = `articles/${article_slug}/images/${image.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_IMAGE', [article_slug, image])

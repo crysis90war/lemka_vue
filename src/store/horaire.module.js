@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const HoraireModule = {
     namespaced: true,
@@ -44,7 +41,7 @@ export const HoraireModule = {
     },
     actions: {
         loadHoraires({commit}){
-            let endpoint = `${DOMAIN}/horaires/`;
+            let endpoint = `horaires/`;
             return new Promise((resolve, reject) => {
                 commit('HORAIRE_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -59,7 +56,7 @@ export const HoraireModule = {
             })
         },
         updateHoraire: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/horaires/${payload.id}/`;
+            let endpoint = `horaires/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_HORAIRE', r.data)

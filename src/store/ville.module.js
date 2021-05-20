@@ -1,8 +1,5 @@
-import LemkaHelpers from "@/helpers";
 import ApiService from "@/services/api.service";
 import VilleModel from "@/models/pays/ville.model";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const VilleModule = {
     namespaced: true,
@@ -51,7 +48,7 @@ export const VilleModule = {
     actions: {
         loadVilles({commit}, searchField = "") {
             let searchParam = `?search=${searchField}`;
-            let endpoint = `${DOMAIN}/villes/${searchField === "" ? searchField : searchParam}`;
+            let endpoint = `villes/${searchField === "" ? searchField : searchParam}`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -66,7 +63,7 @@ export const VilleModule = {
             })
         },
         createVille({commit}, payload) {
-            let endpoint = `${DOMAIN}/villes/`;
+            let endpoint = `villes/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_VILLE', Object.assign(new VilleModel(), r.data))
@@ -77,7 +74,7 @@ export const VilleModule = {
             })
         },
         loadCity({commit}, city_id) {
-            let endpoint = `${DOMAIN}/villes/${city_id}/`;
+            let endpoint = `villes/${city_id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.GETData(endpoint).then(r => {
                     commit('LOAD_CITY', Object.assign(new VilleModel(), r.data))
@@ -88,7 +85,7 @@ export const VilleModule = {
             })
         },
         updateVille({commit}, payload) {
-            let endpoint = `${DOMAIN}/villes/${payload.id}/`;
+            let endpoint = `villes/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_VILLE', Object.assign(new VilleModel(), r.data))
@@ -99,7 +96,7 @@ export const VilleModule = {
             })
         },
         deleteVille({commit}, ville) {
-            let endpoint = `${DOMAIN}/villes/${ville.id}/`;
+            let endpoint = `villes/${ville.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_VILLE', ville)

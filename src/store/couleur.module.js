@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const CouleurModule = {
     namespaced: true,
@@ -44,7 +41,7 @@ export const CouleurModule = {
     },
     actions: {
         loadCouleurs: async function({commit}) {
-            let endpoint = `${DOMAIN}/couleurs/`;
+            let endpoint = `couleurs/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -59,7 +56,7 @@ export const CouleurModule = {
             })
         },
         createCouleur: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/couleurs/`;
+            let endpoint = `couleurs/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_COULEUR', r.data)
@@ -70,7 +67,7 @@ export const CouleurModule = {
             })
         },
         updateCouleur: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/couleurs/${payload.id}/`;
+            let endpoint = `couleurs/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_COULEUR', r.data)
@@ -81,7 +78,7 @@ export const CouleurModule = {
             })
         },
         deleteCouleur: function({commit}, couleur) {
-            let endpoint = `${DOMAIN}/couleurs/${couleur.id}/`;
+            let endpoint = `couleurs/${couleur.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_COULEUR', couleur)

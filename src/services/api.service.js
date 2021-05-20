@@ -1,29 +1,61 @@
 import axios from "axios";
 import authHeader from "@/services/auth-header";
+import LemkaHelpers from "@/helpers";
+
+const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
+
+axios.defaults.baseURL = DOMAIN;
 
 class ApiService {
     GETDatas(endpoint) {
-        return axios.get(endpoint, {headers: authHeader()});
+        return axios({
+            method: 'get',
+            url: '/api/' + endpoint,
+            headers: authHeader()
+        })
     }
 
     POSTData(endpoint, payload) {
-        return axios.post(endpoint, payload, {headers: authHeader()});
+        return axios({
+            method: 'post',
+            url: '/api/' + endpoint,
+            data: payload,
+            headers: authHeader()
+        })
     }
 
     GETData(endpoint) {
-        return axios.get(endpoint, {headers: authHeader()});
+        return axios({
+            method: 'get',
+            url: '/api/' + endpoint,
+            headers: authHeader()
+        })
     }
 
     PUTData(endpoint, payload) {
-        return axios.put(endpoint, payload, {headers: authHeader()});
+        return axios({
+            method: 'put',
+            url: '/api/' + endpoint,
+            data: payload,
+            headers: authHeader()
+        })
     }
 
     PATCHDate(endpoint, payload) {
-        return axios.patch(endpoint, payload, {headers: authHeader()})
+        return axios({
+            method: 'patch',
+            url: '/api/' + endpoint,
+            data: payload,
+            headers: authHeader()
+        })
     }
 
     DELETEData(endpoint) {
-        return axios.delete(endpoint, {headers: authHeader()})
+        return axios({
+            method: 'DELETE',
+            url: '/api/' + endpoint,
+            headers: authHeader()
+        })
     }
 
     DESTROYSession() {

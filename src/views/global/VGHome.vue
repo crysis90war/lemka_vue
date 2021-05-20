@@ -153,13 +153,13 @@ export default {
   },
   methods: {
     loadLastArticles: async function() {
-      let endpoint = `${LemkaHelpers.Endpoints.DOMAIN}/public/last/`;
+      let endpoint = `public/last/`;
       await ApiService.GETDatas(endpoint).then(r => {
         this.newArticles = r.data
       })
     },
     loadPopularArticles: async function() {
-      let endpoint = `${LemkaHelpers.Endpoints.DOMAIN}/public/popular/`;
+      let endpoint = `public/popular/`;
       await ApiService.GETDatas(endpoint).then(r => {
         this.popularArticles = r.data
       })

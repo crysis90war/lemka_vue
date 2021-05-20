@@ -1,7 +1,4 @@
-import LemkaHelpers from "@/helpers";
 import ApiService from "@/services/api.service";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const MesureModule = {
     namespaced: true,
@@ -38,7 +35,7 @@ export const MesureModule = {
     },
     actions: {
         loadMesures: function ({commit}, userMensurationId) {
-            let endpoint = `${DOMAIN}/profil/mensurations/${userMensurationId}/mesures/`;
+            let endpoint = `profil/mensurations/${userMensurationId}/mesures/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -53,7 +50,7 @@ export const MesureModule = {
             })
         },
         updateMesure: function({commit}, [userMensurationId, payload]) {
-            let endpoint = `${DOMAIN}/profil/mensurations/${userMensurationId}/mesures/${payload.id}/`;
+            let endpoint = `profil/mensurations/${userMensurationId}/mesures/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_MESURE', r.data)

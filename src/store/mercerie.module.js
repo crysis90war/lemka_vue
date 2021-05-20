@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const MercerieModule = {
     namespaced: true,
@@ -104,7 +101,7 @@ export const MercerieModule = {
     },
     actions: {
         loadGlobalMerceries: function ({commit}, params = "") {
-            let endpoint = `${DOMAIN}/public/merceries/${params}`;
+            let endpoint = `public/merceries/${params}`;
             return new Promise((resolve, reject) => {
                 commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -119,7 +116,7 @@ export const MercerieModule = {
             })
         },
         loadMerceries: async function ({commit}) {
-            let endpoint = `${DOMAIN}/merceries/`;
+            let endpoint = `merceries/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -134,7 +131,7 @@ export const MercerieModule = {
             })
         },
         createMercerie: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/merceries/`;
+            let endpoint = `merceries/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_MERCERIE', r.data)
@@ -145,7 +142,7 @@ export const MercerieModule = {
             })
         },
         updateMercerie: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/merceries/${payload.id}/`;
+            let endpoint = `merceries/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_MERCERIE', r.data)
@@ -156,7 +153,7 @@ export const MercerieModule = {
             })
         },
         deleteMercerie: function ({commit}, mercerie) {
-            let endpoint = `${DOMAIN}/merceries/${mercerie.id}/`;
+            let endpoint = `merceries/${mercerie.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_MERCERIE', mercerie)
@@ -167,7 +164,7 @@ export const MercerieModule = {
             })
         },
         createCharacteristique: function ({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/`;
+            let endpoint = `merceries/${mercerie_id}/characteristiques/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_CATACTERISTIQUE', [mercerie_id, r.data])
@@ -178,7 +175,7 @@ export const MercerieModule = {
             })
         },
         updateCharacteristique: function ({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/${payload.id}/`;
+            let endpoint = `merceries/${mercerie_id}/characteristiques/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_CARACTERISTIQUE', [mercerie_id, r.data])
@@ -189,7 +186,7 @@ export const MercerieModule = {
             })
         },
         deleteCharacteristique: function ({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/characteristiques/${payload.id}/`;
+            let endpoint = `merceries/${mercerie_id}/characteristiques/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_CARACTERISTIQUE', [mercerie_id, payload])
@@ -200,7 +197,7 @@ export const MercerieModule = {
             })
         },
         createImage: function ({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/images/`;
+            let endpoint = `merceries/${mercerie_id}/images/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_IMAGE', [mercerie_id, r.data])
@@ -211,7 +208,7 @@ export const MercerieModule = {
             })
         },
         deleteImage: function({commit}, [mercerie_id, payload]) {
-            let endpoint = `${DOMAIN}/merceries/${mercerie_id}/images/${payload.id}/`;
+            let endpoint = `merceries/${mercerie_id}/images/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_IMAGE', [mercerie_id, payload])

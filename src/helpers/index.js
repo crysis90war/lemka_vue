@@ -9,7 +9,8 @@ const LemkaHelpers = {
     Regex,
     BSClass,
     Routes,
-    Endpoints
+    Endpoints,
+
 }
 
 export default LemkaHelpers

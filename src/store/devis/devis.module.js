@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const DevisModule = {
     namespaced: true,
@@ -80,7 +77,7 @@ export const DevisModule = {
     },
     actions: {
         loadDevis: function ({commit}) {
-            let endpoint = `${DOMAIN}/devis/`;
+            let endpoint = `devis/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -95,7 +92,7 @@ export const DevisModule = {
             })
         },
         createDevis: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/devis/`;
+            let endpoint = `devis/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_DEVIS', r.data)
@@ -106,7 +103,7 @@ export const DevisModule = {
             })
         },
         updateDevis: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/devis/${payload.id}/`;
+            let endpoint = `devis/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_DEVIS', r.data)
@@ -117,7 +114,7 @@ export const DevisModule = {
             })
         },
         updateDevisState: function({commit}, [devid_id, payload]) {
-          let endpoint = `${DOMAIN}/profil/devis/${devid_id}/`;
+          let endpoint = `profil/devis/${devid_id}/`;
           return new Promise((resolve, reject) => {
               ApiService.PUTData(endpoint, payload).then(r => {
                   commit('STATUS_DEVIS', [devid_id, r.data])
@@ -128,7 +125,7 @@ export const DevisModule = {
           })
         },
         createDetail: function ({commit}, [devis_id, payload]) {
-            let endpoint = `${DOMAIN}/devis/${devis_id}/details/`;
+            let endpoint = `devis/${devis_id}/details/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_DETAIL', [devis_id, r.data])
@@ -139,7 +136,7 @@ export const DevisModule = {
             })
         },
         updateDetail: function ({commit}, [devis_id, payload]) {
-            let endpoint = `${DOMAIN}/devis/${devis_id}/details/${payload.id}/`;
+            let endpoint = `devis/${devis_id}/details/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_DETAIL', [devis_id, r.data])
@@ -150,7 +147,7 @@ export const DevisModule = {
             })
         },
         deleteDetail: function ({commit}, [devis_id, payload]) {
-            let endpoint = `${DOMAIN}/devis/${devis_id}/details/${payload.id}/`;
+            let endpoint = `devis/${devis_id}/details/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_DETAIL', [devis_id, payload])
@@ -161,7 +158,7 @@ export const DevisModule = {
             })
         },
         loadUserDevis: function ({commit}) {
-            let endpoint = `${DOMAIN}/profil/devis/`;
+            let endpoint = `profil/devis/`;
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {

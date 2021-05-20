@@ -1,7 +1,4 @@
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const UtilisateurModule = {
     namespaced: true,
@@ -35,7 +32,7 @@ export const UtilisateurModule = {
     },
     actions: {
         loadUtilisateurs: async function ({commit}) {
-            let endpoint = `${DOMAIN}/utilisateurs/`;
+            let endpoint = `utilisateurs/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -50,7 +47,7 @@ export const UtilisateurModule = {
             })
         },
         updateUtilisateur: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/utilisateurs/${payload.username}/`;
+            let endpoint = `utilisateurs/${payload.username}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_UTILISATEUR', r.data)

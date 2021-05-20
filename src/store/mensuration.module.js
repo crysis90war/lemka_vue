@@ -1,8 +1,5 @@
 import MensurationModel from "@/models/mensuration.model";
 import ApiService from "@/services/api.service";
-import LemkaHelpers from "@/helpers";
-
-const DOMAIN = LemkaHelpers.Endpoints.DOMAIN;
 
 export const MensurationModule = {
     namespaced: true,
@@ -45,7 +42,7 @@ export const MensurationModule = {
     },
     actions: {
         loadMensurations: function ({commit}) {
-            let endpoint = `${DOMAIN}/mensurations/`;
+            let endpoint = `mensurations/`;
             return new Promise((resolve, reject) => {
                 commit('MENSURATIONS_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
@@ -60,7 +57,7 @@ export const MensurationModule = {
             })
         },
         createMensuration: function ({commit}, payload) {
-            let endpoint = `${DOMAIN}/mensurations/`;
+            let endpoint = `mensurations/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_MENSURATION', Object.assign(new MensurationModel(), r.data))
@@ -71,7 +68,7 @@ export const MensurationModule = {
             })
         },
         updateMensuration: function({commit}, payload) {
-            let endpoint = `${DOMAIN}/mensurations/${payload.id}/`;
+            let endpoint = `mensurations/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_MENSURATION', Object.assign(new MensurationModel(), r.data))
@@ -82,7 +79,7 @@ export const MensurationModule = {
             })
         },
         deleteMensuration: function({commit}, mensuration) {
-            let endpoint = `${DOMAIN}/mensurations/${mensuration.id}/`;
+            let endpoint = `mensurations/${mensuration.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_MENSURATION', mensuration)
