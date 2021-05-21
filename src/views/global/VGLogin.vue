@@ -5,7 +5,7 @@
         <img :src="logo" alt="" style="max-width: 250px"/>
         <div class="social-container">
           <b-button variant="light" class="btn-circle" @click="logInWithFacebook"><i class="fab fa-facebook-f"></i></b-button>
-          <b-button variant="light" class="btn-circle"><i class="fab fa-google-plus-g"></i></b-button>
+          <b-button variant="light" class="btn-circle" @click="logIn"><i class="fab fa-google-plus-g"></i></b-button>
         </div>
         <span>ou utilisez votre compte</span>
         <!-- region Email -->
@@ -55,7 +55,7 @@
         <div class="mt-3">
           <b-alert variant="danger" :show="message !== ''">{{ message }}</b-alert>
           <b-button
-              variant="outline-success"
+              class="btn-grad"
               :disabled="submitStatus === 'PENDING'"
               @click.prevent="submit"
           >
@@ -67,6 +67,7 @@
             />
             Se connecter
           </b-button>
+          <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
         </div>
       </div>
     </div>
@@ -83,6 +84,7 @@ import AuthModel from "@/models/auth.model";
 import {htmlTitle} from "@/utils/tools";
 import LInputField from "@/components/LInputField";
 import {commonMixin} from "@/mixins/common.mixin";
+import Google from "@/helpers/google";
 
 export default {
   name: "VGLogin",
@@ -95,8 +97,12 @@ export default {
     return htmlTitle('Login')
   },
   data() {
+    let apiKey = process.env.VUE_APP_GOOGLE_API_KEY;
+    let clientId = process.env.VUE_APP_GOOGLE_CLIENT_ID;
+
     return {
       user: new AuthModel(),
+      google: new Google({apiKey, clientId}),
       submitStatus: null,
       message: ''
     }
@@ -108,7 +114,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({login: "Auth/login", facebookLogin: "Auth/facebookLogin"}),
+    ...mapActions({login: "Auth/login", facebookLogin: "Auth/facebookLogin", googleLogin: "Auth/loginGoogle"}),
     submit: function () {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -131,6 +137,21 @@ export default {
           }, 5000)
         })
       }
+    },
+
+    // GOOGLE
+    logIn: async function () {
+      await this.google.singIn()
+
+      let auth_response = Google.AuthResponse
+      let payload = {
+        "auth_token": auth_response.id_token
+      }
+      this.googleLogin(payload).then(() => {
+        this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name})
+      }, error => {
+        this.message = error
+      })
     },
 
     // FACEBOOK
@@ -183,6 +204,9 @@ export default {
       }, {scope: 'public_profile,email'});
     }
   },
+  async mounted() {
+    await this.google.init()
+  },
   created() {
     if (this.loggedIn === true) {
       this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
@@ -202,5 +226,19 @@ export default {
   border-radius: 2rem;
   font-weight: 400;
   font-size: 0.8rem;
+}
+
+.btn-grad {
+  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%);
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: inline-block;
 }
 </style>

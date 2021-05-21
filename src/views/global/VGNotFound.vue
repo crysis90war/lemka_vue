@@ -38,7 +38,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #notfound {
   position: relative;
   height: 60vh;
@@ -46,10 +46,7 @@ export default {
 
 
 .btn-grad {
-  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6  51%, #834d9b  100%)
-}
-
-.btn-grad {
+  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%);
   margin: 10px;
   padding: 15px 45px;
   text-align: center;

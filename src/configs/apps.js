@@ -1,12 +1,9 @@
-/**
- * Created by denishuang on 2017/8/9.
- */
 export default {
     'auth': {
-        verbose_name: '用户身份',
+        verbose_name: "ID de l'utilisateur",
         models: {
             'group': {
-                verbose_name: '用户组',
+                verbose_name: "groupe d'utilisateurs",
                 dependents: []
             }
         }

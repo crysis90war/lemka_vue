@@ -2,12 +2,7 @@
   <div class="register">
     <div class="d-flex justify-content-center">
       <div class="my-5 text-center">
-        <img :src="logo" alt="" style="max-width: 250px;"/>
-
-        <div class="social-container">
-          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-        </div>
+        <img :src="logo" alt="" style="max-width: 250px;" class="mb-5"/>
 
         <!-- region Email -->
         <l-input-field
@@ -99,7 +94,7 @@
         <div class="mt-3">
           <b-alert variant="danger" :show="message !== ''">{{ message }}</b-alert>
 
-          <b-button variant="outline-success" :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
+          <b-button class="btn-grad" :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
             <b-spinner variant="success" type="grow" small v-show="submitStatus === 'PENDING'"/>
             S'inscrire
           </b-button>
@@ -181,5 +176,19 @@ export default {
 <style lang="scss" scoped>
 
 @import "src/assets/styles/login";
+
+.btn-grad {
+  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%);
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: inline-block;
+}
 
 </style>

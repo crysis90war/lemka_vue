@@ -82,6 +82,7 @@ export const AuthModule = {
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('LOGIN_SUCCESS', r.data)
+                    localStorage.setItem('user', JSON.stringify(r.data));
                     resolve(r.data)
                 }, error => {
                     commit('LOGIN_FAILURE')
