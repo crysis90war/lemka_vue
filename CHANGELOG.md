@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/crysis90war/lemka_vue/compare/v0.1.0...v0.1.1) (2021-05-21)
+
+
+### Features
+
+* google & facebook auth ([b4e21e5](https://github.com/crysis90war/lemka_vue/commit/b4e21e59dac9fc4ffea263ed64f4552d2c70bad7))
+
 ## 0.1.0 (2021-05-21)
 
 
