@@ -364,12 +364,12 @@
         <l-button-group
             :to="routes.PARAMETRES_ENTREPRISE.name"
             :submit="submit"
+            :params="true"
             :submit-status="submitStatus"
         />
         <!-- endregion -->
       </b-card-body>
     </b-card>
-
   </div>
 </template>
 
@@ -431,7 +431,10 @@ export default {
 
     submit: function () {
       this.$v.$touch()
-      if (this.$v.$invalid) {
+      if (this.$v.$invalid||
+          (this.isTouched === false && this.isInvalid === false) ||
+          (this.isTouched === true && this.isInvalid === true)) {
+        this.isTouched = true
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'

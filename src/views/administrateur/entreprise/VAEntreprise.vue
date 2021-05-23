@@ -82,7 +82,6 @@
         </b-card>
       </div>
     </div>
-    <l-jumbotron :data="entreprise"/>
   </div>
   <router-view v-else></router-view>
 </template>

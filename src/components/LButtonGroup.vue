@@ -8,11 +8,11 @@
         <i class="fas fa-arrow-left"></i>
       </b-button>
       <b-button
-          :variant="!params ? 'outline-primary' : 'outline-success'"
+          :variant="!params ? 'outline-success' : 'outline-primary'"
           :disabled="submitStatus === 'PENDING'"
           @click.prevent="submit"
       >
-        {{ !params ? 'Modifier' : 'Ajouter' }}
+        {{ !params ? 'Ajouter' : 'Modifier' }}
       </b-button>
     </b-button-group>
   </div>

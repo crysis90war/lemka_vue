@@ -1,47 +1,49 @@
 <template>
-  <div v-if="$route.name === routes.PARAMETRES_GENRE.name">
+  <div class="genres">
+    <div v-if="$route.name === routes.PARAMETRES_GENRE.name">
 
-    <b-button :to="{name: routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name}"
-              variant="outline-success"
-              size="sm">
-      Ajouter genre
-    </b-button>
+      <l-table-view
+          :table-busy="busy"
+          :table-datas="genres"
+          :table-fields="fields"
+          :load-data="loadGenres"
+          :update-route-to-name="routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name"
+      >
+        <template #cell(actions)="data">
+          <l-table-button-update-delete
+              :update-route-to-name="routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name"
+              :item-id="data.item.id"
+              @clickShowModal="showModal('delete-modal-' + data.item.id)"
+          />
 
-    <b-table :items="genres" :fields="fields" :busy="busy"
-             stacked="md" small show-empty hover bordered fixed
-             class="text-center mt-3">
+          <l-table-delete-modal
+              :modal-id="data.item.id"
+              :modal-title="data.item.genre"
+              :modal-text="data.item.genre"
+              @clickHideModal="hideModal('delete-modal-'+data.item.id)"
+              @clickDelete="supprimerGenre(data.item)"
+          />
+        </template>
+      </l-table-view>
+    </div>
 
-      <template #table-busy>
-        <l-table-busy/>
-      </template>
-
-      <template #empty>
-        <l-table-empty/>
-      </template>
-
-      <template #cell(genre)="data">
-        <b-link :to="{name: routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
-          {{ data.item.genre }}
-        </b-link>
-      </template>
-
-      <template #cell(actions)="data">
-        <b-button variant="outline-danger" size="sm" class="mr-1"
-                  @click="deleteGenre(data.item)">
-          Suprrimer
-        </b-button>
-      </template>
-    </b-table>
+    <router-view v-else></router-view>
   </div>
-  <router-view v-else></router-view>
+
 </template>
 
 <script>
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
+import LTableView from "@/components/Table/LTableView";
+import {commonMixin} from "@/mixins/common.mixin";
+import LTableButtonUpdateDelete from "@/components/Table/LTableButtonUpdateDelete";
+import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
 
 export default {
   name: "VAGenres",
+  components: {LTableDeleteModal, LTableButtonUpdateDelete, LTableView},
+  mixins: [commonMixin],
   data() {
     return {
       fields: [
@@ -57,12 +59,19 @@ export default {
     ...mapGetters({genres: 'Genres/genres', busy: 'Genres/loadingStatus'})
   },
   methods: {
-    ...mapActions({deleteGenre: 'Genres/deleteGenre'})
+    ...mapActions({deleteGenre: 'Genres/deleteGenre', loadGenres: "Genres/loadGenres"}),
+    supprimerGenre: function(item) {
+      this.deleteGenre(item)
+      this.hideModal('delete-modal-' + item.id)
+    },
+    initialisation: async function() {
+      if (this.genres.length === 0) {
+        await this.loadGenres()
+      }
+    }
   },
   created() {
-    if (this.genres.length === 0) {
-      this.$store.dispatch('Genres/loadGenres')
-    }
+    this.initialisation()
   }
 }
 </script>

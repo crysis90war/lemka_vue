@@ -1,54 +1,48 @@
 <template>
-  <div v-if="$route.name === routes.PARAMETRES_SERVICE.name">
-    <b-button-group>
-      <b-button variant="outline-success" size="sm" :to="{name: routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name}">
-        {{ routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.value }}
-      </b-button>
-      <b-button variant="outline-primary" size="sm" @click="loadOrRefresh">
-        <i class="fas fa-sync-alt"></i>
-      </b-button>
-    </b-button-group>
+  <div class="services">
+    <div v-if="$route.name === routes.PARAMETRES_SERVICE.name">
+      <l-table-view
+          :table-busy="busy"
+          :table-datas="typeServices"
+          :table-fields="fields"
+          :load-data="loadTypeServices"
+          :update-route-to-name="routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name"
+      >
+        <template #cell(actions)="data">
+          <l-table-button-update-delete
+              :update-route-to-name="routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name"
+              :item-id="data.item.id"
+              @clickShowModal="showModal('delete-modal-' + data.item.id)"
+          />
 
-    <b-table :items="typeServices" :fields="fields" :busy="busy"
-             small show-empty hover bordered fixed stacked="md" class="text-center mt-3">
+          <l-table-delete-modal
+              :modal-id="data.item.id"
+              :modal-title="data.item.type_service"
+              :modal-text="data.item.type_service"
+              @clickHideModal="hideModal('delete-modal-'+data.item.id)"
+              @clickDelete="supprimerService(data.item)"
+          />
+        </template>
+      </l-table-view>
+    </div>
 
-      <template #table-busy>
-        <div class="text-center text-secondary">
-          <b-spinner small class="align-middle mr-2"></b-spinner>
-          <strong class="align-middle">Chargement...</strong>
-        </div>
-      </template>
-
-      <template #empty>
-        <div class="text-center">
-          <p>Il n'y a aucun enregistrement à afficher</p>
-        </div>
-      </template>
-
-      <template #cell(type_service)="data">
-        <b-link :to="{name: routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name, params: {id: data.item.id}}">
-          {{ data.item.type_service }}
-        </b-link>
-      </template>
-
-      <template #cell(actions)="data">
-        <b-button variant="outline-danger" size="sm" class="mr-1" @click="deleteTypeService(data.item)">
-          Suprrimer
-        </b-button>
-      </template>
-    </b-table>
+    <router-view v-else></router-view>
   </div>
-
-  <router-view v-else></router-view>
 </template>
 
 <script>
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 import TypeServiceModel from "@/models/type_service.model";
+import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
+import LTableButtonUpdateDelete from "@/components/Table/LTableButtonUpdateDelete";
+import LTableView from "@/components/Table/LTableView";
+import {commonMixin} from "@/mixins/common.mixin";
 
 export default {
   name: "VAServices",
+  components: {LTableDeleteModal, LTableButtonUpdateDelete, LTableView},
+  mixins: [commonMixin],
   data() {
     return {
       fields: TypeServiceModel.tableFields,
@@ -59,15 +53,19 @@ export default {
     ...mapGetters({typeServices: 'TypeServices/typeServices', busy: 'TypeServices/loadingStatus'})
   },
   methods: {
-    ...mapActions({deleteTypeService: 'TypeServices/deleteTypeService'}),
-    loadOrRefresh: function() {
-      this.$store.dispatch('TypeServices/loadTypeServices')
+    ...mapActions({deleteTypeService: 'TypeServices/deleteTypeService', loadTypeServices: "TypeServices/loadTypeServices"}),
+    initialisation: async function () {
+      if (this.typeServices.length === 0) {
+        await this.loadTypeServices()
+      }
     },
+    supprimerService: function(item) {
+      this.deleteTypeService(item)
+      this.hideModal('delete-modal-' + item.id)
+    }
   },
   created() {
-    if (this.typeServices.length === 0) {
-      this.loadOrRefresh()
-    }
+    this.initialisation()
   }
 }
 </script>

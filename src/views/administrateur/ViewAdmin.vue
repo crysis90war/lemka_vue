@@ -154,7 +154,6 @@ export default {
     if (!this.currentUser) {
       this.$router.push({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
     } else {
-      this.initialisation()
       if (this.$route.name === LemkaHelpers.Routes.ADMIN_ROUTE.name) {
         this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
       }

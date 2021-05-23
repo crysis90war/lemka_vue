@@ -1,20 +1,21 @@
 <template>
-  <b-card title="Ajouter entreprise" :class="BSClass.CARD_BORDERLESS_SHADOW">
-    <b-card-body>
-      <b-form>
+  <div class="entreprise_ajouter">
+    <l-spinner v-if="isLoading === true"/>
+
+    <b-card title="Ajouter entreprise" :class="BSClass.CARD_BORDERLESS_SHADOW">
+      <b-card-body>
+        <!-- region Nom de société / Numéro de TVA -->
         <b-row>
           <b-col lg="6">
-            <b-form-group
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.nom_societe.$model"
                 label="Nom de société"
                 description="Veuillez encoder le nom de la société"
+                placeholder="Nom de société ..."
+                :state="validateState($v.entreprise, 'nom_societe')"
             >
-              <b-form-input
-                  v-model="$v.entreprise.nom_societe.$model"
-                  type="text"
-                  placeholder="Nom de société ..."
-                  :state="validateState('nom_societe')"
-              />
-              <b-form-invalid-feedback>
+              <template #invalid-feedback>
                 <l-invalid-feedback
                     :condition="!$v.entreprise.nom_societe.required"
                     :error-message="required()"
@@ -27,22 +28,20 @@
                     :condition="!$v.entreprise.nom_societe.maxLength"
                     :errorMessage="minLength($v.entreprise.nom_societe.$params.maxLength.max)"
                 />
-              </b-form-invalid-feedback>
-            </b-form-group>
+              </template>
+            </l-input-field>
           </b-col>
 
           <b-col lg="6">
-            <b-form-group
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.numero_tva.$model"
                 label="Numéro de TVA"
                 description="Veuillez encoder le numéro de TVA de la société"
+                placeholder="Numero de tva ..."
+                :state="validateState($v.entreprise, 'numero_tva')"
             >
-              <b-form-input
-                  v-model="$v.entreprise.numero_tva.$model"
-                  type="text"
-                  placeholder="Numero de tva ..."
-                  :state="validateState('numero_tva')"
-              />
-              <b-form-invalid-feedback>
+              <template #invalid-feedback>
                 <l-invalid-feedback
                     :condition="!$v.entreprise.numero_tva.required"
                     :error-message="required()"
@@ -55,24 +54,25 @@
                     :condition="!$v.entreprise.numero_tva.maxLength"
                     :errorMessage="minLength($v.entreprise.numero_tva.$params.maxLength.max)"
                 />
-              </b-form-invalid-feedback>
-            </b-form-group>
+              </template>
+            </l-input-field>
           </b-col>
         </b-row>
+        <!-- endregion -->
 
+        <!-- region Email / Tél / Site Web -->
         <b-row>
-          <b-col lg="4">
-            <b-form-group
+          <b-col lg="6">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.mail_contact.$model"
                 label="Email"
                 description="Veuillez encoder l'email de la société"
+                placeholder="Email ..."
+                type="email"
+                :state="validateState($v.entreprise, 'mail_contact')"
             >
-              <b-form-input
-                  v-model="$v.entreprise.mail_contact.$model"
-                  type="email"
-                  placeholder="Email ..."
-                  :state="validateState('mail_contact')"
-              />
-              <b-form-invalid-feedback>
+              <template #invalid-feedback>
                 <l-invalid-feedback
                     :condition="!$v.entreprise.mail_contact.required"
                     :error-message="required()"
@@ -89,22 +89,21 @@
                     :condition="!$v.entreprise.mail_contact.email"
                     :errorMessage="email()"
                 />
-              </b-form-invalid-feedback>
-            </b-form-group>
+              </template>
+            </l-input-field>
           </b-col>
 
-          <b-col lg="4">
-            <b-form-group
+          <b-col lg="6">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.numero_tel.$model"
                 label="Tél."
                 description="Veuillez encoder le numéro de téléphone"
+                placeholder="Tél ..."
+                type="tel"
+                :state="validateState($v.entreprise, 'numero_tel')"
             >
-              <b-form-input
-                  v-model="$v.entreprise.numero_tel.$model"
-                  type="tel"
-                  placeholder="Tél ..."
-                  :state="validateState('numero_tel')"
-              />
-              <b-form-invalid-feedback>
+              <template #invalid-feedback>
                 <l-invalid-feedback
                     :condition="!$v.entreprise.numero_tel.required"
                     :error-message="required()"
@@ -121,96 +120,17 @@
                     :condition="!$v.entreprise.numero_tel.maxLength"
                     :errorMessage="maxLength($v.entreprise.numero_tel.$params.maxLength.max)"
                 />
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-
-          <b-col lg="4">
-            <b-form-group
-                label="Site web"
-                description="Veuillez encoder le site web"
-            >
-              <b-form-input
-                  v-model="$v.entreprise.site_web.$model"
-                  type="url"
-                  placeholder="https://www.exemple.be"
-                  :state="validateState('site_web')"
-              />
-              <b-form-invalid-feedback>
-                <l-invalid-feedback
-                    :condition="!$v.entreprise.site_web.required"
-                    :error-message="required()"
-                />
-                <l-invalid-feedback
-                    :condition="!$v.entreprise.site_web.url"
-                    :error-message="url()"
-                />
-              </b-form-invalid-feedback>
-            </b-form-group>
+              </template>
+            </l-input-field>
           </b-col>
         </b-row>
+        <!-- endregion -->
 
-        <b-row>
-          <b-col lg="8">
-            <b-form-group
-                label="Rue"
-                description="Veuillez encoder la rue"
-            >
-              <b-form-input
-                  v-model="$v.entreprise.rue.$model"
-                  type="text"
-                  placeholder="Rue ..."
-                  :state="validateState('rue')"
-              />
-              <b-form-invalid-feedback>
-                <l-invalid-feedback
-                    :condition="!$v.entreprise.rue.required"
-                    :error-message="required()"
-                />
-                <l-invalid-feedback
-                    :condition="!$v.entreprise.rue.minLength"
-                    :errorMessage="minLength($v.entreprise.rue.$params.minLength.min)"
-                />
-                <l-invalid-feedback
-                    :condition="!$v.entreprise.rue.maxLength"
-                    :errorMessage="maxLength($v.entreprise.rue.$params.maxLength.max)"
-                />
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-
-          <b-col lg="4">
-            <b-form-group
-                label="Numéro"
-                description="Veuillez encoder le numéro"
-            >
-              <b-form-input
-                  v-model="$v.entreprise.numero.$model"
-                  type="text"
-                  placeholder="Numéro ..."
-                  :state="validateState('numero')"
-              />
-              <b-form-invalid-feedback>
-                <l-invalid-feedback
-                    :condition="!$v.entreprise.numero.required"
-                    :error-message="required()"
-                />
-                <l-invalid-feedback
-                    :condition="!$v.entreprise.numero.minLength"
-                    :errorMessage="minLength($v.entreprise.numero.$params.minLength.min)"
-                />
-                <l-invalid-feedback
-                    :condition="!$v.entreprise.numero.alphaNum"
-                    :errorMessage="alphaNum()"
-                />
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-        </b-row>
-
+        <!-- region Commune -->
+        <hr>
         <b-form-group
-            label="Ville"
-            description="Selectionn selectionner votre ville"
+            label="Commune"
+            description="Veuillez selectionner la Commune ou se trouve votre entreprise"
         >
           <multiselect
               v-model="entreprise.ville"
@@ -234,7 +154,7 @@
               @close="onTouch"
           >
             <template slot="singleLabel" slot-scope="{ option }">
-              <span>{{ cityOption(option) }}</span>
+              <span>{{ option.code_postale }} - {{ option.ville }}</span>
             </template>
             <template slot="option" slot-scope="{ option }">
               <span>{{ option.code_postale }} - {{ option.ville }}</span>
@@ -242,27 +162,214 @@
             <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
           </multiselect>
         </b-form-group>
+        <!-- endregion -->
 
-        <b-button-group>
-          <b-button
-              variant="outline-success"
-              type="button"
-              @click.stop.prevent="submit"
-              :disabled="submitStatus === 'PENDING'"
-          >
-            Créer
-          </b-button>
-          <b-button
-              variant="outline-danger"
-              :to="{name: link}"
-          >
-            Retour
-          </b-button>
-        </b-button-group>
-      </b-form>
-    </b-card-body>
-    <l-jumbotron :data="entreprise"/>
-  </b-card>
+        <!-- region Rue / Numéro -->
+        <b-row>
+          <b-col lg="8">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.rue.$model"
+                label="Rue"
+                description="Veuillez encoder la rue de l'entreprise"
+                placeholder="Rue ..."
+                :state="validateState($v.entreprise, 'rue')"
+            >
+              <template #invalid-feedback>
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.rue.required"
+                    :error-message="required"
+                />
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.rue.minLength"
+                    :errorMessage="minLength($v.entreprise.rue.$params.minLength.min)"
+                />
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.rue.maxLength"
+                    :errorMessage="maxLength($v.entreprise.rue.$params.maxLength.max)"
+                />
+              </template>
+            </l-input-field>
+          </b-col>
+
+          <b-col lg="4">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.numero.$model"
+                label="Numéro"
+                description="Veuillez encoder le numéro"
+                placeholder="Numéro ..."
+                :state="validateState($v.entreprise, 'numero')"
+            >
+              <template #invalid-feedback>
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.numero.required"
+                    :error-message="required()"
+                />
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.numero.minLength"
+                    :errorMessage="minLength($v.entreprise.numero.$params.minLength.min)"
+                />
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.numero.alphaNum"
+                    :errorMessage="alphaNum()"
+                />
+              </template>
+            </l-input-field>
+          </b-col>
+        </b-row>
+        <!-- endregion -->
+
+        <!-- region A propos résumé -->
+        <hr>
+        <l-input-field
+            :text-area-type="true"
+            v-model="$v.entreprise.a_propos_resume.$model"
+            label="À propos résumé"
+            description="Veuillez encoder un petit résumé de votre entreprise"
+            :state="validateState($v.entreprise, 'a_propos_resume')"
+        >
+          <template #invalid-feedback>
+            <l-invalid-feedback
+                :condition="!$v.entreprise.a_propos_resume.maxLength"
+                :errorMessage="maxLength($v.entreprise.a_propos_resume.$params.maxLength.max)"
+            />
+          </template>
+        </l-input-field>
+        <!-- endregion -->
+
+        <!-- region A propos résumé -->
+        <l-input-field
+            :text-area-type="true"
+            v-model="$v.entreprise.a_propos_complet.$model"
+            label="À propos complet"
+            description="Veuillez encoder une description de vos activités"
+            :state="validateState($v.entreprise, 'a_propos_complet')"
+        >
+          <template #invalid-feedback>
+            <l-invalid-feedback
+                :condition="!$v.entreprise.a_propos_complet.maxLength"
+                :errorMessage="maxLength($v.entreprise.a_propos_complet.$params.maxLength.max)"
+            />
+          </template>
+        </l-input-field>
+        <!-- endregion -->
+
+        <!-- region Web, facebook, instagram, twitter, linkedin-->
+        <hr>
+        <b-row>
+          <b-col lg="4">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.site_web.$model"
+                label="Site web"
+                description="Veuillez encoder le site web de l'entreprise"
+                placeholder="https://www.exemple.be"
+                type="url"
+                :state="validateState($v.entreprise, 'site_web')"
+            >
+              <template #invalid-feedback>
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.site_web.required"
+                    :error-message="required()"
+                />
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.site_web.url"
+                    :error-message="url()"
+                />
+              </template>
+            </l-input-field>
+          </b-col>
+
+          <b-col lg="4">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.facebook_link.$model"
+                label="Facebook"
+                description="Veuillez encoder le lien vers la page facebook"
+                placeholder="https://www.exemple.be"
+                type="url"
+                :state="validateState($v.entreprise, 'facebook_link')"
+            >
+              <template #invalid-feedback>
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.facebook_link.url"
+                    :error-message="url()"
+                />
+              </template>
+            </l-input-field>
+          </b-col>
+
+          <b-col lg="4">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.instagram_link.$model"
+                label="Instagram"
+                description="Veuillez encoder le lien vers la page instagram"
+                placeholder="https://www.exemple.be"
+                type="url"
+                :state="validateState($v.entreprise, 'instagram_link')"
+            >
+              <template #invalid-feedback>
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.instagram_link.url"
+                    :error-message="url()"
+                />
+              </template>
+            </l-input-field>
+          </b-col>
+
+          <b-col lg="4">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.twitter_link.$model"
+                label="Twitter"
+                description="Veuillez encoder le lien vers la page twitter"
+                placeholder="https://www.exemple.be"
+                type="url"
+                :state="validateState($v.entreprise, 'twitter_link')"
+            >
+              <template #invalid-feedback>
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.twitter_link.url"
+                    :error-message="url()"
+                />
+              </template>
+            </l-input-field>
+          </b-col>
+
+          <b-col lg="4">
+            <l-input-field
+                :input-type="true"
+                v-model="$v.entreprise.linkedin_link.$model"
+                label="LinkedIn"
+                description="Veuillez encoder le lien vers la page linkedin"
+                placeholder="https://www.exemple.be"
+                type="url"
+                :state="validateState($v.entreprise, 'linkedin_link')"
+            >
+              <template #invalid-feedback>
+                <l-invalid-feedback
+                    :condition="!$v.entreprise.linkedin_link.url"
+                    :error-message="url()"
+                />
+              </template>
+            </l-input-field>
+          </b-col>
+        </b-row>
+        <!-- endregion -->
+
+        <!-- region Boutons -->
+        <hr>
+        <l-button-group
+            :to="routes.PARAMETRES_ENTREPRISE.name"
+            :submit="submit"
+            :submit-status="submitStatus"
+        />
+        <!-- endregion -->
+      </b-card-body>
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -273,9 +380,12 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
 import {multiSelectValidationMixin} from "@/mixins/multiselect_validation.mixin";
+import LButtonGroup from "@/components/LButtonGroup";
+import LInputField from "@/components/LInputField";
 
 export default {
   name: "VAEntrepriseAdd",
+  components: {LButtonGroup, LInputField},
   mixins: [validationMixin, validationMessageMixin, multiSelectValidationMixin, commonMixin],
   validations: {
     entreprise: EntrepriseModel.validations
@@ -285,20 +395,31 @@ export default {
       entreprise: new EntrepriseModel(),
       submitStatus: null,
 
-      link: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name,
+      routes: LemkaHelpers.Routes,
       BSClass: LemkaHelpers.BSClass,
     }
   },
   computed: {
-    ...mapGetters({villes: "Villes/villes", loadingStatus: "Villes/loadingStatus"}),
+    ...mapGetters({villes: "Villes/villes", loadingStatus: "Villes/loadingStatus", entreprises: 'Entreprises/entreprises'}),
     isInvalid() {
       return this.isTouched && this.entreprise.ville.id === null
     },
   },
   methods: {
-    ...mapActions({loadVilles: "Villes/loadVilles", createEntreprise: "Entreprises/createEntreprise"}),
-    chargerVilles: async function () {
-      await this.loadVilles()
+    ...mapActions({loadVilles: "Villes/loadVilles", createEntreprise: "Entreprises/createEntreprise", loadEntreprises: 'Entreprises/loadEntreprises'}),
+    initialisation: async function () {
+      this.toggleLoading()
+      if (this.villes.length === 0) {
+        await this.loadVilles()
+      }
+      if (this.entreprises.length === 0) {
+        await this.loadEntreprises()
+      }
+      if(this.entreprises.length > 0) {
+        await this.$router.push({name: this.routes.PARAMETRES_ENTREPRISE.name})
+        this.toggleLoading()
+      }
+      this.toggleLoading()
     },
 
     updateSelect: async function (query) {
@@ -310,6 +431,7 @@ export default {
       if (this.$v.$invalid ||
           (this.isTouched === false && this.isInvalid === false) ||
           (this.isTouched === true && this.isInvalid === true)) {
+        this.isTouched = true
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
@@ -321,13 +443,8 @@ export default {
       }
     },
 
-    validateState(name) {
-      const {$dirty, $error} = this.$v.entreprise[name];
-      return $dirty ? !$error : null;
-    },
-
-    cityOption: function(option) {
-      if (option.id === null){
+    cityOption: function (option) {
+      if (option.id === null) {
         return null
       } else {
         return `${option.code_postale} - ${option.ville}`
@@ -336,21 +453,7 @@ export default {
   },
 
   created() {
-    this.chargerVilles()
-  },
-
-  async beforeRouteEnter(to, from, next) {
-    next(vm => {
-      const entreprises = vm.$store.getters["Entreprises/entreprises"]
-      if (entreprises.length === 0) {
-        vm.$store.dispatch("Entreprises/loadEntreprises")
-      }
-      if (entreprises.length === 0) {
-        next()
-      } else {
-        next({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
-      }
-    })
+    this.initialisation()
   }
 }
 </script>
