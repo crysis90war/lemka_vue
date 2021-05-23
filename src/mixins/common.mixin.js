@@ -5,7 +5,8 @@ export const commonMixin = {
         return {
             isLoading: false,
             message: "",
-            variant: "success"
+            variant: "success",
+            submitStatus: null,
         }
     },
     methods: {

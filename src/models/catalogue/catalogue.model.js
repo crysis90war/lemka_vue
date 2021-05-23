@@ -11,6 +11,13 @@ export default class CatalogueModel {
         this.type_produit = R.is(Object, json.type_produit) ? new TypeProduitModel(json.type_produit) : new TypeProduitModel()
     }
 
+    fullCatalogue() {
+        let rayon = this.rayon.rayon;
+        let section = this.section.section;
+        let type_produit = this.type_produit.type_produit
+        return `${rayon} / ${section} / ${type_produit}`
+    }
+
     toCreatePayload() {
         return {
             ref_rayon: this.rayon.id,
@@ -27,6 +34,12 @@ export default class CatalogueModel {
     }
 
     static get tableFields() {
-        return []
+        return [
+            {key: 'id', label: '#'},
+            {key: 'rayon', label: 'Rayon', sortable: true},
+            {key: 'section', label: 'Section', sortable: true},
+            {key: 'type_produit', label: 'Type Produit', sortable: true},
+            {key: 'actions', label: 'Actions'}
+        ]
     }
 }

@@ -68,6 +68,14 @@ export const Routes = {
     PARAMETRES_MENSURATION: {name: AdminView + 'Mensuration', value: 'Mensurations'},
     PARAMETRES_MENSURATION_ADD_OR_UPDATE: {name: AdminView + 'MensurationAddOrUpdate', value: 'Ajouter mensuration'},
     PARAMETRES_SERVICE: {name: AdminView + 'Service', value: 'Services'},
-    PARAMETRES_SERVICE_ADD_OR_UPDATE: {name: AdminView + 'ServiceAdd', value: 'Ajouter un service'},
+    PARAMETRES_SERVICE_ADD_OR_UPDATE: {name: AdminView + 'ServiceAdd', value: 'Ajout service'},
+    PARAMETRES_COULEUR: {name: AdminView + 'Couleur', value: 'Couleurs'},
+    PARAMETRES_COULEUR_ADD_OR_UPDATE: {name: AdminView + 'CouleurAddOrUpdate', value: 'Ajout couleur'},
+    PARAMETRES_CHARACTERISTIQUE: {name: AdminView + 'Characteristique', value: 'Characteristiques'},
+    PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE: {name: AdminView + 'CharacteristiqueAddOrUpdate', value: 'Ajout characteristique'},
+    PARAMETRES_CATEGORIE: {name: AdminView + 'Categorie', value: 'Categories'},
+    PARAMETRES_CATEGORIE_ADD_OR_UPDATE: {name: AdminView + 'CategorieAddOrUpdate', value: 'Ajout categorie'},
+    PARAMETRES_CATALOGUE: {name: AdminView + 'Catalogue', value: 'Catalogues'},
+    PARAMETRES_CATALOGUE_ADD_OR_UPDATE: {name: AdminView + 'CatalogueAddOrUpdate', value: 'Ajout catalogue'},
     // endregion
 }

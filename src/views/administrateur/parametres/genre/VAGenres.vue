@@ -60,14 +60,14 @@ export default {
   },
   methods: {
     ...mapActions({deleteGenre: 'Genres/deleteGenre', loadGenres: "Genres/loadGenres"}),
-    supprimerGenre: function(item) {
-      this.deleteGenre(item)
-      this.hideModal('delete-modal-' + item.id)
-    },
     initialisation: async function() {
       if (this.genres.length === 0) {
         await this.loadGenres()
       }
+    },
+    supprimerGenre: function(item) {
+      this.deleteGenre(item)
+      this.hideModal('delete-modal-' + item.id)
     }
   },
   created() {

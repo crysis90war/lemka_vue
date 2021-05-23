@@ -23,6 +23,8 @@ import VAMensurations from "@/views/administrateur/parametres/mensuration/VAMens
 import VAMensurationAddOrUpdate from "@/views/administrateur/parametres/mensuration/VAMensurationAddOrUpdate";
 import VAServices from "@/views/administrateur/parametres/service/VAServices";
 import VAServiceAddOrUpdate from "@/views/administrateur/parametres/service/VAServiceAddOrUpdate";
+import VAHoraire from "@/views/administrateur/horaire/VAHoraire";
+import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate";
 // endregion
 
 // region User views
@@ -38,6 +40,8 @@ import VUDemandeDevis from "@/views/utilisateur/demande_de_devis/VUDemandeDevis"
 import VUDemandeDevisAddOrUpdate from "@/views/utilisateur/demande_de_devis/VUDemandeDevisAddOrUpdate";
 import VUDevis from "@/views/utilisateur/devis/VUDevis";
 import VURendezVous from "@/views/utilisateur/rendez_vous/VURendezVous";
+import VUDevisDetails from "@/views/utilisateur/devis/VUDevisDetails";
+import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVousReservation";
 // endregion
 
 // region Global Views
@@ -51,17 +55,20 @@ import VGNotFound from "@/views/global/VGNotFound";
 import VGCGV from "@/views/global/VGCGV";
 import VGConfidentialite from "@/views/global/VGConfidentialite";
 import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
-import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate";
-import VUDevisDetails from "@/views/utilisateur/devis/VUDevisDetails";
-import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVousReservation";
 import VGArticleDetail from "@/views/global/VGArticleDetail";
 import VGRecherche from "@/views/global/VGRecherche";
 import VGMercerieDetail from "@/views/global/VGMercerieDetail";
-import VAHoraire from "@/views/administrateur/horaire/VAHoraire";
 import VGResetPassword from "@/views/global/VGResetPassword";
 import VGEmailVerify from "@/views/global/VGEmailVerify";
 import VGRegisterSuccess from "@/views/global/VGRegisterSuccess";
-
+import VACouleurs from "@/views/administrateur/parametres/couleur/VACouleurs";
+import VACouleurAddOrUpdate from "@/views/administrateur/parametres/couleur/VACouleurAddOrUpdate";
+import VACharacteristiques from "@/views/administrateur/parametres/caracteristique/VACharacteristiques";
+import VACharacteristiqueAddOrUpdate from "@/views/administrateur/parametres/caracteristique/VACharacteristiqueAddOrUpdate";
+import VACategories from "@/views/administrateur/parametres/categorie/VACategories";
+import VACategorieAddOrUpdate from "@/views/administrateur/parametres/categorie/VACategorieAddOrUpdate";
+import VACatalogues from "@/views/administrateur/parametres/catalogue/VACatalogues";
+import VACatalogueAddOrUpdate from "@/views/administrateur/parametres/catalogue/VACatalogueAddOrUpdate";
 // endregion
 
 Vue.use(VueRouter)
@@ -175,7 +182,6 @@ const adminRoutes = [
     meta: {value: ROUTES.PARAMETRES.value},
     component: VAParametres,
     children: [
-
       {
         path: ADMIN + 'parametres/genres',
         name: ROUTES.PARAMETRES_GENRE.name,
@@ -217,6 +223,66 @@ const adminRoutes = [
             name: ROUTES.PARAMETRES_SERVICE_ADD_OR_UPDATE.name,
             meta: {value: ROUTES.PARAMETRES_SERVICE_ADD_OR_UPDATE.value},
             component: VAServiceAddOrUpdate,
+            props: true
+          }
+        ]
+      },
+      {
+        path: '/admin/parametres/couleurs',
+        name: ROUTES.PARAMETRES_COULEUR.name,
+        meta: {value: ROUTES.PARAMETRES_COULEUR.value},
+        component: VACouleurs,
+        children: [
+          {
+            path: '/admin/parametres/couleur/:id?',
+            name: ROUTES.PARAMETRES_COULEUR_ADD_OR_UPDATE.name,
+            meta: {value: ROUTES.PARAMETRES_COULEUR_ADD_OR_UPDATE.value},
+            component: VACouleurAddOrUpdate,
+            props: true
+          }
+        ]
+      },
+      {
+        path: '/admin/parametres/characteristiques',
+        name: ROUTES.PARAMETRES_CHARACTERISTIQUE.name,
+        meta: {value: ROUTES.PARAMETRES_CHARACTERISTIQUE.value},
+        component: VACharacteristiques,
+        children: [
+          {
+            path: '/admin/parametres/characteristique/:id?',
+            name: ROUTES.PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE.name,
+            meta: {value: ROUTES.PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE.value},
+            component: VACharacteristiqueAddOrUpdate,
+            props: true
+          }
+        ]
+      },
+      {
+        path: '/admin/parametres/categories',
+        name: ROUTES.PARAMETRES_CATEGORIE.name,
+        meta: {value: ROUTES.PARAMETRES_CATEGORIE.value},
+        component: VACategories,
+        children: [
+          {
+            path: '/admin/parametres/categorie/:id?',
+            name: ROUTES.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.name,
+            meta: {value: ROUTES.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.value},
+            component: VACategorieAddOrUpdate,
+            props: true
+          }
+        ]
+      },
+      {
+        path: '/admin/parametres/catalogues',
+        name: ROUTES.PARAMETRES_CATALOGUE.name,
+        meta: {value: ROUTES.PARAMETRES_CATALOGUE.value},
+        component: VACatalogues,
+        children: [
+          {
+            path: '/admin/parametres/catalogue/:id?',
+            name: ROUTES.PARAMETRES_CATALOGUE_ADD_OR_UPDATE.name,
+            meta: {value: ROUTES.PARAMETRES_CATALOGUE_ADD_OR_UPDATE.value},
+            component: VACatalogueAddOrUpdate,
             props: true
           }
         ]

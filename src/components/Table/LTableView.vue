@@ -4,7 +4,6 @@
         :load-or-refresh="loadData"
         :route="updateRouteToName"
     />
-
     <b-table
         :items="tableDatas"
         :fields="tableFields"
@@ -23,11 +22,9 @@
       <template #empty>
         <l-table-empty/>
       </template>
-
       <template v-for="(_, slotName) of $scopedSlots" v-slot:[slotName]="scope">
         <slot :name="slotName" v-bind="scope"/>
       </template>
-
     </b-table>
   </div>
 </template>

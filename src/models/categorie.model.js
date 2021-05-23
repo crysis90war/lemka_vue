@@ -13,7 +13,7 @@ export default class CategorieModel {
         }
     }
 
-    toUploadPayload() {
+    toUpdatePayload() {
         return {
             ...this.toCreatePayload(),
             id: this.id
@@ -32,7 +32,9 @@ export default class CategorieModel {
 
     static get tableFields() {
         return [
-
+            {key: 'id', label: '#'},
+            {key: 'nom', label: 'Nom', sortable: true},
+            {key: 'actions', label: 'Actions'}
         ]
     }
 }

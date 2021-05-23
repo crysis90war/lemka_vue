@@ -1,25 +1,27 @@
 <template>
-  <div class="couleurs">
-    <div v-if="$route.name === routes.PARAMETRES_COULEUR.name">
+  <div class="categories">
+    <div v-if="$route.name === routes.PARAMETRES_CATEGORIE.name">
+
       <l-table-view
           :table-busy="busy"
-          :table-datas="couleurs"
+          :table-datas="categories"
           :table-fields="fields"
-          :load-data="loadCouleurs"
-          :update-route-to-name="routes.PARAMETRES_COULEUR_ADD_OR_UPDATE.name"
+          :load-data="loadCategories"
+          :update-route-to-name="routes.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.name"
       >
         <template #cell(actions)="data">
           <l-table-button-update-delete
-              :update-route-to-name="routes.PARAMETRES_COULEUR_ADD_OR_UPDATE.name"
+              :update-route-to-name="routes.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.name"
               :item-id="data.item.id"
               @clickShowModal="showModal('delete-modal-' + data.item.id)"
           />
+
           <l-table-delete-modal
               :modal-id="data.item.id"
               :modal-title="data.item.nom"
               :modal-text="data.item.nom"
               @clickHideModal="hideModal('delete-modal-'+data.item.id)"
-              @clickDelete="supprimerCouleur(data.item)"
+              @clickDelete="supprimerCategorie(data.item)"
           />
         </template>
       </l-table-view>
@@ -36,30 +38,35 @@ import LTableView from "@/components/Table/LTableView";
 import {commonMixin} from "@/mixins/common.mixin";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import CouleurModel from "@/models/couleur.model";
+import CategorieModel from "@/models/categorie.model";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
-  name: "VACouleurs",
+  name: "VACategories",
   components: {LTableDeleteModal, LTableButtonUpdateDelete, LTableView},
   mixins: [commonMixin],
+  title() {
+    return htmlTitle('Catégories')
+  },
   data() {
     return {
-      fields: CouleurModel.tableFields,
-      routes: LemkaHelpers.Routes
+      fields: CategorieModel.tableFields,
+      routes: LemkaHelpers.Routes,
+      BSClass: LemkaHelpers.BSClass
     }
   },
   computed: {
-    ...mapGetters({couleurs: 'Couleurs/couleurs', busy: 'Couleurs/loadingStatus'})
+    ...mapGetters({categories: 'Categories/categories', busy: 'Categories/loadingStatus'})
   },
   methods: {
-    ...mapActions({loadCouleurs: "Couleurs/loadCouleurs", deleteCouleur: "Couleurs/deleteCouleur"}),
+    ...mapActions({loadCategories: "Categories/loadCategories", deleteCategorie: 'Categories/deleteCategorie'}),
     initialisation: async function() {
-      if (this.couleurs.length === 0) {
-        await this.loadCouleurs()
+      if (this.categories.length === 0) {
+        await this.loadCategories()
       }
     },
-    supprimerCouleur: function(item) {
-      this.deleteCouleur(item)
+    supprimerCategorie: function(item) {
+      this.deleteCategorie(item)
       this.hideModal('delete-modal-' + item.id)
     }
   },

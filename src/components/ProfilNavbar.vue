@@ -5,8 +5,12 @@
     <b-collapse id="profil-collapse" is-nav>
       <b-navbar-nav class="mx-auto">
 
-        <b-nav-item v-for="(item, index) in menu" :key="index" :to="item.href"
-                    :active="item.children.includes($route.name)">
+        <b-nav-item
+            v-for="(item, index) in menu"
+            :key="index"
+            :to="item.href"
+            :active="item.children.includes($route.name)"
+        >
           <i :class="item.icon"></i>
           {{ item.title }}
         </b-nav-item>
@@ -50,8 +54,8 @@ export default {
           title: LemkaHelpers.Routes.DEMANDE_DE_DEVIS.value,
           icon: LemkaHelpers.FontAwesomeIcons.FOLDER_OPEN,
           children: [
-              LemkaHelpers.Routes.DEMANDE_DE_DEVIS.name,
-              LemkaHelpers.Routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name,
+            LemkaHelpers.Routes.DEMANDE_DE_DEVIS.name,
+            LemkaHelpers.Routes.DEMANDE_DE_DEVIS_ADD_OR_UPDATE.name,
           ]
         },
         {
@@ -59,8 +63,8 @@ export default {
           title: LemkaHelpers.Routes.DEVIS_USER.value,
           icon: LemkaHelpers.FontAwesomeIcons.FOLDER,
           children: [
-              LemkaHelpers.Routes.DEVIS_USER.name,
-              LemkaHelpers.Routes.USER_DEVIS_DETAIL.name
+            LemkaHelpers.Routes.DEVIS_USER.name,
+            LemkaHelpers.Routes.USER_DEVIS_DETAIL.name
           ]
         },
         {
@@ -68,8 +72,8 @@ export default {
           title: LemkaHelpers.Routes.RENDEZ_VOUS_USER.value,
           icon: LemkaHelpers.FontAwesomeIcons.CALENDAR,
           children: [
-              LemkaHelpers.Routes.RENDEZ_VOUS_USER.name,
-              LemkaHelpers.Routes.RENDEZ_VOUS_USER_RESERVATION.name,
+            LemkaHelpers.Routes.RENDEZ_VOUS_USER.name,
+            LemkaHelpers.Routes.RENDEZ_VOUS_USER_RESERVATION.name,
           ]
         }
       ],

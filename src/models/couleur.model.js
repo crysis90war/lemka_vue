@@ -24,7 +24,7 @@ export default class CouleurModel {
         return {
             nom: {
                 required,
-                minLength: minLength(1),
+                minLength: minLength(2),
                 maxLength: maxLength(255)
             }
         }
@@ -32,7 +32,9 @@ export default class CouleurModel {
 
     static get tableFields() {
         return [
-
+            {key: 'id', label: '#'},
+            {key: 'nom', label: 'Nom', sortable: true},
+            {key: 'actions', label: 'Actions'}
         ]
     }
 }

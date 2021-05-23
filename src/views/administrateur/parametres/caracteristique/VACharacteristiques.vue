@@ -1,16 +1,16 @@
 <template>
-  <div class="couleurs">
-    <div v-if="$route.name === routes.PARAMETRES_COULEUR.name">
+  <div class="characteristiques">
+    <div v-if="$route.name === routes.PARAMETRES_CHARACTERISTIQUE.name">
       <l-table-view
           :table-busy="busy"
-          :table-datas="couleurs"
+          :table-datas="characteristiques"
           :table-fields="fields"
-          :load-data="loadCouleurs"
-          :update-route-to-name="routes.PARAMETRES_COULEUR_ADD_OR_UPDATE.name"
+          :load-data="loadCaracteristiques"
+          :update-route-to-name="routes.PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE.name"
       >
         <template #cell(actions)="data">
           <l-table-button-update-delete
-              :update-route-to-name="routes.PARAMETRES_COULEUR_ADD_OR_UPDATE.name"
+              :update-route-to-name="routes.PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE.name"
               :item-id="data.item.id"
               @clickShowModal="showModal('delete-modal-' + data.item.id)"
           />
@@ -18,8 +18,8 @@
               :modal-id="data.item.id"
               :modal-title="data.item.nom"
               :modal-text="data.item.nom"
-              @clickHideModal="hideModal('delete-modal-'+data.item.id)"
-              @clickDelete="supprimerCouleur(data.item)"
+              @clickHideModal="hideModal('delete-modal-' + data.item.id)"
+              @clickDelete="supprimerCaracteristique(data.item)"
           />
         </template>
       </l-table-view>
@@ -34,32 +34,35 @@ import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
 import LTableButtonUpdateDelete from "@/components/Table/LTableButtonUpdateDelete";
 import LTableView from "@/components/Table/LTableView";
 import {commonMixin} from "@/mixins/common.mixin";
+import CharacteristicModel from "@/models/characteristic.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import CouleurModel from "@/models/couleur.model";
 
 export default {
-  name: "VACouleurs",
+  name: "VACharacteristiques",
   components: {LTableDeleteModal, LTableButtonUpdateDelete, LTableView},
   mixins: [commonMixin],
   data() {
     return {
-      fields: CouleurModel.tableFields,
+      fields: CharacteristicModel.tableFields,
       routes: LemkaHelpers.Routes
     }
   },
   computed: {
-    ...mapGetters({couleurs: 'Couleurs/couleurs', busy: 'Couleurs/loadingStatus'})
+    ...mapGetters({characteristiques: 'Characteristiques/characteristiques', busy: 'Characteristiques/loadingStatus'})
   },
   methods: {
-    ...mapActions({loadCouleurs: "Couleurs/loadCouleurs", deleteCouleur: "Couleurs/deleteCouleur"}),
-    initialisation: async function() {
-      if (this.couleurs.length === 0) {
-        await this.loadCouleurs()
+    ...mapActions({
+      loadCaracteristiques: "Characteristiques/loadCaracteristiques",
+      deleteCaracteristique: "Characteristiques/deleteCaracteristique"
+    }),
+    initialisation: async function () {
+      if (this.characteristiques.length === 0) {
+        await this.loadCaracteristiques()
       }
     },
-    supprimerCouleur: function(item) {
-      this.deleteCouleur(item)
+    supprimerCaracteristique: function (item) {
+      this.deleteCaracteristique(item)
       this.hideModal('delete-modal-' + item.id)
     }
   },
