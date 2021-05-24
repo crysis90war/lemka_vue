@@ -96,7 +96,7 @@ export const AuthModule = {
             window.location.reload()
         },
         register({commit}, payload) {
-            let endpoint = `register/`;
+            let endpoint = `auth/register/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('REGISTER_SUCCESS')

@@ -42,7 +42,7 @@
                   <b-collapse id="accordion-service" visible accordion="my-accordion" role="tabpanel">
                     <b-card-body>
                       <b-form-radio-group
-                          v-model="selectedRayon"
+                          v-model="selectedTypeService"
                           :options="typeServices"
                           value-field="id"
                           text-field="type_service"
@@ -250,7 +250,6 @@
         </b-row>
       </div>
     </div>
-    {{ selectedTags }}
   </div>
 </template>
 
@@ -319,6 +318,9 @@ export default {
           break;
       }
     },
+    selectedTypeService() {
+      this.searchArticleQuery()
+    },
     selectedRayon() {
       this.searchArticleQuery()
     },
@@ -326,9 +328,6 @@ export default {
       this.searchArticleQuery()
     },
     selectedTypeProduit() {
-      this.searchArticleQuery()
-    },
-    selectedTypeService() {
       this.searchArticleQuery()
     },
     selectedTags() {
