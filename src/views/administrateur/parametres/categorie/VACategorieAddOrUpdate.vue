@@ -36,7 +36,7 @@
             :to="routes.PARAMETRES_CATEGORIE.name"
             :submit="submit"
             :submit-status="submitStatus"
-            :params="id !== undefined"
+            :params="this.$route.params.id !== undefined"
         />
       </b-card-body>
     </b-card>
