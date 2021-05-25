@@ -1,3 +1,3 @@
-import CommonModel from "@/models/catalogue/common.model";
+import CommonModel from "@/models/shared/common.model";
 
 export default class RayonModel extends CommonModel {}

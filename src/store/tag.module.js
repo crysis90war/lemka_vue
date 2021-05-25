@@ -1,40 +1,39 @@
 import ApiService from "@/services/api.service";
-import TagModel from "@/models/tag.model";
 
 export const TagModule = {
     namespaced: true,
     state: {
         tags: [],
-        tagsLoadingStatus: false
+        loadingStatus: false
     },
     getters: {
         tags: state => state.tags,
         tag: state => id => {
             return state.tags.find(item => item.id === id)
         },
-        tagsLoadingStatus: state => state.tagsLoadingStatus
+        loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        LOAD_TAGS_SUCCESS(state, tags) {
-            state.tags = tags
+        LOAD_ITEMS_SUCCESS(state, payload) {
+            state.tags = payload
         },
-        LOAD_TAGS_FAILURE(state) {
+        LOAD_ITEMS_FAILURE(state) {
             state.tags = []
         },
-        TAGS_LOADING_STATUS(state, tagsLoadingStatus) {
-            state.tagsLoadingStatus = tagsLoadingStatus
+        LOADING_STATUS(state, loadingStatus) {
+            state.loadingStatus = loadingStatus
         },
-        ADD_TAG(state, tag) {
-            state.tags.push(tag)
+        ADD_ITEM(state, payload) {
+            state.tags.push(payload)
         },
-        UPDATE_TAG(state, tag) {
-            const index = state.tags.findIndex(item => item.id === tag.id)
+        UPDATE_ITEM(state, payload) {
+            const index = state.tags.findIndex(item => item.id === payload.id)
             if (index !== -1) {
-                state.tags.splice(index, 1, tag)
+                state.tags.splice(index, 1, payload)
             }
         },
-        DELETE_TAG(state, tag) {
-            const index = state.tags.map(item => item.id).indexOf(tag.id)
+        DELETE_ITEM(state, payload) {
+            const index = state.tags.map(item => item.id).indexOf(payload.id)
             if (index !== -1) {
                 state.tags.splice(index, 1)
             }
@@ -45,14 +44,14 @@ export const TagModule = {
             let searchParam = `?search=${searchField}`;
             let endpoint = `tags/${searchField === "" ? searchField : searchParam}`;
             return new Promise((resolve, reject) => {
-                commit('TAGS_LOADING_STATUS', true)
+                commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('LOAD_TAGS_SUCCESS', r.data.results)
-                    commit('TAGS_LOADING_STATUS', false)
+                    commit('LOAD_ITEMS_SUCCESS', r.data.results)
+                    commit('LOADING_STATUS', false)
                     resolve(r.data.results)
                 }, error => {
-                    commit('LOAD_TAGS_FAILURE')
-                    commit('TAGS_LOADING_STATUS', false)
+                    commit('LOAD_ITEMS_FAILURE')
+                    commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })
@@ -61,7 +60,7 @@ export const TagModule = {
             let endpoint = `tags/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
-                    commit('ADD_TAG', Object.assign(new TagModel(), r.data))
+                    commit('ADD_ITEM', r.data)
                     resolve(r.data)
                 }, error => {
                     reject(error)

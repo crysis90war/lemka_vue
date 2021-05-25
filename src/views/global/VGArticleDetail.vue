@@ -35,7 +35,7 @@
                   variant="secondary"
                   class="mr-1"
               >
-                {{ tag.tag }}
+                {{ tag.nom }}
               </b-badge>
             </div>
             <div v-if="currentUser" class="my-5">

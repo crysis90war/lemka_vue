@@ -6,7 +6,7 @@
           :table-datas="couleurs"
           :table-fields="fields"
           :load-data="loadCouleurs"
-          :update-route-to-name="routes.PARAMETRES_COULEUR_ADD_OR_UPDATE.name"
+          :create-route-to-name="routes.PARAMETRES_COULEUR_ADD_OR_UPDATE.name"
       >
         <template #cell(actions)="data">
           <l-table-button-update-delete

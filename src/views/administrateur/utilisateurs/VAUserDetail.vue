@@ -44,7 +44,7 @@
               </div>
               <div v-if="utilisateur.genre !== null && utilisateur.genre !== undefined">
                 <span class="mr-2"><i :class="icons.GENRE"></i></span>
-                <span>{{ utilisateur.genre.genre }}</span>
+                <span>{{ utilisateur.genre.nom }}</span>
               </div>
             </b-col>
           </b-row>

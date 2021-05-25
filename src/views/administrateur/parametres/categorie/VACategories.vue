@@ -7,7 +7,7 @@
           :table-datas="categories"
           :table-fields="fields"
           :load-data="loadCategories"
-          :update-route-to-name="routes.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.name"
+          :create-route-to-name="routes.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.name"
       >
         <template #cell(actions)="data">
           <l-table-button-update-delete

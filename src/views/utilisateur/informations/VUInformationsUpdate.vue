@@ -109,16 +109,15 @@
               :clear-on-select="false"
               :close-on-select="true"
               :show-no-results="true"
-              label="Genre"
-              track-by="genre"
+              track-by="nom"
               placeholder="Veuillez encoder pour lancer la recherche..."
               open-direction="bottom"
           >
             <template slot="singleLabel" slot-scope="{ option }">
-              <span>{{ option.genre }}</span>
+              <span>{{ option.nom }}</span>
             </template>
             <template slot="option" slot-scope="{ option }">
-              <span>{{ option.genre }}</span>
+              <span>{{ option.nom }}</span>
             </template>
             <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
           </multiselect>

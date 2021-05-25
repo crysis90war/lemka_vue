@@ -24,36 +24,20 @@
                 v-b-tooltip.top :title="`Supprimer: ${mercerie.nom}`"
                 v-if="id !== undefined"
                 variant="outline-danger"
-                @click="showModal('delete-mercerie-modal')"
+                @click="showModal('delete-modal-mercerie')"
             >
               Supprimer
             </b-button>
           </b-button-group>
-          <b-modal id="delete-mercerie-modal" :title="mercerie.reference">
-            <template #modal-footer>
-              <div class="text-right">
-                <b-button-group size="md">
-                  <b-button
-                      variant="outline-primary"
-                      @click="hideModal('delete-mercerie-modal')"
-                  >
-                    Annuler
-                  </b-button>
-                  <b-button
-                      variant="outline-danger"
-                      @click="supprimerMercerie"
-                  >
-                    Supprimer
-                  </b-button>
-                </b-button-group>
-              </div>
-            </template>
 
-            <div class="text-center">
-              <p>Êtes-vous sure de vouloir supprimer</p>
-              <h3>"{{ mercerie.nom }}"</h3>
-            </div>
-          </b-modal>
+          <l-table-delete-modal
+              modal-id="mercerie"
+              :modal-title="mercerie.reference"
+              :modal-text="mercerie.nom"
+              @clickHideModal="hideModal('delete-modal-mercerie')"
+              @clickDelete="supprimerMercerie"
+          />
+
           <h2>{{ id !== undefined ? mercerie.reference : 'Créer nouvelle mercerie' }}</h2>
         </div>
         <hr>
@@ -65,6 +49,56 @@
           <p>{{ mercerie.est_publie === true ? 'Publier' : 'En attente' }}</p>
         </b-form-checkbox>
       </b-input-group>
+      <!-- endregion -->
+
+      <!-- region Nom -->
+      <l-input-field
+          :input-type="true"
+          v-model="$v.mercerie.nom.$model"
+          label="Nom"
+          description="Veuillez encoder le nom de la mercerie"
+          :state="validateState($v.mercerie, 'nom')"
+      >
+        <template #invalid-feedback>
+          <invalid-feedback
+              :condition="!$v.mercerie.nom.required"
+              :error-message="required()"
+          />
+          <invalid-feedback
+              :condition="!$v.mercerie.nom.minLength"
+              :error-message="minLength($v.mercerie.nom.$params.minLength.min)"
+          />
+          <invalid-feedback
+              :condition="!$v.mercerie.nom.maxLength"
+              :error-message="maxLength($v.mercerie.nom.$params.maxLength.max)"
+          />
+        </template>
+      </l-input-field>
+      <!-- endregion -->
+
+      <!-- region Description -->
+      <l-input-field
+          :text-area-type="true"
+          v-model="$v.mercerie.description.$model"
+          label="Description"
+          description="Veuillez encoder la description de la mercerie"
+          :state="validateState($v.mercerie, 'description')"
+      >
+        <template #invalid-feedback>
+          <invalid-feedback
+              :condition="!$v.mercerie.description.required"
+              :error-message="required()"
+          />
+          <invalid-feedback
+              :condition="!$v.mercerie.description.minLength"
+              :error-message="minLength($v.mercerie.description.$params.minLength.min)"
+          />
+          <invalid-feedback
+              :condition="!$v.mercerie.description.maxLength"
+              :error-message="maxLength($v.mercerie.description.$params.maxLength.max)"
+          />
+        </template>
+      </l-input-field>
       <!-- endregion -->
 
       <b-row>
@@ -111,7 +145,6 @@
                 :show-labels="false"
                 :searchable="false"
                 :allow-empty="false"
-                label="Couleur"
                 track-by="nom"
                 placeholder="Veuillez selectionner la couleur"
                 :class="{ 'invalid': invalidCouleur }"
@@ -134,18 +167,14 @@
       <b-row>
         <!-- region Prix hors TVA -->
         <b-col lg="6">
-          <b-form-group
+          <l-input-field
+              :number-type="true"
+              v-model="$v.mercerie.prix_u_ht.$model"
               label="Prix hors TVA"
               description="Veuillez encoder le prix hors tva de l'option"
+              :state="validateState($v.mercerie, 'prix_u_ht')"
           >
-            <b-form-input
-                v-model="$v.mercerie.prix_u_ht.$model"
-                type="number"
-                step="0.01"
-                min="0.00"
-                :state="validateStateMercerie('prix_u_ht')"
-            />
-            <b-form-invalid-feedback>
+            <template #invalid-feedback>
               <l-invalid-feedback
                   :condition="!$v.mercerie.prix_u_ht.required"
                   :error-message="required()"
@@ -158,8 +187,8 @@
                   :condition="!$v.mercerie.prix_u_ht.numeric"
                   :error-message="decimal()"
               />
-            </b-form-invalid-feedback>
-          </b-form-group>
+            </template>
+          </l-input-field>
         </b-col>
         <!-- endregion -->
 
@@ -195,66 +224,14 @@
         <!-- endregion -->
       </b-row>
 
-      <!-- region Nom -->
-      <b-form-group
-          label="Nom"
-          description="Veuillez encoder le nom de la mercerie"
-      >
-        <b-form-input
-            v-model="$v.mercerie.nom.$model"
-            type="text"
-            :state="validateStateMercerie('nom')"
-        />
-        <b-form-invalid-feedback>
-          <invalid-feedback
-              :condition="!$v.mercerie.nom.required"
-              :error-message="required()"
-          />
-          <invalid-feedback
-              :condition="!$v.mercerie.nom.minLength"
-              :error-message="minLength($v.mercerie.nom.$params.minLength.min)"
-          />
-          <invalid-feedback
-              :condition="!$v.mercerie.nom.maxLength"
-              :error-message="maxLength($v.mercerie.nom.$params.maxLength.max)"
-          />
-        </b-form-invalid-feedback>
-      </b-form-group>
-      <!-- endregion -->
-
-      <!-- region Description -->
-      <b-form-group
-          label="Description"
-          description="Veuillez encoder la description de la mercerie"
-      >
-        <b-form-textarea
-            v-model="$v.mercerie.description.$model"
-            :state="validateStateMercerie('description')"
-        />
-        <b-form-invalid-feedback>
-          <invalid-feedback
-              :condition="!$v.mercerie.description.required"
-              :error-message="required()"
-          />
-          <invalid-feedback
-              :condition="!$v.mercerie.description.minLength"
-              :error-message="minLength($v.mercerie.description.$params.minLength.min)"
-          />
-          <invalid-feedback
-              :condition="!$v.mercerie.description.maxLength"
-              :error-message="maxLength($v.mercerie.description.$params.maxLength.max)"
-          />
-        </b-form-invalid-feedback>
-      </b-form-group>
-      <!-- endregion -->
-
       <!-- region Charactéristiques -->
       <div v-if="id" class="mt-5">
         <b-button-group size="sm">
           <b-button
               variant="outline-success"
               @click="showModal('ajout-caracteristique')"
-          >Ajouter caractéristique
+          >
+            Ajouter caractéristique
           </b-button>
         </b-button-group>
 
@@ -278,7 +255,8 @@
           <template #cell(actions)="data">
             <b-button-group>
               <b-button
-                  v-b-tooltip.hover title="Modifier"
+                  v-b-tooltip.hover
+                  title="Modifier"
                   variant="outline-primary"
                   size="sm"
                   @click="afficherModifierCharacteristiqueModal(`modifier-characteristique-modal-${data.item.id}`, data.item)"
@@ -286,10 +264,11 @@
                 <i class="fas fa-edit"></i>
               </b-button>
               <b-button
-                  v-b-tooltip.hover title="Supprimer"
+                  v-b-tooltip.hover
+                  title="Supprimer"
                   size="sm"
                   variant="outline-danger"
-                  @click="showModal('delete-characteristique-modal-'+data.item.id)"
+                  @click="showModal('delete-modal-caracteristique-'+data.item.id)"
               >
                 <i class="fas fa-trash-alt"></i>
               </b-button>
@@ -305,7 +284,7 @@
                 >
                   <multiselect
                       v-model="mercerieCharacteristique.caracteristique"
-                      :options="characteristiques"
+                      :options="caracteristiques"
                       :allow-empty="false"
                       :show-labels="false"
                       label="nom"
@@ -334,7 +313,7 @@
                       type="number"
                       step="0.01"
                       min="0.00"
-                      :state="validateStateCharacteristique('valeur')"
+                      :state="validateState($v.mercerieCharacteristique, 'valeur')"
                   />
                   <b-form-invalid-feedback>
                     <invalid-feedback
@@ -367,32 +346,14 @@
                 </div>
               </template>
             </b-modal>
-            <b-modal
-                :id="`delete-characteristique-modal-${data.item.id}`"
-                :title="`Supprimer : `+data.item.caracteristique.nom">
-              <div class="text-center">
-                <p>Êtes-vous sur de vouloir supprimer</p>
-                <h3>{{ data.item.caracteristique.nom }} - {{ data.item.valeur }}</h3>
-              </div>
-              <template #modal-footer>
-                <div class="text-right">
-                  <b-button-group>
-                    <b-button
-                        variant="outline-primary"
-                        @click="hideModal('delete-characteristique-modal-'+data.item.id)"
-                    >
-                      Annuler
-                    </b-button>
-                    <b-button
-                        variant="outline-danger"
-                        @click="supprimerCharacteristique(data.item)"
-                    >
-                      Supprimer
-                    </b-button>
-                  </b-button-group>
-                </div>
-              </template>
-            </b-modal>
+
+            <l-table-delete-modal
+                :modal-id="`caracteristique-${data.item.id}`"
+                :modal-title="`Supprimer : ${data.item.caracteristique.nom}`"
+                :modal-text="`${data.item.caracteristique.nom} - ${data.item.valeur}`"
+                @clickHideModal="hideModal(`delete-modal-caracteristique-${data.item.id}`)"
+                @clickDelete="supprimerCharacteristique(data.item)"
+            />
           </template>
         </b-table>
       </div>
@@ -488,10 +449,9 @@
           >
             <multiselect
                 v-model="mercerieCharacteristique.caracteristique"
-                :options="characteristiques"
+                :options="caracteristiques"
                 :allow-empty="false"
                 :show-labels="false"
-                label="nom"
                 track-by="nom"
                 placeholder="Veuillez selectionner la caractéristique"
                 :class="{ 'invalid': invalidCharacteristique }"
@@ -508,18 +468,14 @@
             <span class="text-danger" v-show="invalidCharacteristique"><small>Ce champ est requis</small></span>
           </b-form-group>
 
-          <b-form-group
+          <l-input-field
+              :number-type="true"
+              v-model="$v.mercerieCharacteristique.valeur.$model"
               label="Valeur"
               description="Veuillez encoder la valeur"
+              :state="validateState($v.mercerieCharacteristique, 'valeur')"
           >
-            <b-form-input
-                v-model="$v.mercerieCharacteristique.valeur.$model"
-                type="number"
-                step="0.01"
-                min="0.00"
-                :state="validateStateCharacteristique('valeur')"
-            />
-            <b-form-invalid-feedback>
+            <template #invalid-feedback>
               <invalid-feedback
                   :condition="!$v.mercerieCharacteristique.valeur.required"
                   :error-message="required()"
@@ -528,8 +484,8 @@
                   :condition="!$v.mercerieCharacteristique.valeur.numeric"
                   :error-message="decimal()"
               />
-            </b-form-invalid-feedback>
-          </b-form-group>
+            </template>
+          </l-input-field>
         </div>
 
         <template #modal-footer>
@@ -622,8 +578,6 @@
         </div>
       </b-modal>
       <!-- endregion -->
-
-      <l-jumbotron :data="mercerieCharacteristique"/>
     </b-container>
   </div>
 </template>
@@ -640,10 +594,12 @@ import MercerieChatacteristiqueModel from "@/models/mercerie/mercerie_characteri
 import {Cropper} from "vue-advanced-cropper";
 import {dataURLtoFile} from "@/helpers/functions.helper";
 import {commonMixin} from "@/mixins/common.mixin";
+import LInputField from "@/components/LInputField";
+import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
 
 export default {
   name: "VAMercerieAddOrUpdate",
-  components: {InvalidFeedback, Cropper},
+  components: {LTableDeleteModal, LInputField, InvalidFeedback, Cropper},
   props: {
     id: {}
   },
@@ -689,7 +645,7 @@ export default {
       categories: 'Categories/categories',
       couleurs: "Couleurs/couleurs",
       tvas: "TVA/tvas",
-      characteristiques: 'Characteristiques/characteristiques'
+      caracteristiques: 'Characteristiques/caracteristiques'
     }),
     invalidCategorie() {
       return this.categorieTouched && this.mercerie.categorie.id === null
@@ -721,7 +677,7 @@ export default {
       deleteImage: "Merceries/deleteImage"
     }),
     initialisation: async function () {
-      if (this.characteristiques.length === 0) {
+      if (this.caracteristiques.length === 0) {
         await this.loadCharacteristiques()
       }
       if (this.merceries.length === 0) {
@@ -737,18 +693,22 @@ export default {
         await this.loadCouleurs()
       }
     },
-    chargerMercerie: async function (id) {
+    chargerMercerie: async function () {
       this.toggleLoading()
       await this.initialisation()
-      const index = this.merceries.findIndex(item => item.id === parseInt(this.id))
-      if (index !== -1) {
-        Object.assign(this.mercerie, this.$store.getters["Merceries/mercerie"](parseInt(id)))
-        this.$route.meta.value = this.mercerie.nom
-        this.toggleLoading()
+
+      if (this.$route.params.id !== undefined) {
+        let mercerie = await this.$store.getters["Merceries/mercerie"](parseInt(this.$route.params.id))
+        if (mercerie !== undefined) {
+          Object.assign(this.mercerie, await mercerie)
+          this.$route.meta.value = this.mercerie.nom
+        } else {
+          await this.$router.push({name: this.routes.MERCERIES.name})
+        }
       } else {
-        this.toggleLoading()
-        await this.$router.push({name: this.routes.MERCERIES.name})
+        this.$route.meta.value = "Ajout mercerie"
       }
+      this.toggleLoading()
     },
     addMercerie: function () {
       this.$v.$touch()
@@ -850,14 +810,6 @@ export default {
       this.deleteImage([this.mercerie.id, item])
       this.hideModal(`delete-image-modal-${item.id}`)
     },
-    validateStateMercerie: function (name) {
-      const {$dirty, $error} = this.$v.mercerie[name];
-      return $dirty ? !$error : null;
-    },
-    validateStateCharacteristique: function (name) {
-      const {$dirty, $error} = this.$v.mercerieCharacteristique[name];
-      return $dirty ? !$error : null;
-    },
     touchCategorie: function () {
       this.categorieTouched = true
     },
@@ -892,7 +844,6 @@ export default {
         console.log('faux')
       }
     },
-
     // eslint-disable-next-line no-unused-vars
     change({coordinates, canvas, image}) {
       // console.log(coordinates, canvas, image)
@@ -905,16 +856,7 @@ export default {
     },
   },
   created() {
-    if (this.id !== undefined) {
-      this.chargerMercerie(this.$route.params.id)
-    } else {
-      this.initialisation()
-    }
-  },
-
+    this.chargerMercerie()
+  }
 }
 </script>
-
-<style scoped>
-
-</style>

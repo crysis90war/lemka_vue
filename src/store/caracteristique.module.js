@@ -1,42 +1,41 @@
 import ApiService from "@/services/api.service";
-import CaracteristiqueModel from "@/models/characteristic.model";
 
-export const CharacteristiqueModule = {
+export const CaracteristiqueModule = {
     namespaced: true,
     state: {
-        characteristiques: [],
+        caracteristiques: [],
         loadingStatus: false
     },
     getters: {
-        characteristique: state => id => {
-            return state.characteristiques.find(item => item.id === id)
+        caracteristiques: state => state.caracteristiques,
+        caracteristique: state => id => {
+            return state.caracteristiques.find(item => item.id === id)
         },
-        characteristiques: state => state.characteristiques,
         loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        SET_CHARACTERISTIQUES_SUCCESS(state, payload) {
-            state.characteristiques = payload
+        LOAD_ITEMS_SUCCESS(state, payload) {
+            state.caracteristiques = payload
         },
-        SET_CHARACTERISTIQUES_FAILURE(state) {
-            state.characteristiques = []
+        LOAD_ITEMS_FAILURE(state) {
+            state.caracteristiques = []
         },
         LOADING_STATUS(state, loadingStatus) {
             state.loadingStatus = loadingStatus
         },
-        ADD_CHARACTERISTIQUE(state, caracteristique) {
-            state.characteristiques.push(caracteristique)
+        ADD_ITEM(state, payload) {
+            state.caracteristiques.push(payload)
         },
-        UPDATE_CHARACTERISTIQUE(state, caracteristique) {
-            const index = state.characteristiques.findIndex(item => item.id === caracteristique.id)
+        UPDATE_ITEM(state, payload) {
+            const index = state.caracteristiques.findIndex(item => item.id === payload.id)
             if (index !== -1) {
-                state.characteristiques.splice(index, 1, caracteristique)
+                state.caracteristiques.splice(index, 1, payload)
             }
         },
-        DELETE_CHARACTERISTIQUE(state, caracteristique) {
-            const index = state.characteristiques.map(item => item.id).indexOf(caracteristique.id)
+        DELETE_ITEM(state, payload) {
+            const index = state.caracteristiques.map(item => item.id).indexOf(payload.id)
             if (index !== -1) {
-                state.characteristiques.splice(index, 1)
+                state.caracteristiques.splice(index, 1)
             }
         }
     },
@@ -46,11 +45,11 @@ export const CharacteristiqueModule = {
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('SET_CHARACTERISTIQUES_SUCCESS', r.data)
+                    commit('LOAD_ITEMS_SUCCESS', r.data)
                     commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('SET_CHARACTERISTIQUES_FAILURE')
+                    commit('LOAD_ITEMS_FAILURE')
                     commit('LOADING_STATUS', false)
                     reject(error)
                 })
@@ -60,7 +59,7 @@ export const CharacteristiqueModule = {
             let endpoint = `caracteristiques/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
-                    commit('ADD_CHARACTERISTIQUE', Object.assign(new CaracteristiqueModel(), r.data))
+                    commit('ADD_ITEM', r.data)
                     resolve(r.data)
                 }, error => {
                     reject(error)
@@ -71,18 +70,18 @@ export const CharacteristiqueModule = {
             let endpoint = `caracteristiques/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
-                    commit('UPDATE_CHARACTERISTIQUE', Object.assign(new CaracteristiqueModel(), r.data))
+                    commit('UPDATE_ITEM', r.data)
                     resolve(r.data)
                 }, error => {
                     reject(error)
                 })
             })
         },
-        deleteCaracteristique: function({commit}, caracteristique) {
-            let endpoint = `caracteristiques/${caracteristique.id}`;
+        deleteCaracteristique: function({commit}, payload) {
+            let endpoint = `caracteristiques/${payload.id}`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
-                    commit('DELETE_CHARACTERISTIQUE', caracteristique)
+                    commit('DELETE_ITEM', payload)
                     resolve(r)
                 }, error => {
                     reject(error)

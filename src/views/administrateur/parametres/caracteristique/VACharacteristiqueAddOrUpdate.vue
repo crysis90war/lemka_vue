@@ -51,7 +51,7 @@ import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {commonMixin} from "@/mixins/common.mixin";
 import {htmlTitle} from "@/utils/tools";
-import CharacteristicModel from "@/models/characteristic.model";
+import CaracteristiqueModel from "@/models/caracteristique.model";
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 
@@ -68,18 +68,18 @@ export default {
     }
   },
   validations: {
-    characteristique: CharacteristicModel.validations
+    characteristique: CaracteristiqueModel.validations
   },
   data() {
     return {
-      characteristique: new CharacteristicModel(),
+      characteristique: new CaracteristiqueModel(),
       submitStatus: null,
       BSClass: LemkaHelpers.BSClass,
       routes: LemkaHelpers.Routes
     }
   },
   computed: {
-    ...mapGetters({characteristiques: "Characteristiques/characteristiques"})
+    ...mapGetters({characteristiques: "Characteristiques/caracteristiques"})
   },
   methods: {
     ...mapActions({
@@ -88,14 +88,14 @@ export default {
       updateCaracteristique: "Characteristiques/updateCaracteristique"
     }),
     initialisation: async function () {
-      if (this.characteristiques.length === 0) {
+      if (this.caracteristiques.length === 0) {
         await this.loadCaracteristiques()
       }
     },
     chargerCharacteristique: async function() {
       await this.initialisation()
       if (this.$route.params.id !== undefined) {
-        let characteristique = await this.$store.getters["Characteristiques/characteristique"](parseInt(this.$route.params.id))
+        let characteristique = await this.$store.getters["Characteristiques/caracteristique"](parseInt(this.$route.params.id))
         if (characteristique !== undefined) {
           Object.assign(this.characteristique, await characteristique)
           this.$route.meta.value = this.characteristique.nom

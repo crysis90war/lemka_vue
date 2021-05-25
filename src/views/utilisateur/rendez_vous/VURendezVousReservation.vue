@@ -15,17 +15,11 @@
                 :options="typeServices"
                 :allow-empty="false"
                 :show-labels="false"
-                label="type_service"
-                track-by="nom"
+                label="nom"
+                track-by="id"
                 :class="{ 'invalid': invalidTypeService }"
                 @close="toucheTypeService"
             >
-              <template slot="singleLabel" slot-scope="{ option }">
-                <span>{{ option.type_service.id !== null ? option.type_service : null }}</span>
-              </template>
-              <template slot="option" slot-scope="{ option }">
-                <span>{{ option.nom }} - {{ option.duree_minute }} minutes</span>
-              </template>
               <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
             </multiselect>
             <span class="text-danger" v-show="invalidTypeService"><small>Ce champ est requis</small></span>
@@ -46,7 +40,7 @@
                   label-close-button="Fermer"
                   label-no-date-selected="Aucune date sélectionnée"
                   @context="onContext(rendezVous.date)"
-                  :state="validationState('date')"
+                  :state="validateState($v.rendezVous, 'date')"
               />
               <b-form-invalid-feedback>
                 <l-invalid-feedback
@@ -261,7 +255,7 @@ export default {
       }
       // this.context = ctx
     },
-    getMinMaxDates: function() {
+    getMinMaxDates: function () {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
       const minDate = new Date(today)
@@ -275,10 +269,6 @@ export default {
         min: minDate,
         max: maxDate
       }
-    },
-    validationState: function (name) {
-      const {$dirty, $error} = this.$v.rendezVous[name]
-      return $dirty ? !$error : null;
     }
   },
   created() {

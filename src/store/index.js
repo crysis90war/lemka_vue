@@ -8,7 +8,7 @@ import {MercerieModule} from "@/store/mercerie.module";
 import {CategorieModule} from "@/store/categorie.module";
 import {CouleurModule} from "@/store/couleur.module";
 import {UserMensurationModule} from "@/store/user_mensuration/user_mensuration.module";
-import {CharacteristiqueModule} from "@/store/characteristique.module";
+import {CaracteristiqueModule} from "@/store/caracteristique.module";
 import {AuthModule} from "@/store/auth.module";
 import {HoraireModule} from "@/store/horaire.module";
 import {DemandeDevisModule} from "@/store/demande_devis.module";
@@ -54,7 +54,7 @@ export default new Vuex.Store({
     'TVA': TVAModule,
     'Details': DetailModule,
     'Adresse': AdresseModule,
-    'Characteristiques': CharacteristiqueModule,
+    'Characteristiques': CaracteristiqueModule,
     'RendezVous': RendezVousModule,
     'Rayons': RayonModule,
     'Sections': SectionModule,

@@ -4,7 +4,7 @@
 
     <b-card
         v-else
-        :title="id !== undefined ? genre.genre : 'Ajouter un genre'"
+        :title="id !== undefined ? genre.nom : 'Ajouter un genre'"
         :class="BSClass.CARD_BORDERLESS_SHADOW"
     >
       <b-card-body>
@@ -90,7 +90,7 @@ export default {
         let genre = await this.$store.getters["Genres/genre"](parseInt(this.$route.params.id))
         if (genre !== undefined) {
           Object.assign(this.genre, await genre)
-          this.$route.meta.value = this.genre.genre
+          this.$route.meta.value = this.genre.nom
         } else {
           await this.$router.push({name: this.routes.PARAMETRES_GENRE.name})
         }

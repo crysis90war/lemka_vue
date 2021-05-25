@@ -25,7 +25,7 @@
             </div>
             <div v-if="profil.genre !== null && profil.genre !== undefined">
               <span class="mr-2"><i :class="icons.GENRE"></i></span>
-              <span>{{ profil.genre.genre }}</span>
+              <span>{{ profil.genre.nom }}</span>
             </div>
             <hr>
             <div>

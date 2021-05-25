@@ -3,7 +3,7 @@
     <div v-if="$route.name === routes.PARAMETRES_CHARACTERISTIQUE.name">
       <l-table-view
           :table-busy="busy"
-          :table-datas="characteristiques"
+          :table-datas="caracteristiques"
           :table-fields="fields"
           :load-data="loadCaracteristiques"
           :create-route-to-name="routes.PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE.name"
@@ -34,7 +34,7 @@ import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
 import LTableButtonUpdateDelete from "@/components/Table/LTableButtonUpdateDelete";
 import LTableView from "@/components/Table/LTableView";
 import {commonMixin} from "@/mixins/common.mixin";
-import CharacteristicModel from "@/models/characteristic.model";
+import CaracteristiqueModel from "@/models/caracteristique.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 
@@ -44,12 +44,12 @@ export default {
   mixins: [commonMixin],
   data() {
     return {
-      fields: CharacteristicModel.tableFields,
+      fields: CaracteristiqueModel.tableFields,
       routes: LemkaHelpers.Routes
     }
   },
   computed: {
-    ...mapGetters({characteristiques: 'Characteristiques/characteristiques', busy: 'Characteristiques/loadingStatus'})
+    ...mapGetters({characteristiques: 'Characteristiques/caracteristiques', busy: 'Characteristiques/loadingStatus'})
   },
   methods: {
     ...mapActions({
@@ -57,7 +57,7 @@ export default {
       deleteCaracteristique: "Characteristiques/deleteCaracteristique"
     }),
     initialisation: async function () {
-      if (this.characteristiques.length === 0) {
+      if (this.caracteristiques.length === 0) {
         await this.loadCaracteristiques()
       }
     },

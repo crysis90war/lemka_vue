@@ -1,12 +1,12 @@
 import * as R from 'ramda'
-import CharacteristicModel from "@/models/characteristic.model";
+import CaracteristiqueModel from "@/models/caracteristique.model";
 import {decimal, required} from "vuelidate/lib/validators";
 
 export default class MercerieChatacteristiqueModel {
     constructor(json = {}) {
         this.id = R.is(Number, json.id) ? json.id : null
         this.valeur = R.is(Number, json.valeur) ? json.valeur : 0
-        this.caracteristique = R.is(Object, json.caracteristique) ? new CharacteristicModel(json.caracteristique) : new CharacteristicModel()
+        this.caracteristique = R.is(Object, json.caracteristique) ? new CaracteristiqueModel(json.caracteristique) : new CaracteristiqueModel()
     }
 
     toCreatePayload() {

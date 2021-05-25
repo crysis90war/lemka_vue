@@ -26,36 +26,19 @@
                 v-if="slug !== undefined"
                 v-b-tooltip.top :title="`Supprimer: ${article.titre}`"
                 variant="outline-danger"
-                @click="showModal('delete-article-modal')"
+                @click="showModal('delete-modal-article')"
             >
               Supprimer
             </b-button>
           </b-button-group>
-          <b-modal id="delete-article-modal" :title="article.titre">
-            <template #modal-footer>
-              <div class="text-right">
-                <b-button-group size="md">
-                  <b-button
-                      variant="outline-primary"
-                      @click="hideModal('delete-article-modal')"
-                  >
-                    Annuler
-                  </b-button>
-                  <b-button
-                      variant="outline-danger"
-                      @click="supprimerArticle(article)"
-                  >
-                    Supprimer
-                  </b-button>
-                </b-button-group>
-              </div>
-            </template>
 
-            <div class="text-center">
-              <p>Êtes-vous sure de vouloir supprimer</p>
-              <h3>"{{ article.titre }}"</h3>
-            </div>
-          </b-modal>
+          <l-table-delete-modal
+              modal-id="article"
+              :modal-title="article.titre"
+              :modal-text="article.titre"
+              @clickHideModal="hideModal('delete-modal-article')"
+              @clickDelete="supprimerArticle(article)"
+          />
           <h3>{{ slug !== undefined ? article.titre : 'Créer nouvelle mercerie' }}</h3>
         </div>
         <hr>
@@ -74,18 +57,15 @@
       <!-- endregion -->
 
       <!-- region Titre -->
-      <b-form-group
+      <l-input-field
+          :input-type="true"
+          v-model="$v.article.titre.$model"
           label="Titre"
           description="Encodez le titre de l'article"
-          class="my-1"
+          placeholder="Titre ..."
+          :state="validateState($v.article, 'titre')"
       >
-        <b-form-input
-            v-model="$v.article.titre.$model"
-            placeholder="Titre ..."
-            type="text"
-            :state="validateState('titre')"
-        />
-        <b-form-invalid-feedback>
+        <template #invalid-feedback>
           <l-invalid-feedback
               :condition="!$v.article.titre.required"
               :errorMessage="required()"
@@ -98,22 +78,20 @@
               :condition="!$v.article.titre.maxLength"
               :errorMessage="maxLength($v.article.titre.$params.maxLength.max)"
           />
-        </b-form-invalid-feedback>
-      </b-form-group>
+        </template>
+      </l-input-field>
       <!-- endregion -->
 
       <!-- region Description -->
-      <b-form-group
+      <l-input-field
+          :text-area-type="true"
+          v-model="$v.article.description.$model"
           label="Description"
           description="Veuillez encoder la description de l'article"
-          class="my-1"
+          placeholder="Encodage de la description"
+          :state="validateState($v.article, 'description')"
       >
-        <b-form-textarea
-            v-model="$v.article.description.$model"
-            placeholder="Encodage de la description"
-            :state="validateState('description')"
-        />
-        <b-form-invalid-feedback>
+        <template #invalid-feedback>
           <l-invalid-feedback
               :condition="!$v.article.description.required"
               :errorMessage="required()"
@@ -122,8 +100,8 @@
               :condition="!$v.article.description.minLength"
               :errorMessage="minLength($v.article.description.$params.minLength.min)"
           />
-        </b-form-invalid-feedback>
-      </b-form-group>
+        </template>
+      </l-input-field>
       <!-- endregion -->
 
       <b-row class="mt-3">
@@ -138,14 +116,12 @@
                 :options="typeServices"
                 :allow-empty="false"
                 :show-labels="false"
-                :hide-selected="true"
-                label="type_service"
                 track-by="nom"
                 :class="{ 'invalid': invalidTypeService }"
                 @close="toucheTypeService"
             >
               <template slot="singleLabel" slot-scope="{ option }">
-                <span>{{ option.type_service.id !== null ? option.type_service : null }}</span>
+                <span>{{ option.id !== null ? option.nom : null }}</span>
               </template>
               <template slot="option" slot-scope="{ option }">
                 <span>{{ option.nom }} - {{ option.duree_minute }} minutes</span>
@@ -168,7 +144,6 @@
                 :options="catalogues"
                 :loading="cataloguesLoadingStatus"
                 :close-on-select="true"
-                :hide-selected="true"
                 :options-limit="20"
                 :show-no-results="false"
                 :show-labels="false"
@@ -181,20 +156,15 @@
                 @close="toucheCatalogue"
                 @search-change="updateSelectCatalogue"
             >
-
               <template slot="singleLabel" slot-scope="{ option }">
                   <span>
-                    {{
-                      option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null
-                    }}
+                    {{ option.id !== null ? `${option.rayon.nom} - ${option.section.nom} - ${option.type_produit.nom}` : null }}
                   </span>
               </template>
 
               <template slot="option" slot-scope="{ option }">
                   <span>
-                    {{
-                      option.id !== null ? `${option.rayon.rayon} - ${option.section.section} - ${option.type_produit.type_produit}` : null
-                    }}
+                    {{ option.id !== null ? `${option.rayon.nom} - ${option.section.nom} - ${option.type_produit.nom}` : null }}
                   </span>
               </template>
               <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
@@ -213,28 +183,19 @@
       >
         <multiselect
             v-model="article.tags"
+            :loading="loadingStatus"
             :options="tags"
-            :loading="tagsLoadingStatus"
             :multiple="true"
             :hide-selected="true"
+            :show-labels="false"
             :taggable="true"
-            label="tag"
-            track-by="tag"
-            selectLabel="Appuyez sur enter pour selectionner."
-            deselectLabel="Appuyez sur enter pour retirer"
+            label="nom"
+            track-by="id"
             placeholder="Cherchez ou ajoutez un tag"
             tag-placeholder="Ajoutez ça comme nouveau tag"
-            @tag="addTag"
             @search-change="updateSelectTag"
+            @tag="addTag"
         >
-          <template slot="singleLabel" slot-scope="{ option }">
-            <span>{{ option.tag }}</span>
-          </template>
-
-          <template slot="option" slot-scope="{ option }">
-            <span>{{ option.tag }}</span>
-          </template>
-
           <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
           <span slot="noOptions">Aucun tag disponible. Veuillez encoder pour en créer.</span>
         </multiselect>
@@ -368,10 +329,12 @@ import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {commonMixin} from "@/mixins/common.mixin";
 import {htmlTitle} from "@/utils/tools";
+import LInputField from "@/components/LInputField";
+import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
 
 export default {
   name: "VAArticleAddOrUpdate",
-  components: {Cropper},
+  components: {LTableDeleteModal, LInputField, Cropper},
   mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     article: ArticleModel.validations
@@ -413,7 +376,7 @@ export default {
   computed: {
     ...mapGetters({
       tags: "Tags/tags",
-      tagsLoadingStatus: "Tags/tagsLoadingStatus",
+      loadingStatus: "Tags/loadingStatus",
       typeServices: 'TypeServices/typeServices',
       typeServiceLoadingStatus: "TypeServices/loadingStatus",
       catalogues: "Catalogues/catalogues",
@@ -441,7 +404,6 @@ export default {
       updateImage: "Articles/updateImage",
       deleteImage: "Articles/deleteImage"
     }),
-
     initialisation: async function () {
       if (this.articles.length === 0) {
         await this.loadArticles()
@@ -456,45 +418,43 @@ export default {
         await this.loadCatalogues()
       }
     },
-
     chargerArticle: async function () {
       this.toggleLoading()
       await this.initialisation()
-      let article = await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug)
+      if (this.$route.params.slug !== undefined) {
+        let article = await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug)
 
-      if (article !== undefined) {
-        Object.assign(this.article, await this.$store.getters["Articles/articleBySlug"](this.$route.params.slug))
-        this.$route.meta.value = this.article.titre
+        if (article !== undefined) {
+          Object.assign(this.article, await article)
+          this.$route.meta.value = this.article.titre
+        } else {
+          await this.$router.push({name: this.routes.ARTICLES.name})
+        }
       } else {
-        await this.$router.push({name: this.routes.ARTICLES.name})
+        this.$route.meta.value = 'Ajout article'
       }
       this.toggleLoading()
     },
-
     updateSelectCatalogue: async function (query) {
       await this.loadCatalogues(query)
     },
-
     updateSelectTag: async function (query) {
       await this.loadTags(query)
     },
-
     addTag: function (newTag) {
       const tag = {
         id: null,
-        tag: newTag.split(/\s/).join(''),
+        nom: newTag.split(/\s/).join(''),
       }
       this.tags.push(tag)
       this.article.tags.push(tag)
     },
-
     submit: async function () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
-
         if (this.article.tags.length > 0) {
           for (let i = 0; i < this.article.tags.length; i++) {
             let newTag = new TagModel()
@@ -507,36 +467,29 @@ export default {
             }
           }
         }
-
-        let payload = this.slug !== undefined ? this.article.toUpdatePayload() : this.article.toCreatePayload()
-
-        if (this.slug === undefined) {
+        let payload = this.$route.params.slug !== undefined ? this.article.toUpdatePayload() : this.article.toCreatePayload()
+        if (this.this.$route.params.slug === undefined) {
           await this.createArticle(payload)
         } else {
           await this.updateArticle(payload)
         }
-
         setTimeout(() => {
           this.submitStatus = 'OK'
           this.$router.push({name: this.routes.ARTICLES.name})
         }, 500)
       }
     },
-
-    supprimerArticle: function(item) {
+    supprimerArticle: function (item) {
       this.deleteArticle(item).then(() => {
         this.$router.push({name: this.routes.ARTICLES.name})
       })
     },
-
-    toucheTypeService: function() {
+    toucheTypeService: function () {
       this.typeServiceTouched = true
     },
-
-    toucheCatalogue: function() {
+    toucheCatalogue: function () {
       this.catalogueTouched = true
     },
-
     previewImage: function (event) {
       let input = event.target;
       let formatImage = [
@@ -556,7 +509,6 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
-
     // eslint-disable-next-line no-unused-vars
     change: function ({coordinates, canvas, image}) {
       // console.log(coordinates, canvas, image)
@@ -567,7 +519,6 @@ export default {
       formData.append('image', file, 'image.jpg')
       this.formData = formData
     },
-
     addImage: function () {
       this.createImage([this.article.slug, this.formData])
       this.preview = null
@@ -576,27 +527,12 @@ export default {
       this.formData = new FormData
       this.hideModal('image-modal')
     },
-
     supprimerImage: function (image) {
       this.deleteImage([this.article.slug, image])
-    },
-
-    validateState: function (name) {
-      const {$dirty, $error} = this.$v.article[name];
-      return $dirty ? !$error : null;
-    },
-  },
-
-  created() {
-    if (this.slug !== undefined) {
-      this.chargerArticle()
-    } else {
-      this.initialisation()
     }
+  },
+  created() {
+    this.chargerArticle()
   }
 }
 </script>
-
-<style scoped>
-
-</style>

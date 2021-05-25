@@ -1,7 +1,7 @@
 import * as R from 'ramda'
-import {maxLength, minLength, required} from "vuelidate/lib/validators";
+import {minLength, required, maxLength} from "vuelidate/lib/validators";
 
-export default class CharacteristicModel {
+export default class CommonModel {
     constructor(json = {}) {
         this.id = R.is(Number, json.id) ? json.id : null
         this.nom = R.is(String, json.nom) ? json.nom : ""
@@ -24,7 +24,7 @@ export default class CharacteristicModel {
         return {
             nom: {
                 required,
-                minLength: minLength(2),
+                minLength: minLength(3),
                 maxLength: maxLength(255)
             }
         }

@@ -121,22 +121,13 @@
                             :hide-selected="true"
                             :show-labels="false"
                             :taggable="true"
-                            tag-placeholder=""
-                            label="tag"
-                            track-by="tag"
-                            placeholder="Tags"
-                            open-direction="below"
-                            :max="10"
+                            label="nom"
+                            track-by="id"
+                            placeholder="Cherchez un tag"
+                            tag-placeholder="Ajoutez ça comme nouveau tag"
                             @search-change="updateSelectTag"
+                            :max="10"
                         >
-                          <template slot="singleLabel" slot-scope="{ option }">
-                            <span>{{ option.tag }}</span>
-                          </template>
-
-                          <template slot="option" slot-scope="{ option }">
-                            <span>{{ option.tag }}</span>
-                          </template>
-
                           <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
                           <span slot="noOptions">Aucun tag disponible. Veuillez encoder pour en créer.</span>
                         </multiselect>
@@ -238,7 +229,7 @@
                           :id-true="selectedCategorie === 'Merceries'"
                           :description="item.description"
                           :tags="item.tags"
-                          tag-name="tag"
+                          tag-name="nom"
                           :style="!listShow ? 'max-width: 20rem;' : '' "
                       />
                     </b-col>
