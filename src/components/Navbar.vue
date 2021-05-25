@@ -20,7 +20,7 @@
             {{ routes.HORAIRE_ROUTE.value }}
           </b-nav-item>
 
-          <b-nav-item-dropdown text="Galérie" right>
+          <b-nav-item-dropdown text="Galerie" right>
             <b-dropdown-item>Confection</b-dropdown-item>
             <b-dropdown-item>Retouche</b-dropdown-item>
             <b-dropdown-item>Réparation</b-dropdown-item>
