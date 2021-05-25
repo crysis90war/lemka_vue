@@ -39,7 +39,6 @@
         </b-tabs>
       </b-card>
     </div>
-    <l-jumbotron :data="$store.getters['Horaires/horaires']" header="Horaire"/>
   </div>
 </template>
 
