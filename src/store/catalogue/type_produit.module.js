@@ -59,7 +59,7 @@ export const TypeProduitModule = {
             let endpoint = `type-produits/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
-                    commit('ADD_TYPE_PRODUIT')
+                    commit('ADD_TYPE_PRODUIT', r.data)
                     resolve(r.data)
                 }, error => {
                     reject(error)

@@ -2,15 +2,15 @@ import * as R from 'ramda'
 import {maxLength, minLength, alpha, required, numeric, between} from "vuelidate/lib/validators";
 
 export default class TypeServiceModel {
-    constructor(typeService = {}) {
-        this.id = R.is(Number, typeService.id) ? typeService.id : null
-        this.type_service = R.is(String, typeService.type_service) ? typeService.type_service : ""
-        this.duree_minute = R.is(Number, typeService.duree_minute) ? typeService.duree_minute : null
+    constructor(json = {}) {
+        this.id = R.is(Number, json.id) ? json.id : null
+        this.nom = R.is(String, json.nom) ? json.nom : ""
+        this.duree_minute = R.is(Number, json.duree_minute) ? json.duree_minute : null
     }
 
     toCreatePayload() {
         return {
-            type_service: this.type_service,
+            nom: this.nom,
             duree_minute: this.duree_minute
         }
     }
@@ -24,7 +24,7 @@ export default class TypeServiceModel {
 
     static get validations() {
         return {
-            type_service: {
+            nom: {
                 alpha,
                 minLength: minLength(3),
                 maxLength: maxLength(50),
@@ -41,7 +41,7 @@ export default class TypeServiceModel {
     static get tableFields() {
         return [
             {key: 'id', label: '#'},
-            {key: 'type_service', label: 'Service', sortable: true},
+            {key: 'nom', label: 'Service', sortable: true},
             {key: 'duree_minute', label: 'Durée en minutes', sortable: true},
             {key: 'actions', label: 'Actions'}
         ]

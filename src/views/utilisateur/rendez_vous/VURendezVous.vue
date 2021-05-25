@@ -39,7 +39,7 @@
                 <p>{{ new Date(data.item.created_at).toLocaleDateString() }}</p>
               </template>
               <template #cell(type_service)="data">
-                <p>{{ data.item.type_service.type_service }}</p>
+                <p>{{ data.item.type_service.nom }}</p>
               </template>
               <template #cell(devis)="data">
                 <p>{{ data.item.devis !== null ? data.item.devis.numero_devis : 'X' }}</p>
@@ -60,7 +60,7 @@
                     <p>Votre rendez-vous le</p>
                     <p><strong>{{ data.item.date | getFullDate }}</strong></p>
                     <p>de <strong>{{ data.item.start }}</strong> à <strong>{{ data.item.end }}</strong></p>
-                    <p>Pour le service <strong>{{ data.item.type_service.type_service }}</strong></p>
+                    <p>Pour le service <strong>{{ data.item.type_service.nom }}</strong></p>
                     <p v-if="data.item.devis !== null">Et pour le devis numero <strong>{{ data.item.devis.numero_devis }}</strong></p>
                   </div>
                   <template #modal-footer>
@@ -134,7 +134,7 @@
                 <p>{{ new Date(data.item.created_at).toLocaleDateString() }}</p>
               </template>
               <template #cell(type_service)="data">
-                <p>{{ data.item.type_service.type_service }}</p>
+                <p>{{ data.item.type_service.nom }}</p>
               </template>
               <template #cell(devis)="data">
                 <p>{{ data.item.devis !== null ? data.item.devis.numero_devis : 'X' }}</p>
@@ -161,7 +161,7 @@
                 <p>{{ new Date(data.item.created_at).toLocaleDateString() }}</p>
               </template>
               <template #cell(type_service)="data">
-                <p>{{ data.item.type_service.type_service }}</p>
+                <p>{{ data.item.type_service.nom }}</p>
               </template>
               <template #cell(devis)="data">
                 <p>{{ data.item.devis !== null ? data.item.devis.numero_devis : 'X' }}</p>

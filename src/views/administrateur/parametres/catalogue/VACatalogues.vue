@@ -1,22 +1,24 @@
 <template>
   <div class="catalogues">
     <div v-if="$route.name === routes.PARAMETRES_CATALOGUE.name">
-
+      <b-alert variant="warning" show>
+        Attention ! En supprimant un catalogue, vous allez supprimer tous les articles qui lui sont associés ...
+      </b-alert>
       <l-table-view
           :table-busy="busy"
           :table-datas="catalogues"
           :table-fields="fields"
           :load-data="loadCatalogues"
-          :update-route-to-name="routes.PARAMETRES_CATALOGUE_ADD_OR_UPDATE.name"
+          :create-route-to-name="routes.PARAMETRES_CATALOGUE_ADD_OR_UPDATE.name"
       >
         <template #cell(rayon)="data">
-          <p>{{data.item.rayon.rayon}}</p>
+          <p>{{ data.item.rayon.nom }}</p>
         </template>
         <template #cell(section)="data">
-          <p>{{data.item.section.section}}</p>
+          <p>{{ data.item.section.nom }}</p>
         </template>
         <template #cell(type_produit)="data">
-          <p>{{data.item.type_produit.type_produit}}</p>
+          <p>{{ data.item.type_produit.nom }}</p>
         </template>
         <template #cell(actions)="data">
           <l-table-button-update-delete
@@ -69,19 +71,19 @@ export default {
   },
   methods: {
     ...mapActions({loadCatalogues: "Catalogues/loadCatalogues", deleteCatalogue: 'Catalogues/deleteCatalogue'}),
-    initialisation: async function() {
+    initialisation: async function () {
       if (this.catalogues.length === 0) {
         await this.loadCatalogues()
       }
     },
-    supprimerCatalogue: function(item) {
+    supprimerCatalogue: function (item) {
       this.deleteCatalogue(item)
       this.hideModal('delete-modal-' + item.id)
     },
-    getFullCatalogueName: function(item) {
-      let rayon = item.rayon.rayon;
-      let section = item.section.section;
-      let type_produit = item.type_produit.type_produit
+    getFullCatalogueName: function (item) {
+      let rayon = item.rayon.nom;
+      let section = item.section.nom;
+      let type_produit = item.type_produit.nom
       return `${rayon} / ${section} / ${type_produit}`
     }
   },

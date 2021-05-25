@@ -31,14 +31,14 @@
             :key="index">
           <!-- Via space separated string of IDs passed to directive value -->
           <b-button size="lg" v-b-toggle="`collapse-rdv-${rdv.id}`" class="w-100 mb-2  text-dark border" variant="outline-light">
-            {{ rdv.user.first_name }} {{ rdv.user.last_name }} : {{ rdv.start }} - {{ rdv.end }}
+            {{ clientInfo(rdv.user) }} : {{ rdv.start }} - {{ rdv.end }}
           </b-button>
 
           <b-collapse :id="`collapse-rdv-${rdv.id}`">
             <b-card>
               <b-row>
                 <b-col lg="4"><h5>Service : </h5>
-                  <p>{{ rdv.type_service.type_service }}</p>
+                  <p>{{ rdv.type_service.nom }}</p>
                 </b-col>
                 <b-col lg="4"><h5>Client : </h5>
                   <p>{{ clientInfo(rdv.user) }}</p>
@@ -64,10 +64,14 @@
 import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
 import {format} from "date-fns";
+import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VARendezVous",
   mixins: [commonMixin],
+  title() {
+    return htmlTitle('Rendez-vous')
+  },
   data() {
     return {
       selected: '',
@@ -104,7 +108,7 @@ export default {
     },
     clientInfo: function (user) {
       if (user.first_name === "" || user.last_name === "") {
-        return user.username
+        return user.email
       } else {
         return `${user.first_name} ${user.last_name}`
       }

@@ -16,7 +16,7 @@
                 :allow-empty="false"
                 :show-labels="false"
                 label="type_service"
-                track-by="type_service"
+                track-by="nom"
                 :class="{ 'invalid': invalidTypeService }"
                 @close="toucheTypeService"
             >
@@ -24,7 +24,7 @@
                 <span>{{ option.type_service.id !== null ? option.type_service : null }}</span>
               </template>
               <template slot="option" slot-scope="{ option }">
-                <span>{{ option.type_service }} - {{ option.duree_minute }} minutes</span>
+                <span>{{ option.nom }} - {{ option.duree_minute }} minutes</span>
               </template>
               <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
             </multiselect>

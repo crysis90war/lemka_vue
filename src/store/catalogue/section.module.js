@@ -33,7 +33,7 @@ export const SectionModule = {
             }
         },
         DELETE_SECTION(state, payload) {
-            const index = state.sections.map(item => item.id).findIndex(payload.id)
+            const index = state.sections.findIndex(item => item.id === payload.id)
             if (index !== -1) {
                 state.sections.splice(index, 1)
             }
@@ -56,7 +56,7 @@ export const SectionModule = {
             })
         },
         createSection: function({commit}, payload) {
-            let endpoint = `rayons/`;
+            let endpoint = `sections/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
                     commit('ADD_SECTION', r.data)
@@ -67,7 +67,7 @@ export const SectionModule = {
             })
         },
         updateSection: function({commit}, payload) {
-            let endpoint = `rayons/${payload.id}/`;
+            let endpoint = `sections/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
                     commit('UPDATE_SECTION', r.data)
@@ -78,7 +78,7 @@ export const SectionModule = {
             })
         },
         deleteSection: function({commit}, payload) {
-            let endpoint = `rayons/${payload.id}/`;
+            let endpoint = `sections/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
                     commit('DELETE_SECTION', payload)

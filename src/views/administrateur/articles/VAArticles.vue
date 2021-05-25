@@ -156,7 +156,7 @@
       </template>
 
       <template #cell(type_service)="data">
-        {{ data.item.type_service.type_service }}
+        {{ data.item.type_service.nom }}
       </template>
 
       <template #cell(titre)="data">

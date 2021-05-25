@@ -45,7 +45,7 @@
                           v-model="selectedTypeService"
                           :options="typeServices"
                           value-field="id"
-                          text-field="type_service"
+                          text-field="nom"
                           stacked
                       >
                         <template #first>

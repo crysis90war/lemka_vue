@@ -6,7 +6,7 @@
           :table-datas="typeServices"
           :table-fields="fields"
           :load-data="loadTypeServices"
-          :update-route-to-name="routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name"
+          :create-route-to-name="routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name"
       >
         <template #cell(actions)="data">
           <l-table-button-update-delete
@@ -17,8 +17,8 @@
 
           <l-table-delete-modal
               :modal-id="data.item.id"
-              :modal-title="data.item.type_service"
-              :modal-text="data.item.type_service"
+              :modal-title="data.item.nom"
+              :modal-text="data.item.nom"
               @clickHideModal="hideModal('delete-modal-'+data.item.id)"
               @clickDelete="supprimerService(data.item)"
           />
@@ -59,7 +59,7 @@ export default {
         await this.loadTypeServices()
       }
     },
-    supprimerService: function(item) {
+    supprimerService: function (item) {
       this.deleteTypeService(item)
       this.hideModal('delete-modal-' + item.id)
     }

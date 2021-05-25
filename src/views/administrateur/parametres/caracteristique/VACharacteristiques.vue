@@ -6,7 +6,7 @@
           :table-datas="characteristiques"
           :table-fields="fields"
           :load-data="loadCaracteristiques"
-          :update-route-to-name="routes.PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE.name"
+          :create-route-to-name="routes.PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE.name"
       >
         <template #cell(actions)="data">
           <l-table-button-update-delete

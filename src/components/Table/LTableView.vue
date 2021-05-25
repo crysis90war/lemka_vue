@@ -2,7 +2,7 @@
   <div class="global-table">
     <l-create-refresh
         :load-or-refresh="loadData"
-        :route="updateRouteToName"
+        :route="createRouteToName"
     />
     <b-table
         :items="tableDatas"
@@ -34,7 +34,7 @@ export default {
   name: "LTableView",
   props: {
     loadData: {},
-    updateRouteToName: {},
+    createRouteToName: {},
     tableDatas: {},
     tableFields: {},
     tableBusy: {}

@@ -25,7 +25,7 @@
           <b-col lg="5">
             <span class="text-muted">{{ article.created_at | localTimeStr }}</span>
             <h3>{{ article.titre }}</h3>
-            <h5>{{ article.type_service.type_service }}</h5>
+            <h5>{{ article.type_service.nom }}</h5>
             <p style="white-space: pre-wrap">{{ article.description }}</p>
             <div class="d-flex justify-content-start">
               <b-badge

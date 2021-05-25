@@ -78,18 +78,17 @@
             :options="typeServices"
             :class="{ 'invalid': isInvalid }"
             :show-labels="false"
-            label="type_service"
-            track-by="type_service"
+            track-by="nom"
             placeholder="Veuillez selectionner le service"
             :allow-empty="false"
             :hide-selected="true"
             @close="onTouch"
         >
           <template slot="singleLabel" slot-scope="{ option }">
-            <span>{{ option.type_service }}</span>
+            <span>{{ option.nom }}</span>
           </template>
           <template slot="option" slot-scope="{ option }">
-            <span>{{ option.type_service }}</span>
+            <span>{{ option.nom }}</span>
           </template>
           <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
         </multiselect>

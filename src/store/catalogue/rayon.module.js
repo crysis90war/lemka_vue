@@ -33,7 +33,7 @@ export const RayonModule = {
             }
         },
         DELETE_RAYON(state, payload) {
-            const index = state.rayons.map(item => item.id).findIndex(payload.id)
+            const index = state.rayons.findIndex(item => item.id === payload.id)
             if (index !== -1) {
                 state.rayons.splice(index, 1)
             }
