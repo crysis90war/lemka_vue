@@ -4,30 +4,30 @@
 
     <b-card
         v-else
-        :title="id !== undefined ? genre.nom : 'Ajouter un genre'"
+        :title="$route.params.id !== undefined ? genre.nom : 'Ajouter un genre'"
         :class="BSClass.CARD_BORDERLESS_SHADOW"
     >
       <b-card-body>
         <l-input-field
             :input-type="true"
-            v-model="$v.genre.genre.$model"
+            v-model="$v.genre.nom.$model"
             label="Genre"
             description="Veuillez encoder le genre"
             placeholder="exemple: Femme"
-            :state="validateState($v.genre, 'genre')"
+            :state="validateState($v.genre, 'nom')"
         >
           <template #invalid-feedback>
             <invalid-feedback
-                :condition="!$v.genre.genre.required"
+                :condition="!$v.genre.nom.required"
                 :error-message="required()"
             />
             <invalid-feedback
-                :condition="!$v.genre.genre.minLength"
-                :error-message="minLength($v.genre.genre.$params.minLength.min)"
+                :condition="!$v.genre.nom.minLength"
+                :error-message="minLength($v.genre.nom.$params.minLength.min)"
             />
             <invalid-feedback
-                :condition="!$v.genre.genre.maxLength"
-                :error-message="maxLength($v.genre.genre.$params.maxLength.max)"
+                :condition="!$v.genre.nom.maxLength"
+                :error-message="maxLength($v.genre.nom.$params.maxLength.max)"
             />
           </template>
         </l-input-field>

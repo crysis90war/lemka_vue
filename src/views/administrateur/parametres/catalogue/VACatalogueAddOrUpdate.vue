@@ -188,7 +188,7 @@
         </b-row>
 
         <div class="text-center my-2">
-          <b-alert :variant="`${catalogueExist === true ? 'danger':'success'}`" show="">{{ message }}</b-alert>
+          <b-alert :variant="`${catalogueExist === true ? 'danger':'success'}`" :show="message !== ''">{{ message }}</b-alert>
         </div>
 
         <l-button-group
@@ -200,9 +200,6 @@
         />
       </b-card-body>
     </b-card>
-
-    <l-jumbotron :data="catalogue" header="Catalogue" class="mt-5"/>
-    <l-jumbotron :data="catalogueExist" header="Message" class="mt-5"/>
   </div>
 </template>
 
@@ -278,7 +275,7 @@ export default {
         )
         return catalogue !== undefined;
       } else {
-        return false
+        return true
       }
     }
   },
@@ -332,11 +329,20 @@ export default {
     },
     submit: async function () {
       if (this.catalogueExist === true) {
+        if (this.catalogue.type_produit.id === null || this.catalogue.rayon.id === null || this.catalogue.section.id === null) {
+          this.message = 'Veuillez choisir tous les élements !'
+        } else {
+          if (this.$route.params.id) {
+            this.message = 'Pas la peine'
+          } else {
+            this.message = 'Ce catalogue existe déja'
+          }
+        }
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
 
-        if (this.id !== undefined) {
+        if (this.$route.params.id !== undefined) {
           await this.updateCatalogue(this.catalogue.toUpdatePayload())
         } else {
           await this.createCatalogue(this.catalogue.toCreatePayload())
@@ -349,9 +355,9 @@ export default {
       }
     },
     getFullCatalogueName: function (item) {
-      let rayon = item.rayon.rayon;
-      let section = item.section.section;
-      let type_produit = item.type_produit.type_produit
+      let rayon = item.rayon.nom
+      let section = item.section.nom
+      let type_produit = item.type_produit.nom
       return `${rayon} / ${section} / ${type_produit}`
     },
 

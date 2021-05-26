@@ -1,33 +1,33 @@
 <template>
-  <div class="add_update_characteristique">
+  <div class="add_update_caracteristique">
     <l-spinner v-if="isLoading === true"/>
 
     <b-card
         v-else
-        :title="id !== undefined ? characteristique.nom : 'Ajouter une characteristique'"
+        :title="id !== undefined ? caracteristique.nom : 'Ajouter une caracteristique'"
         :class="BSClass.CARD_BORDERLESS_SHADOW"
     >
       <b-card-body>
         <l-input-field
             :input-type="true"
-            v-model="$v.characteristique.nom.$model"
+            v-model="$v.caracteristique.nom.$model"
             label="Characteristique"
             description="Veuillez encoder la characteristique"
             placeholder="exemple: Longueur"
-            :state="validateState($v.characteristique, 'nom')"
+            :state="validateState($v.caracteristique, 'nom')"
         >
           <template #invalid-feedback>
             <invalid-feedback
-                :condition="!$v.characteristique.nom.required"
+                :condition="!$v.caracteristique.nom.required"
                 :error-message="required()"
             />
             <invalid-feedback
-                :condition="!$v.characteristique.nom.minLength"
-                :error-message="minLength($v.characteristique.nom.$params.minLength.min)"
+                :condition="!$v.caracteristique.nom.minLength"
+                :error-message="minLength($v.caracteristique.nom.$params.minLength.min)"
             />
             <invalid-feedback
-                :condition="!$v.characteristique.nom.maxLength"
-                :error-message="maxLength($v.characteristique.nom.$params.maxLength.max)"
+                :condition="!$v.caracteristique.nom.maxLength"
+                :error-message="maxLength($v.caracteristique.nom.$params.maxLength.max)"
             />
           </template>
         </l-input-field>
@@ -68,18 +68,18 @@ export default {
     }
   },
   validations: {
-    characteristique: CaracteristiqueModel.validations
+    caracteristique: CaracteristiqueModel.validations
   },
   data() {
     return {
-      characteristique: new CaracteristiqueModel(),
+      caracteristique: new CaracteristiqueModel(),
       submitStatus: null,
       BSClass: LemkaHelpers.BSClass,
       routes: LemkaHelpers.Routes
     }
   },
   computed: {
-    ...mapGetters({characteristiques: "Characteristiques/caracteristiques"})
+    ...mapGetters({caracteristiques: "Characteristiques/caracteristiques"})
   },
   methods: {
     ...mapActions({
@@ -103,7 +103,7 @@ export default {
           await this.$router.push({name: this.routes.PARAMETRES_CHARACTERISTIQUE.name})
         }
       } else {
-        this.$route.meta.value = "Ajout characteristique"
+        this.$route.meta.value = this.$t('add_characteristic')
       }
     },
     async submit() {

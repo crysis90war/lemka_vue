@@ -32,7 +32,6 @@ export default class CommonModel {
 
     static get tableFields() {
         return [
-            {key: 'id', label: '#'},
             {key: 'nom', label: 'Nom', sortable: true},
             {key: 'actions', label: 'Actions'}
         ]

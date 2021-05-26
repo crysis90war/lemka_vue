@@ -12,7 +12,6 @@
         small
         show-empty
         hover
-        bordered
         fixed
         class="text-center mt-3"
     >

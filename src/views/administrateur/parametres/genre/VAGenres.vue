@@ -7,7 +7,7 @@
           :table-datas="genres"
           :table-fields="fields"
           :load-data="loadGenres"
-          :update-route-to-name="routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name"
+          :create-route-to-name="routes.PARAMETRES_GENRE_ADD_OR_UPDATE.name"
       >
         <template #cell(actions)="data">
           <l-table-button-update-delete
@@ -39,6 +39,7 @@ import LTableView from "@/components/Table/LTableView";
 import {commonMixin} from "@/mixins/common.mixin";
 import LTableButtonUpdateDelete from "@/components/Table/LTableButtonUpdateDelete";
 import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
+import GenreModel from "@/models/genre.model";
 
 export default {
   name: "VAGenres",
@@ -46,11 +47,7 @@ export default {
   mixins: [commonMixin],
   data() {
     return {
-      fields: [
-        {key: 'id', label: '#'},
-        {key: 'genre', label: 'Genre', sortable: true},
-        {key: 'actions', label: 'Actions'}
-      ],
+      fields: GenreModel.tableFields,
       routes: LemkaHelpers.Routes,
       BSClass: LemkaHelpers.BSClass
     }

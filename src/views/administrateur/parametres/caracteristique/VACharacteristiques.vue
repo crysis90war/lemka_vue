@@ -49,7 +49,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({characteristiques: 'Characteristiques/caracteristiques', busy: 'Characteristiques/loadingStatus'})
+    ...mapGetters({caracteristiques: 'Characteristiques/caracteristiques', busy: 'Characteristiques/loadingStatus'})
   },
   methods: {
     ...mapActions({
