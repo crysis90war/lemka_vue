@@ -56,7 +56,7 @@ export const ProfilModule = {
         updateProfilImage: function({commit}, payload) {
             let endpoint = `profil/`;
             return new Promise((resolve, reject) => {
-                ApiService.PATCHDate(endpoint, payload).then(r => {
+                ApiService.PATCHData(endpoint, payload).then(r => {
                     commit('UPDATE_PROFIL', r.data)
                     resolve(r.data)
                 }, error => {

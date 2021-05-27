@@ -64,9 +64,13 @@ export default {
     }
   },
   data() {
+    let redirect_url = process.env.VUE_APP_NODE_END === 'development' ? 'http://localhost:8080' : 'https://www.lemka.be/'
+    let new_password = '/new-password'
+
     return {
       form: {
-        email: ""
+        email: "",
+        redirect_url: redirect_url + new_password
       },
       submitStatus: null
     }
@@ -79,7 +83,7 @@ export default {
       } else {
         this.submitStatus = 'PENDING'
 
-        ApiService.POSTData('request-reset-email/', this.form).then(r => {
+        ApiService.POSTData('auth/request-reset-email/', this.form).then(r => {
           console.log(r)
         }, error => {
           console.log(error)

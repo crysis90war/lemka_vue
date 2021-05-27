@@ -129,15 +129,11 @@ export default {
   data() {
     return {
       user: new AuthModel(),
-      submitStatus: null,
-      message: ''
+      submitStatus: null
     }
   },
   computed: {
-    ...mapGetters({loggedIn: "Auth/loggedIn"}),
-    logo() {
-      return require('@/assets/Lemka.png')
-    }
+    ...mapGetters({loggedIn: "Auth/loggedIn"})
   },
   methods: {
     ...mapActions({register: "Auth/register"}),

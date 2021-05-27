@@ -9,6 +9,11 @@ export const commonMixin = {
             submitStatus: null,
         }
     },
+    computed: {
+        logo() {
+            return require('@/assets/Lemka.png')
+        }
+    },
     methods: {
         showModal: function (mondal_id) {
             this.$bvModal.show(mondal_id)

@@ -190,7 +190,6 @@
         <div class="text-center my-2">
           <b-alert :variant="`${catalogueExist === true ? 'danger':'success'}`" :show="message !== ''">{{ message }}</b-alert>
         </div>
-
         <l-button-group
             class="mt-2"
             :to="routes.PARAMETRES_CATALOGUE.name"

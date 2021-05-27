@@ -1,12 +1,7 @@
 import axios from "axios";
 import authHeader from "@/services/auth-header";
 
-let DOMAIN;
-if (process.env.VUE_APP_NODE_END === 'development') {
-    DOMAIN = 'http://127.0.0.1:8000';
-} else {
-    DOMAIN = 'https://lemka-api.herokuapp.com';
-}
+const DOMAIN = process.env.VUE_APP_NODE_END === 'development' ? 'http://127.0.0.1:8000' : 'https://lemka-api.herokuapp.com'
 
 axios.defaults.baseURL = DOMAIN;
 
@@ -45,7 +40,7 @@ class ApiService {
         })
     }
 
-    PATCHDate(endpoint, payload) {
+    PATCHData(endpoint, payload) {
         return axios({
             method: 'patch',
             url: '/api/' + endpoint,

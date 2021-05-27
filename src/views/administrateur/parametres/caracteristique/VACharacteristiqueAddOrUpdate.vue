@@ -97,8 +97,8 @@ export default {
       if (this.$route.params.id !== undefined) {
         let characteristique = await this.$store.getters["Characteristiques/caracteristique"](parseInt(this.$route.params.id))
         if (characteristique !== undefined) {
-          Object.assign(this.characteristique, await characteristique)
-          this.$route.meta.value = this.characteristique.nom
+          Object.assign(this.caracteristique, await characteristique)
+          this.$route.meta.value = this.caracteristique.nom
         } else {
           await this.$router.push({name: this.routes.PARAMETRES_CHARACTERISTIQUE.name})
         }
@@ -114,9 +114,9 @@ export default {
         this.submitStatus = 'PENDING'
 
         if (this.id !== undefined) {
-          await this.updateCaracteristique(this.characteristique.toUpdatePayload())
+          await this.updateCaracteristique(this.caracteristique.toUpdatePayload())
         } else {
-          await this.createCaracteristique(this.characteristique.toCreatePayload())
+          await this.createCaracteristique(this.caracteristique.toCreatePayload())
         }
 
         setTimeout(() => {
