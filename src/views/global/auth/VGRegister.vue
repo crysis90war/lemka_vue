@@ -171,7 +171,7 @@ export default {
 
 <style lang="scss" scoped>
 
-@import "src/assets/styles/login";
+@import "../../../assets/styles/login";
 
 .btn-grad {
   background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%);

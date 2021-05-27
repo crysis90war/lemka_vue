@@ -216,7 +216,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "src/assets/styles/login";
+@import "../../../assets/styles/login";
 
 .facebook {
   color: white;

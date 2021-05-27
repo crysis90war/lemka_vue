@@ -46,8 +46,8 @@ import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVou
 
 // region Global Views
 import VGHome from "@/views/global/VGHome";
-import VGLogin from "@/views/global/VGLogin";
-import VGRegister from "@/views/global/VGRegister";
+import VGLogin from "@/views/global/auth/VGLogin";
+import VGRegister from "@/views/global/auth/VGRegister";
 import VGAbout from "@/views/global/VGAbout";
 import VGHoraire from "@/views/global/VGHoraire";
 import VGContact from "@/views/global/VGContact";
@@ -58,9 +58,9 @@ import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
 import VGArticleDetail from "@/views/global/VGArticleDetail";
 import VGRecherche from "@/views/global/VGRecherche";
 import VGMercerieDetail from "@/views/global/VGMercerieDetail";
-import VGResetPassword from "@/views/global/password/VGResetPassword";
-import VGEmailVerify from "@/views/global/VGEmailVerify";
-import VGRegisterSuccess from "@/views/global/VGRegisterSuccess";
+import VGResetPassword from "@/views/global/auth/VGResetPassword";
+import VGEmailVerify from "@/views/global/auth/VGEmailVerify";
+import VGRegisterSuccess from "@/views/global/auth/VGRegisterSuccess";
 import VACouleurs from "@/views/administrateur/parametres/couleur/VACouleurs";
 import VACouleurAddOrUpdate from "@/views/administrateur/parametres/couleur/VACouleurAddOrUpdate";
 import VACharacteristiques from "@/views/administrateur/parametres/caracteristique/VACharacteristiques";
@@ -69,7 +69,7 @@ import VACategories from "@/views/administrateur/parametres/categorie/VACategori
 import VACategorieAddOrUpdate from "@/views/administrateur/parametres/categorie/VACategorieAddOrUpdate";
 import VACatalogues from "@/views/administrateur/parametres/catalogue/VACatalogues";
 import VACatalogueAddOrUpdate from "@/views/administrateur/parametres/catalogue/VACatalogueAddOrUpdate";
-import VGNewPassword from "@/views/global/password/VGNewPassword";
+import VGNewPassword from "@/views/global/auth/VGNewPassword";
 // endregion
 
 Vue.use(VueRouter)
