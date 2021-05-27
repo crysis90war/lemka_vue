@@ -64,8 +64,8 @@ export default {
     }
   },
   data() {
-    let redirect_url = process.env.VUE_APP_NODE_END === 'development' ? 'http://localhost:8080' : 'https://www.lemka.be/'
-    let new_password = '/new-password'
+    let redirect_url = process.env.VUE_APP_NODE_END === 'development' ? 'http://localhost:8080/' : 'https://www.lemka.be/'
+    let new_password = 'new-password/'
 
     return {
       form: {
