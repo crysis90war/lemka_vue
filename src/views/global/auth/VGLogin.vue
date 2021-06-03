@@ -113,6 +113,14 @@ export default {
       return require('@/assets/Lemka.png')
     }
   },
+  created() {
+    if (this.loggedIn === true) {
+      this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
+    }
+  },
+  async mounted() {
+    await this.google.init()
+  },
   methods: {
     ...mapActions({login: "Auth/login", facebookLogin: "Auth/facebookLogin", googleLogin: "Auth/loginGoogle"}),
     submit: function () {
@@ -155,6 +163,16 @@ export default {
     },
 
     // FACEBOOK
+    testAPI: function () {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+      console.log('Welcome!  Fetching your information.... ');
+      // eslint-disable-next-line no-undef
+      FB.api('/me', function (response) {
+        console.log('Successful login for: ' + response.name);
+        document.getElementById('status').innerHTML =
+            'Thanks for logging in, ' + response.name + '!';
+      });
+    },
+
     statusChangeCallback: function (response) {  // Called with the results from FB.getLoginStatus().
       console.log('statusChangeCallback');
       console.log(response);                   // The current login status of the person.
@@ -170,16 +188,6 @@ export default {
       // eslint-disable-next-line no-undef
       FB.getLoginStatus(function (response) {   // See the onlogin handler
         vm.statusChangeCallback(response);
-      });
-    },
-
-    testAPI: function () {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-      console.log('Welcome!  Fetching your information.... ');
-      // eslint-disable-next-line no-undef
-      FB.api('/me', function (response) {
-        console.log('Successful login for: ' + response.name);
-        document.getElementById('status').innerHTML =
-            'Thanks for logging in, ' + response.name + '!';
       });
     },
 
@@ -202,14 +210,6 @@ export default {
           alert("User cancelled login or did not fully authorize.");
         }
       }, {scope: 'public_profile,email'});
-    }
-  },
-  async mounted() {
-    await this.google.init()
-  },
-  created() {
-    if (this.loggedIn === true) {
-      this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
     }
   }
 }

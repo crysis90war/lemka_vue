@@ -5,16 +5,17 @@ class Facebook extends EventTarget {
         this.appId = appId
     }
 
-    async init() {
+    initFacebookSdk() {
         return new Promise(resolve => {
             window.fbAsyncInit = function () {
-                window.FB.init({
+                // eslint-disable-next-line no-undef
+                FB.init({
                     appId: this.appId,
-                    cookie: true,
                     xfbml: true,
-                    version: 'v8.0'
+                    version: 'v10.0'
                 });
-                window.FB.getLoginStatus(({authResponse}) => {
+                // eslint-disable-next-line no-undef
+                FB.getLoginStatus(({authResponse}) => {
                     if (authResponse) {
                         console.log('init-facebook-sdk')
                     } else {
