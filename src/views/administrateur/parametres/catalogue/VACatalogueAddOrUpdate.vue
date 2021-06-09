@@ -212,9 +212,9 @@ import {mapActions, mapGetters} from "vuex";
 import LButtonGroup from "@/components/LButtonGroup";
 import AddUpdateDeleteModalComponent from "@/views/administrateur/parametres/catalogue/AddUpdateDeleteModalComponent";
 import CatalogueModel from "@/models/catalogue/catalogue.model";
-import RayonModel from "@/models/catalogue/rayon.model";
-import SectionModel from "@/models/catalogue/section.model";
-import TypeProduitModel from "@/models/catalogue/type_produit.model";
+import RayonModel from "@/models/article/rayon.model";
+import SectionModel from "@/models/article/section.model";
+import TypeProduitModel from "@/models/article/type_produit.model";
 
 export default {
   name: "VACatalogueAddOrUpdate",

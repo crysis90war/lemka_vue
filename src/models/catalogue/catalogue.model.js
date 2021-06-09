@@ -1,7 +1,7 @@
 import * as R from 'ramda'
-import RayonModel from "@/models/catalogue/rayon.model";
-import SectionModel from "@/models/catalogue/section.model";
-import TypeProduitModel from "@/models/catalogue/type_produit.model";
+import RayonModel from "@/models/article/rayon.model";
+import SectionModel from "@/models/article/section.model";
+import TypeProduitModel from "@/models/article/type_produit.model";
 
 export default class CatalogueModel {
     constructor(json = {}) {

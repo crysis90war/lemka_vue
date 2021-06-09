@@ -319,7 +319,7 @@
 
 <script>
 import ArticleModel from "@/models/article/article.model";
-import TagModel from "@/models/tag.model";
+import TagModel from "@/models/article/tag.model";
 import {Cropper} from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 import {dataURLtoFile} from "@/helpers/functions.helper";
