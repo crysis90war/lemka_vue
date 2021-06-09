@@ -67,7 +67,7 @@
                             v-model="selectedRayon"
                             :options="rayons"
                             value-field="id"
-                            text-field="rayon"
+                            text-field="nom"
                             stacked
                         >
                           <template #first>
@@ -81,7 +81,7 @@
                             v-model="selectedSection"
                             :options="sections"
                             value-field="id"
-                            text-field="section"
+                            text-field="nom"
                             stacked
                         >
                           <template #first>
@@ -95,7 +95,7 @@
                             v-model="selectedTypeProduit"
                             :options="typeProduits"
                             value-field="id"
-                            text-field="type_produit"
+                            text-field="nom"
                             stacked
                         >
                           <template #first>
