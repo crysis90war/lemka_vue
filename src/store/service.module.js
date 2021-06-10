@@ -1,87 +1,87 @@
 import ApiService from "@/services/api.service";
 
-export const TypeServiceModule = {
+export const ServiceModule = {
     namespaced: true,
     state: {
-        typeServices: [],
+        services: [],
         loadingStatus: false
     },
     getters: {
-        typeServices: state => state.typeServices,
-        typeService: state => id => {
-            return state.typeServices.find(item => item.id === id)
+        services: state => state.services,
+        service: state => id => {
+            return state.services.find(item => item.id === id)
         },
         loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        SET_TYPE_SERVICES_SUCCESS(state, payload) {
-            state.typeServices = payload
+        SET_SERVICES_SUCCESS(state, payload) {
+            state.services = payload
         },
-        SET_TYPE_SERVICES_FAILURE(state) {
-            state.typeServices = []
+        SET_SERVICES_FAILURE(state) {
+            state.services = []
         },
         LOADING_STATUS(state, loadingStatus) {
             state.loadingStatus = loadingStatus
         },
-        ADD_TYPE_SERVICE(state, payload) {
-            state.typeServices.push(payload)
+        ADD_SERVICE(state, payload) {
+            state.services.push(payload)
         },
-        UPDATE_TYPE_SERVICE(state, payload) {
-            const index = state.typeServices.findIndex(item => item.id === payload.id)
+        UPDATE_SERVICE(state, payload) {
+            const index = state.services.findIndex(item => item.id === payload.id)
             if (index !== -1) {
-                state.typeServices.splice(index, 1, payload)
+                state.services.splice(index, 1, payload)
             }
         },
-        DELETE_TYPE_SERVICE(state, payload) {
-            const index = state.typeServices.findIndex(item => item.id === payload.id)
+        DELETE_SERVICE(state, payload) {
+            const index = state.services.findIndex(item => item.id === payload.id)
             if (index !== -1) {
-                state.typeServices.splice(index, 1)
+                state.services.splice(index, 1)
             }
         }
     },
     actions: {
-        loadTypeServices: async function ({commit}) {
-            let endpoint = `types_services/`;
+        loadServices: async function ({commit}) {
+            let endpoint = `services/`;
             return await new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {
-                    commit('SET_TYPE_SERVICES_SUCCESS', r.data)
+                    commit('SET_SERVICES_SUCCESS', r.data)
                     commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {
-                    commit('SET_TYPE_SERVICES_FAILURE')
+                    commit('SET_SERVICES_FAILURE')
                     commit('LOADING_STATUS', false)
                     reject(error)
                 })
             })
         },
-        createTypeService: function ({commit}, payload) {
-            let endpoint = `types_services/`;
+        createService: function ({commit}, payload) {
+            let endpoint = `services/`;
             return new Promise((resolve, reject) => {
                 ApiService.POSTData(endpoint, payload).then(r => {
-                    commit('ADD_TYPE_SERVICE', r.data)
+                    commit('ADD_SERVICE', r.data)
                     resolve(r.data)
                 }, error => {
                     reject(error)
                 })
             })
         },
-        updateTypeService: function ({commit}, payload) {
-            let endpoint = `types_services/${payload.id}/`;
+        updateService: function ({commit}, payload) {
+            let endpoint = `services/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.PUTData(endpoint, payload).then(r => {
-                    commit('UPDATE_TYPE_SERVICE', r.data)
+                    commit('UPDATE_SERVICE', r.data)
                     resolve(r.data)
                 }, error => {
                     reject(error)
                 })
             })
         },
-        deleteTypeService: function ({commit}, payload) {
-            let endpoint = `types_services/${payload.id}/`;
+        deleteService: function ({commit}, payload) {
+            let endpoint = `services/${payload.id}/`;
             return new Promise((resolve, reject) => {
                 ApiService.DELETEData(endpoint).then(r => {
-                    commit('DELETE_TYPE_SERVICE', payload)
+                    commit('DELETE_SERVICE', payload)
                     resolve(r)
                 }, error => {
                     reject(error)

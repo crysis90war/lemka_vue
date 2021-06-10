@@ -1,4 +1,4 @@
-import GenreModel from "@/models/genre.model";
+import GenreModel from "@/models/user/genre.model";
 import ApiService from "@/services/api.service";
 
 export const GenreModule = {

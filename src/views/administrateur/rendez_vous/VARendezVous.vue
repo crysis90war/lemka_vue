@@ -38,7 +38,7 @@
             <b-card>
               <b-row>
                 <b-col lg="4"><h5>Service : </h5>
-                  <p>{{ rdv.type_service.nom }}</p>
+                  <p>{{ rdv.service.nom }}</p>
                 </b-col>
                 <b-col lg="4"><h5>Client : </h5>
                   <p>{{ clientInfo(rdv.user) }}</p>

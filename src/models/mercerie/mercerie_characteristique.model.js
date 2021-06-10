@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import CaracteristiqueModel from "@/models/caracteristique.model";
+import CaracteristiqueModel from "@/models/mercerie/caracteristique.model";
 import {decimal, required} from "vuelidate/lib/validators";
 
 export default class MercerieChatacteristiqueModel {

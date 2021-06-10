@@ -150,7 +150,7 @@
 <script>
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import DemandeDevisModel from "@/models/demande_devis.model";
+import DemandeDevisModel from "@/models/devis/demande_devis.model";
 import {localTimeStr} from "@/utils/filters";
 import {htmlTitle} from "@/utils/tools";
 

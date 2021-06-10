@@ -45,7 +45,7 @@
 <script>
 import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
-import HoraireModel from "@/models/horaire.model";
+import HoraireModel from "@/models/entreprise/horaire.model";
 
 export default {
   name: "VAHoraire",

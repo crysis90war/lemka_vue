@@ -11,21 +11,21 @@
               description="Veuillez selectionner le service de l'article"
           >
             <multiselect
-                v-model="rendezVous.type_service"
-                :options="typeServices"
+                v-model="rendezVous.service"
+                :options="services"
                 :allow-empty="false"
                 :show-labels="false"
                 label="nom"
                 track-by="id"
-                :class="{ 'invalid': invalidTypeService }"
-                @close="toucheTypeService"
+                :class="{ 'invalid': invalidService }"
+                @close="toucheService"
             >
               <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
             </multiselect>
-            <span class="text-danger" v-show="invalidTypeService"><small>Ce champ est requis</small></span>
+            <span class="text-danger" v-show="invalidService"><small>Ce champ est requis</small></span>
           </b-form-group>
 
-          <div v-if="rendezVous.type_service.id !== null">
+          <div v-if="rendezVous.service.id !== null">
             <b-form-group
                 label="Date"
                 description="Veuillez choissir une date"
@@ -118,7 +118,7 @@
 <script>
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import RendezVousModel from "@/models/rendez_vous.model";
+import RendezVousModel from "@/models/autre/rendez_vous.model";
 import {htmlTitle} from "@/utils/tools";
 import {validationMixin} from "vuelidate/src";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
@@ -137,7 +137,7 @@ export default {
     return {
       BSClass: LemkaHelpers.BSClass,
       submitStatus: null,
-      typeServiceTouched: false,
+      serviceTouched: false,
       rendezVous: new RendezVousModel(),
       labels: {
         fr: {
@@ -158,13 +158,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      typeServices: "TypeServices/typeServices",
+      services: "Services/services",
       horaires: "Horaires/horaires",
       deviss: 'Devis/devisAccepte',
       available_hours: "RendezVous/available_hours"
     }),
-    invalidTypeService() {
-      return this.typeServiceTouched && this.rendezVous.type_service.id === null
+    invalidService() {
+      return this.serviceTouched && this.rendezVous.service.id === null
     },
     horaireOfDay() {
       if (this.rendezVous.date !== null) {
@@ -189,7 +189,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadTypeServices: "TypeServices/loadTypeServices",
+      loadServices: "Services/loadServices",
       loadHoraires: "Horaires/loadHoraires",
       loadUserDevis: "Devis/loadUserDevis",
       loadHeuresDispo: "RendezVous/loadHeuresDispo",
@@ -199,8 +199,8 @@ export default {
       if (this.deviss.length === 0) {
         await this.loadUserDevis()
       }
-      if (this.typeServices.length === 0) {
-        await this.loadTypeServices()
+      if (this.services.length === 0) {
+        await this.loadServices()
       }
       if (this.horaires.length === 0) {
         await this.loadHoraires()
@@ -209,11 +209,11 @@ export default {
     submit: function () {
       this.$v.$touch()
       if (this.$v.$invalid ||
-          (this.typeServiceTouched === false && this.invalidTypeService === false) ||
-          (this.typeServiceTouched === true && this.invalidTypeService === true) ||
+          (this.serviceTouched === false && this.invalidService === false) ||
+          (this.serviceTouched === true && this.invalidService === true) ||
           this.rendezVous.start === null
       ) {
-        this.typeServiceTouched = true
+        this.serviceTouched = true
         this.startError = true
         this.submitStatus = 'ERROR'
       } else {
@@ -235,8 +235,8 @@ export default {
     selectHour: function (hour) {
       this.rendezVous.start = hour
     },
-    toucheTypeService: function () {
-      this.typeServiceTouched = true
+    toucheService: function () {
+      this.serviceTouched = true
     },
     dateDisabled(ymd, date) {
       // Disable weekends (Sunday = `0`, Saturday = `6`) and

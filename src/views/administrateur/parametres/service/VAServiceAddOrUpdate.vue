@@ -4,34 +4,34 @@
 
     <b-card
         v-else
-        :title="$route.params.id !== undefined ? typeService.nom : 'Ajouter un service'"
+        :title="$route.params.id !== undefined ? service.nom : 'Ajouter un service'"
         :class="BSClass.CARD_BORDERLESS_SHADOW"
     >
       <b-card-body>
         <!-- region Nom -->
         <l-input-field
             :input-type="true"
-            v-model.trim="$v.typeService.nom.$model"
-            label="Type service"
+            v-model.trim="$v.service.nom.$model"
+            label="Service"
             description="Veuillez encoder le type service"
             placeholder="exemple: Confection"
-            :state="validateState($v.typeService, 'nom')"
+            :state="validateState($v.service, 'nom')"
         >
           <template #invalid-feedback>
             <invalid-feedback
-                :condition="!$v.typeService.nom.required"
+                :condition="!$v.service.nom.required"
                 :error-message="required()"
             />
             <invalid-feedback
-                :condition="!$v.typeService.nom.minLength"
-                :error-message="minLength($v.typeService.nom.$params.minLength.min)"
+                :condition="!$v.service.nom.minLength"
+                :error-message="minLength($v.service.nom.$params.minLength.min)"
             />
             <invalid-feedback
-                :condition="!$v.typeService.nom.maxLength"
-                :error-message="maxLength($v.typeService.nom.$params.maxLength.max)"
+                :condition="!$v.service.nom.maxLength"
+                :error-message="maxLength($v.service.nom.$params.maxLength.max)"
             />
             <invalid-feedback
-                :condition="!$v.typeService.nom.alpha"
+                :condition="!$v.service.nom.alpha"
                 :error-message="alpha()"
             />
           </template>
@@ -41,24 +41,24 @@
         <!-- region Durée minute -->
         <l-input-field
             :input-type="true"
-            v-model.trim="$v.typeService.duree_minute.$model"
+            v-model.trim="$v.service.duree_minute.$model"
             label="Duree en minute"
             description="Veuillez encoder la durée en minutes"
             placeholder="exemple: 30"
-            :state="validateState($v.typeService, 'duree_minute')"
+            :state="validateState($v.service, 'duree_minute')"
         >
           <template #invalid-feedback>
             <invalid-feedback
-                :condition="!$v.typeService.duree_minute.required"
+                :condition="!$v.service.duree_minute.required"
                 :error-message="required()"
             />
             <invalid-feedback
-                :condition="!$v.typeService.duree_minute.numeric"
+                :condition="!$v.service.duree_minute.numeric"
                 :error-message="numeric()"
             />
             <invalid-feedback
-                :condition="!$v.typeService.duree_minute.between"
-                :error-message="between($v.typeService.duree_minute.$params.between.min, $v.typeService.duree_minute.$params.between.max)"
+                :condition="!$v.service.duree_minute.between"
+                :error-message="between($v.service.duree_minute.$params.between.min, $v.service.duree_minute.$params.between.max)"
             />
           </template>
         </l-input-field>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import TypeServiceModel from "@/models/type_service.model";
+import ServiceModel from "@/models/autre/service.model";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LemkaHelpers from "@/helpers";
@@ -91,39 +91,39 @@ export default {
   components: {LButtonGroup, LInputField, InvalidFeedback},
   mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
-    typeService: TypeServiceModel.validations
+    service: ServiceModel.validations
   },
   data() {
     return {
-      typeService: new TypeServiceModel(),
+      service: new ServiceModel(),
       submitStatus: null,
       BSClass: LemkaHelpers.BSClass,
       routes: LemkaHelpers.Routes
     }
   },
   computed:{
-    ...mapGetters({typeServices: "TypeServices/typeServices"})
+    ...mapGetters({services: "Services/services"})
   },
   methods: {
     ...mapActions({
-      loadTypeServices: "TypeServices/loadTypeServices",
-      createTypeService: 'TypeServices/createTypeService',
-      updateTypeService: 'TypeServices/updateTypeService'
+      loadServices: "Services/loadServices",
+      createService: 'Services/createService',
+      updateService: 'Services/updateService'
     }),
     initialisation: async function() {
-      if (this.typeServices.length === 0) {
-        await this.loadTypeServices()
+      if (this.services.length === 0) {
+        await this.loadServices()
       }
     },
-    chargerTypeService: async function() {
+    chargerService: async function() {
       this.toggleLoading()
       await this.initialisation()
 
       if (this.$route.params.id !== undefined) {
-        let typeService = await this.$store.getters["TypeServices/typeService"](parseInt(this.$route.params.id))
-        if (typeService !== undefined) {
-          Object.assign(this.typeService, await typeService)
-          this.$route.meta.value = this.typeService.nom
+        let service = await this.$store.getters["Services/service"](parseInt(this.$route.params.id))
+        if (service !== undefined) {
+          Object.assign(this.service, await service)
+          this.$route.meta.value = this.service.nom
         } else {
           await this.$router.push({name: this.routes.PARAMETRES_SERVICE.name})
         }
@@ -141,9 +141,9 @@ export default {
         this.submitStatus = 'PENDING'
 
         if (this.$route.params.id !== undefined) {
-          await this.updateTypeService(this.typeService.toUpdatePayload())
+          await this.updateService(this.service.toUpdatePayload())
         } else {
-          await this.createTypeService(this.typeService.toCreatePayload())
+          await this.createService(this.service.toCreatePayload())
         }
 
         setTimeout(() => {
@@ -154,7 +154,7 @@ export default {
     }
   },
   created() {
-    this.chargerTypeService()
+    this.chargerService()
   }
 }
 </script>

@@ -107,7 +107,7 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import AuthModel from "@/models/auth.model";
+import AuthModel from "@/models/user/auth.model";
 import LemkaHelpers from "@/helpers";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";

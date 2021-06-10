@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import UtilisateurModel from "@/models/utilisateur.model";
+import UtilisateurModel from "@/models/user/utilisateur.model";
 import LemkaHelpers from "@/helpers";
 import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";

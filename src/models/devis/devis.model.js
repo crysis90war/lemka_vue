@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import DemandeDevisModel from "@/models/demande_devis.model";
+import DemandeDevisModel from "@/models/devis/demande_devis.model";
 import {format, isValid} from "date-fns";
 
 export default class DevisModel {

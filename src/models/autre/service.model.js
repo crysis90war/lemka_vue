@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import {maxLength, minLength, alpha, required, numeric, between} from "vuelidate/lib/validators";
 
-export default class TypeServiceModel {
+export default class ServiceModel {
     constructor(json = {}) {
         this.id = R.is(Number, json.id) ? json.id : null
         this.nom = R.is(String, json.nom) ? json.nom : ""
@@ -40,7 +40,6 @@ export default class TypeServiceModel {
 
     static get tableFields() {
         return [
-            {key: 'id', label: '#'},
             {key: 'nom', label: 'Service', sortable: true},
             {key: 'duree_minute', label: 'Durée en minutes', sortable: true},
             {key: 'actions', label: 'Actions'}

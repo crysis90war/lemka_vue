@@ -75,7 +75,5 @@ export const Routes = {
     PARAMETRES_CHARACTERISTIQUE_ADD_OR_UPDATE: {name: AdminView + 'CharacteristiqueAddOrUpdate', value: 'Ajout characteristique'},
     PARAMETRES_CATEGORIE: {name: AdminView + 'Categorie', value: 'Categories'},
     PARAMETRES_CATEGORIE_ADD_OR_UPDATE: {name: AdminView + 'CategorieAddOrUpdate', value: 'Ajout categorie'},
-    PARAMETRES_CATALOGUE: {name: AdminView + 'Catalogue', value: 'Catalogues'},
-    PARAMETRES_CATALOGUE_ADD_OR_UPDATE: {name: AdminView + 'CatalogueAddOrUpdate', value: 'Ajout catalogue'},
     // endregion
 }

@@ -1,4 +1,4 @@
-import MensurationModel from "@/models/mensuration.model";
+import MensurationModel from "@/models/user/mensuration.model";
 import ApiService from "@/services/api.service";
 
 export const MensurationModule = {

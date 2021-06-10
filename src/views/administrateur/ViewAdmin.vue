@@ -41,7 +41,7 @@
 
 <script>
 import LemkaHelpers from "@/helpers";
-import {mapActions, mapGetters} from "vuex";
+import {mapGetters} from "vuex";
 import ApiService from '@/services/api.service';
 
 export default {
@@ -121,24 +121,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      loadAdminDD: "DemandesDevis/loadAdminDD",
-      loadUtilisateurs: "Utilisateurs/loadUtilisateurs",
-      loadArticles: "Articles/loadArticles",
-      loadMerceries: "Merceries/loadMerceries",
-      loadTypeService: "TypeServices/loadTypeServices",
-      loadTvas: "TVA/loadTvas",
-      // loadGlobalMerceries: "Merceries/loadGlobalMercerieOptions",
-    }),
-    initialisation: async function () {
-      await this.loadAdminDD()
-      await this.loadUtilisateurs()
-      await this.loadArticles()
-      await this.loadMerceries()
-      await this.loadTypeService()
-      await this.loadTvas()
-      // await this.loadGlobalMerceries()
-    },
     sidebarCollapse() {
       this.toggled = !this.toggled
       let sidebar = document.getElementById('sidebar')

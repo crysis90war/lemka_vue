@@ -3,9 +3,9 @@
     <div v-if="$route.name === routes.PARAMETRES_SERVICE.name">
       <l-table-view
           :table-busy="busy"
-          :table-datas="typeServices"
+          :table-datas="services"
           :table-fields="fields"
-          :load-data="loadTypeServices"
+          :load-data="loadServices"
           :create-route-to-name="routes.PARAMETRES_SERVICE_ADD_OR_UPDATE.name"
       >
         <template #cell(actions)="data">
@@ -33,7 +33,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
-import TypeServiceModel from "@/models/type_service.model";
+import ServiceModel from "@/models/autre/service.model";
 import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
 import LTableButtonUpdateDelete from "@/components/Table/LTableButtonUpdateDelete";
 import LTableView from "@/components/Table/LTableView";
@@ -45,22 +45,22 @@ export default {
   mixins: [commonMixin],
   data() {
     return {
-      fields: TypeServiceModel.tableFields,
+      fields: ServiceModel.tableFields,
       routes: LemkaHelpers.Routes
     }
   },
   computed: {
-    ...mapGetters({typeServices: 'TypeServices/typeServices', busy: 'TypeServices/loadingStatus'})
+    ...mapGetters({services: 'Services/services', busy: 'Services/loadingStatus'})
   },
   methods: {
-    ...mapActions({deleteTypeService: 'TypeServices/deleteTypeService', loadTypeServices: "TypeServices/loadTypeServices"}),
+    ...mapActions({deleteService: 'Services/deleteService', loadServices: "Services/loadServices"}),
     initialisation: async function () {
-      if (this.typeServices.length === 0) {
-        await this.loadTypeServices()
+      if (this.services.length === 0) {
+        await this.loadServices()
       }
     },
     supprimerService: function (item) {
-      this.deleteTypeService(item)
+      this.deleteService(item)
       this.hideModal('delete-modal-' + item.id)
     }
   },

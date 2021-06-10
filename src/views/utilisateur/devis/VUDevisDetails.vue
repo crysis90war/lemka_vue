@@ -164,7 +164,7 @@ import DevisModel from "@/models/devis/devis.model";
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 import {htmlTitle} from "@/utils/tools";
-import EntrepriseModel from "@/models/entreprise.model";
+import EntrepriseModel from "@/models/entreprise/entreprise.model";
 import {localTimeStr} from "@/utils/filters";
 import DetailModel from "@/models/devis/detail.model";
 import html2pdf from 'html2pdf.js'

@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import {format, isValid} from "date-fns";
-import GenreModel from "@/models/genre.model";
+import GenreModel from "@/models/user/genre.model";
 
 export default class UtilisateurModel {
     constructor(json = {}) {

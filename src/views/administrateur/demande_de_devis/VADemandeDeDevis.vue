@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import DemandeDevisModel from "@/models/demande_devis.model";
+import DemandeDevisModel from "@/models/devis/demande_devis.model";
 import {mapActions, mapGetters} from "vuex";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
 import LemkaHelpers from "@/helpers";

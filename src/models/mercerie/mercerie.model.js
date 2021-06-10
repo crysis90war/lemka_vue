@@ -1,8 +1,8 @@
 import * as R from 'ramda'
-import CategorieModel from "@/models/categorie.model";
+import CategorieModel from "@/models/mercerie/categorie.model";
 import {decimal, maxLength, minLength, minValue, required} from "vuelidate/lib/validators";
-import TVAModel from "@/models/tva.model";
-import CouleurModel from "@/models/couleur.model";
+import TVAModel from "@/models/autre/tva.model";
+import CouleurModel from "@/models/mercerie/couleur.model";
 
 export default class MercerieModel {
     constructor(json = {}) {

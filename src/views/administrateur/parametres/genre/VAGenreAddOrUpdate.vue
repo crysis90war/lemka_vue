@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import GenreModel from "@/models/genre.model";
+import GenreModel from "@/models/user/genre.model";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 import InvalidFeedback from "@/components/LInvalidFeedback";

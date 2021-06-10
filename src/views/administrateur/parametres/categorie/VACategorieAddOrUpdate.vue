@@ -51,7 +51,7 @@ import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {commonMixin} from "@/mixins/common.mixin";
 import {htmlTitle} from "@/utils/tools";
-import CategorieModel from "@/models/categorie.model";
+import CategorieModel from "@/models/mercerie/categorie.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 

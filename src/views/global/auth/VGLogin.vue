@@ -80,7 +80,7 @@ import {mapActions, mapGetters} from "vuex";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/LInvalidFeedback";
-import AuthModel from "@/models/auth.model";
+import AuthModel from "@/models/user/auth.model";
 import {htmlTitle} from "@/utils/tools";
 import LInputField from "@/components/LInputField";
 import {commonMixin} from "@/mixins/common.mixin";

@@ -103,7 +103,7 @@
                     <b-row>
                       <b-col>
                         <strong>Service :</strong>
-                        <p>{{ devis.demande_devis.type_service.nom }}</p>
+                        <p>{{ devis.demande_devis.service.nom }}</p>
                       </b-col>
                     </b-row>
 

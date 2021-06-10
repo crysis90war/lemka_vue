@@ -1,4 +1,4 @@
-import CategorieModel from "@/models/categorie.model";
+import CategorieModel from "@/models/mercerie/categorie.model";
 import ApiService from "@/services/api.service";
 
 export const CategorieModule = {

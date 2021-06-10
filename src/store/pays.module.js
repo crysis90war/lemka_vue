@@ -1,5 +1,5 @@
 import ApiService from "@/services/api.service";
-import PaysModel from "@/models/pays/pays.model";
+import PaysModel from "@/models/adresse/pays.model";
 
 export const PaysModule = {
     namespaced: true,

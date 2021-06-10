@@ -34,7 +34,7 @@ import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
 import LTableButtonUpdateDelete from "@/components/Table/LTableButtonUpdateDelete";
 import LTableView from "@/components/Table/LTableView";
 import {commonMixin} from "@/mixins/common.mixin";
-import CaracteristiqueModel from "@/models/caracteristique.model";
+import CaracteristiqueModel from "@/models/mercerie/caracteristique.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 

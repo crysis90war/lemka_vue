@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import {required, minLength, numeric} from "vuelidate/lib/validators"
-import PaysModel from '@/models/pays/pays.model'
+import PaysModel from '@/models/adresse/pays.model'
 
 export default class VilleModel {
     constructor(ville = {}) {

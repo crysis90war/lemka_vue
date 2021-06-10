@@ -373,7 +373,7 @@
 </template>
 
 <script>
-import EntrepriseModel from "@/models/entreprise.model";
+import EntrepriseModel from "@/models/entreprise/entreprise.model";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";

@@ -72,7 +72,7 @@
 
 <script>
 import {validationMixin} from "vuelidate";
-import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
+import UserMensurationModel from "@/models/user/user_mensuration.model";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import LemkaHelpers from "@/helpers";

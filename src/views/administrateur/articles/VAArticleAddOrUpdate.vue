@@ -104,76 +104,58 @@
       </l-input-field>
       <!-- endregion -->
 
+      <!-- region Service -->
       <b-row class="mt-3">
-        <!-- region Service -->
         <b-col lg="6">
-          <b-form-group
+          <c-multi-select
+              v-model="article.service"
               label="Service"
-              description="Veuillez selectionner le service de l'article"
-          >
-            <multiselect
-                v-model="article.type_service"
-                :options="typeServices"
-                :allow-empty="false"
-                :show-labels="false"
-                track-by="nom"
-                :class="{ 'invalid': invalidTypeService }"
-                @close="toucheTypeService"
-            >
-              <template slot="singleLabel" slot-scope="{ option }">
-                <span>{{ option.id !== null ? option.nom : null }}</span>
-              </template>
-              <template slot="option" slot-scope="{ option }">
-                <span>{{ option.nom }} - {{ option.duree_minute }} minutes</span>
-              </template>
-              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-            </multiselect>
-            <span class="text-danger" v-show="invalidTypeService"><small>Ce champ est requis</small></span>
-          </b-form-group>
+              description="Veuillez selectionner le service pour cet article"
+              :options="services"
+              :invalid="invalidService"
+              @touched="toucheService"
+          />
         </b-col>
-        <!-- endregion -->
-
-        <!-- region Catalogue -->
-        <b-col lg="6">
-          <b-form-group
-              label="Catalogue"
-              description="Veuillez selectionner le catalogue de l'article"
-          >
-            <multiselect
-                v-model="article.catalogue"
-                :options="catalogues"
-                :loading="cataloguesLoadingStatus"
-                :close-on-select="true"
-                :options-limit="20"
-                :show-no-results="false"
-                :show-labels="false"
-                open-direction="bottom"
-                track-by="id"
-                :internal-search="false"
-                :allow-empty="false"
-                placeholder="Veuillez encoder pour lancer la recherche..."
-                :class="{ 'invalid': invalidCatalogue }"
-                @close="toucheCatalogue"
-                @search-change="updateSelectCatalogue"
-            >
-              <template slot="singleLabel" slot-scope="{ option }">
-                  <span>
-                    {{ option.id !== null ? `${option.rayon.nom} - ${option.section.nom} - ${option.type_produit.nom}` : null }}
-                  </span>
-              </template>
-
-              <template slot="option" slot-scope="{ option }">
-                  <span>
-                    {{ option.id !== null ? `${option.rayon.nom} - ${option.section.nom} - ${option.type_produit.nom}` : null }}
-                  </span>
-              </template>
-              <span slot="noResult">Oups! Aucun élément trouvé. Pensez à modifier la requête de recherche.</span>
-            </multiselect>
-            <span class="text-danger" v-show="invalidCatalogue"><small>Ce champ est requis</small></span>
-          </b-form-group>
-        </b-col>
-        <!-- endregion -->
       </b-row>
+      <!-- endregion -->
+
+      <!-- region Rayon - Section - TypeProduit -->
+      <b-row>
+
+        <b-col lg="4">
+          <c-multi-select
+              v-model="article.rayon"
+              label="Rayon"
+              description="Veuillez selectionner le rayon pour cet article"
+              :options="rayons"
+              :invalid="invalidRayon"
+              @touched="toucheRayon"
+          />
+        </b-col>
+
+        <b-col lg="4">
+          <c-multi-select
+              v-model="article.section"
+              label="Section"
+              description="Veuillez selectionner la section pour cet article"
+              :options="sections"
+              :invalid="invalidSection"
+              @touched="toucheSection"
+          />
+        </b-col>
+
+        <b-col lg="4">
+          <c-multi-select
+              v-model="article.type_produit"
+              label="Type de produit"
+              description="Veuillez selectionner le type de produit pour cet article"
+              :options="type_produits"
+              :invalid="invalidTypeProduit"
+              @touched="toucheTypeProduit"
+          />
+        </b-col>
+      </b-row>
+      <!-- endregion -->
 
       <!-- region Tag -->
       <b-form-group
@@ -331,10 +313,11 @@ import {commonMixin} from "@/mixins/common.mixin";
 import {htmlTitle} from "@/utils/tools";
 import LInputField from "@/components/LInputField";
 import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
+import CMultiSelect from "@/views/administrateur/articles/CMultiSelect";
 
 export default {
   name: "VAArticleAddOrUpdate",
-  components: {LTableDeleteModal, LInputField, Cropper},
+  components: {CMultiSelect, LTableDeleteModal, LInputField, Cropper},
   mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     article: ArticleModel.validations
@@ -361,8 +344,10 @@ export default {
       article: new ArticleModel(),
       imagesFields: ArticleModel.imagesFields,
 
-      catalogueTouched: false,
-      typeServiceTouched: false,
+      serviceTouched: false,
+      rayonTouched: false,
+      sectionTouched: false,
+      typeProduitTouched: false,
 
       submitStatus: null,
 
@@ -377,25 +362,34 @@ export default {
     ...mapGetters({
       tags: "Tags/tags",
       loadingStatus: "Tags/loadingStatus",
-      typeServices: 'TypeServices/typeServices',
-      typeServiceLoadingStatus: "TypeServices/loadingStatus",
-      catalogues: "Catalogues/catalogues",
+      services: 'Services/services',
+      serviceLoadingStatus: "Services/loadingStatus",
       articles: "Articles/articles",
-      cataloguesLoadingStatus: "Catalogues/loadingStatus"
+      rayons: 'Rayons/rayons',
+      sections: 'Sections/sections',
+      type_produits: 'TypeProduits/typeProduits'
     }),
-    invalidCatalogue() {
-      return this.catalogueTouched && this.article.catalogue.id === null
+    invalidService() {
+      return this.serviceTouched && this.article.service.id === null
     },
-    invalidTypeService() {
-      return this.typeServiceTouched && this.article.type_service.id === null
+    invalidRayon() {
+      return this.rayonTouched && this.article.rayon.id === null
+    },
+    invalidSection() {
+      return this.sectionTouched && this.article.section.id === null
+    },
+    invalidTypeProduit() {
+      return this.typeProduitTouched && this.article.type_produit.id === null
     }
   },
   methods: {
     ...mapActions({
       loadArticles: "Articles/loadArticles",
       loadTags: "Tags/loadTags",
-      loadTypeServices: "TypeServices/loadTypeServices",
-      loadCatalogues: "Catalogues/loadCatalogues",
+      loadServices: "Services/loadServices",
+      loadrayons: 'Rayons/loadRayons',
+      loadSections: 'Sections/loadSections',
+      loadTypeProduits: 'TypeProduits/loadTypeProduits',
       createTag: "Tags/createTag",
       createArticle: "Articles/createArticle",
       updateArticle: "Articles/updateArticle",
@@ -411,11 +405,17 @@ export default {
       if (this.tags.length === 0) {
         await this.loadTags()
       }
-      if (this.typeServices.length === 0) {
-        await this.loadTypeServices()
+      if (this.services.length === 0) {
+        await this.loadServices()
       }
-      if (this.catalogues.length === 0) {
-        await this.loadCatalogues()
+      if (this.rayons.length === 0) {
+        await this.loadrayons()
+      }
+      if (this.sections.length === 0) {
+        await this.loadSections()
+      }
+      if (this.type_produits.length === 0) {
+        await this.loadTypeProduits()
       }
     },
     chargerArticle: async function () {
@@ -435,9 +435,6 @@ export default {
       }
       this.toggleLoading()
     },
-    updateSelectCatalogue: async function (query) {
-      await this.loadCatalogues(query)
-    },
     updateSelectTag: async function (query) {
       await this.loadTags(query)
     },
@@ -451,7 +448,19 @@ export default {
     },
     submit: async function () {
       this.$v.$touch()
-      if (this.$v.$invalid) {
+      if (this.$v.$invalid||
+          (this.serviceTouched === false && this.invalidService === false) ||
+          (this.serviceTouched === true && this.invalidService === true) ||
+          (this.rayonTouched === false && this.invalidRayon === false) ||
+          (this.rayonTouched === true && this.invalidRayon === true) ||
+          (this.sectionTouched === false && this.invalidSection === false) ||
+          (this.sectionTouched === true && this.invalidSection === true) ||
+          (this.typeProduitTouched === false && this.invalidTypeProduit === false) ||
+          (this.typeProduitTouched === true && this.invalidTypeProduit === true)) {
+        this.serviceTouched = true
+        this.rayonTouched = true
+        this.sectionTouched = true
+        this.typeProduitTouched = true
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
@@ -468,7 +477,7 @@ export default {
           }
         }
         let payload = this.$route.params.slug !== undefined ? this.article.toUpdatePayload() : this.article.toCreatePayload()
-        if (this.this.$route.params.slug === undefined) {
+        if (this.$route.params.slug === undefined) {
           await this.createArticle(payload)
         } else {
           await this.updateArticle(payload)
@@ -484,11 +493,17 @@ export default {
         this.$router.push({name: this.routes.ARTICLES.name})
       })
     },
-    toucheTypeService: function () {
-      this.typeServiceTouched = true
+    toucheService: function () {
+      this.serviceTouched = true
     },
-    toucheCatalogue: function () {
-      this.catalogueTouched = true
+    toucheRayon: function() {
+      this.rayonTouched = true
+    },
+    toucheSection: function() {
+      this.sectionTouched = true
+    },
+    toucheTypeProduit: function() {
+      this.typeProduitTouched = true
     },
     previewImage: function (event) {
       let input = event.target;

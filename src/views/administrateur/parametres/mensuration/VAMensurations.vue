@@ -168,7 +168,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
-import MensurationModel from "@/models/mensuration.model";
+import MensurationModel from "@/models/user/mensuration.model";
 import TableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
 import TableEmpty from "@/components/Table/LTableEmpty";
 import TableBusy from "@/components/Table/LTableBusy";

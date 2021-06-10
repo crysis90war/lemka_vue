@@ -74,8 +74,8 @@
           class="my-1"
       >
         <multiselect
-            v-model="demande_devis.type_service"
-            :options="typeServices"
+            v-model="demande_devis.service"
+            :options="services"
             :class="{ 'invalid': isInvalid }"
             :show-labels="false"
             track-by="nom"
@@ -216,7 +216,7 @@
 
 <script>
 import LemkaHelpers from "@/helpers";
-import DemandeDevisModel from "@/models/demande_devis.model";
+import DemandeDevisModel from "@/models/devis/demande_devis.model";
 import {mapActions, mapGetters} from "vuex";
 import LDoubleListBox from "@/components/LDoubleListBox";
 import {commonMixin} from "@/mixins/common.mixin";
@@ -249,19 +249,19 @@ export default {
   },
   computed: {
     ...mapGetters({
-      typeServices: "TypeServices/typeServices",
+      services: "Services/services",
       articlesPublies: "Articles/articlesPublies",
       userMensurations: "UserMensurations/userMensurations",
       mercerieOptions: "Merceries/globalMerceries",
       loadingStatus: "Merceries/globalMerceriesLoadingStatus"
     }),
     isInvalid() {
-      return this.isTouched && (this.demande_devis.type_service.id === null || false)
+      return this.isTouched && (this.demande_devis.service.id === null || false)
     }
   },
   methods: {
     ...mapActions({
-      loadTypeServices: "TypeServices/loadTypeServices",
+      loadServices: "Services/loadServices",
       loadArticles: "Articles/loadArticles",
       loadUserMensurations: "UserMensurations/loadUserMensurations",
       loadGlobalMerceries: "Merceries/loadGlobalMerceries",
@@ -275,8 +275,8 @@ export default {
       if (this.articlesPublies.length === 0) {
         await this.loadArticles()
       }
-      if (this.typeServices.length === 0) {
-        await this.loadTypeServices()
+      if (this.services.length === 0) {
+        await this.loadServices()
       }
       if (this.mercerieOptions.length === 0) {
         await this.loadGlobalMerceries()

@@ -1,9 +1,9 @@
 import * as R from 'ramda'
-import ProfilModel from "@/models/profil.model";
+import ProfilModel from "@/models/user/profil.model";
 import {format, isValid} from "date-fns";
-import TypeServiceModel from "@/models/type_service.model";
+import ServiceModel from "@/models/autre/service.model";
 import ArticleModel from "@/models/article/article.model";
-import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
+import UserMensurationModel from "@/models/user/user_mensuration.model";
 import {minLength, required, maxLength} from "vuelidate/lib/validators";
 
 export default class DemandeDevisModel {
@@ -18,7 +18,7 @@ export default class DemandeDevisModel {
         this.est_soumis = R.is(Boolean, json.est_soumis) ? json.est_soumis : false
         this.est_traite = R.is(Boolean, json.est_traite) ? json.est_traite : false
         this.en_cours = R.is(Boolean, json.en_cours) ? json.en_cours : false
-        this.type_service = R.is(Object, json.type_service) ? new TypeServiceModel(json.type_service) : new TypeServiceModel()
+        this.service = R.is(Object, json.service) ? new ServiceModel(json.service) : new ServiceModel()
         this.mensuration = R.is(Object, json.mensuration) ? new UserMensurationModel(json.mensuration) : null
         this.article = R.is(Object, json.article) ? new ArticleModel(json.article) : null
         this.ref_user = R.is(Object, json.ref_user) ? new ProfilModel(json.ref_user) : new ProfilModel()
@@ -33,7 +33,7 @@ export default class DemandeDevisModel {
             est_soumis: this.est_soumis,
             est_traite: this.est_traite,
             en_cours: this.en_cours,
-            ref_type_service: this.type_service.id,
+            ref_service: this.service.id,
             ref_article: this.article !== null ? this.article.id : null,
             ref_mensuration: this.mensuration !== null ? this.mensuration.id : null,
             ref_merceries: this.merceries.map(item => item.id)

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
+import UserMensurationModel from "@/models/user/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
 import TableEmpty from "@/components/Table/LTableEmpty";
 import TableBusy from "@/components/Table/LTableBusy";

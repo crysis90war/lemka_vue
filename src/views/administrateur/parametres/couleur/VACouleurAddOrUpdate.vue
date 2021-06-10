@@ -50,7 +50,7 @@ import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import {commonMixin} from "@/mixins/common.mixin";
-import CouleurModel from "@/models/couleur.model";
+import CouleurModel from "@/models/mercerie/couleur.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {htmlTitle} from "@/utils/tools";

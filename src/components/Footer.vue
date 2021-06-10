@@ -99,7 +99,7 @@
 import BackToTop from "@/components/BackToTop";
 import Social from "@/components/Social";
 import {mapActions, mapGetters} from "vuex";
-import EntrepriseModel from "@/models/entreprise.model";
+import EntrepriseModel from "@/models/entreprise/entreprise.model";
 
 export default {
   name: "Footer",

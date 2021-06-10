@@ -140,7 +140,7 @@
 <script>
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import ProfilModel from "@/models/profil.model";
+import ProfilModel from "@/models/user/profil.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {commonMixin} from "@/mixins/common.mixin";

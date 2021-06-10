@@ -74,14 +74,6 @@ export default {
             LemkaHelpers.Routes.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.name
           ]
         },
-        {
-          href: {name: LemkaHelpers.Routes.PARAMETRES_CATALOGUE.name},
-          title: LemkaHelpers.Routes.PARAMETRES_CATALOGUE.value,
-          children: [
-            LemkaHelpers.Routes.PARAMETRES_CATALOGUE.name,
-            LemkaHelpers.Routes.PARAMETRES_CATALOGUE_ADD_OR_UPDATE.name
-          ]
-        }
       ]
     }
   },

@@ -39,7 +39,7 @@ import LTableView from "@/components/Table/LTableView";
 import {commonMixin} from "@/mixins/common.mixin";
 import LTableButtonUpdateDelete from "@/components/Table/LTableButtonUpdateDelete";
 import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
-import GenreModel from "@/models/genre.model";
+import GenreModel from "@/models/user/genre.model";
 
 export default {
   name: "VAGenres",

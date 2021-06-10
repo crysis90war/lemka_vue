@@ -155,8 +155,20 @@
         {{ data.item.created_at | localTimeStr }}
       </template>
 
-      <template #cell(type_service)="data">
-        {{ data.item.type_service.nom }}
+      <template #cell(service)="data">
+        {{ data.item.service.nom }}
+      </template>
+
+      <template #cell(rayon)="data">
+        {{ data.item.rayon.nom }}
+      </template>
+
+      <template #cell(section)="data">
+        {{ data.item.section.nom }}
+      </template>
+
+      <template #cell(type_produit)="data">
+        {{ data.item.type_produit.nom }}
       </template>
 
       <template #cell(titre)="data">

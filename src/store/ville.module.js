@@ -1,5 +1,5 @@
 import ApiService from "@/services/api.service";
-import VilleModel from "@/models/pays/ville.model";
+import VilleModel from "@/models/adresse/ville.model";
 
 export const VilleModule = {
     namespaced: true,

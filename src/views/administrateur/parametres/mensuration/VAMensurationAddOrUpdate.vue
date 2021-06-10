@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import MensurationModel from "@/models/mensuration.model";
+import MensurationModel from "@/models/user/mensuration.model";
 import {mapActions} from "vuex";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
+import UserMensurationModel from "@/models/user/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {htmlTitle} from "@/utils/tools";

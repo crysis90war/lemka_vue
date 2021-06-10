@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import AdresseModel from "@/models/adresse.model";
+import AdresseModel from "@/models/adresse/adresse.model";
 import {validationMixin} from "vuelidate";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";

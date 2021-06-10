@@ -67,8 +67,6 @@ import VACharacteristiques from "@/views/administrateur/parametres/caracteristiq
 import VACharacteristiqueAddOrUpdate from "@/views/administrateur/parametres/caracteristique/VACharacteristiqueAddOrUpdate";
 import VACategories from "@/views/administrateur/parametres/categorie/VACategories";
 import VACategorieAddOrUpdate from "@/views/administrateur/parametres/categorie/VACategorieAddOrUpdate";
-import VACatalogues from "@/views/administrateur/parametres/catalogue/VACatalogues";
-import VACatalogueAddOrUpdate from "@/views/administrateur/parametres/catalogue/VACatalogueAddOrUpdate";
 import VGNewPassword from "@/views/global/auth/VGNewPassword";
 // endregion
 
@@ -465,7 +463,7 @@ const router = new VueRouter({
                             ]
                         },
                         {
-                            path: '/categories',
+                            path: 'categories',
                             name: ROUTES.PARAMETRES_CATEGORIE.name,
                             meta: {value: ROUTES.PARAMETRES_CATEGORIE.value},
                             component: VACategories,
@@ -475,21 +473,6 @@ const router = new VueRouter({
                                     name: ROUTES.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.name,
                                     meta: {value: ROUTES.PARAMETRES_CATEGORIE_ADD_OR_UPDATE.value},
                                     component: VACategorieAddOrUpdate,
-                                    props: true
-                                }
-                            ]
-                        },
-                        {
-                            path: 'catalogues',
-                            name: ROUTES.PARAMETRES_CATALOGUE.name,
-                            meta: {value: ROUTES.PARAMETRES_CATALOGUE.value},
-                            component: VACatalogues,
-                            children: [
-                                {
-                                    path: 'cu/:id?',
-                                    name: ROUTES.PARAMETRES_CATALOGUE_ADD_OR_UPDATE.name,
-                                    meta: {value: ROUTES.PARAMETRES_CATALOGUE_ADD_OR_UPDATE.value},
-                                    component: VACatalogueAddOrUpdate,
                                     props: true
                                 }
                             ]

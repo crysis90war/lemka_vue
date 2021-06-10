@@ -1,5 +1,5 @@
 import ApiService from "@/services/api.service";
-import ProfilModel from "@/models/profil.model";
+import ProfilModel from "@/models/user/profil.model";
 
 export const ProfilModule = {
     namespaced: true,

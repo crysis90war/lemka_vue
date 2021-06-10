@@ -38,7 +38,7 @@ import LTableView from "@/components/Table/LTableView";
 import {commonMixin} from "@/mixins/common.mixin";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import CategorieModel from "@/models/categorie.model";
+import CategorieModel from "@/models/mercerie/categorie.model";
 import {htmlTitle} from "@/utils/tools";
 
 export default {

@@ -42,8 +42,8 @@
                   <b-collapse id="accordion-service" visible accordion="my-accordion" role="tabpanel">
                     <b-card-body>
                       <b-form-radio-group
-                          v-model="selectedTypeService"
-                          :options="typeServices"
+                          v-model="selectedService"
+                          :options="services"
                           value-field="id"
                           text-field="nom"
                           stacked
@@ -265,7 +265,7 @@ export default {
       listShow: true,
       search: "",
       selectedCategorie: "Articles",
-      selectedTypeService: null,
+      selectedService: null,
       selectedRayon: null,
       selectedSection: null,
       selectedTypeProduit: null,
@@ -287,7 +287,7 @@ export default {
       rayons: 'Rayons/rayons',
       sections: "Sections/sections",
       typeProduits: "TypeProduits/typeProduits",
-      typeServices: "TypeServices/typeServices",
+      services: "Services/services",
       tags: "Tags/tags",
       couleurs: "Couleurs/couleurs",
       categories: "Categories/categories",
@@ -309,7 +309,7 @@ export default {
           break;
       }
     },
-    selectedTypeService() {
+    selectedService() {
       this.searchArticleQuery()
     },
     selectedRayon() {
@@ -336,7 +336,7 @@ export default {
       loadRayons: "Rayons/loadRayons",
       loadSections: "Sections/loadSections",
       loadTypeProduits: "TypeProduits/loadTypeProduits",
-      loadTypeServices: "TypeServices/loadTypeServices",
+      loadServices: "Services/loadServices",
       loadTags: "Tags/loadTags",
       loadCouleur: "Couleurs/loadCouleurs",
       loadCategories: "Categories/loadCategories",
@@ -347,8 +347,8 @@ export default {
       if (this.tags.length === 0) {
         await this.loadTags()
       }
-      if (this.typeServices.length === 0) {
-        await this.loadTypeServices()
+      if (this.services.length === 0) {
+        await this.loadServices()
       }
       if (this.rayons.length === 0) {
         await this.loadRayons()
@@ -391,14 +391,14 @@ export default {
     },
     articleQueryParams: function () {
       let search = this.search
-      let ref_type_service = this.selectedTypeService
+      let ref_service = this.selectedService
       let ref_catalogue__ref_rayon = this.selectedRayon
       let ref_catalogue__ref_section = this.selectedSection
       let ref_catalogue__ref_type_produit = this.selectedTypeProduit
       let ref_tags = this.selectedTags
 
-      if (ref_type_service === null || ref_type_service === undefined) {
-        ref_type_service = ""
+      if (ref_service === null || ref_service === undefined) {
+        ref_service = ""
       }
       if (ref_catalogue__ref_rayon === null || ref_catalogue__ref_rayon === undefined) {
         ref_catalogue__ref_rayon = ""
@@ -409,7 +409,7 @@ export default {
       if (ref_catalogue__ref_type_produit === null || ref_catalogue__ref_type_produit === undefined) {
         ref_catalogue__ref_type_produit = ""
       }
-      let params = `?ref_type_service=${ref_type_service}&ref_catalogue__ref_rayon=${ref_catalogue__ref_rayon}&ref_catalogue__ref_section=${ref_catalogue__ref_section}&ref_catalogue__ref_type_produit=${ref_catalogue__ref_type_produit}&search=${search}`
+      let params = `?ref_service=${ref_service}&ref_catalogue__ref_rayon=${ref_catalogue__ref_rayon}&ref_catalogue__ref_section=${ref_catalogue__ref_section}&ref_catalogue__ref_type_produit=${ref_catalogue__ref_type_produit}&search=${search}`
       if (ref_tags.length > 0) {
         let text = '&ref_tags=';
         ref_tags.forEach(item => {

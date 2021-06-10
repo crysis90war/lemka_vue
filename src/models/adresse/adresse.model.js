@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import VilleModel from "@/models/pays/ville.model";
+import VilleModel from "@/models/adresse/ville.model";
 import {minLength, alphaNum, required, maxLength} from "vuelidate/lib/validators"
 
 export default class AdresseModel {

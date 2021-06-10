@@ -1,5 +1,5 @@
 import ApiService from "@/services/api.service";
-import UserMensurationModel from "@/models/user_mensuration/user_mensuration.model";
+import UserMensurationModel from "@/models/user/user_mensuration.model";
 
 export const UserMensurationModule = {
     namespaced: true,

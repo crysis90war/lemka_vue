@@ -1,4 +1,4 @@
-import AdresseModel from "@/models/adresse.model";
+import AdresseModel from "@/models/adresse/adresse.model";
 import ApiService from '@/services/api.service'
 
 export const AdresseModule = {

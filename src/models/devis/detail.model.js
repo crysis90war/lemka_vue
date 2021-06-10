@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import TVAModel from "@/models/tva.model";
+import TVAModel from "@/models/autre/tva.model";
 import {maxLength, minLength, minValue, required} from "vuelidate/lib/validators";
 
 export default class DetailModel {

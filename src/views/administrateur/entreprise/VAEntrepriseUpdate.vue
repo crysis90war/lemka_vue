@@ -375,7 +375,7 @@
 
 <script>
 import {validationMixin} from "vuelidate";
-import EntrepriseModel from "@/models/entreprise.model";
+import EntrepriseModel from "@/models/entreprise/entreprise.model";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";

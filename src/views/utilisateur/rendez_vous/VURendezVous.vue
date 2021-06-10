@@ -38,8 +38,8 @@
               <template #cell(created_at)="data">
                 <p>{{ new Date(data.item.created_at).toLocaleDateString() }}</p>
               </template>
-              <template #cell(type_service)="data">
-                <p>{{ data.item.type_service.nom }}</p>
+              <template #cell(service)="data">
+                <p>{{ data.item.service.nom }}</p>
               </template>
               <template #cell(devis)="data">
                 <p>{{ data.item.devis !== null ? data.item.devis.numero_devis : 'X' }}</p>
@@ -60,7 +60,7 @@
                     <p>Votre rendez-vous le</p>
                     <p><strong>{{ data.item.date | getFullDate }}</strong></p>
                     <p>de <strong>{{ data.item.start }}</strong> à <strong>{{ data.item.end }}</strong></p>
-                    <p>Pour le service <strong>{{ data.item.type_service.nom }}</strong></p>
+                    <p>Pour le service <strong>{{ data.item.service.nom }}</strong></p>
                     <p v-if="data.item.devis !== null">Et pour le devis numero <strong>{{ data.item.devis.numero_devis }}</strong></p>
                   </div>
                   <template #modal-footer>
@@ -133,8 +133,8 @@
               <template #cell(created_at)="data">
                 <p>{{ new Date(data.item.created_at).toLocaleDateString() }}</p>
               </template>
-              <template #cell(type_service)="data">
-                <p>{{ data.item.type_service.nom }}</p>
+              <template #cell(service)="data">
+                <p>{{ data.item.service.nom }}</p>
               </template>
               <template #cell(devis)="data">
                 <p>{{ data.item.devis !== null ? data.item.devis.numero_devis : 'X' }}</p>
@@ -160,8 +160,8 @@
               <template #cell(created_at)="data">
                 <p>{{ new Date(data.item.created_at).toLocaleDateString() }}</p>
               </template>
-              <template #cell(type_service)="data">
-                <p>{{ data.item.type_service.nom }}</p>
+              <template #cell(service)="data">
+                <p>{{ data.item.service.nom }}</p>
               </template>
               <template #cell(devis)="data">
                 <p>{{ data.item.devis !== null ? data.item.devis.numero_devis : 'X' }}</p>
@@ -180,7 +180,7 @@
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import {htmlTitle} from "@/utils/tools";
-import RendezVousModel from "@/models/rendez_vous.model";
+import RendezVousModel from "@/models/autre/rendez_vous.model";
 import {date2str} from "@/utils/filters";
 import {commonMixin} from "@/mixins/common.mixin";
 

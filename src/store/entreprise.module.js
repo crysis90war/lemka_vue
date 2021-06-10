@@ -1,5 +1,5 @@
 import ApiService from "@/services/api.service";
-import EntrepriseModel from "@/models/entreprise.model";
+import EntrepriseModel from "@/models/entreprise/entreprise.model";
 
 export const EntrepriseModule = {
     namespaced: true,
