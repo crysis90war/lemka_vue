@@ -2,7 +2,7 @@ TODO - Corriger l'état dans devis demande devis (etat en attente sousmis ...)
 VURendezVous - TODO - Récupérer correctement les dates max disponible. + 14 jours
 VADevisAddOrUpdate - TODO - compléter l'ajout depuis bouton "+" mercerie
 VACategorie
-VACatalogue (Rayon, Section, TypeProduit)
+(Rayon, Section, TypeProduit)
 VACouleur
 
 Reset password

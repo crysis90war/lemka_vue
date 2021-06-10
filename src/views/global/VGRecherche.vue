@@ -214,7 +214,8 @@
                 </div>
                 <div v-else class="px-4">
                   <b-row>
-                    <b-col :cols="!listShow ? '3' : '12'" v-for="item in data" :key="item.id" :class="!listShow ? 'd-flex justify-content-between' : ''">
+                    <b-col :cols="!listShow ? '3' : '12'" v-for="item in data" :key="item.id"
+                           :class="!listShow ? 'd-flex justify-content-between' : ''">
                       <l-card-product
                           :list-show="listShow"
                           :img-src="getMainImage(item.images)"
@@ -392,24 +393,24 @@ export default {
     articleQueryParams: function () {
       let search = this.search
       let ref_service = this.selectedService
-      let ref_catalogue__ref_rayon = this.selectedRayon
-      let ref_catalogue__ref_section = this.selectedSection
-      let ref_catalogue__ref_type_produit = this.selectedTypeProduit
+      let ref_rayon = this.selectedRayon
+      let ref_section = this.selectedSection
+      let ref_type_produit = this.selectedTypeProduit
       let ref_tags = this.selectedTags
 
       if (ref_service === null || ref_service === undefined) {
         ref_service = ""
       }
-      if (ref_catalogue__ref_rayon === null || ref_catalogue__ref_rayon === undefined) {
-        ref_catalogue__ref_rayon = ""
+      if (ref_rayon === null || ref_rayon === undefined) {
+        ref_rayon = ""
       }
-      if (ref_catalogue__ref_section === null || ref_catalogue__ref_section === undefined) {
-        ref_catalogue__ref_section = ""
+      if (ref_section === null || ref_section === undefined) {
+        ref_section = ""
       }
-      if (ref_catalogue__ref_type_produit === null || ref_catalogue__ref_type_produit === undefined) {
-        ref_catalogue__ref_type_produit = ""
+      if (ref_type_produit === null || ref_type_produit === undefined) {
+        ref_type_produit = ""
       }
-      let params = `?ref_service=${ref_service}&ref_catalogue__ref_rayon=${ref_catalogue__ref_rayon}&ref_catalogue__ref_section=${ref_catalogue__ref_section}&ref_catalogue__ref_type_produit=${ref_catalogue__ref_type_produit}&search=${search}`
+      let params = `?ref_service=${ref_service}&ref_rayon=${ref_rayon}&ref_section=${ref_section}&ref_type_produit=${ref_type_produit}&search=${search}`
       if (ref_tags.length > 0) {
         let text = '&ref_tags=';
         ref_tags.forEach(item => {
