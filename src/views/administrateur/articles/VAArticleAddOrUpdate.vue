@@ -107,7 +107,7 @@
       <!-- region Service -->
       <b-row class="mt-3">
         <b-col lg="6">
-          <c-multi-select
+          <l-multi-select
               v-model="article.service"
               label="Service"
               description="Veuillez selectionner le service pour cet article"
@@ -123,7 +123,7 @@
       <b-row>
 
         <b-col lg="4">
-          <c-multi-select
+          <l-multi-select
               v-model="article.rayon"
               label="Rayon"
               description="Veuillez selectionner le rayon pour cet article"
@@ -134,7 +134,7 @@
         </b-col>
 
         <b-col lg="4">
-          <c-multi-select
+          <l-multi-select
               v-model="article.section"
               label="Section"
               description="Veuillez selectionner la section pour cet article"
@@ -145,7 +145,7 @@
         </b-col>
 
         <b-col lg="4">
-          <c-multi-select
+          <l-multi-select
               v-model="article.type_produit"
               label="Type de produit"
               description="Veuillez selectionner le type de produit pour cet article"
@@ -313,11 +313,11 @@ import {commonMixin} from "@/mixins/common.mixin";
 import {htmlTitle} from "@/utils/tools";
 import LInputField from "@/components/LInputField";
 import LTableDeleteModal from "@/components/Table/LTableDeleteModal";
-import CMultiSelect from "@/views/administrateur/articles/CMultiSelect";
+import LMultiSelect from "@/components/form/LMultiSelect";
 
 export default {
   name: "VAArticleAddOrUpdate",
-  components: {CMultiSelect, LTableDeleteModal, LInputField, Cropper},
+  components: {LMultiSelect, LTableDeleteModal, LInputField, Cropper},
   mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
     article: ArticleModel.validations
