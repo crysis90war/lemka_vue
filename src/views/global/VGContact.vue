@@ -90,13 +90,13 @@
               <i class="fa fa-home"></i> Adresse
             </b-card-header>
             <b-card-body>
-              <h5>LEMKA - Atelier de couture</h5>
-              <p>BE0650894447</p>
-              <p>Arthur Puesstraat, 89</p>
-              <p>1502 - Lembeek</p>
-              <p>Belgique</p>
-              <p>Email : <a href="mailto:LEMKA@proximus.be">LEMKA@proximus.be</a></p>
-              <p>Tel. <a href="tel: 0032472894621">+32 (0) 472 89 46 21</a></p>
+              <h5>{{ entreprise.nom_societe }}</h5>
+              <p>{{ entreprise.numero_tva }}</p>
+              <p>{{ entreprise.rue }}, {{ entreprise.numero }}</p>
+              <p>{{ entreprise.ville.code_postale }} - {{ entreprise.ville.ville }}</p>
+              <p>{{ entreprise.ville.pays.pays }}</p>
+              <p>Email : <a :href="`mailto:${entreprise.mail_contact}`">{{ entreprise.mail_contact }}</a></p>
+              <p>Tel. <a :href="`tel: ${entreprise.numero_tel}`">{{ entreprise.numero_tel }}</a></p>
             </b-card-body>
 
           </b-card>
@@ -108,11 +108,15 @@
 
 <script>
 import {htmlTitle} from "@/utils/tools"
+import {mapGetters} from "vuex";
 
 export default {
   name: "VGContact",
   title() {
     return htmlTitle('Contact')
+  },
+  computed: {
+    ...mapGetters({entreprise: 'Entreprises/entreprise'})
   }
 }
 </script>
