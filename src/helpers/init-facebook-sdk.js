@@ -14,7 +14,7 @@ export function initFacebookSdk() {
             FB.getLoginStatus(({authResponse}) => {
                 if (authResponse) {
                     console.log('init-facebook-sdk')
-                    console.log(authResponse)
+                    // console.log(authResponse)
                 } else {
                     resolve();
                 }
