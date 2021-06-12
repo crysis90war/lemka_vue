@@ -21,7 +21,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LemkaHelpers from "@/helpers";
 import {mapGetters} from "vuex";
-import jwt_decode from "jwt-decode";
+
 export default {
   name: 'Home',
   components: {
@@ -64,12 +64,12 @@ export default {
     }
   },
   created() {
-    let user = JSON.parse(localStorage.getItem('user'));
-    let token = jwt_decode(user.access)
-    if (token.auth_provider === 'facebook') {
-      // eslint-disable-next-line no-undef
-      FB.api('/me/permissions', 'delete', null, () => FB.logout());
-    }
+    // let user = JSON.parse(localStorage.getItem('user'));
+    // let token = jwt_decode(user.access)
+    // if (token.auth_provider === 'facebook') {
+    //   // eslint-disable-next-line no-undef
+    //   FB.api('/me/permissions', 'delete', null, () => FB.logout());
+    // }
     this.getRoute();
     this.engageGoogleAnalytics()
     axios.interceptors.response.use(response => {
