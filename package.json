@@ -8,7 +8,8 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
-    "run": "node server.js"
+    "run": "node server.js",
+    "sitemap": "vue-cli-service sitemap"
   },
   "dependencies": {
     "@morioh/v-lightbox": "^1.0.3",
@@ -16,6 +17,7 @@
     "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.11.1",
     "date-fns": "^2.21.1",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "heroku-ssl-redirect": "^0.1.1",
     "html2pdf.js": "^0.9.3",
@@ -62,6 +64,7 @@
     "vue-cli-plugin-axios": "0.0.4",
     "vue-cli-plugin-bootstrap-vue": "~0.7.0",
     "vue-cli-plugin-i18n": "~1.0.1",
+    "vue-cli-plugin-sitemap": "~2.3.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

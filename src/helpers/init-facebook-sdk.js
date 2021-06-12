@@ -6,7 +6,6 @@ export function initFacebookSdk() {
             // eslint-disable-next-line no-undef
             FB.init({
                 appId: facebookAppId,
-                autoLogAppEvents: true,
                 xfbml: true,
                 version: 'v11.0'
             });

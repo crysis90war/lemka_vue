@@ -46,16 +46,7 @@ import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVou
 
 // region Global Views
 import VGHome from "@/views/global/VGHome";
-import VGLogin from "@/views/global/auth/VGLogin";
-import VGRegister from "@/views/global/auth/VGRegister";
-import VGAbout from "@/views/global/VGAbout";
-import VGHoraire from "@/views/global/VGHoraire";
-import VGContact from "@/views/global/VGContact";
-import VGNotFound from "@/views/global/VGNotFound";
-import VGCGV from "@/views/global/VGCGV";
-import VGConfidentialite from "@/views/global/VGConfidentialite";
 import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
-import VGArticleDetail from "@/views/global/VGArticleDetail";
 import VGRecherche from "@/views/global/VGRecherche";
 import VGMercerieDetail from "@/views/global/VGMercerieDetail";
 import VGResetPassword from "@/views/global/auth/VGResetPassword";
@@ -88,37 +79,37 @@ const router = new VueRouter({
             path: '/login',
             name: ROUTES.LOGIN_ROUTE.name,
             meta: {value: ROUTES.LOGIN_ROUTE.value},
-            component: VGLogin
+            component: () => import('@/views/global/auth/VGLogin')
         },
         {
             path: '/register',
             name: ROUTES.REGISTER_ROUTE.name,
             meta: {value: ROUTES.REGISTER_ROUTE.value},
-            component: VGRegister
+            component: () => import('@/views/global/auth/VGRegister')
         },
         {
             path: '/about',
             name: ROUTES.ABOUT_ROUTE.name,
             meta: {value: ROUTES.ABOUT_ROUTE.value},
-            component: VGAbout
+            component: () => import('@/views/global/VGAbout')
         },
         {
             path: '/horaire',
             name: ROUTES.HORAIRE_ROUTE.name,
             meta: {value: ROUTES.HORAIRE_ROUTE.value},
-            component: VGHoraire
+            component: () => import('@/views/global/VGHoraire')
         },
         {
             path: '/contact',
             name: ROUTES.CONTACT_ROUTE.name,
             meta: {value: ROUTES.CONTACT_ROUTE.value},
-            component: VGContact
+            component: () => import('@/views/global/VGContact')
         },
         {
             path: '/articles/:slug',
             name: ROUTES.ARTICLES_DETAIL.name,
             meta: {value: ''},
-            component: VGArticleDetail,
+            component: () => import('@/views/global/VGAbout'),
             props: true
         },
         {
@@ -132,13 +123,13 @@ const router = new VueRouter({
             path: '/cgv',
             name: "VGCGV",
             meta: {value: "Conditions générales"},
-            component: VGCGV
+            component: () => import('@/views/global/VGCGV')
         },
         {
             path: '/confidentialite',
             name: "VGConfidentialite",
             meta: {value: "Politique de confidentialité"},
-            component: VGConfidentialite
+            component: () => import('@/views/global/VGConfidentialite')
         },
         {
             path: '/email-verify',
@@ -485,7 +476,7 @@ const router = new VueRouter({
             path: '/404',
             name: ROUTES.PAGE_NOT_FOUND_ROUTE.name,
             meta: {value: ROUTES.PAGE_NOT_FOUND_ROUTE.value},
-            component: VGNotFound
+            component: () => import('@/views/global/VGNotFound')
         },
         {
             path: '*',
