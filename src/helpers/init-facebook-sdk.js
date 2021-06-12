@@ -6,6 +6,7 @@ export function initFacebookSdk() {
             // eslint-disable-next-line no-undef
             FB.init({
                 appId: facebookAppId,
+                cookie: true,
                 xfbml: true,
                 version: 'v10.0'
             });
