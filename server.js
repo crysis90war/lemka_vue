@@ -12,14 +12,21 @@ app.use(history({
     verbose: true
 }))
 
-app.use(serveStatic(path.join(path.resolve(), 'dist')));
+app.use(serveStatic(path.join(__dirname, 'dist')));
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 app.listen(port, () => {
     console.log('Listening on port: ' + port);
 });
 
 // /* Redirect http to https */
+app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+        res.redirect(`https://${req.header('host')}${req.url}`)
+    } else {
+        next();
+    }
+});
 // app.get("*", function (req, res, next) {
 //     if ("https" !== req.headers["x-forwarded-proto"] && "production" === process.env.NODE_ENV) {
 //         res.redirect("https://" + req.hostname + req.url);
