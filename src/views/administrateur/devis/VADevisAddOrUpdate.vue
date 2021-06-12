@@ -586,6 +586,7 @@ export default {
   methods: {
     ...mapActions({
       loadDevis: "Devis/loadDevis",
+      loadTvas: "TVA/loadTvas",
       createDetail: "Devis/createDetail",
       deleteDetail: "Devis/deleteDetail",
       updateDetail: "Devis/updateDetail",
@@ -594,6 +595,9 @@ export default {
     initialisation: async function () {
       if (this.deviss.length === 0) {
         await this.loadDevis()
+      }
+      if (this.tvas.length === 0) {
+        await this.loadTvas()
       }
     },
     chargerDevis: async function () {
