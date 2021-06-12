@@ -34,8 +34,9 @@
             class="rounded-lg"
         >
           <figure>
-            <b-img-lazy
+            <b-img
                 :src="getMainImage(article.images)"
+                :alt="article.titre"
                 height="430"
             />
             <figcaption class="bg-light text-dark">
@@ -75,8 +76,9 @@
             class="rounded-lg"
         >
           <figure>
-            <b-img-lazy
+            <b-img
                 :src="getMainImage(article.images)"
+                :alt="article.titre"
                 height="430"
             />
             <figcaption class="bg-light text-dark">
