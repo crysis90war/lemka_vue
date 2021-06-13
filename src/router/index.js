@@ -48,7 +48,6 @@ import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVou
 import VGHome from "@/views/global/VGHome";
 import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
 import VGRecherche from "@/views/global/VGRecherche";
-import VGMercerieDetail from "@/views/global/VGMercerieDetail";
 import VGResetPassword from "@/views/global/auth/VGResetPassword";
 import VGEmailVerify from "@/views/global/auth/VGEmailVerify";
 import VGRegisterSuccess from "@/views/global/auth/VGRegisterSuccess";
@@ -116,7 +115,7 @@ const router = new VueRouter({
             path: '/merceries/:id',
             name: ROUTES.MERCERIES_DETAIL.name,
             meta: {value: ''},
-            component: VGMercerieDetail,
+            component: () => import('@/views/global/VGMercerieDetail'),
             props: true
         },
         {
