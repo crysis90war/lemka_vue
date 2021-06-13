@@ -3,26 +3,36 @@
     <b-form @submit.prevent="updateImage">
 
       <b-form-group description="Formats autorisés .jpg et .png">
-        <b-form-file v-model="image" required ref="image" accept="image/jpeg, image/png, .jpg, .png,"
-                     @change="previewImage"/>
+        <b-form-file
+            v-model="image"
+            required
+            ref="image"
+            accept="image/jpeg, image/png, .jpg, .png,"
+            @change="previewImage"
+        />
       </b-form-group>
 
       <b-row class="my-2">
         <b-col lg="7">
-          <cropper :src="preview" class="cropper" style="max-width: 720px; max-height: 576px" @change="change"
-                   :stencil-props="{
-                   handlers: {},
-                   movable: true,
-                   scalable: true,
-                   resizable: true
-                 }"
-                   :stencil-size="{
-                   width: 600,
-                   height: 600
-                 }"/>
+          <cropper
+              :src="preview"
+              class="cropper"
+              style="max-width: 720px; max-height: 576px"
+              @change="change"
+              :stencil-props="{
+                handlers: {},
+                movable: true,
+                scalable: true,
+                resizable: true
+              }"
+              :stencil-size="{
+                width: 600,
+                height: 600
+              }"
+          />
         </b-col>
         <b-col lg="5">
-          <b-img v-if="destination !== null" :src="destination" height="360" width="360"></b-img>
+          <b-img v-if="destination !== null" :src="destination" height="360" width="360"/>
         </b-col>
       </b-row>
 
@@ -85,7 +95,7 @@ export default {
     },
 
     // eslint-disable-next-line no-unused-vars
-    change({ coordinates, canvas, image }) {
+    change({coordinates, canvas, image}) {
       this.destination = canvas.toDataURL()
       let formData = new FormData()
       let file = dataURLtoFile(canvas.toDataURL())
@@ -97,7 +107,7 @@ export default {
       this.$bvModal.hide(this.modalId)
     },
 
-    updateImage: async function() {
+    updateImage: async function () {
       await this.updateProfilImage(this.formData)
       this.hideModal()
     }
