@@ -1,32 +1,40 @@
 <template>
   <div>
     <b-form-group description="Formats autorisés .jpg et .png">
-      <b-form-file v-model="image" required
-                   ref="image" accept="image/jpeg, image/png, .jpg, .png,"
-                   @change="previewImage"></b-form-file>
+      <b-form-file
+          v-model="image"
+          required
+          ref="image"
+          accept="image/jpeg, image/png, .jpg, .png,"
+          @change="previewImage"
+      />
     </b-form-group>
 
     <div class="d-flex justify-content-between">
-      <cropper class="cropper" style="max-width: 720px; max-height: 576px" :src="preview"
-               :stencil-props="{
-                 handlers: {},
-                 movable: true,
-                 scalable: true,
-                 resizable: false
-               }"
-               :stencil-size="{
-                 width: 360,
-                 height: 480
-               }"
-               @change="change"/>
+      <cropper
+          class="cropper"
+          style="max-width: 720px; max-height: 576px"
+          :src="preview"
+          :stencil-props="{
+            handlers: {},
+            movable: true,
+            scalable: true,
+            resizable: false
+          }"
+          :stencil-size="{
+            width: 360,
+            height: 480
+          }"
+          @change="change"
+      />
 
-      <b-img :src="destination" height="480" width="360"></b-img>
+      <b-img :src="destination" height="480" width="360"/>
     </div>
   </div>
 </template>
 
 <script>
-import { Cropper } from 'vue-advanced-cropper';
+import {Cropper} from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 
 export default {
@@ -56,7 +64,7 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
-    change({ coordinates, canvas }) {
+    change({coordinates, canvas}) {
       this.destination = canvas.toDataURL()
       console.log(coordinates, canvas)
     }
