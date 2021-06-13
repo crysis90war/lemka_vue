@@ -109,7 +109,7 @@ const router = new VueRouter({
             path: '/articles/:slug',
             name: ROUTES.ARTICLES_DETAIL.name,
             meta: {value: ''},
-            component: () => import('@/views/global/VGAbout'),
+            component: () => import('@/views/global/VGArticleDetail'),
             props: true
         },
         {
