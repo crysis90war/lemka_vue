@@ -596,6 +596,12 @@ export default {
       return this.tvaTouched && this.detail.tva.id === null
     }
   },
+  filters: {
+    localTimeStr: function (value) {
+      value = localTimeStr(value)
+      return value
+    }
+  },
   created() {
     if (this.$route.params.id !== undefined) {
       this.chargerDevis()
@@ -748,12 +754,6 @@ export default {
     },
     toucheTVA: function () {
       this.tvaTouched = true
-    }
-  },
-  filters: {
-    localTimeStr: function (value) {
-      value = localTimeStr(value)
-      return value
     }
   }
 }
