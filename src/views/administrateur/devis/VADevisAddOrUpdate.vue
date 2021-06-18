@@ -124,6 +124,7 @@
                       :disabled="devis.demande_devis.mensuration === null"
                   >
                     <div v-if="devis.demande_devis.mensuration !== null">
+                      <p>Remarque : </p><small>{{ devis.demande_devis.mensuration.remarque }}</small>
                       <b-row>
                         <b-col v-for="mesure in devis.demande_devis.mensuration.mesures" :key="mesure.id" lg="4">
                           <p><strong>{{ mesure.mensuration }} : </strong> {{ mesure.mesure }} cm</p>
@@ -225,93 +226,98 @@
                   id="ajout-detail"
                   title="Ajout nouveau détail"
               >
-                <div>
-                  <b-form-group
-                      label="Designation"
-                      description="Veuillez encoder la designation"
-                  >
-                    <b-form-input
-                        v-model="$v.detail.designation.$model"
-                        :state="validateDetailState('designation')"
+                <!-- region Désignation -->
+                <l-input-field
+                    :input-type="true"
+                    v-model.trim="$v.detail.designation.$model"
+                    label="Designation"
+                    description="Veuillez encoder la designation"
+                    :state="validateState($v.detail, 'designation')"
+                >
+                  <template #invalid-feedback>
+                    <l-invalid-feedback
+                        :condition="!$v.detail.designation.required"
+                        :error-message="required()"
                     />
-                    <b-form-invalid-feedback>
-                      <l-invalid-feedback
-                          :condition="!$v.detail.designation.required"
-                          :error-message="required()"
-                      />
-                      <l-invalid-feedback
-                          :condition="!$v.detail.designation.minLength"
-                          :error-message="minLength($v.detail.designation.$params.minLength.min)"
-                      />
-                      <l-invalid-feedback
-                          :condition="!$v.detail.designation.maxLength"
-                          :error-message="maxLength($v.detail.designation.$params.maxLength.max)"
-                      />
-                    </b-form-invalid-feedback>
-                  </b-form-group>
-                  <b-form-group
-                      label="Prix HT"
-                      description="Veuillez encoder le prix"
-                  >
-                    <b-form-input
-                        v-model="$v.detail.prix_u_ht.$model"
-                        type="number"
-                        step="0.01"
-                        :state="validateDetailState('prix_u_ht')"
+                    <l-invalid-feedback
+                        :condition="!$v.detail.designation.minLength"
+                        :error-message="minLength($v.detail.designation.$params.minLength.min)"
                     />
-                    <b-form-invalid-feedback>
-                      <l-invalid-feedback
-                          :condition="!$v.detail.prix_u_ht.required"
-                          :error-message="required()"
-                      />
-                      <l-invalid-feedback
-                          :condition="!$v.detail.designation.minValue"
-                          :error-message="minValue($v.detail.prix_u_ht.$params.minValue.min)"
-                      />
-                    </b-form-invalid-feedback>
-                  </b-form-group>
-                  <b-form-group
-                      label="Quantité"
-                      description="Veuillez encoder la quantitée"
-                  >
-                    <b-form-input
-                        v-model="$v.detail.quantite.$model"
-                        type="number"
-                        :state="validateDetailState('quantite')"
+                    <l-invalid-feedback
+                        :condition="!$v.detail.designation.maxLength"
+                        :error-message="maxLength($v.detail.designation.$params.maxLength.max)"
                     />
-                    <b-form-invalid-feedback>
-                      <l-invalid-feedback
-                          :condition="!$v.detail.quantite.required"
-                          :error-message="required()"
-                      />
-                      <l-invalid-feedback
-                          :condition="!$v.detail.quantite.minValue"
-                          :error-message="minValue($v.detail.quantite.$params.minValue.min)"
-                      />
-                    </b-form-invalid-feedback>
-                  </b-form-group>
-                  <b-form-group
-                      label="TVA"
-                      description="Veuillez selectionner la TVA"
+                  </template>
+                </l-input-field>
+                <!-- endregion -->
+
+                <!-- region Prix U HT -->
+                <l-input-field
+                    :number-type="true"
+                    v-model="$v.detail.prix_u_ht.$model"
+                    step="0.01"
+                    label="Prix HT"
+                    description="Veuillez encoder le prix"
+                    :state="validateState($v.detail, 'prix_u_ht')"
+                >
+                  <template #invalid-feedback>
+                    <l-invalid-feedback
+                        :condition="!$v.detail.prix_u_ht.required"
+                        :error-message="required()"
+                    />
+                    <l-invalid-feedback
+                        :condition="!$v.detail.designation.minValue"
+                        :error-message="minValue($v.detail.prix_u_ht.$params.minValue.min)"
+                    />
+                  </template>
+                </l-input-field>
+                <!-- endregion -->
+
+                <!-- region Quantité -->
+                <l-input-field
+                    :number-type="true"
+                    v-model="$v.detail.quantite.$model"
+                    label="Quantité"
+                    description="Veuillez encoder la quantitée"
+                    :state="validateState($v.detail, 'quantite')"
+                >
+                  <template #invalid-feedback>
+                    <l-invalid-feedback
+                        :condition="!$v.detail.quantite.required"
+                        :error-message="required()"
+                    />
+                    <l-invalid-feedback
+                        :condition="!$v.detail.quantite.minValue"
+                        :error-message="minValue($v.detail.quantite.$params.minValue.min)"
+                    />
+                  </template>
+                </l-input-field>
+                <!-- endregion -->
+
+                <!-- region TVA -->
+                <b-form-group
+                    label="TVA"
+                    description="Veuillez selectionner la TVA"
+                >
+                  <multiselect
+                      v-model="detail.tva"
+                      :options="tvas"
+                      :show-labels="false"
+                      placeholder="Veuillez selectionner la TVA"
+                      :class="{ 'invalid': invalidTVA }"
+                      @close="toucheTVA"
                   >
-                    <multiselect
-                        v-model="detail.tva"
-                        :options="tvas"
-                        :show-labels="false"
-                        placeholder="Veuillez selectionner la TVA"
-                        :class="{ 'invalid': invalidTVA }"
-                        @close="toucheTVA"
-                    >
-                      <template slot="singleLabel" slot-scope="{ option }">
-                        <strong>{{ option.id !== null ? `${option.taux * 100} %` : null }}</strong>
-                      </template>
-                      <template slot="option" slot-scope="{ option }">
-                        <span>{{ option.taux * 100 }} %</span>
-                      </template>
-                    </multiselect>
-                    <span class="text-danger" v-show="invalidTVA"><small>Ce champ est requis</small></span>
-                  </b-form-group>
-                </div>
+                    <template slot="singleLabel" slot-scope="{ option }">
+                      <strong>{{ option.id !== null ? `${option.taux * 100} %` : null }}</strong>
+                    </template>
+                    <template slot="option" slot-scope="{ option }">
+                      <span>{{ option.taux * 100 }} %</span>
+                    </template>
+                  </multiselect>
+                  <span class="text-danger" v-show="invalidTVA"><small>Ce champ est requis</small></span>
+                </b-form-group>
+                <!-- endregion -->
+
                 <template #modal-footer>
                   <div class="text-right">
                     <b-button-group>
@@ -343,7 +349,7 @@
                   :show-empty="true"
               >
                 <template #empty>
-                  <l-table-empty></l-table-empty>
+                  <l-table-empty/>
                 </template>
                 <template #cell(prix_u_ht)="data">
                   <p>{{ data.item.prix_u_ht }} €</p>
@@ -383,93 +389,98 @@
                       :id="`modifier-detail-modal-${data.item.id}`"
                       :title="detail.designation"
                   >
-                    <div>
-                      <b-form-group
-                          label="Designation"
-                          description="Veuillez encoder la designation"
-                      >
-                        <b-form-input
-                            v-model="$v.detail.designation.$model"
-                            :state="validateDetailState('designation')"
+                    <!-- region Désignation -->
+                    <l-input-field
+                        :input-type="true"
+                        v-model.trim="$v.detail.designation.$model"
+                        label="Designation"
+                        description="Veuillez encoder la designation"
+                        :state="validateState($v.detail, 'designation')"
+                    >
+                      <template #invalid-feedback>
+                        <l-invalid-feedback
+                            :condition="!$v.detail.designation.required"
+                            :error-message="required()"
                         />
-                        <b-form-invalid-feedback>
-                          <l-invalid-feedback
-                              :condition="!$v.detail.designation.required"
-                              :error-message="required()"
-                          />
-                          <l-invalid-feedback
-                              :condition="!$v.detail.designation.minLength"
-                              :error-message="minLength($v.detail.designation.$params.minLength.min)"
-                          />
-                          <l-invalid-feedback
-                              :condition="!$v.detail.designation.maxLength"
-                              :error-message="maxLength($v.detail.designation.$params.maxLength.max)"
-                          />
-                        </b-form-invalid-feedback>
-                      </b-form-group>
-                      <b-form-group
-                          label="Prix HT"
-                          description="Veuillez encoder le prix"
-                      >
-                        <b-form-input
-                            v-model="$v.detail.prix_u_ht.$model"
-                            type="number"
-                            step="0.01"
-                            :state="validateDetailState('prix_u_ht')"
+                        <l-invalid-feedback
+                            :condition="!$v.detail.designation.minLength"
+                            :error-message="minLength($v.detail.designation.$params.minLength.min)"
                         />
-                        <b-form-invalid-feedback>
-                          <l-invalid-feedback
-                              :condition="!$v.detail.prix_u_ht.required"
-                              :error-message="required()"
-                          />
-                          <l-invalid-feedback
-                              :condition="!$v.detail.designation.minValue"
-                              :error-message="minValue($v.detail.prix_u_ht.$params.minValue.min)"
-                          />
-                        </b-form-invalid-feedback>
-                      </b-form-group>
-                      <b-form-group
-                          label="Quantité"
-                          description="Veuillez encoder la quantitée"
-                      >
-                        <b-form-input
-                            v-model="$v.detail.quantite.$model"
-                            type="number"
-                            :state="validateDetailState('quantite')"
+                        <l-invalid-feedback
+                            :condition="!$v.detail.designation.maxLength"
+                            :error-message="maxLength($v.detail.designation.$params.maxLength.max)"
                         />
-                        <b-form-invalid-feedback>
-                          <l-invalid-feedback
-                              :condition="!$v.detail.quantite.required"
-                              :error-message="required()"
-                          />
-                          <l-invalid-feedback
-                              :condition="!$v.detail.quantite.minValue"
-                              :error-message="minValue($v.detail.quantite.$params.minValue.min)"
-                          />
-                        </b-form-invalid-feedback>
-                      </b-form-group>
-                      <b-form-group
-                          label="TVA"
-                          description="Veuillez selectionner la TVA"
+                      </template>
+                    </l-input-field>
+                    <!-- endregion -->
+
+                    <!-- region Prix U HT -->
+                    <l-input-field
+                        :number-type="true"
+                        v-model="$v.detail.prix_u_ht.$model"
+                        step="0.01"
+                        label="Prix HT"
+                        description="Veuillez encoder le prix"
+                        :state="validateState($v.detail, 'prix_u_ht')"
+                    >
+                      <template #invalid-feedback>
+                        <l-invalid-feedback
+                            :condition="!$v.detail.prix_u_ht.required"
+                            :error-message="required()"
+                        />
+                        <l-invalid-feedback
+                            :condition="!$v.detail.designation.minValue"
+                            :error-message="minValue($v.detail.prix_u_ht.$params.minValue.min)"
+                        />
+                      </template>
+                    </l-input-field>
+                    <!-- endregion -->
+
+                    <!-- region Quantité -->
+                    <l-input-field
+                        :number-type="true"
+                        v-model="$v.detail.quantite.$model"
+                        label="Quantité"
+                        description="Veuillez encoder la quantitée"
+                        :state="validateState($v.detail, 'quantite')"
+                    >
+                      <template #invalid-feedback>
+                        <l-invalid-feedback
+                            :condition="!$v.detail.quantite.required"
+                            :error-message="required()"
+                        />
+                        <l-invalid-feedback
+                            :condition="!$v.detail.quantite.minValue"
+                            :error-message="minValue($v.detail.quantite.$params.minValue.min)"
+                        />
+                      </template>
+                    </l-input-field>
+                    <!-- endregion -->
+
+                    <!-- region TVA -->
+                    <b-form-group
+                        label="TVA"
+                        description="Veuillez selectionner la TVA"
+                    >
+                      <multiselect
+                          v-model="detail.tva"
+                          :options="tvas"
+                          :show-labels="false"
+                          placeholder="Veuillez selectionner la TVA"
+                          :class="{ 'invalid': invalidTVA }"
+                          @close="toucheTVA"
                       >
-                        <multiselect
-                            v-model="detail.tva"
-                            :options="tvas"
-                            :show-labels="false"
-                            placeholder="Veuillez selectionner la TVA"
-                            :class="{ 'invalid': invalidTVA }"
-                            @close="toucheTVA"
-                        >
-                          <template slot="singleLabel" slot-scope="{ option }">
-                            <strong>{{ option.id !== null ? `${option.taux * 100} %` : null }}</strong>
-                          </template>
-                          <template slot="option" slot-scope="{ option }">
-                            <span>{{ option.taux * 100 }} %</span>
-                          </template>
-                        </multiselect>
-                        <span class="text-danger" v-show="invalidTVA"><small>Ce champ est requis</small></span>
-                      </b-form-group>
-                    </div>
+                        <template slot="singleLabel" slot-scope="{ option }">
+                          <strong>{{ option.id !== null ? `${option.taux * 100} %` : null }}</strong>
+                        </template>
+                        <template slot="option" slot-scope="{ option }">
+                          <span>{{ option.taux * 100 }} %</span>
+                        </template>
+                      </multiselect>
+                      <span class="text-danger" v-show="invalidTVA"><small>Ce champ est requis</small></span>
+                    </b-form-group>
+                    <!-- endregion -->
+
                     <template #modal-footer>
                       <div class="text-right">
                         <b-button-group>
@@ -554,9 +565,11 @@ import {commonMixin} from "@/mixins/common.mixin";
 import LemkaHelpers from "@/helpers";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
+import LInputField from "@/components/LInputField";
 
 export default {
   name: "VADevisAddOrUpdate",
+  components: {LInputField},
   mixins: [commonMixin, validationMixin, validationMessageMixin],
   props: {
     id: {}
@@ -583,6 +596,13 @@ export default {
       return this.tvaTouched && this.detail.tva.id === null
     }
   },
+  created() {
+    if (this.$route.params.id !== undefined) {
+      this.chargerDevis()
+    } else {
+      this.$router.push({name: this.routes.DEMANDE_DEVIS_ADMIN.name})
+    }
+  },
   methods: {
     ...mapActions({
       loadDevis: "Devis/loadDevis",
@@ -604,9 +624,12 @@ export default {
       this.toggleLoading()
       await this.initialisation()
       let devis = await this.$store.getters["Devis/devis"](parseInt(this.$route.params.id))
+      console.log(devis)
       if (devis !== undefined) {
         Object.assign(this.devis, await this.$store.getters["Devis/devis"](parseInt(this.$route.params.id)))
         this.$route.meta.value = this.devis.numero_devis
+      } else {
+        await this.$router.push({name: this.routes.DEVIS.name})
       }
 
       this.details = this.devis.details
@@ -725,17 +748,6 @@ export default {
     },
     toucheTVA: function () {
       this.tvaTouched = true
-    },
-    validateDetailState: function (name) {
-      const {$dirty, $error} = this.$v.detail[name];
-      return $dirty ? !$error : null;
-    }
-  },
-  created() {
-    if (this.id !== undefined) {
-      this.chargerDevis()
-    } else {
-      this.$router.push({name: this.routes.DEMANDE_DEVIS_ADMIN.name})
     }
   },
   filters: {
@@ -746,7 +758,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
