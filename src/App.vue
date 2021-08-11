@@ -27,7 +27,7 @@ export default {
   components: {
     'lemka-navbar': Navbar,
     'lemka-footer': Footer,
-    // 'lemka-header': Header
+    // 'lemka-header': Header Commentaire
   },
   data() {
     return {
