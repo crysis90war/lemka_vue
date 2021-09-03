@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$route.name === routes.UTILISATEURS.name">
+  <div v-if="$route.name === routes.UTILISATEURS.name" class="utilisateurs">
     <b-row>
       <b-col lg="6">
         <b-form-group
@@ -14,8 +14,7 @@
                 v-model="filter"
                 type="search"
                 placeholder="Chercher ..."
-            >
-            </b-form-input>
+            />
 
             <b-input-group-append>
               <b-button
@@ -50,7 +49,12 @@
               </template>
             </b-form-select>
 
-            <b-form-select v-model="sortDesc" :disabled="!sortBy" :aria-describedby="ariaDescribedby" size="sm">
+            <b-form-select
+                v-model="sortDesc"
+                :disabled="!sortBy"
+                :aria-describedby="ariaDescribedby"
+                size="sm"
+            >
               <option :value="false">Asc</option>
               <option :value="true">Desc</option>
             </b-form-select>
@@ -70,7 +74,10 @@
             description="Laissez tout décoché pour filtrer sur toutes les données"
             v-slot="{ ariaDescribedby }"
         >
-          <b-form-checkbox-group v-model="filterOn" :aria-describedby="ariaDescribedby">
+          <b-form-checkbox-group
+              v-model="filterOn"
+              :aria-describedby="ariaDescribedby"
+          >
             <b-form-checkbox value="username">Username</b-form-checkbox>
             <b-form-checkbox value="first_name">Prénom</b-form-checkbox>
             <b-form-checkbox value="last_name">Nom</b-form-checkbox>
@@ -85,9 +92,13 @@
             label-size="sm"
             label-cols-sm="2"
             label-align-sm="right"
-            description="Veuillez selectionner le nombre d'article par page"
+            description="Veuillez selectionner le nombre d'utilisateurs par page"
         >
-          <b-form-select v-model="perPage" :options="pageOptions" size="sm">
+          <b-form-select
+              v-model="perPage"
+              :options="pageOptions"
+              size="sm"
+          >
           </b-form-select>
         </b-form-group>
       </b-col>

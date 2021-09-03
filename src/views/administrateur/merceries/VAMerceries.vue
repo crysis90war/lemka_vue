@@ -15,6 +15,7 @@
                 type="search"
                 placeholder="Chercher ..."
             />
+
             <b-input-group-append>
               <b-button
                   :disabled="!filter"
