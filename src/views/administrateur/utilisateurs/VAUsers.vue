@@ -183,15 +183,16 @@
 </template>
 
 <script>
+import {htmlTitle} from "@/utils/tools";
 import {tableViewMixin} from "@/mixins/table_view.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
 import UtilisateurModel from "@/models/user/utilisateur.model";
-import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VAUsers",
-  mixins: [tableViewMixin],
+  mixins: [tableViewMixin, commonMixin],
   title() {
     return htmlTitle('Utilisateurs')
   },
@@ -204,19 +205,28 @@ export default {
   computed: {
     ...mapGetters({utilisateurs: 'Utilisateurs/utilisateurs', busy: 'Utilisateurs/loadingStatus'})
   },
-  methods: {
-    ...mapActions({loadUtilisateurs: "Utilisateurs/loadUtilisateurs"}),
-    loadOrRefresh: async function () {
-      await this.loadUtilisateurs()
-    },
-    alert(item) {
-      alert(item)
-    }
-  },
   created() {
     if (this.utilisateurs.length === 0) {
       this.loadOrRefresh()
       this.totalRows = this.utilisateurs.length
+    }
+  },
+  methods: {
+    ...mapActions({loadUtilisateurs: "Utilisateurs/loadUtilisateurs"}),
+    initialisation: async function () {
+      if (this.merceries.length === 0) {
+        await this.loadMerceries()
+      }
+    },
+    loadOrRefresh: async function () {
+      await this.loadUtilisateurs()
+      this.itemsLength(this.utilisateurs)
+    },
+    DesactiverUtilisateur: function() {
+      // TODO : Implémentation la désactivation de l'utilisateur.
+    },
+    alert(item) {
+      alert(item)
     }
   },
 }

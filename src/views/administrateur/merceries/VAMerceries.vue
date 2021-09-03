@@ -222,9 +222,9 @@
 
 <script>
 import {tableViewMixin} from "@/mixins/table_view.mixin";
+import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
 import MercerieModel from "@/models/mercerie/mercerie.model";
-import {commonMixin} from "@/mixins/common.mixin";
 import LemkaHelpers from "@/helpers";
 import CreateRefreshButtonGroup from "@/components/Table/LCreateRefresh";
 import {htmlTitle} from "@/utils/tools";
@@ -244,6 +244,9 @@ export default {
   },
   computed: {
     ...mapGetters({merceries: 'Merceries/merceries', busy: 'Merceries/loadingStatus'})
+  },
+  created() {
+    this.loadOrRefresh()
   },
   methods: {
     ...mapActions({
@@ -271,9 +274,6 @@ export default {
       this.deleteMercerie(item)
       this.hideModal('delete-modal-' + item.id)
     }
-  },
-  created() {
-    this.loadOrRefresh()
   }
 }
 </script>
