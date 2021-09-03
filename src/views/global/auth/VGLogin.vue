@@ -133,7 +133,6 @@ export default {
         this.submitStatus = 'PENDING'
 
         this.login(this.user.toLoginPayload()).then(() => {
-          console.log('Connecting ...')
           setTimeout(() => {
             this.submitStatus = 'OK'
             this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
