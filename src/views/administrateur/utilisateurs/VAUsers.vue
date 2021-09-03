@@ -234,7 +234,7 @@ export default {
       this.itemsLength(this.utilisateurs)
     },
     DesactiverUtilisateur: function() {
-      // TODO : Implémentation la désactivation de l'utilisateur.
+      // TODO : Implémentation du code pour la désactivation de l'utilisateur.
     },
     alert(item) {
       alert(item)

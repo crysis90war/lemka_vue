@@ -5,7 +5,7 @@
         <h2 class="h1-lemka">À propos de nous</h2>
       </div>
       <div class="text-justify my-5">
-        <p style="white-space: pre-wrap">{{ $store.getters["Entreprises/entreprise"].a_propos_complet }}</p>
+        <p style="white-space: pre-wrap">{{ entreprise.a_propos_complet }}</p>
       </div>
     </b-container>
   </div>
@@ -13,6 +13,7 @@
 
 <script>
 import {htmlTitle} from "@/utils/tools";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: 'VGAbout',
@@ -22,6 +23,14 @@ export default {
   data() {
     return {}
   },
-  methods: {},
+  created() {
+    this.loadEntreprises()
+  },
+  computed: {
+    ...mapGetters({entreprise: 'Entreprises/entreprise'})
+  },
+  methods: {
+    ...mapActions({loadEntreprises: "Entreprises/loadEntreprises"}),
+  },
 }
 </script>

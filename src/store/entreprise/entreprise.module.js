@@ -15,7 +15,7 @@ export const EntrepriseModule = {
         loadingStatus: state => state.loadingStatus
     },
     mutations: {
-        SET_ENTREPRISES_SUCCES(state, payload) {
+        SET_ENTREPRISES_SUCCESS(state, payload) {
             state.entreprises = payload
         },
         SET_ENTREPRISES_FAILURE(state) {
@@ -46,7 +46,7 @@ export const EntrepriseModule = {
             return new Promise((resolve, reject) => {
                 commit('LOADING_STATUS', true)
                 ApiService.GETData(endpoint).then(r => {
-                    commit('SET_ENTREPRISES_SUCCES', r.data)
+                    commit('SET_ENTREPRISES_SUCCESS', r.data)
                     commit('LOADING_STATUS', false)
                     resolve(r.data)
                 }, error => {

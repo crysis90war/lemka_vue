@@ -4,7 +4,9 @@
       <div class="my-5 text-center">
         <img :src="logo" alt="" style="max-width: 250px"/>
         <div class="social-container">
-          <b-button variant="light" class="btn-circle" @click="logInWithFacebook"><i class="fab fa-facebook-f"></i></b-button>
+          <!-- Connection avec Facebook a été désactivé. Pour cause de mise a jour SDK -->
+          <!-- Je n'ai plus le temps de le corriger, seul Gmail est active pour le moment. -->
+          <!--<b-button variant="light" class="btn-circle" @click="logInWithFacebook"><i class="fab fa-facebook-f"></i></b-button>-->
           <b-button variant="light" class="btn-circle" @click="logIn"><i class="fab fa-google-plus-g"></i></b-button>
         </div>
         <span>ou utilisez votre compte</span>
@@ -163,7 +165,7 @@ export default {
     },
 
     // FACEBOOK
-    testAPI: function () {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+    testAPI: function () { // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
       console.log('Welcome!  Fetching your information.... ');
       // eslint-disable-next-line no-undef
       FB.api('/me', function (response) {
