@@ -101,7 +101,7 @@ export const MercerieModule = {
     },
     actions: {
         loadGlobalMerceries: function ({commit}, params = "") {
-            let endpoint = `public/merceries/${params}`;
+            let endpoint = `public/merceries/?search=${params}`;
             return new Promise((resolve, reject) => {
                 commit('SET_GLOBAL_MERCERIES_LOADING_STATUS', true)
                 ApiService.GETDatas(endpoint).then(r => {

@@ -2,11 +2,12 @@ import ApiService from "@/services/api.service";
 import jwt_decode from "jwt-decode"
 
 // const user = JSON.parse(sessionStorage.getItem('user'));
-const user = JSON.parse(localStorage.getItem('user'));
 // const initialState = user
 //     ? {status: {loggedIn: true}, user}
 //     : {status: {loggedIn: false}, user: null};
 // state: initialState,
+
+const user = JSON.parse(localStorage.getItem('user'));
 
 export const AuthModule = {
     namespaced: true,
