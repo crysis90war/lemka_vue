@@ -56,7 +56,7 @@
       </b-row>
     </div>
 
-    <l-jumbotron class="mt-5" :data="rendezVous" header="Rendez-vous"/>
+<!--    <l-jumbotron class="mt-5" :data="rendezVous" header="Rendez-vous"/>-->
   </div>
 </template>
 
