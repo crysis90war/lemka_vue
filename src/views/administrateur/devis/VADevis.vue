@@ -156,7 +156,9 @@
         </template>
 
         <template #cell(est_accepte)="data">
-          <b-badge :variant="devis.statutDevis(data.item).variant">{{ devis.statutDevis(data.item).etat }}</b-badge>
+          <b-badge :variant="devis.statutDevis(data.item).variant">
+            {{ devis.statutDevis(data.item).etat }}
+          </b-badge>
         </template>
 
         <template #cell(actions)="data">
