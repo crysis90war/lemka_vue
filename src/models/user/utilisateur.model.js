@@ -58,7 +58,7 @@ export default class UtilisateurModel {
                 filterByFormatted: true
             },
             {key: 'is_verified', label: 'Vérifié', sortable: true},
-            {key: 'actions', label: 'Actions'}
+            // {key: 'actions', label: 'Actions'}
         ]
     }
 

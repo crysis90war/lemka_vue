@@ -178,15 +178,15 @@
         <b-badge v-else pill variant="primary">Utilisateur</b-badge>
       </template>
 
-      <template #cell(actions)="data">
-        <b-button
-            :variant="data.item.is_active === true ? 'outline-danger' : 'outline-success'"
-            size="sm"
-            @click="alert(data.item.username)"
-        >
-          {{ data.item.is_active === true ? 'Desactiver' : 'Activer' }}
-        </b-button>
-      </template>
+<!--      <template #cell(actions)="data">-->
+<!--        <b-button-->
+<!--            :variant="data.item.is_active === true ? 'outline-danger' : 'outline-success'"-->
+<!--            size="sm"-->
+<!--            @click="alert(data.item.username)"-->
+<!--        >-->
+<!--          {{ data.item.is_active === true ? 'Desactiver' : 'Activer' }}-->
+<!--        </b-button>-->
+<!--      </template>-->
     </b-table>
   </div>
 
