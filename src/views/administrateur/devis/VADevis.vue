@@ -16,10 +16,7 @@
                   type="search"
                   placeholder="Chercher ..."/>
               <b-input-group-append>
-                <b-button
-                    :disabled="!filter"
-                    @click="filter = ''"
-                >
+                <b-button :disabled="!filter" @click="filter = ''">
                   Supprimer
                 </b-button>
               </b-input-group-append>
@@ -110,7 +107,7 @@
         <b-col lg="7" class="my-1">
           <b-pagination
               v-model="currentPage"
-              :total-rows="totalRows"
+              :total-rows="longueur"
               :per-page="perPage"
               align="fill"
               size="sm"
@@ -163,15 +160,12 @@
 
         <template #cell(actions)="data">
           <b-button-group size="sm">
-            <b-button
-                variant="outline-primary"
-                :to="{name: routes.DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}"
-            >
+            <b-button :to="{name: routes.DEVIS_ADD_OR_UPDATE.name, params: {id: data.item.id}}"
+                      variant="outline-primary">
               <i class="fas fa-edit"></i>
             </b-button>
-            <b-button
-                variant="outline-info"
-            >
+
+            <b-button variant="outline-info">
               <i :class="FAIcons.INFO"></i>
             </b-button>
           </b-button-group>
@@ -204,7 +198,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({deviss: "Devis/deviss", busy: "Devis/loadingStatus"})
+    ...mapGetters({deviss: "Devis/deviss", busy: "Devis/loadingStatus"}),
+    longueur() {
+      return this.deviss.length
+    }
   },
   methods: {
     ...mapActions({
@@ -218,10 +215,7 @@ export default {
     }
   },
   created() {
-    if (this.deviss.length === 0) {
-      this.loadOrRefresh()
-      this.totalRows = this.deviss.length
-    }
+    this.loadOrRefresh();
   },
 }
 </script>

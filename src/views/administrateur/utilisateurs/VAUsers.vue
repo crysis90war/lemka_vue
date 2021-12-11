@@ -112,7 +112,7 @@
       <b-col lg="7" class="my-1">
         <b-pagination
             v-model="currentPage"
-            :total-rows="totalRows"
+            :total-rows="longueur"
             :per-page="perPage"
             align="fill"
             size="sm"
@@ -214,7 +214,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({utilisateurs: 'Utilisateurs/utilisateurs', busy: 'Utilisateurs/loadingStatus'})
+    ...mapGetters({utilisateurs: 'Utilisateurs/utilisateurs', busy: 'Utilisateurs/loadingStatus'}),
+    longueur() {
+      return this.utilisateurs.length
+    }
   },
   methods: {
     ...mapActions({loadUtilisateurs: "Utilisateurs/loadUtilisateurs"}),
@@ -228,7 +231,7 @@ export default {
       this.itemsLength(this.utilisateurs)
     },
     DesactiverUtilisateur: function() {
-      // TODO : Implémentation du code pour la désactivation de l'utilisateur.
+      // TODO : Implémentation le code pour la désactivation de l'utilisateur.
     },
     alert(item) {
       alert(item)
@@ -237,7 +240,6 @@ export default {
   created() {
     if (this.utilisateurs.length === 0) {
       this.loadOrRefresh()
-      this.totalRows = this.utilisateurs.length
     }
   },
 }
