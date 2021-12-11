@@ -70,14 +70,14 @@
               label-size="sm"
               label-cols-sm="2"
               label-align-sm="right"
-              description="Laissez tout décoché pour filtrer sur toutes les données"
+              description="Laissez tous décochés pour filtrer sur toutes les données"
               v-slot="{ ariaDescribedby }"
           >
             <b-form-checkbox-group
                 v-model="filterOn"
                 :aria-describedby="ariaDescribedby"
             >
-              <b-form-checkbox value="created_at">Date création</b-form-checkbox>
+              <b-form-checkbox value="created_at">Date de création</b-form-checkbox>
               <b-form-checkbox value="numero_devis">N° Devis</b-form-checkbox>
               <b-form-checkbox value="titre">Titre</b-form-checkbox>
             </b-form-checkbox-group>
@@ -90,7 +90,7 @@
               label-size="sm"
               label-cols-sm="2"
               label-align-sm="right"
-              description="Veuillez selectionner le nombre d'article par page"
+              description="Veuillez sélectionner le nombre d'articles par page"
           >
             <b-form-select
                 v-model="perPage"
@@ -189,10 +189,10 @@ import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VADevis",
+  mixins: [tableViewMixin],
   title() {
     return htmlTitle('Devis')
   },
-  mixins: [tableViewMixin],
   data() {
     return {
       devis: new DevisModel(),
@@ -205,15 +205,22 @@ export default {
     ...mapGetters({deviss: "Devis/deviss", busy: "Devis/loadingStatus"})
   },
   methods: {
-    ...mapActions({loadDevis: "Devis/loadDevis", updateDevis: "Devis/updateDevis", updateDemandeDevis: "DemandesDevis/updateAdminDD"}),
+    ...mapActions({
+      loadDevis: "Devis/loadDevis",
+      updateDevis: "Devis/updateDevis",
+      updateDemandeDevis: "DemandesDevis/updateAdminDD"
+    }),
     loadOrRefresh: async function () {
       await this.loadDevis()
       this.itemsLength(this.deviss)
     }
   },
   created() {
-    this.loadDevis()
-  }
+    if (this.deviss.length === 0) {
+      this.loadOrRefresh()
+      this.totalRows = this.deviss.length
+    }
+  },
 }
 </script>
 

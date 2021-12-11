@@ -4,11 +4,8 @@
     <h4>Ancien</h4>
     <hr>
     <div class="d-flex mb-3">
-      <b-button
-          variant="outline-secondary"
-          @click="dateNavigation(false)"
-          :disabled="selected === ''"
-      ><i class="fas fa-angle-double-left"></i>
+      <b-button variant="outline-secondary" :disabled="selected === ''" @click="dateNavigation(false)">
+        <i class="fas fa-angle-double-left"></i>
       </b-button>
 
       <b-datepicker
@@ -19,21 +16,18 @@
           class="mx-2"
       />
 
-      <b-button
-          variant="outline-secondary"
-          @click="dateNavigation()"
-          :disabled="selected === ''"
-      ><i class="fas fa-angle-double-right"></i></b-button>
+      <b-button variant="outline-secondary" :disabled="selected === ''" @click="dateNavigation()">
+        <i class="fas fa-angle-double-right"></i>
+      </b-button>
     </div>
+
     <div>
       <div v-if="getRdvFromDate(selected).length === 0" class="text-center my-5">
         <h5>Vous n'avez pas de rendez-vous le {{ selected | getFullDate }}</h5>
       </div>
+
       <b-row v-else>
-        <b-col
-            lg="12"
-            v-for="(rdv, index) in selected === '' ? getAllRDV() : getRdvFromDate(selected)"
-            :key="index">
+        <b-col lg="12" v-for="(rdv, index) in selected === '' ? getAllRDV() : getRdvFromDate(selected)" :key="index">
           <!-- Via space separated string of IDs passed to directive value -->
           <b-button size="lg" v-b-toggle="`collapse-rdv-${rdv.id}`" class="w-100 mb-2  text-dark border"
                     variant="outline-light">
@@ -43,13 +37,17 @@
           <b-collapse :id="`collapse-rdv-${rdv.id}`">
             <b-card>
               <b-row>
-                <b-col lg="4"><h5>Service : </h5>
+                <b-col lg="4">
+                  <h5>Service : </h5>
                   <p>{{ rdv.service.nom }}</p>
                 </b-col>
-                <b-col lg="4"><h5>Client : </h5>
+
+                <b-col lg="4">
+                  <h5>Client : </h5>
                   <p>{{ clientInfo(rdv.user) }}</p>
                 </b-col>
               </b-row>
+
               <div v-if="rdv.devis !== null">
                 <b-button variant="outline-light" class="text-dark" v-b-toggle="`collapse-devis-${rdv.numero_devis}`">
                   Devis n° {{ rdv.devis.numero_devis }}

@@ -216,12 +216,6 @@ export default {
   computed: {
     ...mapGetters({utilisateurs: 'Utilisateurs/utilisateurs', busy: 'Utilisateurs/loadingStatus'})
   },
-  created() {
-    if (this.utilisateurs.length === 0) {
-      this.loadOrRefresh()
-      this.totalRows = this.utilisateurs.length
-    }
-  },
   methods: {
     ...mapActions({loadUtilisateurs: "Utilisateurs/loadUtilisateurs"}),
     initialisation: async function () {
@@ -238,6 +232,12 @@ export default {
     },
     alert(item) {
       alert(item)
+    }
+  },
+  created() {
+    if (this.utilisateurs.length === 0) {
+      this.loadOrRefresh()
+      this.totalRows = this.utilisateurs.length
     }
   },
 }
