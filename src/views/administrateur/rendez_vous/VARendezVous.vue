@@ -145,7 +145,7 @@
       </b-tab>
     </b-tabs>
 
-    <l-jumbotron :data="selectedRdv"></l-jumbotron>
+    <l-jumbotron hidden :data="selectedRdv"></l-jumbotron>
 
     <div v-if="selectedRdv !== null">
       <b-modal id="modal-1" :title="selectedRdv.user.email">
