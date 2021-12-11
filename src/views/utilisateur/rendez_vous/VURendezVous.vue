@@ -61,7 +61,9 @@
                     <p><strong>{{ data.item.date | getFullDate }}</strong></p>
                     <p>de <strong>{{ data.item.start }}</strong> à <strong>{{ data.item.end }}</strong></p>
                     <p>Pour le service <strong>{{ data.item.service.nom }}</strong></p>
-                    <p v-if="data.item.devis !== null">Et pour le devis numero <strong>{{ data.item.devis.numero_devis }}</strong></p>
+                    <p v-if="data.item.devis !== null">
+                      Et pour le devis numero <strong>{{ data.item.devis.numero_devis }}
+                    </strong></p>
                   </div>
                   <template #modal-footer>
                     <div class="text-right">
@@ -242,7 +244,7 @@ export default {
         }).format()
       }, 1000)
     },
-    cancelAppointment: function(item) {
+    cancelAppointment: function (item) {
       this.annulerRendezVous(item)
       this.hideModal(`annuler-rendez-vous-modal-${item.id}`)
       this.hideModal(`rendez-vous-modal-${item.id}`)
