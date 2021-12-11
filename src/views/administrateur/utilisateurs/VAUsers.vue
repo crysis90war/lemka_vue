@@ -10,10 +10,7 @@
             description="Veuillez encoder pour chercher"
         >
           <b-input-group size="sm">
-            <b-form-input
-                v-model="filter"
-                type="search"
-                placeholder="Chercher ..."
+            <b-form-input v-model="filter" type="search" placeholder="Chercher ..."
             />
 
             <b-input-group-append>
@@ -71,7 +68,7 @@
             label-size="sm"
             label-cols-sm="2"
             label-align-sm="right"
-            description="Laissez tout décoché pour filtrer sur toutes les données"
+            description="Laissez tous décochés pour filtrer sur toutes les données"
             v-slot="{ ariaDescribedby }"
         >
           <b-form-checkbox-group
@@ -92,7 +89,7 @@
             label-size="sm"
             label-cols-sm="2"
             label-align-sm="right"
-            description="Veuillez selectionner le nombre d'utilisateurs par page"
+            description="Veuillez sélectionner le nombre d'utilisateurs par page"
         >
           <b-form-select
               v-model="perPage"
