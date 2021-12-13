@@ -1,13 +1,12 @@
 <template>
   <div class="container">
-    <h3>rendez-vous create works</h3>
-    <router-link :to="{name: 'rendezVousList'}">Back</router-link>
+    <h3>admin articles list works</h3>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Create"
+  name: "List"
 }
 </script>
 

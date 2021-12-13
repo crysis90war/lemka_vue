@@ -31,8 +31,8 @@
             <template v-slot:button-content>
               <i class="far fa-user"></i>
             </template>
-            <b-dropdown-item :to="{ name: 'authLogin' }">S'IDENTIFIER</b-dropdown-item>
-            <b-dropdown-item :to="{ name: 'authRegister' }">S'INSCRIRE</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'authLogin' }">S'identifier</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'authRegister' }">S'inscrire</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown right v-if="currentUser">
@@ -54,7 +54,7 @@
             </b-dropdown-item>
 
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item @click.prevent="logout">Se déconnecter</b-dropdown-item>
+            <b-dropdown-item @click.prevent="disconnect()">Se déconnecter</b-dropdown-item>
           </b-nav-item-dropdown>
 
         </b-navbar-nav>
@@ -99,6 +99,11 @@ export default {
 
   methods: {
     ...mapActions({logout: "Auth/logout"}),
+
+    disconnect: function() {
+      this.logout();
+      this.$router.push({name: 'home'});
+    },
 
     catchScroll() {
       let navbar = document.getElementById('navbar')

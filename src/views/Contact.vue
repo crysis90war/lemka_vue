@@ -1,10 +1,10 @@
 <template>
   <div class="contact">
-    <b-alert variant="warning" show class="text-center">
-      <span>Nous ne partagerons jamais vos informations personnelles avec un tiers, à quelque fin que ce soit.</span>
-    </b-alert>
+    <b-container>
+      <div class="text-center my-4">
+        <h1 class="h1-lemka">Contact</h1>
+      </div>
 
-    <b-container class="mt-3">
       <b-row>
         <b-col>
           <b-card>
@@ -13,6 +13,9 @@
             </b-card-header>
 
             <b-card-body>
+              <b-alert variant="warning" show class="text-center">
+                <span>Nous ne partagerons jamais vos informations personnelles avec un tiers, à quelque fin que ce soit.</span>
+              </b-alert>
               <b-form>
                 <b-form-group label="Sexe *">
                   <b-form-select required>

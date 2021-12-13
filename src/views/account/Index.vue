@@ -21,8 +21,6 @@
 
 <script>
 
-import LemkaHelpers from "@/helpers";
-
 export default {
   name: "Index",
 
@@ -61,15 +59,6 @@ export default {
             'demandesDevisCreate',
             'demandesDevisDetails',
             'demandesDevisUpdate',
-          ]
-        },
-        {
-          to: {name: LemkaHelpers.Routes.DEVIS_USER.name},
-          title: LemkaHelpers.Routes.DEVIS_USER.value,
-          icon: LemkaHelpers.FontAwesomeIcons.FOLDER,
-          children: [
-            LemkaHelpers.Routes.DEVIS_USER.name,
-            LemkaHelpers.Routes.USER_DEVIS_DETAIL.name
           ]
         },
         {

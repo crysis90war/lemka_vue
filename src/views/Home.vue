@@ -16,7 +16,7 @@
             <div class="card-body text-center mx-auto">
               <h5 class="card-title">{{ article.titre }}</h5>
             </div>
-            <router-link :to="{ name: 'VGArticleDetail', params: { slug: article.slug }}" class="btn btn-grad btn-sm">
+            <router-link :to="{ name: 'articlesDetails', params: { slug: article.slug }}" class="btn btn-grad btn-sm">
               Détails
             </router-link>
           </div>
@@ -35,7 +35,7 @@
             <div class="card-body text-center mx-auto">
               <h5 class="card-title">{{ article.titre }}</h5>
             </div>
-            <router-link :to="{ name: 'VGArticleDetail', params: { slug: article.slug }}" class="btn btn-grad btn-sm">
+            <router-link :to="{ name: 'articlesDetails', params: { slug: article.slug }}" class="btn btn-grad btn-sm">
               Détails
             </router-link>
           </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
+    <h3>rendez-vous list works</h3>
     <router-link :to="{name: 'rendezVousCreate'}">Create</router-link>
-    <h2>rendez-vous list works</h2>
   </div>
 </template>
 

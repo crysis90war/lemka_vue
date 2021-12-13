@@ -1,8 +1,8 @@
 <template>
   <div class="horaire">
-    <b-container>
-      <div class="text-center my-5">
-        <h2 class="h1-lemka">HEURES D'OUVERTURE</h2>
+    <div class="container">
+      <div class="text-center my-4">
+        <h1 class="h1-lemka">Horaires</h1>
       </div>
       <div class="my-5">
         <table class="table table-striped text-center">
@@ -17,15 +17,13 @@
             <td v-if="horaire.est_ferme">Fermé</td>
             <td v-else-if="horaire.sur_rdv">Sur rendez-vous</td>
             <td v-else>
-              <p>De {{ heure(horaire.heure_ouverture) }} à {{ heure(horaire.pause_debut) }}</p>
-              <p>et</p>
-              <p>De {{ heure(horaire.pause_fin) }} à {{ heure(horaire.heure_fermeture) }}</p>
+              <p>De {{ heure(horaire.heure_ouverture) }} à {{ heure(horaire.heure_fermeture) }}</p>
             </td>
           </tr>
           </tbody>
         </table>
       </div>
-    </b-container>
+    </div>
   </div>
 </template>
 

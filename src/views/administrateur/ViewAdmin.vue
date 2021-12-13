@@ -35,14 +35,12 @@
       </div>
 
     </div>
-
   </div>
 </template>
 
 <script>
 import LemkaHelpers from "@/helpers";
 import {mapGetters} from "vuex";
-import ApiService from '@/services/api.service';
 
 export default {
   name: "ViewAdmin",
@@ -140,21 +138,6 @@ export default {
         this.$router.push({name: LemkaHelpers.Routes.PARAMETRES_ENTREPRISE.name})
       }
     }
-  },
-  async beforeRouteEnter(to, from, next) {
-    next(vm => {
-      const currentUser = vm.$store.getters["Auth/user"]
-      if (currentUser.is_staff === true) {
-        ApiService.GETData('is-admin/').then(() => {
-          next();
-        }, () => {
-          next({name: LemkaHelpers.Routes.PROFIL_ROUTE.name})
-        })
-        next();
-      } else {
-        next({name: LemkaHelpers.Routes.LOGIN_ROUTE.name})
-      }
-    })
   }
 }
 </script>
