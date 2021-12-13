@@ -20,14 +20,8 @@ import LCreateRefreshButtonGroup from "@/components/Table/LCreateRefresh";
 import LTableBusy from "@/components/Table/LTableBusy";
 import LTableEmpty from "@/components/Table/LTableEmpty";
 import LTableEmptyFiltered from "@/components/Table/LTableEmptyFiltered";
-import {Carousel3d, Slide} from 'vue-carousel-3d'
 import LJumbotron from "@/components/LJumbotron";
 import VueAnalytics from "vue-analytics";
-// import {jwtInterceptor} from "@/helpers/jwt-interceptor";
-// eslint-disable-next-line no-unused-vars
-import {initFacebookSdk} from "@/helpers/init-facebook-sdk";
-
-// jwtInterceptor();
 
 Vue.config.productionTip = process.env.VUE_APP_NODE_END === 'development';
 
@@ -40,11 +34,8 @@ Vue.component('l-invalid-feedback', LInvalidFeedback)
 Vue.component('l-table-busy', LTableBusy)
 Vue.component('l-table-empty', LTableEmpty)
 Vue.component('l-table-empty-filtered', LTableEmptyFiltered)
-Vue.component('l-carousel', Carousel3d)
-Vue.component('l-slide', Slide)
 Vue.component('l-jumbotron', LJumbotron)
 
-// Vue.use(Vuelidate)
 Vue.use(Lightbox)
 Vue.use(VueAnalytics, {
     id: "UA-180100266-1",
@@ -52,22 +43,10 @@ Vue.use(VueAnalytics, {
 })
 Vue.mixin(titleMixin)
 
-//initFacebookSdk().then(startApp)
-
 new Vue({
     i18n,
     router,
     store,
     render: h => h(App)
 }).$mount('#app')
-
-// eslint-disable-next-line no-unused-vars
-function startApp() {
-    new Vue({
-        i18n,
-        router,
-        store,
-        render: h => h(App)
-    }).$mount('#app')
-}
 
