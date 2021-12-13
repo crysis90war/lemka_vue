@@ -10,8 +10,7 @@
             description="Veuillez encoder pour chercher"
         >
           <b-input-group size="sm">
-            <b-form-input v-model="filter" type="search" placeholder="Chercher ..."
-            />
+            <b-form-input v-model="filter" type="search" placeholder="Chercher ..."/>
 
             <b-input-group-append>
               <b-button

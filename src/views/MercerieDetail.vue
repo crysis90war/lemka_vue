@@ -50,7 +50,7 @@ import MercerieModel from "@/models/mercerie/mercerie.model";
 import {htmlTitle} from "@/utils/tools";
 
 export default {
-  name: "VGMercerieDetail",
+  name: "MercerieDetail",
   mixins: [commonMixin],
   title() {
     return htmlTitle('Article')

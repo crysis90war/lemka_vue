@@ -111,7 +111,7 @@ import {htmlTitle} from "@/utils/tools"
 import {mapGetters} from "vuex";
 
 export default {
-  name: "VGContact",
+  name: "Contact",
   title() {
     return htmlTitle('Contact')
   },

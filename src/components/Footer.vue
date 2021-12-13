@@ -43,20 +43,21 @@
               <h5>LÉGALES</h5>
               <ul class="list-unstyled text-small liens-footer">
                 <li>
-                  <b-link class="text-secondary" :to="{name: 'VGConfidentialite'}">Politique de confidentialité</b-link>
+                  <b-link class="text-secondary" :to="{name: 'pc'}">Politique de confidentialité</b-link>
                 </li>
                 <li>
-                  <b-link class="text-secondary" :to="{name: 'VGRetourRemboursement'}">Retours et remboursement</b-link>
+                  <b-link class="text-secondary" :to="{name: 'rb'}">Retours et remboursement</b-link>
                 </li>
                 <li>
-                  <b-link class="text-secondary" :to="{name: 'VGCGV'}">Conditions générales</b-link>
+                  <b-link class="text-secondary" :to="{name: 'cgvu'}">Conditions générales</b-link>
                 </li>
               </ul>
             </b-col>
 
             <b-col lg="3">
               <h5>RESEAUX SOCIAUX</h5>
-              <p class="text-secondary">Suivez-nous sur les réseaux sociaux. Tenez-vous au courant de toutes les activités, nouvelles et
+              <p class="text-secondary">Suivez-nous sur les réseaux sociaux. Tenez-vous au courant de toutes les
+                activités, nouvelles et
                 plus</p>
               <!-- Social buttons -->
               <Social
@@ -117,12 +118,12 @@ export default {
   },
   methods: {
     ...mapActions({loadEntreprise: "Entreprises/loadEntreprises"}),
-    initialisation: async function() {
+    initialisation: async function () {
       if (this.entreprises.length === 0) {
         await this.loadEntreprise()
       }
     },
-    chargerEntreprise: async function() {
+    chargerEntreprise: async function () {
       await this.initialisation()
       Object.assign(this.entreprise, this.$store.getters["Entreprises/entreprise"])
     }

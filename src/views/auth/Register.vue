@@ -2,7 +2,7 @@
   <div class="register">
     <div class="d-flex justify-content-center">
       <div class="my-5 text-center">
-        <img :src="logo" alt="" style="max-width: 250px;" class="mb-5"/>
+        <img :src="logo" alt="" style="max-width: 250px;" class="mb-4"/>
 
         <!-- region Email -->
         <l-input-field
@@ -106,18 +106,17 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-import AuthModel from "@/models/user/auth.model";
-import LemkaHelpers from "@/helpers";
+import LInputField from "@/components/LInputField";
 import InvalidFeedback from "@/components/LInvalidFeedback";
 import {validationMixin} from "vuelidate";
 import {validationMessageMixin} from "@/mixins/validation_message.mixin";
-import {htmlTitle} from "@/utils/tools";
-import LInputField from "@/components/LInputField";
 import {commonMixin} from "@/mixins/common.mixin";
+import AuthModel from "@/models/user/auth.model";
+import {htmlTitle} from "@/utils/tools";
+import {mapActions} from "vuex";
 
 export default {
-  name: "VGRegister",
+  name: "Register",
   components: {LInputField, InvalidFeedback},
   mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
@@ -129,11 +128,9 @@ export default {
   data() {
     return {
       user: new AuthModel(),
-      submitStatus: null
+      submitStatus: null,
+      message: ''
     }
-  },
-  computed: {
-    ...mapGetters({loggedIn: "Auth/loggedIn"})
   },
   methods: {
     ...mapActions({register: "Auth/register"}),
@@ -160,31 +157,10 @@ export default {
         })
       }
     }
-  },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push({name: LemkaHelpers.Routes.PROFIL_ROUTE.name});
-    }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-
-@import "../../../assets/styles/login";
-
-.btn-grad {
-  background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%);
-  margin: 10px;
-  padding: 15px 45px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
-  box-shadow: 0 0 20px #eee;
-  border-radius: 10px;
-  display: inline-block;
-}
+<style scoped>
 
 </style>

@@ -65,7 +65,7 @@ import {commonMixin} from "@/mixins/common.mixin";
 import {mapActions, mapGetters} from "vuex";
 
 export default {
-  name: "VAArticleDetail",
+  name: "ArticleDetail",
   mixins: [commonMixin],
   props: {
     slug: {

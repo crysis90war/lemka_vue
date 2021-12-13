@@ -351,7 +351,7 @@
 
 <script>
 export default {
-  name: "VGCGV"
+  name: "CGVU"
 }
 </script>
 

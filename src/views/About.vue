@@ -16,7 +16,7 @@ import {htmlTitle} from "@/utils/tools";
 import {mapGetters, mapActions} from "vuex";
 
 export default {
-  name: 'VGAbout',
+  name: 'About',
   title() {
     return htmlTitle('À propos')
   },

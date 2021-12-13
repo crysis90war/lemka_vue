@@ -180,7 +180,7 @@
 
 <script>
 export default {
-  name: "VGConfidentialite"
+  name: "PC"
 }
 </script>
 

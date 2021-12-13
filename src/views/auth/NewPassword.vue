@@ -76,7 +76,7 @@ import {validationMessageMixin} from "@/mixins/validation_message.mixin";
 import ApiService from "@/services/api.service";
 
 export default {
-  name: "VGNewPassword",
+  name: "NewPassword",
   components: {LInputField},
   mixins: [validationMixin, validationMessageMixin, commonMixin],
   validations: {
@@ -137,7 +137,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../../assets/styles/login";
+@import "../../assets/styles/login";
 
 .btn-grad {
   background-image: linear-gradient(to right, #834d9b 0%, #d04ed6 51%, #834d9b 100%);

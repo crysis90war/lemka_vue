@@ -14,7 +14,7 @@ import {mapGetters} from "vuex";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "VGRegisterSuccess",
+  name: "RegisterSuccess",
   data() {
     return {
       routes: LemkaHelpers.Routes

@@ -25,6 +25,13 @@ import VAServices from "@/views/administrateur/parametres/service/VAServices";
 import VAServiceAddOrUpdate from "@/views/administrateur/parametres/service/VAServiceAddOrUpdate";
 import VAHoraire from "@/views/administrateur/horaire/VAHoraire";
 import VADevisAddOrUpdate from "@/views/administrateur/devis/VADevisAddOrUpdate";
+import VACouleurs from "@/views/administrateur/parametres/couleur/VACouleurs";
+import VACouleurAddOrUpdate from "@/views/administrateur/parametres/couleur/VACouleurAddOrUpdate";
+import VACharacteristiques from "@/views/administrateur/parametres/caracteristique/VACharacteristiques";
+import VACharacteristiqueAddOrUpdate
+    from "@/views/administrateur/parametres/caracteristique/VACharacteristiqueAddOrUpdate";
+import VACategories from "@/views/administrateur/parametres/categorie/VACategories";
+import VACategorieAddOrUpdate from "@/views/administrateur/parametres/categorie/VACategorieAddOrUpdate";
 // endregion
 
 // region User views
@@ -44,22 +51,6 @@ import VUDevisDetails from "@/views/utilisateur/devis/VUDevisDetails";
 import VURendezVousReservation from "@/views/utilisateur/rendez_vous/VURendezVousReservation";
 // endregion
 
-// region Global Views
-import VGHome from "@/views/global/VGHome";
-import VGRetourRemboursement from "@/views/global/VGRetourRemboursement";
-import VGRecherche from "@/views/global/VGRecherche";
-import VGResetPassword from "@/views/global/auth/VGResetPassword";
-import VGEmailVerify from "@/views/global/auth/VGEmailVerify";
-import VGRegisterSuccess from "@/views/global/auth/VGRegisterSuccess";
-import VACouleurs from "@/views/administrateur/parametres/couleur/VACouleurs";
-import VACouleurAddOrUpdate from "@/views/administrateur/parametres/couleur/VACouleurAddOrUpdate";
-import VACharacteristiques from "@/views/administrateur/parametres/caracteristique/VACharacteristiques";
-import VACharacteristiqueAddOrUpdate from "@/views/administrateur/parametres/caracteristique/VACharacteristiqueAddOrUpdate";
-import VACategories from "@/views/administrateur/parametres/categorie/VACategories";
-import VACategorieAddOrUpdate from "@/views/administrateur/parametres/categorie/VACategorieAddOrUpdate";
-import VGNewPassword from "@/views/global/auth/VGNewPassword";
-// endregion
-
 Vue.use(VueRouter)
 
 const ROUTES = LemkaHelpers.Routes;
@@ -70,106 +61,229 @@ const router = new VueRouter({
     routes: [
         {
             path: '/',
-            name: ROUTES.HOME_ROUTE.name,
+            redirect: '/home'
+        },
+        {
+            path: '/auth',
+            name: 'authIndex',
+            component: () => import('@/views/auth/Index'),
+            beforeEnter: (to, from, next) => {
+                const loggedIn = localStorage.getItem('user');
+
+                if (loggedIn) {
+                    next({name: 'profilIndex'});
+                } else {
+                    next();
+                }
+            },
+            redirect: {name: 'authLogin'},
+            children: [
+                {
+                    path: 'login',
+                    name: 'authLogin',
+                    meta: {value: 'Se connecter'},
+                    component: () => import('@/views/auth/Login')
+                },
+                {
+                    path: 'register',
+                    name: 'authRegister',
+                    meta: {value: "S'inscrire"},
+                    component: () => import('@/views/auth/Register')
+                },
+                {
+                    path: 'email-verify',
+                    name: "VGEmailVerify",
+                    meta: {value: "Vérification d'email"},
+                    component: () => import('@/views/auth/EmailVerify'),
+                    props: route => ({query: route.query.token})
+                },
+                {
+                    path: 'password-reset',
+                    name: "VGResetPassword",
+                    meta: {value: "Mot de passe oublié"},
+                    component: () => import('@/views/auth/ResetPassword')
+                },
+                {
+                    path: 'new-password',
+                    name: "VGNewPassword",
+                    meta: {value: "Nouveau mot de passe"},
+                    component: () => import('@/views/auth/NewPassword'),
+                    props: (route) => ({query: route.query.q})
+                },
+                {
+                    path: 'register-success',
+                    name: "VGRegisterSuccess",
+                    meta: {value: "Compte créé avec succès"},
+                    component: () => import('@/views/auth/RegisterSuccess'),
+                    props: true
+                },
+            ]
+        },
+        {
+            path: '/legales',
+            name: 'legales',
+            redirect: {name: 'cgvu'},
+            component: () => import('@/views/legales/Index'),
+            children: [
+                {
+                    path: 'cgvu',
+                    name: 'cgvu',
+                    meta: {value: "Conditions générales de vente et d'utilisation"},
+                    component: () => import('@/views/legales/CGVU')
+                },
+                {
+                    path: 'pc',
+                    name: 'pc',
+                    meta: {value: 'Politique de confidentialité'},
+                    component: () => import('@/views/legales/PC')
+                },
+                {
+                    path: 'rb',
+                    name: 'rb',
+                    meta: {value: 'Retours et remboursements'},
+                    component: () => import('@/views/legales/RB')
+                },
+            ]
+        },
+        {
+            path: '/account',
+            redirect: {name: 'profilIndex'},
+            component: () => import('@/views/account/Index'),
+            children: [
+                {
+                    path: 'profil',
+                    name: 'profilIndex',
+                    component: () => import('@/views/account/profil/Index'),
+                    redirect: {name: 'profilDetails'},
+                    children: [
+                        {
+                            path: 'details',
+                            name: 'profilDetails',
+                            component: () => import('@/views/account/profil/Details')
+                        }
+                    ]
+                },
+                {
+                    path: 'mensurations',
+                    name: 'mensurationsIndex',
+                    component: () => import('@/views/account/mensurations/Index'),
+                    redirect: {name: 'mensurationsList'},
+                    children: [
+                        {
+                            path: 'list',
+                            name: 'mensurationsList',
+                            component: () => import('@/views/account/mensurations/List')
+                        },
+                        {
+                            path: 'create',
+                            name: 'mensurationsCreate',
+                            component: () => import('@/views/account/mensurations/Create')
+                        },
+                        {
+                            path: ':id/details',
+                            name: 'mensurationsDetails',
+                            component: () => import('@/views/account/mensurations/Details')
+                        },
+                        {
+                            path: ':id/update',
+                            name: 'mensurationsUpdate',
+                            component: () => import('@/views/account/mensurations/Update')
+                        },
+                    ]
+                },
+                {
+                    path: 'demandes-devis',
+                    name: 'demandesDevisIndex',
+                    component: () => import('@/views/account/demandes-devis/Index'),
+                    redirect: {name: 'demandesDevisList'},
+                    children: [
+                        {
+                            path: 'list',
+                            name: 'demandesDevisList',
+                            component: () => import('@/views/account/demandes-devis/List')
+                        },
+                        {
+                            path: ':id/details',
+                            name: 'demandesDevisDetails',
+                            component: () => import('@/views/account/demandes-devis/Details')
+                        },
+                        {
+                            path: 'create',
+                            name: 'demandesDevisCreate',
+                            component: () => import('@/views/account/demandes-devis/Create')
+                        },
+                        {
+                            path: ':id/update',
+                            name: 'demandesDevisUpdate',
+                            component: () => import('@/views/account/demandes-devis/Update')
+                        },
+                    ]
+                },
+                {
+                    path: 'rendez-vous',
+                    name: 'rendezVousIndex',
+                    component: () => import('@/views/account/rendez-vous/Index'),
+                    redirect: {name: 'rendezVousList'},
+                    children: [
+                        {
+                            path: 'list',
+                            name: 'rendezVousList',
+                            component: () => import('@/views/account/rendez-vous/List')
+                        },
+                        {
+                            path: 'create',
+                            name: 'rendezVousCreate',
+                            component: () => import('@/views/account/rendez-vous/Create')
+                        },
+                    ]
+                }
+            ]
+        },
+        {
+            path: '/home',
+            name: 'home',
             meta: {value: ROUTES.HOME_ROUTE.value},
-            component: VGHome,
-        },
-        {
-            path: '/login',
-            name: ROUTES.LOGIN_ROUTE.name,
-            meta: {value: ROUTES.LOGIN_ROUTE.value},
-            component: () => import('@/views/global/auth/VGLogin')
-        },
-        {
-            path: '/register',
-            name: ROUTES.REGISTER_ROUTE.name,
-            meta: {value: ROUTES.REGISTER_ROUTE.value},
-            component: () => import('@/views/global/auth/VGRegister')
+            component: () => import('@/views/Home'),
         },
         {
             path: '/about',
-            name: ROUTES.ABOUT_ROUTE.name,
+            name: 'about',
             meta: {value: ROUTES.ABOUT_ROUTE.value},
-            component: () => import('@/views/global/VGAbout')
+            component: () => import('@/views/About')
         },
         {
             path: '/horaire',
-            name: ROUTES.HORAIRE_ROUTE.name,
+            name: 'horaire',
             meta: {value: ROUTES.HORAIRE_ROUTE.value},
-            component: () => import('@/views/global/VGHoraire')
+            component: () => import('@/views/Horaire')
         },
         {
             path: '/contact',
-            name: ROUTES.CONTACT_ROUTE.name,
+            name: 'contact',
             meta: {value: ROUTES.CONTACT_ROUTE.value},
-            component: () => import('@/views/global/VGContact')
+            component: () => import('@/views/Contact')
         },
         {
             path: '/articles/:slug',
             name: ROUTES.ARTICLES_DETAIL.name,
             meta: {value: ''},
-            component: () => import('@/views/global/VGArticleDetail'),
+            component: () => import('@/views/ArticleDetail'),
             props: true
         },
         {
             path: '/merceries/:id',
             name: ROUTES.MERCERIES_DETAIL.name,
             meta: {value: ''},
-            component: () => import('@/views/global/VGMercerieDetail'),
-            props: true
-        },
-        {
-            path: '/cgv',
-            name: "VGCGV",
-            meta: {value: "Conditions générales"},
-            component: () => import('@/views/global/VGCGV')
-        },
-        {
-            path: '/confidentialite',
-            name: "VGConfidentialite",
-            meta: {value: "Politique de confidentialité"},
-            component: () => import('@/views/global/VGConfidentialite')
-        },
-        {
-            path: '/email-verify',
-            name: "VGEmailVerify",
-            meta: {value: "Vérification d'email"},
-            component: VGEmailVerify,
-            props: route => ({query: route.query.token})
-        },
-        {
-            path: '/password-reset',
-            name: "VGResetPassword",
-            meta: {value: "Mot de passe oublié"},
-            component: VGResetPassword
-        },
-        {
-            path: '/new-password',
-            name: "VGNewPassword",
-            meta: {value: "Nouveau mot de passe"},
-            component: VGNewPassword,
-            props: (route) => ({query: route.query.q})
-        },
-        {
-            path: '/register-success',
-            name: "VGRegisterSuccess",
-            meta: {value: "Compte créé avec succès"},
-            component: VGRegisterSuccess,
+            component: () => import('@/views/MercerieDetail'),
             props: true
         },
         {
             path: '/recherche',
             name: 'VGRecherche',
             meta: {value: 'Recherche'},
-            component: VGRecherche,
+            component: () => import('@/views/Recherche'),
             props: true
             // props: route => ({query: route.query.search})
-        },
-        {
-            path: '/retour-remboursement',
-            name: "VGRetourRemboursement",
-            meta: {value: "Retour et remboursement"},
-            component: VGRetourRemboursement
         },
         {
             path: '/profil',
@@ -475,7 +589,7 @@ const router = new VueRouter({
             path: '/404',
             name: ROUTES.PAGE_NOT_FOUND_ROUTE.name,
             meta: {value: ROUTES.PAGE_NOT_FOUND_ROUTE.value},
-            component: () => import('@/views/global/VGNotFound')
+            component: () => import('@/views/NotFound')
         },
         {
             path: '*',

@@ -34,7 +34,7 @@ import {htmlTitle, format} from "@/utils/tools";
 import {mapActions, mapGetters} from "vuex";
 
 export default {
-  name: "VGHoraire",
+  name: "Horaire",
   title() {
     return htmlTitle('Horaire')
   },

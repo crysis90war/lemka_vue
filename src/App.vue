@@ -1,15 +1,6 @@
 <template>
   <div id="app">
-    <!--    <lemka-header></lemka-header>-->
     <lemka-navbar/>
-    <small>
-      <b-breadcrumb v-if="checkRoute() === true" class="mb-0">
-        <b-breadcrumb-item :to="{name: routes.HOME_ROUTE.name}"><i class="fas fa-home"></i></b-breadcrumb-item>
-        <b-breadcrumb-item v-for="item in items" :key="item.path" :to="item.path" :active="$route.name === item.name">
-          {{ item.meta.value }}
-        </b-breadcrumb-item>
-      </b-breadcrumb>
-    </small>
     <router-view></router-view>
     <lemka-footer/>
   </div>

@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "VGEmailVerify"
+  name: "EmailVerify"
 }
 </script>
 

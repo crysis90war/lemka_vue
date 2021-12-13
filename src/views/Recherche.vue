@@ -253,7 +253,7 @@ import {htmlTitle} from "@/utils/tools";
 import LCardProduct from "@/components/LCardProduct";
 
 export default {
-  name: "VGRecherche",
+  name: "Recherche",
   components: {LCardProduct},
   mixins: [commonMixin],
   title() {

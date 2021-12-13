@@ -1,10 +1,11 @@
 <template>
   <b-navbar id="navbar" toggleable="lg" type="light" variant="light" class="border-0 nav-shadow colored">
     <b-container>
-      <b-navbar-brand :to="{name: routes.HOME_ROUTE.name}" v-if="brandVisible">
+      <b-navbar-brand :to="{name: 'home'}" v-if="brandVisible">
         <img :src="logo" alt="" style="max-width: 100px;">
       </b-navbar-brand>
-      <b-navbar-brand :to="{name: routes.HOME_ROUTE.name}" v-else>
+
+      <b-navbar-brand :to="{name: 'home'}" v-else>
         <img :src="logo" alt="" style="max-width: 150px;">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -12,47 +13,14 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
 
-          <b-nav-item :to="{ name: routes.HOME_ROUTE.name }" :active="$route.name === routes.HOME_ROUTE.name">
-            {{ routes.HOME_ROUTE.value }}
+          <b-nav-item v-for="(item, index) in globalMenu" :key="index" :to="{name: item.to}"
+                      :active="$route.name === item.to">
+            {{ item.title }}
           </b-nav-item>
 
-          <b-nav-item :to="{ name: routes.HORAIRE_ROUTE.name }" :active="$route.name === routes.HORAIRE_ROUTE.name">
-            {{ routes.HORAIRE_ROUTE.value }}
-          </b-nav-item>
-
-<!--          <b-nav-item-dropdown text="Galerie" right>-->
-<!--            <b-dropdown-item>Confection</b-dropdown-item>-->
-<!--            <b-dropdown-item>Retouche</b-dropdown-item>-->
-<!--            <b-dropdown-item>Réparation</b-dropdown-item>-->
-<!--          </b-nav-item-dropdown>-->
-
-          <b-nav-item :to="{ name: routes.ABOUT_ROUTE.name }" :active="$route.name === routes.ABOUT_ROUTE.name">
-            {{ routes.ABOUT_ROUTE.value }}
-          </b-nav-item>
-
-          <b-nav-item :to="{ name: routes.CONTACT_ROUTE.name }" :active="$route.name === routes.CONTACT_ROUTE.name">
-            {{ routes.CONTACT_ROUTE.value }}
-          </b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-<!--          <b-nav-item-dropdown right>-->
-<!--            <template #text>-->
-<!--              <i class="fas fa-globe-europe"></i>-->
-<!--            </template>-->
-<!--            <b-dropdown-item href="#">-->
-<!--              <span class="flag-icon flag-icon-fr flag-icon-squared mr-2"></span>-->
-<!--              <small>Français</small>-->
-<!--            </b-dropdown-item>-->
-<!--            <b-dropdown-item href="#">-->
-<!--              <span class="flag-icon flag-icon-nl flag-icon-squared mr-2"></span>-->
-<!--              <small>Nederlands</small>-->
-<!--            </b-dropdown-item>-->
-<!--            <b-dropdown-item href="#">-->
-<!--              <span class="flag-icon flag-icon-gb flag-icon-squared mr-2"></span>-->
-<!--              <small>English</small>-->
-<!--            </b-dropdown-item>-->
-<!--          </b-nav-item-dropdown>-->
 
           <b-nav-item v-b-modal.modal-no-backdrop>
             <i class="fas fa-search"></i>
@@ -63,14 +31,8 @@
             <template v-slot:button-content>
               <i class="far fa-user"></i>
             </template>
-
-            <b-dropdown-item :to="{ name: routes.LOGIN_ROUTE.name }">
-              {{ routes.LOGIN_ROUTE.value }}
-            </b-dropdown-item>
-
-            <b-dropdown-item :to="{ name: routes.REGISTER_ROUTE.name }">
-              {{ routes.REGISTER_ROUTE.value }}
-            </b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'authLogin' }">S'IDENTIFIER</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'authRegister' }">S'INSCRIRE</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown right v-if="currentUser">
@@ -118,6 +80,12 @@ export default {
   data() {
     return {
       routes: LemkaHelpers.Routes,
+      globalMenu: [
+        {to: 'home', title: 'Accueil'},
+        {to: 'horaire', title: 'Horaire'},
+        {to: 'about', title: 'À propos'},
+        {to: 'contact', title: 'Contact'},
+      ],
       brandVisible: false,
     }
   },

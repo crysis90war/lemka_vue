@@ -3,6 +3,7 @@ import authHeader from "@/services/auth-header";
 
 const DOMAIN = process.env.VUE_APP_NODE_END === 'development' ? 'http://127.0.0.1:8000' : 'https://lemka-api.herokuapp.com'
 
+
 axios.defaults.baseURL = DOMAIN;
 
 class ApiService {

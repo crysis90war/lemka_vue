@@ -52,7 +52,7 @@ import LInputField from "@/components/LInputField";
 import ApiService from '@/services/api.service'
 
 export default {
-  name: "VGResetPassword",
+  name: "ResetPassword",
   components: {LInputField},
   mixins: [validationMixin, commonMixin, validationMessageMixin],
   validations: {

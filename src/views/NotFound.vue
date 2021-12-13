@@ -22,7 +22,7 @@ import Social from "@/components/Social";
 import LemkaHelpers from "@/helpers";
 
 export default {
-  name: "VGNotFound",
+  name: "NotFound",
   components: {
     'lemka-social': Social
   },
