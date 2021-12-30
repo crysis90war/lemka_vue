@@ -7,6 +7,6 @@ const errMap = {
 
 export default function (c) {
     return errMap[c] || (c < 500
-        ? "Erreur de demande du client, Vous devrez peut-être vérifier si l'entrée est incorrecte."
+        ? "Erreur de demande du clients, Vous devrez peut-être vérifier si l'entrée est incorrecte."
         : "Une exception s'est produite côté serveur, Des e-mails ont été envoyés pour informer l'administrateur système de traiter, Vous pouvez réessayer plus tard.")
 }

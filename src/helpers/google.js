@@ -8,7 +8,7 @@ class Google extends EventTarget {
 
     async init() {
         return new Promise((resolve, reject) => {
-            window.gapi.load('client:auth2', async () => {
+            window.gapi.load('clients:auth2', async () => {
                 try {
                     await window.gapi.client.init({
                         apiKey: this.apiKey,

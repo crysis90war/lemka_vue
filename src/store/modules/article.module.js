@@ -1,6 +1,6 @@
-import Repository from '../../repositories/repository.factory';
+import Service from '../../services/service.factory';
 
-const ArticleRepository = Repository.get("articles");
+const ArticleService = Service.get("articles");
 
 const state = () => ({
     articles: [],
@@ -21,7 +21,7 @@ const getters = {
 
 const actions = {
     GetArticles: async function({commit}) {
-        commit('LOAD_ARTICLES', await ArticleRepository.GetAll())
+        commit('LOAD_ARTICLES', await ArticleService.GetAll())
     }
 };
 

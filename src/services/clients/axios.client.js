@@ -1,4 +1,12 @@
-export default function authHeader() {
+import axios from 'axios';
+
+const baseDomain = process.env.VUE_APP_NODE_END === 'development'
+    ? 'http://127.0.0.1:8000/api/'
+    : 'https://lemka-api.herokuapp.com/api/';
+
+const baseUrl = `${baseDomain}`;
+
+function authHeader() {
     // let user = JSON.parse(sessionStorage.getItem('user'));
     let user = JSON.parse(localStorage.getItem('user'));
 
@@ -10,3 +18,8 @@ export default function authHeader() {
         return {};
     }
 }
+
+export default axios.create({
+    baseURL: baseUrl,
+    headers: authHeader()
+});

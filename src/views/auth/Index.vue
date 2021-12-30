@@ -1,11 +1,18 @@
 <template>
-  <div>
-    <div class="container">
-      <router-link :to="{ name: 'authLogin' }">Login</router-link>
-      <router-link :to="{ name: 'authRegister' }">Register</router-link>
+  <b-container>
+    <div class="d-flex justify-content-center mt-5">
+      <b-nav tabs fill class="w-50">
+        <b-nav-item :to="{ name: 'authLogin' }" :active="$route.name === 'authLogin'" class="link-secondary">
+          S'IDENTIFIER
+        </b-nav-item>
+        <b-nav-item :to="{ name: 'authRegister' }" :active="$route.name === 'authRegister'" class="link-secondary">
+          S'ENREGISTRER
+        </b-nav-item>
+      </b-nav>
     </div>
+
     <router-view></router-view>
-  </div>
+  </b-container>
 </template>
 
 <script>

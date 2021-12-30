@@ -1,4 +1,4 @@
-import Client from './clients/axios.client';
+import Client from '../services/clients/axios.client';
 
 const ressource = "sections";
 

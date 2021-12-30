@@ -59,7 +59,7 @@ export default {
     // let token = jwt_decode(user.access)
     // if (token.auth_provider === 'facebook') {
     //   // eslint-disable-next-line no-undef
-    //   FB.api('/me/permissions', 'delete', null, () => FB.logout());
+    //   FB.clients('/me/permissions', 'delete', null, () => FB.logout());
     // }
     this.getRoute();
     this.engageGoogleAnalytics()

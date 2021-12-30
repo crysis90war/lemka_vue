@@ -129,7 +129,6 @@
             :submit-status="submitStatus"
             :submit="submit"
             position="right"
-            params=""
         />
         <!-- endregion -->
       </b-card-body>

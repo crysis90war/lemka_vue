@@ -1,6 +1,6 @@
-import Client from '../services/clients/axios.client';
+import Client from './clients/axios.client';
 
-const ressource = "articles";
+const ressource = 'utilisateurs';
 
 export default {
     GetAll() {
