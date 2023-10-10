@@ -4,17 +4,17 @@
       <b-card-body>
         <b-card-text class="text-center">
           <h3><em>{{ userMensuration.titre }}</em></h3>
-          <b-badge pill :variant="userMensuration.is_main === true ? 'success' : 'primary'">
-            {{ userMensuration.is_main === true ? 'Principale' : 'Secondaire' }}
+          <b-badge pill :variant="badgeVariant">
+            {{ badgeLabel }}
           </b-badge>
         </b-card-text>
         <b-form>
           <hr>
           <b-button-group>
-            <b-button variant="outline-dark" @click="$router.push({name: routes.USER_MENSURATIONS.name})">
+            <b-button variant="outline-dark" @click="goBack">
               <i class="fas fa-arrow-left"></i>
             </b-button>
-            <b-button variant="outline-primary" :disabled="submitStatus === 'PENDING'" @click.prevent="submit">
+            <b-button variant="outline-primary" :disabled="isSubmitDisabled" @click.prevent="submit">
               Enregistrer
             </b-button>
           </b-button-group>
@@ -33,18 +33,10 @@
 import UserMensurationModel from "@/models/user/user_mensuration.model";
 import LemkaHelpers from "@/helpers";
 import {mapActions, mapGetters} from "vuex";
-import {htmlTitle} from "@/utils/tools";
 
 export default {
   name: "VUMensurationDetail",
-  props: {
-    id: {
-      required: true
-    }
-  },
-  title() {
-    return htmlTitle(this.userMensuration.titre)
-  },
+  props: { id: { required: true } },
   data() {
     return {
       userMensuration: new UserMensurationModel(),
@@ -55,40 +47,58 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({userMensurations: "UserMensurations/userMensurations"})
-  },
-  methods: {
-    ...mapActions({updateMesure: "UserMensurations/updateMesure", loadUserMensurations: "UserMensurations/loadUserMensurations"}),
-    initialisation: async function () {
-      Object.assign(this.userMensuration, this.$store.getters["UserMensurations/userMensuration"](this.id))
+    ...mapGetters({userMensurations: "UserMensurations/userMensurations"}),
+
+    badgeVariant() {
+      return this.userMensuration.is_main ? 'success' : 'primary';
     },
-
-    submit: function () {
-      this.submitStatus = 'PENDING'
-
-      for (const item of this.userMensuration.mesures) {
-        this.updateMesure([this.id, item]).catch(() => {
-          this.submitStatus = 'ERROR'
-        })
-      }
-
-      setTimeout(() => {
-        this.submitStatus = 'OK'
-        this.$router.push({name: this.routes.USER_MENSURATIONS.name})
-      }, 500)
+    badgeLabel() {
+      return this.userMensuration.is_main ? 'Principale' : 'Secondaire';
+    },
+    isSubmitDisabled() {
+      return this.submitStatus === 'PENDING';
     }
   },
+  methods: {
+    ...mapActions({updateMesure: "UserMensurations/updateMesure"}),
 
-  created() {
-    if (this.id === null || this.id === undefined || isNaN(this.id) || this.userMensurations.length === 0) {
-      this.$router.push({name: this.routes.USER_MENSURATIONS.name})
+    async initialisation() {
+      try {
+        const mensuration = this.$store.getters["UserMensurations/userMensuration"](this.id);
+        Object.assign(this.userMensuration, mensuration);
+      } catch(error) {
+        console.error(error);
+        this.$router.push({name: this.routes.USER_MENSURATIONS.name});
+      }
+    },
+    async submit() {
+      this.submitStatus = 'PENDING';
+      
+      try {
+        await Promise.all(
+          this.userMensuration.mesures.map(item => this.updateMesure([this.id, item]))
+        );
+        this.submitStatus = 'OK';
+        this.$router.push({name: this.routes.USER_MENSURATIONS.name});
+      } catch(error) {
+        console.error(error);
+        this.submitStatus = 'ERROR';
+      }
+    },
+    goBack() {
+      this.$router.push({name: this.routes.USER_MENSURATIONS.name});
+    }
+  },
+  async created() {
+    if (!this.id || isNaN(this.id) || this.userMensurations.length === 0) {
+      this.$router.push({name: this.routes.USER_MENSURATIONS.name});
     } else {
-      this.initialisation()
+      await this.initialisation();
     }
   }
 }
 </script>
 
 <style scoped>
-
+/* Ensure to style your component properly here */
 </style>
